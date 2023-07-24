@@ -1,6 +1,4 @@
 let mix = require('laravel-mix');
 mix.js('resources/js/app.js', 'public/js')
-    .postCss('resources/css/app.css', 'public/css',
-        [
-        ])
-    .sass('resources/css/main.scss', 'public/css')
+    .sass('resources/css/app.scss', 'public/css')
+    .sass('resources/css/variables.scss', 'public/css')
