@@ -1,3 +1,4 @@
+@use "mixins" as m;
 @import 'variables';
 
 *{
@@ -5,15 +6,94 @@
     padding: 0;
     box-sizing: border-box;
     font-family: $font-family;
+
+    a{
+        text-decoration: none !important;
+        color: $link !important;
+    }
 }
 
-button{
-    border: 1px solid gray;
-    border-radius: 5px;
-    background-color: black;
-    color: silver;
-    width: 200px;
-    height: 60px;
-    margin: 0 auto;
-    text-align: center;
+nav{
+    border: 1px solid $border
 }
+
+.btn-search{
+    border: 1px solid $orange !important;
+    &:hover{
+        background-color: $orange;
+        color: white;
+        border: 1px solid $border !important;
+    }
+}
+
+.form-control{
+
+    &:focus{
+        border-color: $orange;
+        box-shadow: 0 0 4px 4px rgba(214, 77, 0, 0.3);
+    }
+}
+
+.content-wrapper{
+    width: 70%;
+    margin: 1rem auto;
+
+    .left-side-main{
+        width: 40%;
+        margin-right: 20px;
+        padding: 3% 8px;
+        &:first-child button{
+            width: 100%;
+        }
+
+        .dropdown{
+            margin-bottom: 2rem;
+        }
+
+        b{
+            margin-left: 3px;
+        }
+
+        a{
+            font-size: 18px;
+        }
+    }
+    .panel{
+        border: 1px solid $border;
+        min-height: 500px;
+    }
+
+    .main-content{
+        width: 100%;
+    }
+}
+
+.info-left-panel{
+    button{
+        width: 100%;
+    }
+    ul{
+        width: 100%;
+    }
+}
+
+.dropdown-menu{
+    display: block !important;
+    @include m.dropdown(false);
+}
+
+.show{
+    @include m.dropdown(true);
+}
+
+.mini-info-panel{
+    div:first-child i{
+        margin-left: 2px;
+    }
+
+    div:last-child i{
+        margin-left: 1px;
+    }
+}
+
+

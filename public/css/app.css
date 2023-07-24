@@ -4,14 +4,83 @@
   box-sizing: border-box;
   font-family: "Marmelad", sans-serif;
 }
+* a {
+  text-decoration: none !important;
+  color: rgb(40, 35, 40) !important;
+}
 
-button {
-  border: 1px solid gray;
-  border-radius: 5px;
-  background-color: black;
-  color: silver;
-  width: 200px;
-  height: 60px;
-  margin: 0 auto;
-  text-align: center;
+nav {
+  border: 1px solid #EBEFF2;
+}
+
+.btn-search {
+  border: 1px solid #D64D00 !important;
+}
+.btn-search:hover {
+  background-color: #D64D00;
+  color: white;
+  border: 1px solid #EBEFF2 !important;
+}
+
+.form-control:focus {
+  border-color: #D64D00;
+  box-shadow: 0 0 4px 4px rgba(214, 77, 0, 0.3);
+}
+
+.content-wrapper {
+  width: 70%;
+  margin: 1rem auto;
+}
+.content-wrapper .left-side-main {
+  width: 40%;
+  margin-right: 20px;
+  padding: 3% 8px;
+}
+.content-wrapper .left-side-main:first-child button {
+  width: 100%;
+}
+.content-wrapper .left-side-main .dropdown {
+  margin-bottom: 2rem;
+}
+.content-wrapper .left-side-main b {
+  margin-left: 3px;
+}
+.content-wrapper .left-side-main a {
+  font-size: 18px;
+}
+.content-wrapper .panel {
+  border: 1px solid #EBEFF2;
+  min-height: 500px;
+}
+.content-wrapper .main-content {
+  width: 100%;
+}
+
+.info-left-panel button {
+  width: 100%;
+}
+.info-left-panel ul {
+  width: 100%;
+}
+
+.dropdown-menu {
+  display: block !important;
+  overflow: hidden;
+  height: 0;
+  opacity: 0;
+  transition: all 0.2s;
+}
+
+.show {
+  overflow: visible !important;
+  opacity: 1 !important;
+  height: auto !important;
+  transition: all 0.3s;
+}
+
+.mini-info-panel div:first-child i {
+  margin-left: 2px;
+}
+.mini-info-panel div:last-child i {
+  margin-left: 1px;
 }

@@ -22,6 +22,7 @@
         "firebase": "^9.22.0",
         "laravel-echo": "^1.15.1",
         "lodash": "^4.17.21",
+        "mini-css-extract-plugin": "^2.7.6",
         "ratchet-npm": "^2.0.4",
         "ws": "^8.13.0"
     }

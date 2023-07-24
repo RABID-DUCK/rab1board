@@ -1,0 +1,13 @@
+@mixin dropdown($show: true){
+    @if $show{
+        overflow: visible !important;
+        opacity: 1 !important;
+        height: auto !important;
+        transition: all .3s;
+    } @else{
+        overflow: hidden;
+        height: 0;
+        opacity: 0;
+        transition: all .2s;
+    }
+}
