@@ -16,6 +16,7 @@
 
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="#">Action</a></li>
+                        <hr>
                         <li><a class="dropdown-item" href="{{route('backend.index')}}">Admin</a></li>
                     </ul>
 

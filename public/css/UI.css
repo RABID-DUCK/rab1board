@@ -1,0 +1,24 @@
+.btn {
+  border: 1px solid #D64D00 !important;
+}
+.btn:hover {
+  background-color: #D64D00 !important;
+  color: white !important;
+  border: 1px solid #EBEFF2 !important;
+}
+
+.backend .btn-add {
+  min-width: 100px;
+  max-width: 200px;
+  height: 40px;
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+  float: right;
+}
+
+.backend input, .backend textarea {
+  color: white !important;
+}
+.backend .btn-danger:hover {
+  background-color: #a90000 !important;
+}

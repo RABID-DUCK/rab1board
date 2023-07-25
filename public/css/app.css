@@ -13,15 +13,6 @@ nav {
   border: 1px solid #EBEFF2;
 }
 
-.btn-search {
-  border: 1px solid #D64D00 !important;
-}
-.btn-search:hover {
-  background-color: #D64D00 !important;
-  color: white !important;
-  border: 1px solid #EBEFF2 !important;
-}
-
 .form-control:focus {
   border-color: #D64D00 !important;
   box-shadow: 0 0 4px 4px rgba(214, 77, 0, 0.3) !important;

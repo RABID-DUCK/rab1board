@@ -20,6 +20,7 @@
     <!-- endinject -->
     <!-- Layout styles -->
     <link rel="stylesheet" href="{{asset('admin/vendors/style.css')}}">
+    <link rel="stylesheet" href="{{ asset('css/UI.css') }}">
     <!-- End layout styles -->
 {{--    <link rel="shortcut icon" href="assets/images/favicon.png" />--}}
 </head>
@@ -84,6 +85,7 @@
                     <span class="menu-title">Langs</span>
                 </a>
             </li>
+            <hr>
             <li class="nav-item menu-items">
                 <a class="nav-link" href="{{route('board.index')}}">
               <span class="menu-icon">
@@ -104,7 +106,7 @@
         </nav>
         <!-- partial -->
         <div class="main-panel">
-            <div class="content-wrapper">
+            <div class="content-wrapper backend">
 
                 @if(\Illuminate\Support\Facades\Request::is('backend/admin'))
                     @include('backend.main')
