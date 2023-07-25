@@ -13,9 +13,20 @@
                        aria-expanded="false">
                         Your boards
                     </a>
+
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="#">Action</a></li>
+                        <li><a class="dropdown-item" href="{{route('backend.index')}}">Admin</a></li>
                     </ul>
+
+                </li>
+
+                <li class="nav-item dropdown">
+                    <select class="form-select" aria-label="Default select example">
+                        <option value="ru" selected>Russian</option>
+                        <option value="en">English</option>
+                    </select>
+
                 </li>
             </ul>
             <form class="d-flex" role="search">
