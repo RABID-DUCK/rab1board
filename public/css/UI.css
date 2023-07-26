@@ -22,3 +22,20 @@
 .backend .btn-danger:hover {
   background-color: #a90000 !important;
 }
+.backend .btn:hover {
+  border-color: transparent !important;
+}
+.backend .btn-close {
+  opacity: 1;
+}
+.backend .btn-close:focus {
+  box-shadow: 0 0 0 0.03rem #D64D00 !important;
+}
+
+.info-left-panel button.dropdown-toggle {
+  z-index: 1111;
+}
+
+.form-control:focus {
+  border-color: #D64D00;
+}

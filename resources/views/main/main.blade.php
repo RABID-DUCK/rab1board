@@ -19,7 +19,7 @@
         <hr>
         <div class="info-left-panel">
             <div class="dropdown d-flex justify-content-center ">
-                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <button class="btn btn-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <i class="fa-solid fa-user-ninja"></i>
                     <b>Name name</b>
                 </button>

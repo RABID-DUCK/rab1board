@@ -21,6 +21,7 @@
     <!-- Layout styles -->
     <link rel="stylesheet" href="{{asset('admin/vendors/style.css')}}">
     <link rel="stylesheet" href="{{ asset('css/UI.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/backend.css') }}">
     <!-- End layout styles -->
 {{--    <link rel="shortcut icon" href="assets/images/favicon.png" />--}}
 </head>

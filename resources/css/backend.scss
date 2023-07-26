@@ -1,0 +1,35 @@
+@import "variables";
+
+.table-langs{
+
+    .action{
+
+        button{
+            font-size: 1.1em;
+            background: transparent;
+            border: none;
+        }
+
+        button:first-child{
+            margin-bottom: 3px;
+            color: $dark-gray;
+
+            &:hover{
+                color: $orange;
+                transition: color 0.3s;
+            }
+        }
+
+        button:last-child{
+            color: $red;
+            font-width: bold;
+
+            &:hover{
+                filter: saturate(390%);
+                border-radius: 2px;
+                transition: filter 0.3s;
+            }
+        }
+
+    }
+}

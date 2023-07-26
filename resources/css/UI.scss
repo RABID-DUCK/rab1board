@@ -29,4 +29,27 @@
         background-color: #a90000 !important;
     }
 
+    .btn:hover{
+        border-color: transparent !important;
+    }
+
+    .btn-close{
+        opacity: 1;
+
+        &:focus{
+            box-shadow: 0 0 0 .03rem $orange !important;
+        }
+    }
+}
+
+
+.info-left-panel button.dropdown-toggle{
+    z-index: 1111;
+}
+
+.form-control{
+
+    &:focus{
+        border-color: $orange;
+    }
 }

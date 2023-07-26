@@ -1,0 +1,22 @@
+.table-langs .action button {
+  font-size: 1.1em;
+  background: transparent;
+  border: none;
+}
+.table-langs .action button:first-child {
+  margin-bottom: 3px;
+  color: rgba(70, 70, 70, 0.83);
+}
+.table-langs .action button:first-child:hover {
+  color: #D64D00;
+  transition: color 0.3s;
+}
+.table-langs .action button:last-child {
+  color: rgb(224, 6, 6);
+  font-width: bold;
+}
+.table-langs .action button:last-child:hover {
+  filter: saturate(390%);
+  border-radius: 2px;
+  transition: filter 0.3s;
+}

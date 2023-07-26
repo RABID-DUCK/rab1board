@@ -1,6 +1,8 @@
 {
     "/js/app.js": "/js/app.js",
+    "/js/main.js": "/js/main.js",
+    "/css/backend.css": "/css/backend.css",
+    "/css/UI.css": "/css/UI.css",
     "/css/variables.css": "/css/variables.css",
-    "/css/app.css": "/css/app.css",
-    "/css/UI.css": "/css/UI.css"
+    "/css/app.css": "/css/app.css"
 }
