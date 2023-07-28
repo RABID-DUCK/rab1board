@@ -1,0 +1,18 @@
+<?php return array (
+  'main' => 'Моя доска rab1board',
+  'title' => 'Доска rab1board',
+  'account_settings' => 'Настройки аккаунта',
+  'langs' => 'Ленги',
+  'dashboard' => 'Сайт с доской',
+  'admin_panel' => 'Панель администратора',
+  'backend_navigation' => 'Навигация',
+  'copyright' => 'Авторское право © rab1board.com',
+  'langs_empty' => 'Ленгов пока что нет',
+  'add' => 'Добавить',
+  'add_lang' => 'Добавить ленг',
+  'key_lang' => 'Название ключа ленга',
+  'russian' => 'Русский',
+  'english' => 'Английский',
+  'close' => 'Закрыть',
+  'replace' => 'Изменить',
+);

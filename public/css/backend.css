@@ -20,3 +20,16 @@
   border-radius: 2px;
   transition: filter 0.3s;
 }
+
+.nav-link:before {
+  background-color: #D64D00 !important;
+}
+
+.icon {
+  color: #D64D00;
+}
+.icon:hover {
+  color: #D64D00;
+  filter: saturate(170%);
+  transition: filter 0.4s;
+}

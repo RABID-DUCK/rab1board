@@ -33,3 +33,17 @@
 
     }
 }
+
+.nav-link:before{
+    background-color: $orange !important;
+}
+
+.icon{
+    color: $orange;
+
+    &:hover{
+        color: $orange;
+        filter: saturate(170%);
+        transition: filter .4s;
+    }
+}

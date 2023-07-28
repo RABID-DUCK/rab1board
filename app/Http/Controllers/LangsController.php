@@ -6,6 +6,8 @@ use App\Http\Requests\Langs\StoreRequest;
 use App\Http\Requests\Langs\UpdateRequest;
 use App\Models\Langs;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Lang;
 
 class LangsController extends Controller
 {
@@ -18,7 +20,9 @@ class LangsController extends Controller
     public function store(StoreRequest $request){
         $data = $request->validated();
 
-        Langs::create($data);
+        $lang = Langs::create($data);
+
+        \Rabid::write_lang($lang, 'messages.php', 'messages.php');
 
         return redirect('/backend/langs');
     }
@@ -37,13 +41,16 @@ class LangsController extends Controller
         return response()->json($lang);
     }
 
-    public function update(UpdateRequest $request, $id)
+    public function update(UpdateRequest $request)
     {
         $langs = Langs::all();
 
         $data = $request->validated();
-        $lang = Langs::query()->where('id', $id);
-        if ($lang->update($data)){
+        $lang = Langs::query()->where('id', $data['id'])->update($data);
+
+        if ($lang){
+            \Rabid::write_lang((object)$data, 'messages.php', 'messages.php');
+
             return redirect('/backend/langs');
         } else{
             return view('backend.langs.index', compact('langs'));

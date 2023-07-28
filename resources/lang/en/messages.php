@@ -1,0 +1,18 @@
+<?php return array (
+  'main' => 'Main message',
+  'title' => 'Dashboard of rab1board',
+  'account_settings' => 'Account settings',
+  'langs' => 'Langs',
+  'dashboard' => 'Dashboard',
+  'admin_panel' => 'Admin Panel',
+  'backend_navigation' => 'Navigation',
+  'copyright' => 'Copyright © rab1board.com',
+  'langs_empty' => 'There are no longs yet',
+  'add' => 'Add',
+  'add_lang' => 'Add lang',
+  'key_lang' => 'Name lang',
+  'russian' => 'Russian',
+  'english' => 'English',
+  'close' => 'Close',
+  'replace' => 'Replace',
+);
