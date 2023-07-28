@@ -18,6 +18,12 @@
                         <li><a class="dropdown-item" href="#">Action</a></li>
                         <hr>
                         <li><a class="dropdown-item" href="{{route('backend.index')}}">Admin</a></li>
+                        @if(Auth::check())
+                        <li><a class="dropdown-item" href="{{route('logout')}}">Выйти</a></li>
+                        @else
+                        <li><a class="dropdown-item" href="{{route('login')}}">Войти</a></li>
+                        <li><a class="dropdown-item" href="{{route('register')}}">Зарегистрироваться</a></li>
+                            @endif
                     </ul>
 
                 </li>
