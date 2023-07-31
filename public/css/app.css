@@ -78,3 +78,7 @@ nav {
 .mini-info-panel div:last-child i {
   margin-left: 1px;
 }
+
+.auth-link:hover {
+  color: #D64D00 !important;
+}

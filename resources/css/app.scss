@@ -92,3 +92,9 @@ nav{
     }
 }
 
+.auth-link{
+
+    &:hover{
+        color: $orange !important;
+    }
+}
