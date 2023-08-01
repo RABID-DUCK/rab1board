@@ -3,8 +3,8 @@
 @section('content')
     <button class="btn btn-add" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">
         {{__('messages.add')}}</button>
-    @if(!isset($langs))
-        <b>{{__('messages.langs_empty')}}</b>
+    @if(!isset($langs) || count($langs) === 0)
+        <b>{{__('messages.langs_empty') || "Ленгов нет"}}</b>
     @endif
     @if($errors->any())
         <div class="alert alert-danger">{{$errors->first('name')}}</div>
