@@ -82,6 +82,70 @@
                     <span class="menu-title">{{__('messages.langs')}}</span>
                 </a>
             </li>
+            <li class="nav-item menu-items">
+                <a class="nav-link" href="{{route('backend.langs.index')}}">
+              <span class="menu-icon">
+                <i class="bi bi-translate"></i>
+              </span>
+                    <span class="menu-title">{{__('messages.users')}}</span>
+                </a>
+            </li>
+            <li class="nav-item menu-items">
+                <a class="nav-link" href="{{route('backend.langs.index')}}">
+              <span class="menu-icon">
+                <i class="bi bi-translate"></i>
+              </span>
+                    <span class="menu-title">{{__('messages.dashboards')}}</span>
+                </a>
+            </li>
+            <li class="nav-item menu-items">
+                <a class="nav-link" href="{{route('backend.langs.index')}}">
+              <span class="menu-icon">
+                <i class="bi bi-translate"></i>
+              </span>
+                    <span class="menu-title">{{__('messages.tasks')}}</span>
+                </a>
+            </li>
+            <li class="nav-item menu-items">
+                <a class="nav-link" href="{{route('backend.langs.index')}}">
+              <span class="menu-icon">
+                <i class="bi bi-translate"></i>
+              </span>
+                    <span class="menu-title">{{__('messages.roles')}}</span>
+                </a>
+            </li>
+            <li class="nav-item menu-items">
+                <a class="nav-link" href="{{route('backend.langs.index')}}">
+              <span class="menu-icon">
+                <i class="bi bi-translate"></i>
+              </span>
+                    <span class="menu-title">{{__('messages.comments')}}</span>
+                </a>
+            </li>
+            <li class="nav-item menu-items">
+                <a class="nav-link" href="{{route('backend.langs.index')}}">
+              <span class="menu-icon">
+                <i class="bi bi-translate"></i>
+              </span>
+                    <span class="menu-title">{{__('messages.columns')}}</span>
+                </a>
+            </li>
+            <li class="nav-item menu-items">
+                <a class="nav-link" href="{{route('backend.langs.index')}}">
+              <span class="menu-icon">
+                <i class="bi bi-translate"></i>
+              </span>
+                    <span class="menu-title">{{__('messages.desks')}}</span>
+                </a>
+            </li>
+            <li class="nav-item menu-items">
+                <a class="nav-link" href="{{route('backend.langs.index')}}">
+              <span class="menu-icon">
+                <i class="bi bi-translate"></i>
+              </span>
+                    <span class="menu-title">{{__('messages.color_desks')}}</span>
+                </a>
+            </li>
             <hr>
             <li class="nav-item menu-items">
                 <a class="nav-link" href="{{route('board.index')}}">
