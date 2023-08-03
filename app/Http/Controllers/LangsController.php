@@ -22,7 +22,7 @@ class LangsController extends Controller
 
         $lang = Langs::create($data);
 
-        \Rabid::write_lang($lang, 'messages.php', 'messages.php');
+//        \Rabid::write_lang($lang, 'messages.php', 'messages.php');
 
         return redirect('/backend/langs');
     }
@@ -49,7 +49,7 @@ class LangsController extends Controller
         $lang = Langs::query()->where('id', $data['id'])->update($data);
 
         if ($lang){
-            \Rabid::write_lang((object)$data, 'messages.php', 'messages.php');
+//            \Rabid::write_lang((object)$data, 'messages.php', 'messages.php');
 
             return redirect('/backend/langs');
         } else{

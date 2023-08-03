@@ -18,7 +18,7 @@
             <th class="text-white">en</th>
             <th class="text-white">Action</th>
         </thead>
-        <tbody class="table-light table-langs">
+        <tbody class="table-light table-backend">
         @foreach($langs as $lang)
             <tr>
                 <td>{{$lang->id}}</td>
@@ -108,16 +108,3 @@
         </div>
     </div>
 @endsection
-
-<script>
-function openModalLangs(id){
-    fetch('/api/langs/'+id)
-        .then(response => response.json())
-        .then(data => {
-            document.getElementById('id-lang').value = data[0].id;
-            document.getElementById('key-lang').value = data[0].name;
-            document.getElementById('text-lang-ru').value = data[0].ru;
-            document.getElementById('text-lang-en').value = data[0].en;
-        })
-}
-</script>

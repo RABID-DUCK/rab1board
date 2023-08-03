@@ -83,7 +83,7 @@
                 </a>
             </li>
             <li class="nav-item menu-items">
-                <a class="nav-link" href="{{route('backend.langs.index')}}">
+                <a class="nav-link" href="{{route('backend.users.index')}}">
               <span class="menu-icon">
                 <i class="bi bi-translate"></i>
               </span>
@@ -91,7 +91,7 @@
                 </a>
             </li>
             <li class="nav-item menu-items">
-                <a class="nav-link" href="{{route('backend.langs.index')}}">
+                <a class="nav-link" href="{{route('backend.dashboards.index')}}">
               <span class="menu-icon">
                 <i class="bi bi-translate"></i>
               </span>
@@ -131,7 +131,7 @@
                 </a>
             </li>
             <li class="nav-item menu-items">
-                <a class="nav-link" href="{{route('backend.langs.index')}}">
+                <a class="nav-link" href="{{route('backend.desks.index')}}">
               <span class="menu-icon">
                 <i class="bi bi-translate"></i>
               </span>
@@ -202,6 +202,7 @@
 <!-- endinject -->
 <!-- Custom js for this page -->
 <script src="{{asset('admin/js/dashboard.js')}}"></script>
+<script src="{{asset('js/main.js')}}"></script>
 <!-- End custom js for this page -->
 </body>
 </html>

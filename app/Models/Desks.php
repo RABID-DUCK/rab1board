@@ -11,4 +11,8 @@ class Desks extends Model
 
     protected $table = 'desks';
     protected $guarded = false;
+
+    protected $hidden = [
+        'task_id'
+    ];
 }
