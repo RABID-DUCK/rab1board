@@ -48,7 +48,7 @@
                 @endforeach
             @else
                 <b class="text-center">Здесь будут ваши рабочие проекты <i class="bi bi-emoji-smile"></i></b>
-                <button class="btn w-75 add-dashboard">Добавить проект</button>
+                <button class="btn w-75 add-dashboard" id="btn-create-dashboard" onclick="openCreateDashboardModal()">Добавить проект</button>
             @endif
         {{--      End loop of card-boards      --}}
         </div>

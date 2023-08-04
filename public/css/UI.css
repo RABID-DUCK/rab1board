@@ -39,3 +39,16 @@
 .form-control:focus {
   border-color: #D64D00;
 }
+
+button:focus, .btn:focus {
+  box-shadow: 0 0 4px 0.15rem #D64D00 !important;
+}
+
+.create-dashboard-window {
+  margin: 0 auto;
+  width: 70%;
+}
+.create-dashboard-window .card-body {
+  display: flex;
+  flex-direction: column;
+}

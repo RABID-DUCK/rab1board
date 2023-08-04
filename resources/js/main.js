@@ -42,3 +42,36 @@ openModalDesk = function (id){
             document.getElementById('desk-end').value = data.data_end;
         })
 }
+
+openCreateDashboardModal = function(){
+    document.getElementById('btn-create-dashboard').insertAdjacentHTML( 'afterend',`
+        <div class="col-sm-6 mb-3 mb-sm-0 create-dashboard-window" id="create-dashboard-window">
+                <div class="card">
+                    <div class="card-body">
+                        <label class="form-label card-title">Название проекта</label>
+                        <input class="form-control" type="text" id="title-dashboard">
+                        <p class="card-text">Users</p>
+                        <a class="btn btn-search" id="create-dashboard">Создать</a>
+                    </div>
+                </div>
+            </div>
+    `)
+
+    document.getElementById('create-dashboard').addEventListener('click', function (){
+        let title = document.getElementById('title-dashboard').value;
+        console.log(title);
+        fetch('/api/dashboard/create', {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(title)
+        })
+            .then(response => response.json())
+            .then(data => {
+            console.log(data);
+        })
+    });
+}
+
+

@@ -57,5 +57,23 @@ openModalDesk = function openModalDesk(id) {
     document.getElementById('desk-end').value = data.data_end;
   });
 };
+openCreateDashboardModal = function openCreateDashboardModal() {
+  document.getElementById('btn-create-dashboard').insertAdjacentHTML('afterend', "\n        <div class=\"col-sm-6 mb-3 mb-sm-0 create-dashboard-window\" id=\"create-dashboard-window\">\n                <div class=\"card\">\n                    <div class=\"card-body\">\n                        <label class=\"form-label card-title\">\u041D\u0430\u0437\u0432\u0430\u043D\u0438\u0435 \u043F\u0440\u043E\u0435\u043A\u0442\u0430</label>\n                        <input class=\"form-control\" type=\"text\" id=\"title-dashboard\">\n                        <p class=\"card-text\">Users</p>\n                        <a class=\"btn btn-search\" id=\"create-dashboard\">\u0421\u043E\u0437\u0434\u0430\u0442\u044C</a>\n                    </div>\n                </div>\n            </div>\n    ");
+  document.getElementById('create-dashboard').addEventListener('click', function () {
+    var title = document.getElementById('title-dashboard').value;
+    console.log(title);
+    fetch('/api/dashboard/create', {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(title)
+    }).then(function (response) {
+      return response.json();
+    }).then(function (data) {
+      console.log(data);
+    });
+  });
+};
 /******/ })()
 ;
