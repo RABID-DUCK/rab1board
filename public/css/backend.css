@@ -26,10 +26,10 @@
 }
 
 .icon {
-  color: #D64D00;
+  color: #fff;
 }
 .icon:hover {
   color: #D64D00;
   filter: saturate(170%);
-  transition: filter 0.4s;
+  transition: filter 0.4s, color 0.3s;
 }

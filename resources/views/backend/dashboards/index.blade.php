@@ -20,18 +20,18 @@
     <table class="table">
         <thead class="table-dark text-white">
             <th class="text-white">ID</th>
-            <th class="text-white">name</th>
-            <th class="text-white">email</th>
-            <th class="text-white">role</th>
+            <th class="text-white">title</th>
+            <th class="text-white">user</th>
+            <th class="text-white">desk</th>
             <th class="text-white">Action</th>
         </thead>
         <tbody class="table-light table-backend">
         @foreach($dashboards as $dashboard)
             <tr>
                 <td>{{$dashboard->id}}</td>
-                <td>{{$dashboard->name}}</td>
-                <td>{{$dashboard->email}}</td>
-                <td class="{{$dashboard->getRole->role === 'admin' ? 'text-danger font-weight-bold' : ''}}">{{$dashboard->getRole->role}}</td>
+                <td>{{$dashboard->title}}</td>
+                <td>{{$dashboard->user}}</td>
+                <td>{{$dashboard->desk}}</td>
                 <td class="action">
                     <button type="button" data-bs-toggle="modal" data-bs-target="#exampleModal2" data-bs-whatever="@mdo" onclick="openModalUsers({{$dashboard->id}})">
                         <i class="bi bi-pen-fill"></i>
@@ -50,39 +50,24 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Добавить пользователя</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Добавить рабочее пространство</h5>
                     <button type="button" class="btn-close text-white" data-bs-dismiss="modal" aria-label="{{__('messages.close')}}">X</button>
                 </div>
                 <div class="modal-body">
                     <form method="POST" action="{{route('backend.dashboards.create')}}">
                         @csrf
                         <div class="mb-3">
-                            <label for="recipient-name" class="col-form-label">Имя:</label>
-                            <input type="text" name="name" class="form-control" id="username">
+                            <label for="recipient-name" class="col-form-label">Название:</label>
+                            <input type="text" name="desk_id" class="form-control" id="dash-id">
                         </div>
                         <div class="mb-3">
-                            <label for="message-text" class="col-form-label">Почта:</label>
-                            <input class="form-control" name="email" id="email">
+                            <label for="message-text" class="col-form-label">Пользователь:</label>
+                            <input class="form-control" name="user_id" id="user-id">
                         </div>
                         <div class="mb-3">
-                            <label for="message-text" class="col-form-label">Придумайте логин:</label>
-                            <input class="form-control" name="login" id="login">
+                            <label for="message-text" class="col-form-label">Доска:</label>
+                            <input class="form-control" name="desk_id" id="desk-id">
                         </div>
-                        <div class="mb-3">
-                            <label for="message-text" class="col-form-label">Придумайте пароль:</label>
-                            <input type="password" class="form-control" name="password" id="password">
-                        </div>
-                        <div class="mb-3">
-                            <label for="message-text" class="col-form-label">Повторите пароль:</label>
-                            <input type="password" class="form-control" name="password_confirmation" id="password_confirmation">
-                        </div>
-                        <div class="mb-3">
-                            <label for="message-text" class="col-form-label">Роль:</label>
-                            <select class="form-control text-info" name="role_id" id="role">
-
-                            </select>
-                        </div>
-
                         <div class="modal-footer">
                             <button type="button" class="btn btn-danger" data-bs-dismiss="modal">{{__('messages.close')}}</button>
                             <input type="submit" class="btn" value="{{__('messages.add')}}" />
@@ -97,7 +82,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel2">Изменить данные пользователя</h5>
+                    <h5 class="modal-title" id="exampleModalLabel2">Изменить рабочее пространство</h5>
                     <button type="button" class="btn-close text-white" data-bs-dismiss="modal" aria-label="{{__('messages.close')}}">X</button>
                 </div>
                 <div class="modal-body">
@@ -106,22 +91,16 @@
                         @method('PATCH')
                         <input type="hidden" name="user_id" id="user-id">
                         <div class="mb-3">
-                            <label for="recipient-name" class="col-form-label">Имя:</label>
-                            <input type="text" name="name" class="form-control" id="user-name">
+                            <label for="recipient-name" class="col-form-label">Название:</label>
+                            <input type="text" name="desk_id" class="form-control" id="dash-id">
                         </div>
                         <div class="mb-3">
-                            <label for="message-text" class="col-form-label">Почта:</label>
-                            <input class="form-control" name="email" id="user-email">
+                            <label for="message-text" class="col-form-label">Пользователь:</label>
+                            <input class="form-control" name="user_id" id="user-id">
                         </div>
                         <div class="mb-3">
-                            <label for="message-text" class="col-form-label">Логин:</label>
-                            <input class="form-control" name="login" id="user-login">
-                        </div>
-                        <div class="mb-3">
-                            <label for="message-text" class="col-form-label">Роль:</label>
-                            <select class="form-control text-info" name="role_id" id="user-role">
-
-                            </select>
+                            <label for="message-text" class="col-form-label">Доска:</label>
+                            <input class="form-control" name="desk_id" id="desk-id">
                         </div>
 
                         <div class="modal-footer">
@@ -134,7 +113,3 @@
         </div>
     </div>
 @endsection
-
-<script>
-
-</script>

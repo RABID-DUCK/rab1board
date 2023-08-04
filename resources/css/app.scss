@@ -10,6 +10,10 @@
     a{
         text-decoration: none !important;
         color: $link !important;
+
+        &:hover{
+            color: $orange !important;
+        }
     }
 }
 
@@ -97,4 +101,8 @@ nav{
     &:hover{
         color: $orange !important;
     }
+}
+
+.add-dashboard{
+    margin: 4% auto;
 }

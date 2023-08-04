@@ -39,11 +39,11 @@
 }
 
 .icon{
-    color: $orange;
+    color: $white;
 
     &:hover{
         color: $orange;
         filter: saturate(170%);
-        transition: filter .4s;
+        transition: filter .4s, color .3s;
     }
 }

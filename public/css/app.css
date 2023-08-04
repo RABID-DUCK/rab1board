@@ -8,6 +8,9 @@
   text-decoration: none !important;
   color: rgb(40, 35, 40) !important;
 }
+* a:hover {
+  color: #D64D00 !important;
+}
 
 nav {
   border: 1px solid #EBEFF2;
@@ -81,4 +84,8 @@ nav {
 
 .auth-link:hover {
   color: #D64D00 !important;
+}
+
+.add-dashboard {
+  margin: 4% auto;
 }

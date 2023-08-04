@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Dashboards;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
     public function index()
     {
-        return view('main.main');
+        $dashboards = Dashboards::query()->where('user_id', auth()->user()->id)->first();
+        return view('main.main', compact('dashboards'));
     }
 }

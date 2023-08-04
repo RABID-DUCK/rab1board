@@ -52,8 +52,10 @@
                             <span class="count bg-success"></span>
                         </div>
                         <div class="profile-name">
-                            <h5 class="mb-0 font-weight-normal">Henry Klein</h5>
-                            <span>Gold Member</span>
+                            <h5 class="mb-0 font-weight-normal">{{Auth::user()->login}}</h5>
+                            @if(isset($user))
+                            <span class="{{$user->getRole->role == 'admin' ? 'text-danger': ''}}">{{$user->getRole->role}}</span>
+                            @endif
                         </div>
                     </div>
                     <a class="icon" href="#" id="profile-dropdown" data-bs-toggle="dropdown"><i class="bi bi-three-dots-vertical"></i></a>

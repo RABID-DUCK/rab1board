@@ -34,15 +34,22 @@
     <div class="panel main-content">
         <div class="row">
         {{--            Array loop of card-boards            --}}
+            @if(isset($dashboards))
+                @foreach($dashboards as $dash)
             <div class="col-sm-6 mb-3 mb-sm-0">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Special title treatment</h5>
+                        <h5 class="card-title">{{$dash->title}}</h5>
                         <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
                         <a href="#" class="btn btn-search">Go somewhere</a>
                     </div>
                 </div>
             </div>
+                @endforeach
+            @else
+                <b class="text-center">Здесь будут ваши рабочие проекты <i class="bi bi-emoji-smile"></i></b>
+                <button class="btn w-75 add-dashboard">Добавить проект</button>
+            @endif
         {{--      End loop of card-boards      --}}
         </div>
     </div>
