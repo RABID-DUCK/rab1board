@@ -1,3 +1,14 @@
+placeContentMain = function (){
+    let content = document.getElementById('wrapper');
+    if(document.querySelector('.dashboard-single')){
+        content.style.cssText = `margin: 1rem 1rem 1rem 0; width: 100% !important;`
+        content.classList.remove('justify-content-between')
+    }else{
+        content.style.cssText = `margin: 1rem auto;`
+    }
+}
+placeContentMain();
+
 openModalLangs = function(id){
     fetch('/api/langs/'+id)
         .then(response => response.json())
@@ -33,7 +44,6 @@ openModalDesk = function (id){
     fetch('/api/desk/'+id)
         .then(response => response.json())
         .then(data => {
-            console.log(data);
             document.getElementById('desk-id').value = data.id;
             document.getElementById('desk-title').value = data.title;
             document.getElementById('desk-description').value = data.description;
@@ -43,13 +53,14 @@ openModalDesk = function (id){
         })
 }
 
-openCreateDashboardModal = function(){
+openCreateDashboardModal = function(user_id){
     document.getElementById('btn-create-dashboard').insertAdjacentHTML( 'afterend',`
         <div class="col-sm-6 mb-3 mb-sm-0 create-dashboard-window" id="create-dashboard-window">
                 <div class="card">
                     <div class="card-body">
                         <label class="form-label card-title">Название проекта</label>
                         <input class="form-control" type="text" id="title-dashboard">
+                        <input type="hidden" type="text" id="id-user">
                         <p class="card-text">Users</p>
                         <a class="btn btn-search" id="create-dashboard">Создать</a>
                     </div>
@@ -59,18 +70,24 @@ openCreateDashboardModal = function(){
 
     document.getElementById('create-dashboard').addEventListener('click', function (){
         let title = document.getElementById('title-dashboard').value;
-        console.log(title);
+
         fetch('/api/dashboard/create', {
-            method: "POST",
+            method: "post",
             headers: {
+                'Accept': 'application/json',
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(title)
+            body: JSON.stringify({
+                title: title,
+                user_id: user_id
+            })
         })
             .then(response => response.json())
             .then(data => {
-            console.log(data);
         })
+            .catch(error => {
+                console.log(error);
+            })
     });
 }
 

@@ -23,7 +23,6 @@ nav {
 
 .content-wrapper {
   width: 70%;
-  margin: 1rem auto;
 }
 .content-wrapper .left-side-main {
   width: 40%;
@@ -90,4 +89,83 @@ nav {
   margin: 4% auto;
   font-size: 1.1rem;
   align-self: center;
+}
+
+.user .dropdown-item {
+  padding: 0;
+}
+
+.main-content .btn-login {
+  margin-top: 20px;
+}
+.main-content .card-body {
+  display: flex;
+  flex-direction: column;
+}
+.main-content .card-users {
+  margin-top: 5px;
+  margin-bottom: 10px;
+  border: 1px solid #EBEFF2;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  padding: 8px 5px 5px 5px;
+}
+.main-content .card-users img {
+  width: 100%;
+  height: 100%;
+}
+
+.dashboard-single {
+  width: 250px;
+}
+.dashboard-single .dashboard-single-user {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin: 10px;
+}
+.dashboard-single .dashboard-single-user div:last-child {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-left: 10px;
+}
+
+.dashboard-single-left-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 1.2rem;
+}
+
+.btn-participiants {
+  border: none;
+  background: none;
+  padding: 5px;
+  width: 100%;
+}
+.btn-participiants:hover {
+  color: #D64D00;
+}
+.btn-participiants span {
+  margin-bottom: -2px;
+}
+
+.dashboard-single-left-panel {
+  padding-left: 5px;
+  padding-right: 5px;
+  text-align: center;
+}
+.dashboard-single-left-panel a {
+  margin-top: 10px;
+}
+
+.desk-wrapper {
+  border: 1px solid #EBEFF2;
+  width: 100%;
+  height: 80vh;
+  margin-left: 30px;
 }

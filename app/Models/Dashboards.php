@@ -11,4 +11,8 @@ class Dashboards extends Model
 
     protected $table = 'dashboards';
     protected $guarded = false;
+
+    public function getUsers(){
+        return $this->hasMany(User::class, 'id', 'user_id');
+    }
 }

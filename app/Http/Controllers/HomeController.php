@@ -9,7 +9,11 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $dashboards = Dashboards::query()->where('user_id', auth()->user()->id)->first();
-        return view('main.main', compact('dashboards'));
+        if (auth()->user()) {
+            $dashboards = Dashboards::query()->where('user_id', auth()->user()->id)->get();
+            return view('main.main', compact('dashboards'));
+        }
+
+        return view('main.main');
     }
 }
