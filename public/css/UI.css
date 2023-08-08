@@ -52,3 +52,19 @@ button:focus, .btn:focus {
   display: flex;
   flex-direction: column;
 }
+
+.form-select:focus {
+  border-color: #D64D00;
+  box-shadow: none;
+}
+
+nav .container-fluid {
+  width: 70%;
+}
+nav .container-fluid .navbar-nav {
+  margin-right: 10px;
+  max-height: 38px;
+}
+nav .container-fluid .navbar-nav .dropdown-menu {
+  padding: 8px 5px 5px 8px;
+}

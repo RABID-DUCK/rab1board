@@ -91,6 +91,9 @@ nav {
   align-self: center;
 }
 
+.user {
+  margin-left: 10px;
+}
 .user .dropdown-item {
   padding: 0;
 }

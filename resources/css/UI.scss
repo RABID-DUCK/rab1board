@@ -67,3 +67,24 @@ button, .btn{
         flex-direction: column;
     }
 }
+
+.form-select{
+
+    &:focus{
+        border-color: $orange;
+        box-shadow: none;
+    }
+}
+
+nav .container-fluid{
+    width: 70%;
+
+    .navbar-nav{
+        margin-right: 10px;
+        max-height: 38px;
+
+        .dropdown-menu{
+            padding: 8px 5px 5px 8px;
+        }
+    }
+}
