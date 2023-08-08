@@ -9,7 +9,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 placeContentMain = function placeContentMain() {
   var content = document.getElementById('wrapper');
   if (document.querySelector('.dashboard-single')) {
-    content.style.cssText = "margin: 1rem 1rem 1rem 0; width: 100% !important;";
+    content.style.cssText = "margin: 1rem 1rem 1rem 0; width: 100% !important;height: 90vh;";
     content.classList.remove('justify-content-between');
   } else {
     content.style.cssText = "margin: 1rem auto;";
@@ -85,6 +85,39 @@ openCreateDashboardModal = function openCreateDashboardModal(user_id) {
     }).then(function (data) {})["catch"](function (error) {
       console.log(error);
     });
+  });
+};
+addColumnModal = function addColumnModal(dashboard) {
+  if (!document.getElementById('modal-column')) {
+    document.getElementById('add-column-panel').insertAdjacentHTML('beforeend', "\n            <div class=\"column-modal-wrapper text-center\" id=\"modal-column\">\n                <label class=\" mb-2\" for=\"col-form-label desk-title\"><b>Type title for desk</b></label>\n                <input class=\"form-control\" type=\"text\" name=\"desk-title\" id=\"text-column-create\" placeholder=\"Make auth\">\n                <button class=\"btn mt-2\" onclick=\"addColumn(".concat(dashboard, ")\">Create</button>\n                <span class=\"remove-column-modal\" onclick=\"deleteColumnModal()\">X</span>\n            </div>\n    "));
+  }
+};
+deleteColumnModal = function deleteColumnModal() {
+  return document.getElementById('modal-column').remove();
+};
+addColumn = function addColumn(dashboard) {
+  var _this = this;
+  var title = document.getElementById('text-column-create').value;
+  fetch('/api/column/create', {
+    method: "post",
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      title: title,
+      dashboard_id: dashboard
+    })
+  }).then(function (response) {
+    return response.json();
+  }).then(function (data) {
+    _this.title = "";
+    deleteColumnModal();
+    if (document.querySelector('.column')) {
+      document.getElementById('add-column-panel').insertAdjacentHTML('beforebegin', "\n                     <div class=\"wrap\">\n                        <div class=\"column\">\n                            <span>".concat(data[data.length - 1].title, "</span>\n                        </div>\n                    </div>\n                "));
+    } else {
+      document.getElementById('desk-wrapper').insertAdjacentHTML('afterend', "\n             <div class=\"wrap\">\n                <div class=\"column\">\n                    <span>".concat(data.title, "</span>\n                </div>\n            </div>\n            "));
+    }
   });
 };
 /******/ })()

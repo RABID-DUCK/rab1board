@@ -1,7 +1,7 @@
 placeContentMain = function (){
     let content = document.getElementById('wrapper');
     if(document.querySelector('.dashboard-single')){
-        content.style.cssText = `margin: 1rem 1rem 1rem 0; width: 100% !important;`
+        content.style.cssText = `margin: 1rem 1rem 1rem 0; width: 100% !important;height: 90vh;`
         content.classList.remove('justify-content-between')
     }else{
         content.style.cssText = `margin: 1rem auto;`
@@ -91,4 +91,57 @@ openCreateDashboardModal = function(user_id){
     });
 }
 
+addColumnModal = function (dashboard){
+    if (!document.getElementById('modal-column')){
+        document.getElementById('add-column-panel').insertAdjacentHTML('beforeend', `
+            <div class="column-modal-wrapper text-center" id="modal-column">
+                <label class=" mb-2" for="col-form-label desk-title"><b>Type title for desk</b></label>
+                <input class="form-control" type="text" name="desk-title" id="text-column-create" placeholder="Make auth">
+                <button class="btn mt-2" onclick="addColumn(${dashboard})">Create</button>
+                <span class="remove-column-modal" onclick="deleteColumnModal()">X</span>
+            </div>
+    `)
+    }
+}
+
+deleteColumnModal = () => document.getElementById('modal-column').remove()
+
+addColumn = function (dashboard){
+    const title = document.getElementById('text-column-create').value;
+    fetch('/api/column/create', {
+        method: "post",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            title: title,
+            dashboard_id: dashboard
+        })
+    })
+        .then(response => response.json())
+        .then(data => {
+            this.title = "";
+            deleteColumnModal()
+
+            if (document.querySelector('.column')){
+                    document.getElementById('add-column-panel').insertAdjacentHTML('beforebegin', `
+                     <div class="wrap">
+                        <div class="column">
+                            <span>${data[data.length - 1].title}</span>
+                        </div>
+                    </div>
+                `)
+            }
+            else{
+                document.getElementById('desk-wrapper').insertAdjacentHTML('afterend', `
+             <div class="wrap">
+                <div class="column">
+                    <span>${data.title}</span>
+                </div>
+            </div>
+            `)
+            }
+        })
+}
 
