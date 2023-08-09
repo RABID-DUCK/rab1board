@@ -89,11 +89,11 @@ openCreateDashboardModal = function openCreateDashboardModal(user_id) {
 };
 addColumnModal = function addColumnModal(dashboard) {
   if (!document.getElementById('modal-column')) {
-    document.getElementById('add-column-panel').insertAdjacentHTML('beforeend', "\n            <div class=\"column-modal-wrapper text-center\" id=\"modal-column\">\n                <label class=\" mb-2\" for=\"col-form-label desk-title\"><b>Type title for desk</b></label>\n                <input class=\"form-control\" type=\"text\" name=\"desk-title\" id=\"text-column-create\" placeholder=\"Make auth\">\n                <button class=\"btn mt-2\" onclick=\"addColumn(".concat(dashboard, ")\">Create</button>\n                <span class=\"remove-column-modal\" onclick=\"deleteColumnModal()\">X</span>\n            </div>\n    "));
+    document.getElementById('add-column-panel').insertAdjacentHTML('beforeend', "\n            <div class=\"column-modal-wrapper text-center\" id=\"modal-column\">\n                <label class=\" mb-2\" for=\"col-form-label desk-title\"><b>Type title for desk</b></label>\n                <input class=\"form-control\" type=\"text\" name=\"desk-title\" id=\"text-column-create\" placeholder=\"Make auth\">\n                <button class=\"btn mt-2\" onclick=\"addColumn(".concat(dashboard, ")\">Create</button>\n                <span class=\"remove-column-modal text-black-50\" onclick=\"deleteColumnModal('modal-column')\">X</span>\n            </div>\n    "));
   }
 };
-deleteColumnModal = function deleteColumnModal() {
-  return document.getElementById('modal-column').remove();
+deleteColumnModal = function deleteColumnModal(id_name) {
+  return document.getElementById(id_name).remove();
 };
 addColumn = function addColumn(dashboard) {
   var _this = this;
@@ -118,6 +118,24 @@ addColumn = function addColumn(dashboard) {
     } else {
       document.getElementById('desk-wrapper').insertAdjacentHTML('afterend', "\n             <div class=\"wrap\">\n                <div class=\"column\">\n                    <span>".concat(data.title, "</span>\n                </div>\n            </div>\n            "));
     }
+  });
+};
+createDeskMiniModal = function createDeskMiniModal(dashboard, column) {
+  var condition = '[data-column-id="' + column + '"]';
+  var data_column = document.querySelector(condition);
+  if (document.querySelector(condition).getAttribute('data-column-id') !== column && !data_column.querySelector('#create-modal-desk')) {
+    data_column.querySelector('#add-task-title').insertAdjacentHTML('beforebegin', "\n        <div class=\"desk text-center\" id=\"create-modal-desk\">\n            <label class=\" mb-2\" for=\"col-form-label desk-title\"><b>Type title for desk</b></label>\n            <input class=\"form-control\" type=\"text\" name=\"desk-title\" id=\"desk-title-modal\" placeholder=\"Make auth\">\n            <button class=\"btn mt-2\" onclick=\"createDesk(".concat(dashboard, ")\">Create</button>\n            <span class=\"remove-column-modal text-black-50\" onclick=\"deleteColumnModal('create-modal-desk')\">X</span>\n        </div>\n        "));
+  }
+};
+createDesk = function createDesk(dashboard) {
+  var title = document.getElementById('desk-title-modal').value;
+  fetch('/api/desk/create', {
+    method: "post",
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({})
   });
 };
 /******/ })()
