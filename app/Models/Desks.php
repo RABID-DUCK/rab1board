@@ -15,4 +15,14 @@ class Desks extends Model
     protected $hidden = [
         'task_id'
     ];
+
+    public function dashboard()
+    {
+        return $this->belongsTo(Dashboards::class, 'id', 'dashboard_id');
+    }
+
+    public function column()
+    {
+        return $this->belongsTo(Columns::class, 'id', 'column_id');
+    }
 }

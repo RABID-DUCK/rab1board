@@ -10,4 +10,9 @@ class Columns extends Model
     use HasFactory;
     protected $table = 'columns';
     protected $guarded = false;
+
+    public function desks()
+    {
+        return $this->hasMany(Desks::class, 'id', 'desk_id');
+    }
 }

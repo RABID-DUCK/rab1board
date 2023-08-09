@@ -136,7 +136,7 @@ createDeskMiniModal = function createDeskMiniModal(dashboard, column) {
   var condition = '[data-column-id="' + column + '"]';
   var data_column = document.querySelector(condition);
   if (document.querySelector(condition).getAttribute('data-column-id') !== column && !data_column.querySelector('#create-modal-desk')) {
-    data_column.querySelector('#add-task-title').insertAdjacentHTML('beforebegin', "\n        <div class=\"desk text-center\" id=\"create-modal-desk\">\n            <label class=\" mb-2\" for=\"col-form-label desk-title\"><b>Type title for desk</b></label>\n            <input class=\"form-control\" type=\"text\" name=\"desk-title\" id=\"desk-title-modal\" placeholder=\"Make auth\">\n            <button class=\"btn mt-2\" onclick=\"createDesk(".concat(dashboard, ")\">Create</button>\n            <span class=\"remove-column-modal text-black-50\" onclick=\"deleteDeskModal(").concat(column, ")\">X</span>\n        </div>\n        "));
+    data_column.querySelector('#add-task-title').insertAdjacentHTML('beforebegin', "\n        <div class=\"desk text-center\" id=\"create-modal-desk\">\n            <label class=\" mb-2\" for=\"col-form-label desk-title\"><b>Type title for desk</b></label>\n            <input class=\"form-control\" type=\"text\" name=\"desk-title\" id=\"desk-title-modal\" placeholder=\"Make auth\">\n            <button class=\"btn mt-2\" onclick=\"createDesk(".concat(dashboard, ", ").concat(column, ")\">Create</button>\n            <span class=\"remove-column-modal text-black-50\" onclick=\"deleteDeskModal(").concat(column, ")\">X</span>\n        </div>\n        "));
   }
 };
 deleteDeskModal = function deleteDeskModal(column) {
@@ -144,7 +144,7 @@ deleteDeskModal = function deleteDeskModal(column) {
   var data_column = document.querySelector(condition);
   data_column.querySelector('#create-modal-desk').remove();
 };
-createDesk = function createDesk(dashboard) {
+createDesk = function createDesk(dashboard, column) {
   var title = document.getElementById('desk-title-modal').value;
   fetch('/api/desk/create', {
     method: "post",
@@ -152,7 +152,22 @@ createDesk = function createDesk(dashboard) {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({})
+    body: JSON.stringify({
+      title: title,
+      column_id: column,
+      dashboard_id: dashboard
+    })
+  }).then(function (response) {
+    return response.json();
+  }).then(function (res) {
+    if (res.message) {
+      alert(res.message);
+      return;
+    }
+    deleteDeskModal(res.column_id);
+    var condition = '[data-column-id="' + res.column_id + '"]';
+    var data_column = document.querySelector(condition);
+    data_column.querySelector('#desk-list #add-task-title').insertAdjacentHTML('beforebegin', "\n                <div class=\"desk\">\n                    <p>".concat(res.desk.title, "</p>\n                    <img src=\"").concat(res.desk.image, "\" alt=\"").concat(res.desk.title, "\">\n                    <div class=\"data-desk\">\n                        <input class=\"custom-checkbox\" type=\"checkbox\" id=\"status\" name=\"status\" value=\"yes\">\n                        <time datetime=\"2011-11-18T14:54:39.929Z\" name=\"date\">2023-08-01 15:00</time>\n                    </div>\n                    <span>status</span>\n                </div>\n            "));
   });
 };
 /******/ })()

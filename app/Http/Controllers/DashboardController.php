@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Desk\StoreRequest;
 use App\Models\Columns;
 use App\Models\Dashboards;
+use App\Models\Desks;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -23,8 +24,9 @@ class DashboardController extends Controller
         $dashboard = Dashboards::query()->where('id', $id)->first();
         if(!$dashboard) return redirect()->route('board.index');
         $columns = Columns::query()->where('dashboard_id', $id)->get();
+        $desks = Desks::all();
 
-        return view('dashboard.dashboard', compact('dashboard', 'user', 'columns'));
+        return view('dashboard.dashboard', compact('dashboard', 'user', 'columns', 'desks'));
     }
 
     public function store(StoreRequest $request){

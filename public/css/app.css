@@ -175,8 +175,8 @@ nav {
   overflow: auto;
 }
 .desk-wrapper .wrap {
-  width: 270px;
-  max-width: 270px;
+  min-width: 270px;
+  max-width: 280px;
 }
 
 .desk-block {

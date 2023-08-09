@@ -179,7 +179,7 @@ createDeskMiniModal = function (dashboard, column){
         <div class="desk text-center" id="create-modal-desk">
             <label class=" mb-2" for="col-form-label desk-title"><b>Type title for desk</b></label>
             <input class="form-control" type="text" name="desk-title" id="desk-title-modal" placeholder="Make auth">
-            <button class="btn mt-2" onclick="createDesk(${dashboard})">Create</button>
+            <button class="btn mt-2" onclick="createDesk(${dashboard}, ${column})">Create</button>
             <span class="remove-column-modal text-black-50" onclick="deleteDeskModal(${column})">X</span>
         </div>
         `)
@@ -192,7 +192,7 @@ deleteDeskModal = (column) => {
     data_column.querySelector('#create-modal-desk').remove()
 }
 
-createDesk = function (dashboard){
+createDesk = function (dashboard, column){
     let title = document.getElementById('desk-title-modal').value;
 
     fetch('/api/desk/create', {
@@ -202,7 +202,31 @@ createDesk = function (dashboard){
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-
+            title: title,
+            column_id: column,
+            dashboard_id: dashboard
         })
     })
+        .then(response => response.json())
+        .then(res => {
+            if (res.message){
+                alert(res.message)
+                return;
+            }
+            deleteDeskModal(res.column_id);
+            let condition = '[data-column-id="'+res.column_id+'"]';
+            let data_column = document.querySelector(condition);
+
+            data_column.querySelector('#desk-list #add-task-title').insertAdjacentHTML('beforebegin', `
+                <div class="desk">
+                    <p>${res.desk.title}</p>
+                    <img src="${res.desk.image}" alt="${res.desk.title}">
+                    <div class="data-desk">
+                        <input class="custom-checkbox" type="checkbox" id="status" name="status" value="yes">
+                        <time datetime="2011-11-18T14:54:39.929Z" name="date">2023-08-01 15:00</time>
+                    </div>
+                    <span>status</span>
+                </div>
+            `)
+        })
 }

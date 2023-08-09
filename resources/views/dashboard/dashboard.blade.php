@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="panel dashboard-single">
-        <input type="text" id="dashboard-id" value="{{$dashboard->id}}">
+        <input type="hidden" id="dashboard-id" value="{{$dashboard->id}}">
             <div class="info-left-panel">
                 <div class="dashboard-single-user">
                     <div>
@@ -29,21 +29,23 @@
     <div class="desk-wrapper d-flex justify-content-start" id="desk-wrapper">
         @if(isset($columns))
             @foreach($columns as $column)
-                <div class="wrap" data-column-id="{{$column->id}}">
+                <div class="wrap" data-column-id="{{ $column->id }}">
                     <div class="column">
-                        <span>{{$column->title}}</span>
+                        <span>{{ $column->title }}</span>
                     </div>
-                    <div class="desk-block">
-                        <div class="desk">
-                            <p>Title task</p>
-                            <img src="" alt="">
-                            <div class="data-desk">
-                                <input class="custom-checkbox" type="checkbox" id="status" name="status" value="yes">
-                                <time datetime="2011-11-18T14:54:39.929Z" name="date">2023-08-01 15:00</time>
+                    <div class="desk-block" id="desk-list">
+                        @foreach($column->desks as $desk)
+                            <div class="desk">
+                                <p>{{ $desk->title }}</p>
+                                <img src="{{ $desk->image }}" alt="{{ $desk->title }}">
+                                <div class="data-desk">
+                                    <input class="custom-checkbox" type="checkbox" id="status" name="status" value="yes">
+                                    <time datetime="2011-11-18T14:54:39.929Z" name="date">{{ $desk->created_at }}</time>
+                                </div>
+                                <span>status</span>
                             </div>
-                            <span>status</span>
-                        </div>
-                        <button class="add-desk" id="add-task-title" onclick="createDeskMiniModal({{$dashboard->id}}, {{$column->id}})">+ Add desk</button>
+                        @endforeach
+                        <button class="add-desk" id="add-task-title" onclick="createDeskMiniModal({{ $dashboard->id }}, {{ $column->id }})">+ Add desk</button>
                     </div>
                 </div>
             @endforeach

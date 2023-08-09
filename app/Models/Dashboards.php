@@ -15,4 +15,9 @@ class Dashboards extends Model
     public function getUsers(){
         return $this->hasMany(User::class, 'id', 'user_id');
     }
+
+    public function desks()
+    {
+        return $this->hasMany(Desks::class, 'id', 'desk_id');
+    }
 }

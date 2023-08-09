@@ -202,8 +202,8 @@ nav{
     overflow: auto;
 
     .wrap{
-        width: 270px;
-        max-width: 270px;
+        min-width: 270px;
+        max-width: 280px;
     }
 }
 
