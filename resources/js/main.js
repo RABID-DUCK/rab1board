@@ -62,7 +62,7 @@ openCreateDashboardModal = function(user_id){
                         <input class="form-control" type="text" id="title-dashboard">
                         <input type="hidden" type="text" id="id-user">
                         <p class="card-text">Users</p>
-                        <a class="btn btn-search" id="create-dashboard">Создать</a>
+                        <a class="btn btn-search" id="create-dashboard" disabled>Создать</a>
                     </div>
                 </div>
             </div>
@@ -84,9 +84,21 @@ openCreateDashboardModal = function(user_id){
         })
             .then(response => response.json())
             .then(data => {
-        })
+                document.getElementById('create-dashboard').classList.add('btn-disabled')
+
+                if (data.status === 401){
+                    alert(data.message)
+                    document.getElementById('create-dashboard').classList.remove('btn-disabled')
+                    return;
+                }
+                if (data.message){
+                    alert(data.message)
+                    document.getElementById('create-dashboard').classList.remove('btn-disabled')
+                    return;
+                }
+                window.location.reload()
+            })
             .catch(error => {
-                console.log(error);
             })
     });
 }
@@ -122,14 +134,28 @@ addColumn = function (dashboard){
         .then(response => response.json())
         .then(data => {
             this.title = "";
-            deleteColumnModal()
+            deleteColumnModal('modal-column')
 
             if (document.querySelector('.column')){
+                let dashboard = document.getElementById('dashboard-id').value;
+
                     document.getElementById('add-column-panel').insertAdjacentHTML('beforebegin', `
-                     <div class="wrap">
+                     <div class="wrap" data-column-id="${data.column_id}">
                         <div class="column">
-                            <span>${data[data.length - 1].title}</span>
+                            <span>${data.columns[data.columns.length - 1].title}</span>
                         </div>
+                        <div class="desk-block">
+                        <div class="desk">
+                            <p>Title task</p>
+                            <img src="" alt="">
+                            <div class="data-desk">
+                                <input class="custom-checkbox" type="checkbox" id="status" name="status" value="yes">
+                                <time datetime="2011-11-18T14:54:39.929Z" name="date">2023-08-01 15:00</time>
+                            </div>
+                            <span>status</span>
+                        </div>
+                        <button class="add-desk" id="add-task-title" onclick="createDeskMiniModal(${dashboard}, ${data.column_id})">+ Add desk</button>
+                    </div>
                     </div>
                 `)
             }
@@ -148,17 +174,22 @@ addColumn = function (dashboard){
 createDeskMiniModal = function (dashboard, column){
     let condition = '[data-column-id="'+column+'"]';
     let data_column = document.querySelector(condition);
-
     if(document.querySelector(condition).getAttribute('data-column-id') !== column && !data_column.querySelector('#create-modal-desk')){
         data_column.querySelector('#add-task-title').insertAdjacentHTML('beforebegin', `
         <div class="desk text-center" id="create-modal-desk">
             <label class=" mb-2" for="col-form-label desk-title"><b>Type title for desk</b></label>
             <input class="form-control" type="text" name="desk-title" id="desk-title-modal" placeholder="Make auth">
             <button class="btn mt-2" onclick="createDesk(${dashboard})">Create</button>
-            <span class="remove-column-modal text-black-50" onclick="deleteColumnModal('create-modal-desk')">X</span>
+            <span class="remove-column-modal text-black-50" onclick="deleteDeskModal(${column})">X</span>
         </div>
         `)
     }
+}
+
+deleteDeskModal = (column) => {
+    let condition = '[data-column-id="'+column+'"]';
+    let data_column = document.querySelector(condition);
+    data_column.querySelector('#create-modal-desk').remove()
 }
 
 createDesk = function (dashboard){

@@ -21,6 +21,7 @@ class DashboardController extends Controller
         if(!$user) return redirect()->route('login');
 
         $dashboard = Dashboards::query()->where('id', $id)->first();
+        if(!$dashboard) return redirect()->route('board.index');
         $columns = Columns::query()->where('dashboard_id', $id)->get();
 
         return view('dashboard.dashboard', compact('dashboard', 'user', 'columns'));

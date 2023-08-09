@@ -13,8 +13,9 @@ return new class extends Migration
     {
         Schema::table('desks', function (Blueprint $table) {
             $table->bigInteger('dashboard_id')->unsigned();
-            $table->foreign('dashboard_id')->references('id')->on('dashboards');
             $table->bigInteger('column_id')->unsigned();
+
+            $table->foreign('dashboard_id')->references('id')->on('dashboards');
             $table->foreign('column_id')->references('id')->on('columns');
         });
     }
@@ -25,11 +26,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('desks', function (Blueprint $table) {
-            $table->dropForeign(['dashboard_id']);
-            $table->dropForeign(['column_id']);
-
-            $table->dropColumn('dashboard_id');
-            $table->dropColumn('column_id');
         });
     }
 };

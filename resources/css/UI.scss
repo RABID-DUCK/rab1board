@@ -89,3 +89,16 @@ nav .container-fluid{
         }
     }
 }
+
+.btn-disabled{
+    background-color: $dark-gray;
+    color: silver !important;
+    border-color: $black !important;
+    opacity: 0.5;
+    &:hover{
+        background-color: $dark-gray !important;
+        color: silver !important;
+        border-color: $black !important;
+        opacity: 0.7;
+    }
+}

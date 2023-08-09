@@ -67,7 +67,7 @@ openModalDesk = function openModalDesk(id) {
   });
 };
 openCreateDashboardModal = function openCreateDashboardModal(user_id) {
-  document.getElementById('btn-create-dashboard').insertAdjacentHTML('afterend', "\n        <div class=\"col-sm-6 mb-3 mb-sm-0 create-dashboard-window\" id=\"create-dashboard-window\">\n                <div class=\"card\">\n                    <div class=\"card-body\">\n                        <label class=\"form-label card-title\">\u041D\u0430\u0437\u0432\u0430\u043D\u0438\u0435 \u043F\u0440\u043E\u0435\u043A\u0442\u0430</label>\n                        <input class=\"form-control\" type=\"text\" id=\"title-dashboard\">\n                        <input type=\"hidden\" type=\"text\" id=\"id-user\">\n                        <p class=\"card-text\">Users</p>\n                        <a class=\"btn btn-search\" id=\"create-dashboard\">\u0421\u043E\u0437\u0434\u0430\u0442\u044C</a>\n                    </div>\n                </div>\n            </div>\n    ");
+  document.getElementById('btn-create-dashboard').insertAdjacentHTML('afterend', "\n        <div class=\"col-sm-6 mb-3 mb-sm-0 create-dashboard-window\" id=\"create-dashboard-window\">\n                <div class=\"card\">\n                    <div class=\"card-body\">\n                        <label class=\"form-label card-title\">\u041D\u0430\u0437\u0432\u0430\u043D\u0438\u0435 \u043F\u0440\u043E\u0435\u043A\u0442\u0430</label>\n                        <input class=\"form-control\" type=\"text\" id=\"title-dashboard\">\n                        <input type=\"hidden\" type=\"text\" id=\"id-user\">\n                        <p class=\"card-text\">Users</p>\n                        <a class=\"btn btn-search\" id=\"create-dashboard\" disabled>\u0421\u043E\u0437\u0434\u0430\u0442\u044C</a>\n                    </div>\n                </div>\n            </div>\n    ");
   document.getElementById('create-dashboard').addEventListener('click', function () {
     var title = document.getElementById('title-dashboard').value;
     fetch('/api/dashboard/create', {
@@ -82,9 +82,20 @@ openCreateDashboardModal = function openCreateDashboardModal(user_id) {
       })
     }).then(function (response) {
       return response.json();
-    }).then(function (data) {})["catch"](function (error) {
-      console.log(error);
-    });
+    }).then(function (data) {
+      document.getElementById('create-dashboard').classList.add('btn-disabled');
+      if (data.status === 401) {
+        alert(data.message);
+        document.getElementById('create-dashboard').classList.remove('btn-disabled');
+        return;
+      }
+      if (data.message) {
+        alert(data.message);
+        document.getElementById('create-dashboard').classList.remove('btn-disabled');
+        return;
+      }
+      window.location.reload();
+    })["catch"](function (error) {});
   });
 };
 addColumnModal = function addColumnModal(dashboard) {
@@ -112,9 +123,10 @@ addColumn = function addColumn(dashboard) {
     return response.json();
   }).then(function (data) {
     _this.title = "";
-    deleteColumnModal();
+    deleteColumnModal('modal-column');
     if (document.querySelector('.column')) {
-      document.getElementById('add-column-panel').insertAdjacentHTML('beforebegin', "\n                     <div class=\"wrap\">\n                        <div class=\"column\">\n                            <span>".concat(data[data.length - 1].title, "</span>\n                        </div>\n                    </div>\n                "));
+      var _dashboard = document.getElementById('dashboard-id').value;
+      document.getElementById('add-column-panel').insertAdjacentHTML('beforebegin', "\n                     <div class=\"wrap\" data-column-id=\"".concat(data.column_id, "\">\n                        <div class=\"column\">\n                            <span>").concat(data.columns[data.columns.length - 1].title, "</span>\n                        </div>\n                        <div class=\"desk-block\">\n                        <div class=\"desk\">\n                            <p>Title task</p>\n                            <img src=\"\" alt=\"\">\n                            <div class=\"data-desk\">\n                                <input class=\"custom-checkbox\" type=\"checkbox\" id=\"status\" name=\"status\" value=\"yes\">\n                                <time datetime=\"2011-11-18T14:54:39.929Z\" name=\"date\">2023-08-01 15:00</time>\n                            </div>\n                            <span>status</span>\n                        </div>\n                        <button class=\"add-desk\" id=\"add-task-title\" onclick=\"createDeskMiniModal(").concat(_dashboard, ", ").concat(data.column_id, ")\">+ Add desk</button>\n                    </div>\n                    </div>\n                "));
     } else {
       document.getElementById('desk-wrapper').insertAdjacentHTML('afterend', "\n             <div class=\"wrap\">\n                <div class=\"column\">\n                    <span>".concat(data.title, "</span>\n                </div>\n            </div>\n            "));
     }
@@ -124,8 +136,13 @@ createDeskMiniModal = function createDeskMiniModal(dashboard, column) {
   var condition = '[data-column-id="' + column + '"]';
   var data_column = document.querySelector(condition);
   if (document.querySelector(condition).getAttribute('data-column-id') !== column && !data_column.querySelector('#create-modal-desk')) {
-    data_column.querySelector('#add-task-title').insertAdjacentHTML('beforebegin', "\n        <div class=\"desk text-center\" id=\"create-modal-desk\">\n            <label class=\" mb-2\" for=\"col-form-label desk-title\"><b>Type title for desk</b></label>\n            <input class=\"form-control\" type=\"text\" name=\"desk-title\" id=\"desk-title-modal\" placeholder=\"Make auth\">\n            <button class=\"btn mt-2\" onclick=\"createDesk(".concat(dashboard, ")\">Create</button>\n            <span class=\"remove-column-modal text-black-50\" onclick=\"deleteColumnModal('create-modal-desk')\">X</span>\n        </div>\n        "));
+    data_column.querySelector('#add-task-title').insertAdjacentHTML('beforebegin', "\n        <div class=\"desk text-center\" id=\"create-modal-desk\">\n            <label class=\" mb-2\" for=\"col-form-label desk-title\"><b>Type title for desk</b></label>\n            <input class=\"form-control\" type=\"text\" name=\"desk-title\" id=\"desk-title-modal\" placeholder=\"Make auth\">\n            <button class=\"btn mt-2\" onclick=\"createDesk(".concat(dashboard, ")\">Create</button>\n            <span class=\"remove-column-modal text-black-50\" onclick=\"deleteDeskModal(").concat(column, ")\">X</span>\n        </div>\n        "));
   }
+};
+deleteDeskModal = function deleteDeskModal(column) {
+  var condition = '[data-column-id="' + column + '"]';
+  var data_column = document.querySelector(condition);
+  data_column.querySelector('#create-modal-desk').remove();
 };
 createDesk = function createDesk(dashboard) {
   var title = document.getElementById('desk-title-modal').value;

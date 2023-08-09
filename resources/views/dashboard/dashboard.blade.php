@@ -2,6 +2,7 @@
 
 @section('content')
     <div class="panel dashboard-single">
+        <input type="text" id="dashboard-id" value="{{$dashboard->id}}">
             <div class="info-left-panel">
                 <div class="dashboard-single-user">
                     <div>
@@ -44,7 +45,6 @@
                         </div>
                         <button class="add-desk" id="add-task-title" onclick="createDeskMiniModal({{$dashboard->id}}, {{$column->id}})">+ Add desk</button>
                     </div>
-
                 </div>
             @endforeach
 

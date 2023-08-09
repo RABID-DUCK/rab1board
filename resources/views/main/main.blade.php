@@ -36,13 +36,13 @@
         @endif
     </div>
     <div class="panel main-content">
-        <div class="row">
+        <div class="row" id="dashboard-list">
             @if(!auth()->user())
                 <b class="text-center">Чтобы создавать проекты нужно авторизоваться! <i class="bi bi-emoji-smile"></i></b>
                 <a href="{{route('login')}}" class="btn btn-login">Авторизоваться</a>
             @else
         {{--            Array loop of card-boards            --}}
-            @if(isset($dashboards))
+            @if(isset($dashboards) && count($dashboards) > 0)
                 @foreach($dashboards as $dash)
             <div class="col-sm-6 mb-3 mb-sm-0">
                 <div class="card">
