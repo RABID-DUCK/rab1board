@@ -11,4 +11,5 @@ class ColumnDesks extends Model
 
     protected $table = 'column_desks';
     protected $guarded = false;
+
 }

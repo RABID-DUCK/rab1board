@@ -13,6 +13,6 @@ class Columns extends Model
 
     public function desks()
     {
-        return $this->hasMany(Desks::class, 'id', 'desk_id');
+        return $this->hasMany(Desks::class, 'column_id');
     }
 }

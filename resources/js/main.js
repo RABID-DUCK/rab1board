@@ -135,8 +135,7 @@ addColumn = function (dashboard){
         .then(data => {
             this.title = "";
             deleteColumnModal('modal-column')
-
-            if (document.querySelector('.column')){
+            if (!document.querySelector('.column')){
                 let dashboard = document.getElementById('dashboard-id').value;
 
                     document.getElementById('add-column-panel').insertAdjacentHTML('beforebegin', `
@@ -146,11 +145,11 @@ addColumn = function (dashboard){
                         </div>
                         <div class="desk-block">
                         <div class="desk">
-                            <p>Title task</p>
-                            <img src="" alt="">
+                            <p>${data.desk.title}</p>
+                            <img src="${data.desk.image}" alt="${data.desk.title}">
                             <div class="data-desk">
                                 <input class="custom-checkbox" type="checkbox" id="status" name="status" value="yes">
-                                <time datetime="2011-11-18T14:54:39.929Z" name="date">2023-08-01 15:00</time>
+                                <time datetime="2011-11-18T14:54:39.929Z" name="date">${data.desk.created_at}</time>
                             </div>
                             <span>status</span>
                         </div>
@@ -160,11 +159,14 @@ addColumn = function (dashboard){
                 `)
             }
             else{
-                document.getElementById('desk-wrapper').insertAdjacentHTML('afterend', `
-             <div class="wrap">
+                document.getElementById('add-column-panel').insertAdjacentHTML('beforebegin', `
+             <div class="wrap" data-column-id="${data.column_id}">
                 <div class="column">
-                    <span>${data.title}</span>
+                    <span>${data.columns[data.columns.length - 1].title}</span>
                 </div>
+                    <div class="desk-block">
+                        <button class="add-desk" id="add-task-title" onclick="createDeskMiniModal(${data.dashboard_id}, ${data.column_id})">+ Add desk</button>
+                    </div>
             </div>
             `)
             }
@@ -216,8 +218,7 @@ createDesk = function (dashboard, column){
             deleteDeskModal(res.column_id);
             let condition = '[data-column-id="'+res.column_id+'"]';
             let data_column = document.querySelector(condition);
-
-            data_column.querySelector('#desk-list #add-task-title').insertAdjacentHTML('beforebegin', `
+            data_column.querySelector('#add-task-title').insertAdjacentHTML('beforebegin', `
                 <div class="desk">
                     <p>${res.desk.title}</p>
                     <img src="${res.desk.image}" alt="${res.desk.title}">

@@ -18,6 +18,7 @@ class DashboardController extends Controller
     }
 
     public function show($id){
+        if (!auth()->user()) return redirect()->route('board.index');
         $user = User::query()->where('id', auth()->user()->id)->first();
         if(!$user) return redirect()->route('login');
 

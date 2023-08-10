@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Models\ColumnDesks;
 use App\Models\Columns;
 use App\Models\Desks;
 use Illuminate\Http\Request;
@@ -21,17 +22,24 @@ class DeskController extends Controller
         ], $messages);
 
         $desk = Desks::create($data);
-        $column = Columns::where('id', $data['column_id'])->first();
-        if ($column){
-            $column->create([
-                'title' => $column->title,
-                'desk_id' => $desk->id,
-                'dashboard_id' => $data['dashboard_id']
-            ]);
-        }else{
-            return response()->json(['message' => 'Произошла ошибка :(']);
-        }
+
+        $column_desk_list = [
+            'dashboard_id' => $data['dashboard_id'],
+            'desk_id' => $desk->id,
+            'column_id' => $data['column_id'],
+        ];
+
+         ColumnDesks::create($column_desk_list);
 
         return response()->json(['desk' => $desk, 'column_id' => $data['column_id']]);
     }
+
+    public function update(){
+//        $column = ColumnDesks::where([
+//            ['dashboard_id', '=', $data['dashboard_id']],
+//            ['desk_id', '=', $desk->id],
+//            ['column_id', '=', $data['column_id']],
+//        ])->first();
+    }
+
 }

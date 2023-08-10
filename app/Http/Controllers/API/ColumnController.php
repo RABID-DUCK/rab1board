@@ -13,6 +13,6 @@ class ColumnController extends Controller
         $column = Columns::query()->create($data);
         $columns = Columns::query()->where('dashboard_id', $data['dashboard_id'])->get();
 
-        return response()->json(['columns' => $columns, 'column_id' => $column->id]);
+        return response()->json(['columns' => $columns, 'column_id' => $column->id, 'dashboard_id' => $data['dashboard_id']]);
     }
 }
