@@ -14,8 +14,6 @@ return new class extends Migration
         Schema::create('columns', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->bigInteger('desk_id')->unsigned();
-            $table->foreign('desk_id')->references('id')->on('desks')->onDelete('cascade');
             $table->timestamps();
         });
     }
