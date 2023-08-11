@@ -310,3 +310,4 @@ renameDashboard = function (id){
         }
     })
 }
+
