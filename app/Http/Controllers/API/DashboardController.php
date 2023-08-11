@@ -23,4 +23,18 @@ class DashboardController extends Controller
     public function index(){
 
     }
+
+    public function update(Request $request){
+        $data = $request->validate([
+            'id' => 'required|integer',
+            'title' => 'required|string|max:55'
+        ]);
+        $dashboard = Dashboards::where('id', $data['id'])->first();
+
+        if ($dashboard && $dashboard->title !== $data['title']){
+            $dashboard->title = $data['title'];
+            $dashboard->save();
+        }
+        return response()->json(['title' => $dashboard->title, 'id' => $dashboard->id]);
+    }
 }

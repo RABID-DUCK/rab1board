@@ -201,5 +201,36 @@ clickRenameColumn = function clickRenameColumn(id) {
     });
   };
 };
+renameDashboard = function renameDashboard(id) {
+  var div = document.querySelector('[data-rename-dashboard]');
+  var title = div.querySelector('h2').textContent.trim();
+  div.querySelector('.bi-pen-fill').remove();
+  div.querySelector('h2').classList.add('hide');
+  div.insertAdjacentHTML('afterbegin', "\n        <div class=\"position-relative\" data-info-edit>\n        <input class=\"form-control\" data-rename-dashboard-title value=\"".concat(title, "\">\n            <i class=\"bi bi-check-lg save-column\" id=\"rename-dashboard\"\n             style=\"position: absolute;top: 7px;right: 5px;text-align: center;\"></i>\n        </div>\n    "));
+  document.getElementById('rename-dashboard').addEventListener('click', function () {
+    if (title) {
+      fetch('/api/dashboard/rename', {
+        method: 'post',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          id: id,
+          title: div.querySelector('[data-rename-dashboard-title]').value
+        })
+      }).then(function (response) {
+        return response.json();
+      }).then(function (res) {
+        document.querySelector('[data-rename-dashboard] h2').innerText = res.title;
+        document.querySelector('[data-rename-dashboard] h2').classList.remove('hide');
+        document.querySelector('[data-rename-dashboard] input, #rename-dashboard').remove();
+        document.querySelector('[data-rename-dashboard] [data-info-edit]').remove();
+        div.insertAdjacentHTML('beforeend', "\n                        <i class=\"bi bi-pen-fill\" data-title-dashboard onclick=\"renameDashboard(".concat(res.id, ")\"></i>\n                    "));
+        div.querySelector('.bi-pen-fill').classList.remove('hide');
+      });
+    }
+  });
+};
 /******/ })()
 ;

@@ -298,9 +298,31 @@ nav {
   top: 5px;
   width: 25px;
   background-color: gray;
+  color: white;
   cursor: pointer;
 }
 .save-column:hover {
   background-color: #545454;
   transition: background-color 0.3s;
+}
+
+.name-dashboard {
+  border-top: 1px solid #545454;
+  border-bottom: 1px solid #545454;
+  padding: 5px 0 5px 0;
+}
+.name-dashboard:hover .bi-pen-fill {
+  display: block;
+}
+.name-dashboard .bi-pen-fill {
+  display: none;
+  position: absolute;
+  right: 4px;
+  top: 2px;
+  font-size: 12px;
+}
+.name-dashboard .bi-pen-fill:hover {
+  color: #D64D00;
+  transition: color 0.3s;
+  cursor: pointer;
 }

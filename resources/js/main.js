@@ -268,3 +268,45 @@ clickRenameColumn = function (id) {
                 });
     }
 };
+
+renameDashboard = function (id){
+    let div = document.querySelector('[data-rename-dashboard]');
+    let title = div.querySelector('h2').textContent.trim();
+
+    div.querySelector('.bi-pen-fill').remove()
+    div.querySelector('h2').classList.add('hide');
+    div.insertAdjacentHTML('afterbegin', `
+        <div class="position-relative" data-info-edit>
+        <input class="form-control" data-rename-dashboard-title value="${title}">
+            <i class="bi bi-check-lg save-column" id="rename-dashboard"
+             style="position: absolute;top: 7px;right: 5px;text-align: center;"></i>
+        </div>
+    `)
+
+    document.getElementById('rename-dashboard').addEventListener('click', function (){
+        if (title){
+            fetch('/api/dashboard/rename', {
+                method: 'post',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    id: id,
+                    title: div.querySelector('[data-rename-dashboard-title]').value
+                })
+            })
+                .then(response => response.json())
+                .then(res => {
+                    document.querySelector('[data-rename-dashboard] h2').innerText = res.title;
+                    document.querySelector('[data-rename-dashboard] h2').classList.remove('hide')
+                    document.querySelector('[data-rename-dashboard] input, #rename-dashboard').remove()
+                    document.querySelector('[data-rename-dashboard] [data-info-edit]').remove()
+                    div.insertAdjacentHTML('beforeend', `
+                        <i class="bi bi-pen-fill" data-title-dashboard onclick="renameDashboard(${res.id})"></i>
+                    `)
+                    div.querySelector('.bi-pen-fill').classList.remove('hide')
+                })
+        }
+    })
+}

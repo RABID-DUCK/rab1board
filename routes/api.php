@@ -20,7 +20,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::get('/langs/{id}', '\App\Http\Controllers\LangsController@show');
 Route::get('/user/{id}', '\App\Http\Controllers\UserController@show');
+
 Route::post('/dashboard/create', '\App\Http\Controllers\API\DashboardController@store');
+Route::post('/dashboard/rename', '\App\Http\Controllers\API\DashboardController@update');
 
 Route::post('/column/create', '\App\Http\Controllers\API\ColumnController@store');
 Route::post('/column/rename', '\App\Http\Controllers\API\ColumnController@update');

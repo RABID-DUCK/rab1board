@@ -14,7 +14,14 @@
                     </div>
                 </div>
             </div>
-            <hr>
+
+        <div class="position-relative name-dashboard" data-rename-dashboard>
+            <h2 class="text-center " title="Название вашего проекта" >
+                {{$dashboard->title}}
+            </h2>
+            <i class="bi bi-pen-fill" data-title-dashboard onclick="renameDashboard({{$dashboard->id}})"></i>
+        </div>
+
         <div class="dashboard-single-left-panel">
                 <button class="btn-participiants">
                     Participants
