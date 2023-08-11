@@ -11,3 +11,15 @@
         transition:  all .3s;
     }
 }
+
+@mixin showDeskModal($show: true) {
+    @if $show {
+        .modal-open {
+            filter: blur(2px);
+        }
+    } @else {
+        .modal-open {
+            filter: blur(2px);
+        }
+    }
+}

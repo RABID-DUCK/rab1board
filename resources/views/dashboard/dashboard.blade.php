@@ -43,7 +43,7 @@
                     </div>
                     <div class="desk-block" id="desk-list">
                         @foreach($column->desks as $desk)
-                            <div class="desk">
+                            <div class="desk" onclick="viewDesk({{$dashboard->id}},{{$column->id}},{{$desk->id}})" data-desk-id="{{$desk->id}}">
                                 <p>{{ $desk->title }}</p>
                                 <img src="{{ $desk->image }}" alt="{{ $desk->title }}">
                                 <div class="data-desk">

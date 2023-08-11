@@ -232,5 +232,11 @@ renameDashboard = function renameDashboard(id) {
     }
   });
 };
+viewDesk = function viewDesk(dashboard_id, column_id, desk_id) {
+  var column = document.querySelector("[data-column-id=\"".concat(column_id, "\"]"));
+  var desk = column.querySelector("[data-desk-id=\"".concat(desk_id, "\"]"));
+  document.querySelector('[data-modal-desk]').classList.remove('hide');
+  document.getElementById('wrapper').style.cssText = "filter: blur(2px);";
+};
 /******/ })()
 ;

@@ -311,3 +311,10 @@ renameDashboard = function (id){
     })
 }
 
+viewDesk = function (dashboard_id, column_id, desk_id){
+    let column = document.querySelector(`[data-column-id="${column_id}"]`);
+    let desk = column.querySelector(`[data-desk-id="${desk_id}"]`);
+
+    document.querySelector('[data-modal-desk]').classList.remove('hide');
+    document.getElementById('wrapper').style.cssText = `filter: blur(2px);`;
+}
