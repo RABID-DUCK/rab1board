@@ -126,9 +126,9 @@ addColumn = function addColumn(dashboard) {
     deleteColumnModal('modal-column');
     if (!document.querySelector('.column')) {
       var _dashboard = document.getElementById('dashboard-id').value;
-      document.getElementById('add-column-panel').insertAdjacentHTML('beforebegin', "\n                     <div class=\"wrap\" data-column-id=\"".concat(data.column_id, "\">\n                        <div class=\"column\">\n                            <span>").concat(data.columns[data.columns.length - 1].title, "</span>\n                        </div>\n                        <div class=\"desk-block\">\n                        <div class=\"desk\">\n                            <p>").concat(data.desk.title, "</p>\n                            <img src=\"").concat(data.desk.image, "\" alt=\"").concat(data.desk.title, "\">\n                            <div class=\"data-desk\">\n                                <input class=\"custom-checkbox\" type=\"checkbox\" id=\"status\" name=\"status\" value=\"yes\">\n                                <time datetime=\"2011-11-18T14:54:39.929Z\" name=\"date\">").concat(data.desk.created_at, "</time>\n                            </div>\n                            <span>status</span>\n                        </div>\n                        <button class=\"add-desk\" id=\"add-task-title\" onclick=\"createDeskMiniModal(").concat(_dashboard, ", ").concat(data.column_id, ")\">+ Add desk</button>\n                    </div>\n                    </div>\n                "));
+      document.getElementById('add-column-panel').insertAdjacentHTML('beforebegin', "\n                     <div class=\"wrap\" data-column-id=\"".concat(data.column_id, "\">\n                        <div class=\"column\" onclick=\"clickRenameColumn(").concat(data.column_id, ")\" data-column-title=\"\">\n                            <span>").concat(data.columns[data.columns.length - 1].title, "</span>\n                            <i class=\"bi bi-check-lg save-column hide\"></i>\n                        </div>\n                        <div class=\"desk-block\">\n                        <div class=\"desk\">\n                            <p>").concat(data.desk.title, "</p>\n                            <img src=\"").concat(data.desk.image, "\" alt=\"").concat(data.desk.title, "\">\n                            <div class=\"data-desk\">\n                                <input class=\"custom-checkbox\" type=\"checkbox\" id=\"status\" name=\"status\" value=\"yes\">\n                                <time datetime=\"2011-11-18T14:54:39.929Z\" name=\"date\">").concat(data.desk.created_at, "</time>\n                            </div>\n                            <span>status</span>\n                        </div>\n                        <button class=\"add-desk\" id=\"add-task-title\" onclick=\"createDeskMiniModal(").concat(_dashboard, ", ").concat(data.column_id, ")\">+ Add desk</button>\n                    </div>\n                    </div>\n                "));
     } else {
-      document.getElementById('add-column-panel').insertAdjacentHTML('beforebegin', "\n             <div class=\"wrap\" data-column-id=\"".concat(data.column_id, "\">\n                <div class=\"column\">\n                    <span>").concat(data.columns[data.columns.length - 1].title, "</span>\n                </div>\n                    <div class=\"desk-block\">\n                        <button class=\"add-desk\" id=\"add-task-title\" onclick=\"createDeskMiniModal(").concat(data.dashboard_id, ", ").concat(data.column_id, ")\">+ Add desk</button>\n                    </div>\n            </div>\n            "));
+      document.getElementById('add-column-panel').insertAdjacentHTML('beforebegin', "\n             <div class=\"wrap\" data-column-id=\"".concat(data.column_id, "\">\n                <div class=\"column\" onclick=\"clickRenameColumn(").concat(data.column_id, ")\" data-column-title=\"\">\n                    <span>").concat(data.columns[data.columns.length - 1].title, "</span>\n                    <i class=\"bi bi-check-lg save-column hide\"></i>\n                </div>\n                    <div class=\"desk-block\">\n                        <button class=\"add-desk\" id=\"add-task-title\" onclick=\"createDeskMiniModal(").concat(data.dashboard_id, ", ").concat(data.column_id, ")\">+ Add desk</button>\n                    </div>\n            </div>\n            "));
     }
   });
 };
@@ -169,6 +169,37 @@ createDesk = function createDesk(dashboard, column) {
     var data_column = document.querySelector(condition);
     data_column.querySelector('#add-task-title').insertAdjacentHTML('beforebegin', "\n                <div class=\"desk\">\n                    <p>".concat(res.desk.title, "</p>\n                    <img src=\"").concat(res.desk.image, "\" alt=\"").concat(res.desk.title, "\">\n                    <div class=\"data-desk\">\n                        <input class=\"custom-checkbox\" type=\"checkbox\" id=\"status\" name=\"status\" value=\"yes\">\n                        <time datetime=\"2011-11-18T14:54:39.929Z\" name=\"date\">2023-08-01 15:00</time>\n                    </div>\n                    <span>status</span>\n                </div>\n            "));
   });
+};
+clickRenameColumn = function clickRenameColumn(id) {
+  var target = event.target.textContent.trim();
+  var div = document.querySelector("[data-column-id=\"".concat(id, "\"] [data-column-title]"));
+  div.style.cssText = "position: relative;";
+  if (!div.querySelector('input')) {
+    div.querySelector('span').insertAdjacentHTML('afterend', "\n        <input class=\"form-control\" value=\"".concat(target, "\" type=\"text\" data-new-title style=\"position: absolute; top: 4px;left: 5px;height: 25px;max-width: 200px;\">\n        "));
+  }
+  var saveColumn = div.querySelector('i');
+  saveColumn.classList.remove('hide');
+  saveColumn.onclick = function () {
+    saveColumn.style.cssText = "background-color: green;";
+    fetch('/api/column/rename', {
+      method: 'post',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        id: id,
+        title: div.querySelector('input').value
+      })
+    }).then(function (response) {
+      return response.json();
+    }).then(function (res) {
+      saveColumn.style.cssText = "background-color: gray;";
+      div.querySelector('input').remove();
+      div.querySelector('span').innerText = res.title;
+      saveColumn.classList.add('hide');
+    });
+  };
 };
 /******/ })()
 ;

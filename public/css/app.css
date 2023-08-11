@@ -287,3 +287,20 @@ nav {
   color: rgb(40, 35, 40) !important;
   transition: color 0.3s;
 }
+
+.hide {
+  display: none;
+}
+
+.save-column {
+  position: absolute;
+  right: 0;
+  top: 5px;
+  width: 25px;
+  background-color: gray;
+  cursor: pointer;
+}
+.save-column:hover {
+  background-color: #545454;
+  transition: background-color 0.3s;
+}

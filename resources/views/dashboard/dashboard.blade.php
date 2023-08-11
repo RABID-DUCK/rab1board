@@ -30,8 +30,9 @@
         @if(isset($columns))
             @foreach($columns as $column)
                 <div class="wrap" data-column-id="{{ $column->id }}">
-                    <div class="column">
+                    <div class="column" onclick="clickRenameColumn({{ $column->id }})" data-column-title="">
                         <span>{{ $column->title }}</span>
+                        <i class="bi bi-check-lg save-column hide"></i>
                     </div>
                     <div class="desk-block" id="desk-list">
                         @foreach($column->desks as $desk)

@@ -140,8 +140,9 @@ addColumn = function (dashboard){
 
                     document.getElementById('add-column-panel').insertAdjacentHTML('beforebegin', `
                      <div class="wrap" data-column-id="${data.column_id}">
-                        <div class="column">
+                        <div class="column" onclick="clickRenameColumn(${data.column_id})" data-column-title="">
                             <span>${data.columns[data.columns.length - 1].title}</span>
+                            <i class="bi bi-check-lg save-column hide"></i>
                         </div>
                         <div class="desk-block">
                         <div class="desk">
@@ -161,8 +162,9 @@ addColumn = function (dashboard){
             else{
                 document.getElementById('add-column-panel').insertAdjacentHTML('beforebegin', `
              <div class="wrap" data-column-id="${data.column_id}">
-                <div class="column">
+                <div class="column" onclick="clickRenameColumn(${data.column_id})" data-column-title="">
                     <span>${data.columns[data.columns.length - 1].title}</span>
+                    <i class="bi bi-check-lg save-column hide"></i>
                 </div>
                     <div class="desk-block">
                         <button class="add-desk" id="add-task-title" onclick="createDeskMiniModal(${data.dashboard_id}, ${data.column_id})">+ Add desk</button>
@@ -231,3 +233,38 @@ createDesk = function (dashboard, column){
             `)
         })
 }
+
+clickRenameColumn = function (id) {
+    let target = event.target.textContent.trim();
+    var div = document.querySelector(`[data-column-id="${id}"] [data-column-title]`);
+    div.style.cssText = `position: relative;`
+    if (!div.querySelector('input')) {
+        div.querySelector('span').insertAdjacentHTML('afterend', `
+        <input class="form-control" value="${target}" type="text" data-new-title style="position: absolute; top: 4px;left: 5px;height: 25px;max-width: 200px;">
+        `);
+    }
+
+    var saveColumn = div.querySelector('i');
+    saveColumn.classList.remove('hide')
+    saveColumn.onclick = function (){
+        saveColumn.style.cssText = "background-color: green;"
+            fetch('/api/column/rename', {
+                method: 'post',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    id: id,
+                    title: div.querySelector('input').value
+                })
+            })
+                .then(response => response.json())
+                .then(res => {
+                    saveColumn.style.cssText = "background-color: gray;";
+                    div.querySelector('input').remove()
+                    div.querySelector('span').innerText = res.title
+                    saveColumn.classList.add('hide')
+                });
+    }
+};
