@@ -16,7 +16,7 @@ class DeskController extends Controller
     }
 
     public function show($id){
-        return Desks::query()->where('id', $id)->first();
+        return Desks::where('id', $id)->first();
     }
 
     public function store(StoreRequest $request){
@@ -31,13 +31,13 @@ class DeskController extends Controller
         $desk_id = $data['desk_id'];
         unset($data['desk_id']);
 
-        Desks::query()->where('id', $desk_id)->update($data);
+        Desks::where('id', $desk_id)->update($data);
 
         return redirect()->route('backend.desks.index');
     }
 
     public function delete($id){
-        Desks::query()->where('id', $id)->delete();
+        Desks::where('id', $id)->delete();
 
         return redirect()->route('backend.desks.index');
     }

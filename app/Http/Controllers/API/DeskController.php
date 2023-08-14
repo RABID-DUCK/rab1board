@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\API\DeskResource;
 use App\Models\ColumnDesks;
 use App\Models\Columns;
 use App\Models\Desks;
@@ -40,6 +41,21 @@ class DeskController extends Controller
 //            ['desk_id', '=', $desk->id],
 //            ['column_id', '=', $data['column_id']],
 //        ])->first();
+    }
+
+    public function show(Request $request){
+        $data = $request->validate(['dashboard_id' => 'required|integer', 'column_id' => 'required|integer', 'desk_id' => 'required|integer']);
+
+        $desk = Desks::with('dashboard', 'column')->where('id', $data['desk_id'])
+            ->whereHas('dashboard', function ($query) use ($data) {
+                $query->where('id', $data['dashboard_id']);
+            })
+            ->whereHas('column', function ($query) use ($data) {
+                $query->where('id', $data['column_id']);
+            })
+            ->first();
+
+        return DeskResource::make($desk);
     }
 
 }

@@ -28,4 +28,5 @@ Route::post('/column/create', '\App\Http\Controllers\API\ColumnController@store'
 Route::post('/column/rename', '\App\Http\Controllers\API\ColumnController@update');
 
 Route::get('/desk/{id}', '\App\Http\Controllers\DeskController@show');
+Route::get('/modalDesk', '\App\Http\Controllers\API\DeskController@show');
 Route::post('/desk/create', '\App\Http\Controllers\API\DeskController@store');

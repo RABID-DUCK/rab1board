@@ -10,7 +10,7 @@ class HomeController extends Controller
     public function index()
     {
         if (auth()->user()) {
-            $dashboards = Dashboards::query()->where('user_id', auth()->user()->id)->get();
+            $dashboards = Dashboards::where('user_id', auth()->user()->id)->get();
             return view('main.main', compact('dashboards'));
         }
 

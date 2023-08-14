@@ -29,14 +29,14 @@ class LangsController extends Controller
 
     public function delete($id)
     {
-        Langs::query()->where('id', $id)->delete();
+        Langs::where('id', $id)->delete();
 
         return redirect('/backend/langs');
     }
 
     public function show($id)
     {
-        $lang = Langs::query()->where('id', $id)->get();
+        $lang = Langs::where('id', $id)->get();
 
         return response()->json($lang);
     }
@@ -46,7 +46,7 @@ class LangsController extends Controller
         $langs = Langs::all();
 
         $data = $request->validated();
-        $lang = Langs::query()->where('id', $data['id'])->update($data);
+        $lang = Langs::where('id', $data['id'])->update($data);
 
         if ($lang){
 //            \Rabid::write_lang((object)$data, 'messages.php', 'messages.php');

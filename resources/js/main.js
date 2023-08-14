@@ -1,14 +1,3 @@
-placeContentMain = function (){
-    let content = document.getElementById('wrapper');
-    if(document.querySelector('.dashboard-single')){
-        content.style.cssText = `margin: 1rem 1rem 1rem 0; width: 100% !important;height: 90vh;`
-        content.classList.remove('justify-content-between')
-    }else{
-        content.style.cssText = `margin: 1rem auto;`
-    }
-}
-placeContentMain();
-
 openModalLangs = function(id){
     fetch('/api/langs/'+id)
         .then(response => response.json())
@@ -312,9 +301,58 @@ renameDashboard = function (id){
 }
 
 viewDesk = function (dashboard_id, column_id, desk_id){
+
     let column = document.querySelector(`[data-column-id="${column_id}"]`);
     let desk = column.querySelector(`[data-desk-id="${desk_id}"]`);
+    let modal = document.querySelector('[data-modal-desk]');
 
-    document.querySelector('[data-modal-desk]').classList.remove('hide');
+
+
+    modal.classList.remove('hide');
     document.getElementById('wrapper').style.cssText = `filter: blur(2px);`;
+    fetch('/api/modalDesk/?dashboard_id=' + dashboard_id + '&column_id=' + column_id + '&desk_id=' + desk_id, {
+        method: 'get',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+    })
+        .then(response => response.json())
+        .then(res => {
+
+            modal.insertAdjacentHTML('beforeend', `
+             <div class="modal-desk bg-dark bg-gradient text-white" data-modal-desk>
+             <span class="close-modal" id="modal-desk">X</span>
+                <b>TEXT</b>
+                <div class="users-desk">
+                    <span><img src="{{asset('images/avatar_none.png')}}" alt=""></span>
+                    <span><img src="{{asset('images/avatar_none.png')}}" alt=""></span>
+                    <span><img src="{{asset('images/avatar_none.png')}}" alt=""></span>
+                    <i class="bi bi-plus-circle"></i>
+                </div>
+
+                <div class="description">
+                    <label for="description" class="form-label">Пример текстового поля</label>
+                    <textarea class="form-control" id="description" rows="3"></textarea>
+                </div>
+
+                    <button class="btn text-white hide">Add tasks</button>
+                <div class="check-list-wrapper">
+                    <span class="name-list bg-dark bg-gradient text-white">Name list</span>
+                    <div class="list-tasks">
+                        <div class="form-check form-switch">
+                            <input type="checkbox" class="form-check-input" role="switch" id="checklist">
+                            <label for="checklist" class="form-check-label">Task 1</label>
+                        </div>
+                        <button class="btn text-white">Add task</button>
+                    </div>
+                </div>
+            </div>
+            `)
+            document.getElementById('modal-desk').addEventListener('click', function (){
+                modal.innerHTML = "";
+                document.getElementById('wrapper').style.cssText = `filter: none;`;
+                modal.classList.add('hide');
+            });
+        })
 }

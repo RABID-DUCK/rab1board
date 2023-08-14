@@ -19,12 +19,12 @@ class DashboardController extends Controller
 
     public function show($id){
         if (!auth()->user()) return redirect()->route('board.index');
-        $user = User::query()->where('id', auth()->user()->id)->first();
+        $user = User::where('id', auth()->user()->id)->first();
         if(!$user) return redirect()->route('login');
 
-        $dashboard = Dashboards::query()->where('id', $id)->first();
+        $dashboard = Dashboards::where('id', $id)->first();
         if(!$dashboard) return redirect()->route('board.index');
-        $columns = Columns::query()->where('dashboard_id', $id)->get();
+        $columns = Columns::where('dashboard_id', $id)->get();
         $desks = Desks::all();
 
         return view('dashboard.dashboard', compact('dashboard', 'user', 'columns', 'desks'));

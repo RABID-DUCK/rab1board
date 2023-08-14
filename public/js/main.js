@@ -6,16 +6,6 @@ var __webpack_exports__ = {};
 function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
-placeContentMain = function placeContentMain() {
-  var content = document.getElementById('wrapper');
-  if (document.querySelector('.dashboard-single')) {
-    content.style.cssText = "margin: 1rem 1rem 1rem 0; width: 100% !important;height: 90vh;";
-    content.classList.remove('justify-content-between');
-  } else {
-    content.style.cssText = "margin: 1rem auto;";
-  }
-};
-placeContentMain();
 openModalLangs = function openModalLangs(id) {
   fetch('/api/langs/' + id).then(function (response) {
     return response.json();
@@ -235,8 +225,25 @@ renameDashboard = function renameDashboard(id) {
 viewDesk = function viewDesk(dashboard_id, column_id, desk_id) {
   var column = document.querySelector("[data-column-id=\"".concat(column_id, "\"]"));
   var desk = column.querySelector("[data-desk-id=\"".concat(desk_id, "\"]"));
-  document.querySelector('[data-modal-desk]').classList.remove('hide');
+  var modal = document.querySelector('[data-modal-desk]');
+  modal.classList.remove('hide');
   document.getElementById('wrapper').style.cssText = "filter: blur(2px);";
+  fetch('/api/modalDesk/?dashboard_id=' + dashboard_id + '&column_id=' + column_id + '&desk_id=' + desk_id, {
+    method: 'get',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    }
+  }).then(function (response) {
+    return response.json();
+  }).then(function (res) {
+    modal.insertAdjacentHTML('beforeend', "\n             <div class=\"modal-desk bg-dark bg-gradient text-white\" data-modal-desk>\n             <span class=\"close-modal\" id=\"modal-desk\">X</span>\n                <b>TEXT</b>\n                <div class=\"users-desk\">\n                    <span><img src=\"{{asset('images/avatar_none.png')}}\" alt=\"\"></span>\n                    <span><img src=\"{{asset('images/avatar_none.png')}}\" alt=\"\"></span>\n                    <span><img src=\"{{asset('images/avatar_none.png')}}\" alt=\"\"></span>\n                    <i class=\"bi bi-plus-circle\"></i>\n                </div>\n\n                <div class=\"description\">\n                    <label for=\"description\" class=\"form-label\">\u041F\u0440\u0438\u043C\u0435\u0440 \u0442\u0435\u043A\u0441\u0442\u043E\u0432\u043E\u0433\u043E \u043F\u043E\u043B\u044F</label>\n                    <textarea class=\"form-control\" id=\"description\" rows=\"3\"></textarea>\n                </div>\n\n                    <button class=\"btn text-white hide\">Add tasks</button>\n                <div class=\"check-list-wrapper\">\n                    <span class=\"name-list bg-dark bg-gradient text-white\">Name list</span>\n                    <div class=\"list-tasks\">\n                        <div class=\"form-check form-switch\">\n                            <input type=\"checkbox\" class=\"form-check-input\" role=\"switch\" id=\"checklist\">\n                            <label for=\"checklist\" class=\"form-check-label\">Task 1</label>\n                        </div>\n                        <button class=\"btn text-white\">Add task</button>\n                    </div>\n                </div>\n            </div>\n            ");
+    document.getElementById('modal-desk').addEventListener('click', function () {
+      modal.innerHTML = "";
+      document.getElementById('wrapper').style.cssText = "filter: none;";
+      modal.classList.add('hide');
+    });
+  });
 };
 /******/ })()
 ;

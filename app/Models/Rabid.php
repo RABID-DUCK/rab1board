@@ -5,6 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * App\Models\Rabid
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|Rabid newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Rabid newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Rabid query()
+ * @mixin \Eloquent
+ */
 class Rabid extends Model
 {
     use HasFactory;
