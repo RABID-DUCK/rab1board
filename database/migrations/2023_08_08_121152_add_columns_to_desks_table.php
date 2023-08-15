@@ -26,6 +26,11 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('desks', function (Blueprint $table) {
+            $table->dropForeign(['dashboard_id']);
+            $table->dropForeign(['column_id']);
+
+            $table->dropColumn('dashboard_id');
+            $table->dropColumn('column_id');
         });
     }
 };

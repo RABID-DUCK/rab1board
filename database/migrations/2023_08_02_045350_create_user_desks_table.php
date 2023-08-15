@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('user_desks', function (Blueprint $table) {
             $table->id();
-            $table->boolean('access');
+            $table->boolean('access')->nullable();
 
             $table->bigInteger('desk_id')->unsigned();
             $table->bigInteger('user_id')->unsigned();
@@ -29,6 +29,10 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::table('user_desks', function (Blueprint $table) {
+            $table->dropForeign(['desk_id']);
+            $table->dropForeign(['user_id']);
+        });
         Schema::dropIfExists('user_desks');
     }
 };

@@ -14,12 +14,12 @@ return new class extends Migration
         Schema::create('desks', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->string('description');
+            $table->string('description')->nullable();
             $table->bigInteger('task_id')->unsigned();
-            $table->string('image');
-            $table->string('status');
-            $table->dateTime('data_start');
-            $table->dateTime('data_end');
+            $table->string('image')->nullable();
+            $table->string('status')->nullable();
+            $table->dateTime('data_start')->nullable();
+            $table->dateTime('data_end')->nullable();
             $table->timestamps();
         });
     }

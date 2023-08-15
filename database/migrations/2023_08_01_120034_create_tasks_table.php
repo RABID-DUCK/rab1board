@@ -14,11 +14,11 @@ return new class extends Migration
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->string('name_task');
-            $table->string('emoji');
+            $table->string('name_task')->nullable();
+            $table->string('emoji')->nullable();
             $table->bigInteger('desk_id')->unsigned();
-            $table->dateTime('data_start');
-            $table->dateTime('data_end');
+            $table->dateTime('data_start')->nullable();
+            $table->dateTime('data_end')->nullable();
             $table->timestamps();
         });
     }
