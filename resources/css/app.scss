@@ -465,6 +465,15 @@ nav{
         width: 90%;
         padding-top: 25px;
 
+        input[type="text"]{
+            width: 160px;
+        }
+
+        .save-column{
+            left: 180px;
+            top: -11px;
+        }
+
         .name-list{
             position: absolute;
             top: -11px;
@@ -480,6 +489,10 @@ nav{
             .btn{
                 margin: 15px 0 10px 5px;
                 float: left;
+            }
+
+            .add-task{
+                width: 115px !important;
             }
         }
     }

@@ -237,7 +237,91 @@ viewDesk = function viewDesk(dashboard_id, column_id, desk_id) {
   }).then(function (response) {
     return response.json();
   }).then(function (res) {
-    modal.insertAdjacentHTML('beforeend', "\n             <div class=\"modal-desk bg-dark bg-gradient text-white\" data-modal-desk>\n             <span class=\"close-modal\" id=\"modal-desk\">X</span>\n                <b>TEXT</b>\n                <div class=\"users-desk\">\n                    <span><img src=\"{{asset('images/avatar_none.png')}}\" alt=\"\"></span>\n                    <span><img src=\"{{asset('images/avatar_none.png')}}\" alt=\"\"></span>\n                    <span><img src=\"{{asset('images/avatar_none.png')}}\" alt=\"\"></span>\n                    <i class=\"bi bi-plus-circle\"></i>\n                </div>\n\n                <div class=\"description\">\n                    <label for=\"description\" class=\"form-label\">\u041F\u0440\u0438\u043C\u0435\u0440 \u0442\u0435\u043A\u0441\u0442\u043E\u0432\u043E\u0433\u043E \u043F\u043E\u043B\u044F</label>\n                    <textarea class=\"form-control\" id=\"description\" rows=\"3\"></textarea>\n                </div>\n\n                    <button class=\"btn text-white hide\">Add tasks</button>\n                <div class=\"check-list-wrapper\">\n                    <span class=\"name-list bg-dark bg-gradient text-white\">Name list</span>\n                    <div class=\"list-tasks\">\n                        <div class=\"form-check form-switch\">\n                            <input type=\"checkbox\" class=\"form-check-input\" role=\"switch\" id=\"checklist\">\n                            <label for=\"checklist\" class=\"form-check-label\">Task 1</label>\n                        </div>\n                        <button class=\"btn text-white\">Add task</button>\n                    </div>\n                </div>\n            </div>\n            ");
+    var _res$data$description;
+    // ----------Open modal----------
+    modal.insertAdjacentHTML('beforeend', "\n             <span class=\"close-modal\" id=\"modal-desk\">X</span>\n                <b>".concat(res.data.title, "</b>\n                <div class=\"users-desk\">\n                    <span><img src=\"/images/avatar_none.png\" alt=\"\"></span>\n                    <span><img src=\"/images/avatar_none.png\" alt=\"\"></span>\n                    <span><img src=\"/images/avatar_none.png\" alt=\"\"></span>\n                    <i class=\"bi bi-plus-circle\"></i>\n                </div>\n\n                <div class=\"description\">\n                    <label for=\"description\" class=\"form-label\">\u041E\u043F\u0438\u0441\u0430\u043D\u0438\u0435 \u0437\u0430\u0434\u0430\u0447\u0438</label>\n                    <textarea class=\"form-control\" id=\"description\" rows=\"3\">").concat((_res$data$description = res.data.description) !== null && _res$data$description !== void 0 ? _res$data$description : '', "</textarea>\n                </div>\n                    <button class=\"btn text-white ").concat(res.data.list_task_id ? 'hide' : '', "\" id=\"add-menu-tasks\">Add tasks</button>\n            "));
+
+    // -----------Add check list-----------
+    fetch('/api/getTasks?dashboard_id=' + dashboard_id + "&desk_id=" + desk_id, {
+      method: 'get',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      }
+    }).then(function (response) {
+      return response.json();
+    }).then(function (res) {
+      var addWindowTasks = document.getElementById('add-menu-tasks');
+      addWindowTasks.classList.add('hide');
+      if (res.list) {
+        addWindowTasks.insertAdjacentHTML('beforebegin', "\n                    <div class=\"check-list-wrapper\">\n                        <span class=\"name-list bg-dark bg-gradient text-white\" data-name-list>".concat(res.list.title, "</span>\n                        <input type=\"text\" class=\"form-control name-list hide\">\n                        <i class=\"bi bi-check-lg save-column hide\" data-save-checkList></i>\n                        <div class=\"list-tasks d-flex flex-column\">\n                            <button class=\"btn text-white add-task\" id=\"btn-create-task\">Add task</button>\n                        </div>\n                    </div>"));
+      } else {
+        addWindowTasks.insertAdjacentHTML('beforebegin', "\n                    <div class=\"check-list-wrapper\">\n                    <span class=\"name-list bg-dark bg-gradient text-white hide\" data-name-list>Name list</span>\n                    <input type=\"text\" class=\"form-control name-list\">\n                    <i class=\"bi bi-check-lg save-column\" data-save-checkList></i>\n                    <div class=\"list-tasks d-flex flex-column\">\n                        <button class=\"btn text-white add-task\" id=\"btn-create-task\">Add task</button>\n                    </div>\n                </div>\n            </div>\n                ");
+      }
+      var createTask = document.getElementById('btn-create-task');
+      if (createTask) {
+        // ------------Create task------------
+        var _createTask = document.getElementById('btn-create-task');
+        _createTask.onclick = function () {
+          console.log('dada');
+          _createTask.insertAdjacentHTML('beforebegin', "\n                    <div class=\"form-check form-switch\">\n                        <input type=\"checkbox\" class=\"form-check-input\" role=\"switch\" id=\"checklist\">\n                        <input type=\"text\" class=\"form-control\">\n                        <button class=\"btn text-white\" id=\"saveTask\">Save</button>\n<!--                            <label for=\"checklist\" class=\"form-check-label\">Task 1</label>-->\n                    </div>\n                ");
+
+          //------------Save task------------
+          var saveTask = document.getElementById('saveTask');
+          saveTask.onclick = function () {
+            saveTask.classList.add('hide');
+            saveTask.previousElementSibling.classList.add('hide');
+            fetch('/api/saveTask', {
+              method: 'post',
+              headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                'title': saveTask.previousElementSibling.value,
+                'done': document.getElementById('checklist').checked,
+                'dashboard_id': dashboard_id,
+                'desk_id': desk_id
+              })
+            }).then(function (response) {
+              return response.json();
+            }).then(function (res) {
+              _createTask.insertAdjacentHTML('beforebegin', "\n                                        <div class=\"form-check form-switch\">\n                                            <input type=\"checkbox\" class=\"form-check-input\" role=\"switch\" id=\"checklist\">\n                                            <input type=\"text\" class=\"form-control hide\">\n                                            <button class=\"btn text-white hide\" id=\"saveTask\">Save</button>\n                                                <label for=\"checklist\" class=\"form-check-label\">".concat(res.title, "</label>\n                                        </div>\n                                    "));
+            });
+          };
+        };
+      } else {
+        addWindowTasks.onclick = function () {
+          addWindowTasks.classList.add('hide');
+          var saveCheckList = document.querySelector('[data-save-checkList]');
+          saveCheckList.addEventListener('click', function () {
+            var input = saveCheckList.previousElementSibling.value;
+            fetch('/api/createList', {
+              method: 'post',
+              headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                'title': input,
+                'dashboard_id': dashboard_id,
+                'desk_id': desk_id
+              })
+            }).then(function (response) {
+              return response.json();
+            }).then(function (res) {
+              saveCheckList.previousElementSibling.classList.add('hide');
+              saveCheckList.classList.add('hide');
+              document.querySelector('[data-name-list]').classList.remove('hide');
+              document.querySelector('[data-name-list]').textContent = res.title;
+            });
+          });
+        };
+      }
+    });
+    // ---------------END if()---------------
+
+    // ---------Close modal---------
     document.getElementById('modal-desk').addEventListener('click', function () {
       modal.innerHTML = "";
       document.getElementById('wrapper').style.cssText = "filter: none;";

@@ -36,5 +36,5 @@ class Tasks extends Model
     use HasFactory;
 
     protected $table = 'tasks';
-    protected $hidden = 'desk_id';
+    protected $guarded = false;
 }

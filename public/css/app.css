@@ -411,6 +411,13 @@ nav {
   width: 90%;
   padding-top: 25px;
 }
+.modal-desk .check-list-wrapper input[type=text] {
+  width: 160px;
+}
+.modal-desk .check-list-wrapper .save-column {
+  left: 180px;
+  top: -11px;
+}
 .modal-desk .check-list-wrapper .name-list {
   position: absolute;
   top: -11px;
@@ -425,4 +432,7 @@ nav {
 .modal-desk .check-list-wrapper .list-tasks .btn {
   margin: 15px 0 10px 5px;
   float: left;
+}
+.modal-desk .check-list-wrapper .list-tasks .add-task {
+  width: 115px !important;
 }

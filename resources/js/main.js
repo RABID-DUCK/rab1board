@@ -301,15 +301,13 @@ renameDashboard = function (id){
 }
 
 viewDesk = function (dashboard_id, column_id, desk_id){
-
     let column = document.querySelector(`[data-column-id="${column_id}"]`);
     let desk = column.querySelector(`[data-desk-id="${desk_id}"]`);
     let modal = document.querySelector('[data-modal-desk]');
 
-
-
     modal.classList.remove('hide');
     document.getElementById('wrapper').style.cssText = `filter: blur(2px);`;
+
     fetch('/api/modalDesk/?dashboard_id=' + dashboard_id + '&column_id=' + column_id + '&desk_id=' + desk_id, {
         method: 'get',
         headers: {
@@ -319,36 +317,142 @@ viewDesk = function (dashboard_id, column_id, desk_id){
     })
         .then(response => response.json())
         .then(res => {
-
+            // ----------Open modal----------
             modal.insertAdjacentHTML('beforeend', `
-             <div class="modal-desk bg-dark bg-gradient text-white" data-modal-desk>
              <span class="close-modal" id="modal-desk">X</span>
-                <b>TEXT</b>
+                <b>${res.data.title}</b>
                 <div class="users-desk">
-                    <span><img src="{{asset('images/avatar_none.png')}}" alt=""></span>
-                    <span><img src="{{asset('images/avatar_none.png')}}" alt=""></span>
-                    <span><img src="{{asset('images/avatar_none.png')}}" alt=""></span>
+                    <span><img src="/images/avatar_none.png" alt=""></span>
+                    <span><img src="/images/avatar_none.png" alt=""></span>
+                    <span><img src="/images/avatar_none.png" alt=""></span>
                     <i class="bi bi-plus-circle"></i>
                 </div>
 
                 <div class="description">
-                    <label for="description" class="form-label">Пример текстового поля</label>
-                    <textarea class="form-control" id="description" rows="3"></textarea>
+                    <label for="description" class="form-label">Описание задачи</label>
+                    <textarea class="form-control" id="description" rows="3">${res.data.description ?? ''}</textarea>
                 </div>
+                    <button class="btn text-white ${res.data.list_task_id ? 'hide': ''}" id="add-menu-tasks">Add tasks</button>
+            `)
 
-                    <button class="btn text-white hide">Add tasks</button>
-                <div class="check-list-wrapper">
-                    <span class="name-list bg-dark bg-gradient text-white">Name list</span>
-                    <div class="list-tasks">
-                        <div class="form-check form-switch">
-                            <input type="checkbox" class="form-check-input" role="switch" id="checklist">
-                            <label for="checklist" class="form-check-label">Task 1</label>
+                // -----------Add check list-----------
+            fetch('/api/getTasks?dashboard_id='+dashboard_id+"&desk_id="+desk_id, {
+                method: 'get',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => response.json())
+                .then(res => {
+                let addWindowTasks = document.getElementById('add-menu-tasks');
+                    addWindowTasks.classList.add('hide')
+
+                    if(res.list) {
+                        addWindowTasks.insertAdjacentHTML('beforebegin', `
+                    <div class="check-list-wrapper">
+                        <span class="name-list bg-dark bg-gradient text-white" data-name-list>${res.list.title}</span>
+                        <input type="text" class="form-control name-list hide">
+                        <i class="bi bi-check-lg save-column hide" data-save-checkList></i>
+                        <div class="list-tasks d-flex flex-column">
+                            <button class="btn text-white add-task" id="btn-create-task">Add task</button>
                         </div>
-                        <button class="btn text-white">Add task</button>
+                    </div>`)
+
+                    }else{
+                        addWindowTasks.insertAdjacentHTML('beforebegin', `
+                    <div class="check-list-wrapper">
+                    <span class="name-list bg-dark bg-gradient text-white hide" data-name-list>Name list</span>
+                    <input type="text" class="form-control name-list">
+                    <i class="bi bi-check-lg save-column" data-save-checkList></i>
+                    <div class="list-tasks d-flex flex-column">
+                        <button class="btn text-white add-task" id="btn-create-task">Add task</button>
                     </div>
                 </div>
             </div>
-            `)
+                `)
+                    }
+
+                    let createTask = document.getElementById('btn-create-task');
+                    if (createTask){
+                        // ------------Create task------------
+                        let createTask = document.getElementById('btn-create-task');
+                        createTask.onclick = function (){
+                            console.log('dada')
+
+                            createTask.insertAdjacentHTML('beforebegin', `
+                    <div class="form-check form-switch">
+                        <input type="checkbox" class="form-check-input" role="switch" id="checklist">
+                        <input type="text" class="form-control">
+                        <button class="btn text-white" id="saveTask">Save</button>
+<!--                            <label for="checklist" class="form-check-label">Task 1</label>-->
+                    </div>
+                `)
+
+                            //------------Save task------------
+                            let saveTask = document.getElementById('saveTask')
+                            saveTask.onclick = function (){
+                                saveTask.classList.add('hide')
+                                saveTask.previousElementSibling.classList.add('hide')
+                                fetch('/api/saveTask', {
+                                    method: 'post',
+                                    headers: {
+                                        'Accept': 'application/json',
+                                        'Content-Type': 'application/json'
+                                    },
+                                    body: JSON.stringify({
+                                        'title': saveTask.previousElementSibling.value,
+                                        'done': document.getElementById('checklist').checked,
+                                        'dashboard_id': dashboard_id,
+                                        'desk_id': desk_id
+                                    })
+                                })
+                                    .then(response => response.json())
+                                    .then(res => {
+                                        createTask.insertAdjacentHTML('beforebegin', `
+                                        <div class="form-check form-switch">
+                                            <input type="checkbox" class="form-check-input" role="switch" id="checklist">
+                                            <input type="text" class="form-control hide">
+                                            <button class="btn text-white hide" id="saveTask">Save</button>
+                                                <label for="checklist" class="form-check-label">${res.title}</label>
+                                        </div>
+                                    `)
+                                })
+                            }
+                    }
+                    }else{
+                            addWindowTasks.onclick = function (){
+                                addWindowTasks.classList.add('hide')
+
+                                let saveCheckList = document.querySelector('[data-save-checkList]');
+                                saveCheckList.addEventListener('click', function (){
+                                    let input = saveCheckList.previousElementSibling.value;
+                                    fetch('/api/createList', {
+                                        method: 'post',
+                                        headers: {
+                                            'Accept': 'application/json',
+                                            'Content-Type': 'application/json'
+                                        },
+                                        body: JSON.stringify({
+                                            'title': input,
+                                            'dashboard_id': dashboard_id,
+                                            'desk_id': desk_id
+                                        })
+                                    })
+                                        .then(response => response.json())
+                                        .then(res => {
+                                            saveCheckList.previousElementSibling.classList.add('hide')
+                                            saveCheckList.classList.add('hide')
+                                            document.querySelector('[data-name-list]').classList.remove('hide');
+                                            document.querySelector('[data-name-list]').textContent = res.title;
+                                        })
+                                })
+                            }
+                        }
+            })
+            // ---------------END if()---------------
+
+            // ---------Close modal---------
             document.getElementById('modal-desk').addEventListener('click', function (){
                 modal.innerHTML = "";
                 document.getElementById('wrapper').style.cssText = `filter: none;`;
