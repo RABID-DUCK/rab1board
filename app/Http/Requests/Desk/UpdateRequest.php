@@ -22,13 +22,17 @@ class UpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'required|string',
+            'id' => 'required|integer',
+            'title' => 'nullable|string',
             'description' => 'nullable|string',
-            'task_id' => 'nullable',
+            'image' => 'nullable|string',
             'data_start'=> 'nullable|date_format:"Y-m-d\TH:i"',
             'data_end' =>'nullable|date_format:"Y-m-d\TH:i"',
             'status' => 'nullable|string',
-            'desk_id' => 'nullable'
+            'column_id' => 'required|integer',
+            'dashboard_id' => 'required|integer',
+            'done' => 'nullable|boolean',
+            'task_id' => 'nullable|integer'
         ];
     }
 }

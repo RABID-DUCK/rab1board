@@ -304,9 +304,15 @@ viewDesk = function (dashboard_id, column_id, desk_id){
     let column = document.querySelector(`[data-column-id="${column_id}"]`);
     let desk = column.querySelector(`[data-desk-id="${desk_id}"]`);
     let modal = document.querySelector('[data-modal-desk]');
+    let backModal = document.getElementById('backModal');
 
+    backModal.classList.remove('hide');
     modal.classList.remove('hide');
     document.getElementById('wrapper').style.cssText = `filter: blur(2px);`;
+
+    backModal.addEventListener('click', () => {
+        closeModal();
+    });
 
     fetch('/api/modalDesk/?dashboard_id=' + dashboard_id + '&column_id=' + column_id + '&desk_id=' + desk_id, {
         method: 'get',
@@ -319,7 +325,7 @@ viewDesk = function (dashboard_id, column_id, desk_id){
         .then(res => {
             // ----------Open modal----------
             modal.insertAdjacentHTML('beforeend', `
-             <span class="close-modal" id="modal-desk">X</span>
+             <span class="close-modal" id="modal-desk" onclick="closeModal()">X</span>
                 <b>${res.data.title}</b>
                 <div class="users-desk">
                     <span><img src="/images/avatar_none.png" alt=""></span>
@@ -329,134 +335,206 @@ viewDesk = function (dashboard_id, column_id, desk_id){
                 </div>
 
                 <div class="description">
-                    <label for="description" class="form-label">Описание задачи</label>
-                    <textarea class="form-control" id="description" rows="3">${res.data.description ?? ''}</textarea>
+                    <label for="description" class="form-label">Description of task</label>
+                    <textarea class="form-control" id="description" rows="3" placeholder="This task mean...">${res.data.description ?? ''}</textarea>
+                    <button class="btn text-white hide" id="save-desk" onclick="updateDescription(${dashboard_id},${desk_id}, ${column_id})"><i class="bi bi-check-lg"></i>Save</button>
                 </div>
-                    <button class="btn text-white ${res.data.list_task_id ? 'hide': ''}" id="add-menu-tasks">Add tasks</button>
+                    <button class="btn text-white ${res.data.list_task_id ? 'hide' : ''}" id="add-menu-tasks">Add tasks</button>
             `)
 
-                // -----------Add check list-----------
-            fetch('/api/getTasks?dashboard_id='+dashboard_id+"&desk_id="+desk_id, {
-                method: 'get',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
+            // --------Add Description-------
+            let textareaClicked = false;
+            document.getElementById('description').addEventListener('click', function (){
+                if(!textareaClicked){
+                    textareaClicked = true;
+                    document.getElementById('save-desk').classList.remove('hide')
                 }
             })
-                .then(response => response.json())
-                .then(res => {
-                let addWindowTasks = document.getElementById('add-menu-tasks');
-                    addWindowTasks.classList.add('hide')
+            // --------End add Description-------
 
-                    if(res.list) {
-                        addWindowTasks.insertAdjacentHTML('beforebegin', `
+            loadCheckList(dashboard_id, desk_id, column_id);
+        })
+}
+
+closeModal = function () {
+    let modal = document.querySelector('[data-modal-desk]');
+    modal.innerHTML = "";
+    document.getElementById('wrapper').style.cssText = `filter: none;`;
+    modal.classList.add('hide');
+    document.getElementById('backModal').classList.add('hide');
+}
+
+loadCheckList = function (dashboard_id, desk_id, column_id){
+    fetch('/api/getTasks?dashboard_id='+dashboard_id+"&desk_id="+desk_id, {
+        method: 'get',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+    })
+        .then(response => response.json())
+        .then(res => {
+            let addWindowTasks = document.getElementById('add-menu-tasks');
+            addWindowTasks.classList.add('hide')
+
+            if (res.list) {
+                addWindowTasks.insertAdjacentHTML('beforebegin', `
                     <div class="check-list-wrapper">
                         <span class="name-list bg-dark bg-gradient text-white" data-name-list>${res.list.title}</span>
                         <input type="text" class="form-control name-list hide">
                         <i class="bi bi-check-lg save-column hide" data-save-checkList></i>
                         <div class="list-tasks d-flex flex-column">
-                            <button class="btn text-white add-task" id="btn-create-task">Add task</button>
+                            <button class="btn text-white add-task" id="btn-create-task" onclick="createTask(${dashboard_id}, ${desk_id})">Add task</button>
                         </div>
                     </div>`)
-
-                    }else{
-                        addWindowTasks.insertAdjacentHTML('beforebegin', `
-                    <div class="check-list-wrapper">
+                if (res.tasks){
+                    res.tasks.forEach(item => {
+                        document.getElementById('btn-create-task').insertAdjacentHTML('beforebegin', `
+                        <div class="form-check form-switch" data-task-id="${item.id}">
+                            <input type="checkbox" class="form-check-input" role="switch" id="checklist${item.id}" ${item.done === 0 ? "" : 'checked'}
+                             onclick="changeChecked(${dashboard_id}, ${desk_id}, ${column_id}, ${item.id})">
+                            <input type="text" class="form-control hide" id="saveTitleTask" value="${item.title}">
+                            <button class="btn text-white hide" id="saveTask" onclick="saveTask(${dashboard_id}, ${desk_id})">Save</button>
+                            <label for="checklist${item.id}" class="form-check-label">${item.title}</label>
+                        </div>
+                `)
+                    })
+                }
+            } else {
+                addWindowTasks.insertAdjacentHTML('beforebegin', `
+                <div class="check-list-wrapper">
                     <span class="name-list bg-dark bg-gradient text-white hide" data-name-list>Name list</span>
                     <input type="text" class="form-control name-list">
                     <i class="bi bi-check-lg save-column" data-save-checkList></i>
                     <div class="list-tasks d-flex flex-column">
-                        <button class="btn text-white add-task" id="btn-create-task">Add task</button>
+                        <button class="btn text-white add-task" id="btn-create-task" onclick="createTask(${dashboard_id}, ${desk_id})">Add task</button>
                     </div>
                 </div>
+                `)
+            }
+        })
+}
+
+createTask = function (dashboard_id, desk_id){
+    // -----------Add check list-----------
+    let createTask = document.getElementById('btn-create-task');
+    if (createTask){
+        // ------------Create task------------
+        let createTask = document.getElementById('btn-create-task');
+        createTask.insertAdjacentHTML('beforebegin', `
+            <div class="form-check form-switch" data-temp-task>
+                <input type="checkbox" class="form-check-input" role="switch" id="checklist">
+                <input type="text" class="form-control" id="saveTitleTask">
+                <button class="btn text-white" id="saveTask" onclick="saveTask(${dashboard_id}, ${desk_id})">Save</button>
             </div>
-                `)
-                    }
+        `)
+    }
+    else{
+        addWindowTasks(dashboard_id, desk_id)
+    }
+}
 
-                    let createTask = document.getElementById('btn-create-task');
-                    if (createTask){
-                        // ------------Create task------------
-                        let createTask = document.getElementById('btn-create-task');
-                        createTask.onclick = function (){
-                            console.log('dada')
+changeChecked = function (dashboard_id, desk_id, column_id, task_id){
+    let check = event.target;
+    fetch('/api/modalUpdate', {
+        method: 'post',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            done: check.checked,
+            id: desk_id,
+            dashboard_id: dashboard_id,
+            column_id: column_id,
+            task_id: task_id
+        })
+    })
+        .then(response => response.json())
+        .then(res => {
+            check.setAttribute('checked', "checked")
+        })
+}
 
-                            createTask.insertAdjacentHTML('beforebegin', `
-                    <div class="form-check form-switch">
-                        <input type="checkbox" class="form-check-input" role="switch" id="checklist">
-                        <input type="text" class="form-control">
-                        <button class="btn text-white" id="saveTask">Save</button>
-<!--                            <label for="checklist" class="form-check-label">Task 1</label>-->
-                    </div>
-                `)
+saveTask = function (dashboard_id, desk_id){
+    let title = document.querySelector('[data-temp-task]')
 
-                            //------------Save task------------
-                            let saveTask = document.getElementById('saveTask')
-                            saveTask.onclick = function (){
-                                saveTask.classList.add('hide')
-                                saveTask.previousElementSibling.classList.add('hide')
-                                fetch('/api/saveTask', {
-                                    method: 'post',
-                                    headers: {
-                                        'Accept': 'application/json',
-                                        'Content-Type': 'application/json'
-                                    },
-                                    body: JSON.stringify({
-                                        'title': saveTask.previousElementSibling.value,
-                                        'done': document.getElementById('checklist').checked,
-                                        'dashboard_id': dashboard_id,
-                                        'desk_id': desk_id
-                                    })
-                                })
-                                    .then(response => response.json())
-                                    .then(res => {
-                                        createTask.insertAdjacentHTML('beforebegin', `
-                                        <div class="form-check form-switch">
-                                            <input type="checkbox" class="form-check-input" role="switch" id="checklist">
-                                            <input type="text" class="form-control hide">
-                                            <button class="btn text-white hide" id="saveTask">Save</button>
-                                                <label for="checklist" class="form-check-label">${res.title}</label>
-                                        </div>
-                                    `)
-                                })
-                            }
-                    }
-                    }else{
-                            addWindowTasks.onclick = function (){
-                                addWindowTasks.classList.add('hide')
+    fetch('/api/saveTask', {
+        method: 'post',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            'title': title.querySelector('#saveTitleTask').value,
+            'done': event.target.previousElementSibling.previousElementSibling.checked,
+            'dashboard_id': dashboard_id,
+            'desk_id': desk_id
+        })
+    })
+        .then(response => response.json())
+        .then(res => {
+            title.remove()
+            let createTask = document.getElementById('btn-create-task');
+            createTask.insertAdjacentHTML('beforebegin', `
+            <div class="form-check form-switch" data-task-id="${res.id}">
+                <input type="checkbox" class="form-check-input" role="switch" id="checklist${res.id}">
+                <input type="text" class="form-control hide" id="saveTitleTask">
+                <button class="btn text-white hide" id="saveTask" onclick="saveTask(${dashboard_id}, ${desk_id})">Save</button>
+                <label for="checklist${res.id}" class="form-check-label">${res.title}</label>
+            </div>
+        `)
+        })
+}
 
-                                let saveCheckList = document.querySelector('[data-save-checkList]');
-                                saveCheckList.addEventListener('click', function (){
-                                    let input = saveCheckList.previousElementSibling.value;
-                                    fetch('/api/createList', {
-                                        method: 'post',
-                                        headers: {
-                                            'Accept': 'application/json',
-                                            'Content-Type': 'application/json'
-                                        },
-                                        body: JSON.stringify({
-                                            'title': input,
-                                            'dashboard_id': dashboard_id,
-                                            'desk_id': desk_id
-                                        })
-                                    })
-                                        .then(response => response.json())
-                                        .then(res => {
-                                            saveCheckList.previousElementSibling.classList.add('hide')
-                                            saveCheckList.classList.add('hide')
-                                            document.querySelector('[data-name-list]').classList.remove('hide');
-                                            document.querySelector('[data-name-list]').textContent = res.title;
-                                        })
-                                })
-                            }
-                        }
+addWindowTasks = function (dashboard_id, desk_id){
+    let addWindowTasks = document.getElementById('add-menu-tasks');
+    addWindowTasks.onclick = function (){
+        addWindowTasks.classList.add('hide')
+
+        let saveCheckList = document.querySelector('[data-save-checkList]');
+        saveCheckList.addEventListener('click', function (){
+            let input = saveCheckList.previousElementSibling.value;
+            fetch('/api/createList', {
+                method: 'post',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    'title': input,
+                    'dashboard_id': dashboard_id,
+                    'desk_id': desk_id
+                })
             })
-            // ---------------END if()---------------
+                .then(response => response.json())
+                .then(res => {
+                    saveCheckList.previousElementSibling.classList.add('hide')
+                    saveCheckList.classList.add('hide')
+                    document.querySelector('[data-name-list]').classList.remove('hide');
+                    document.querySelector('[data-name-list]').textContent = res.title;
+                })
+        })
+    }
+}
 
-            // ---------Close modal---------
-            document.getElementById('modal-desk').addEventListener('click', function (){
-                modal.innerHTML = "";
-                document.getElementById('wrapper').style.cssText = `filter: none;`;
-                modal.classList.add('hide');
-            });
+updateDescription = function (dashboard_id, desk_id, column_id){
+    let desk = document.getElementById('description').value;
+    fetch('/api/modalUpdate', {
+        method: 'post',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            description: desk,
+            id: desk_id,
+            dashboard_id: dashboard_id,
+            column_id: column_id
+        })
+    })
+        .then(response => response.json())
+        .then(res => {
+            desk.value = res.description
         })
 }

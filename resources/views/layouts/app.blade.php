@@ -25,7 +25,10 @@
                     {{--    Scripts--}}
         <script src="{{ asset('js/main.js') }}"></script>
         <script src="{{asset('js/app.js')}}"></script>
-            <div class="modal-desk bg-dark bg-gradient text-white hide" data-modal-desk>
+            <div class="backModal hide" id="backModal">
+
+            </div>
+            <div class="modal-desk bg-dark bg-gradient text-white hide" data-modal-desk data-keyboard="false" data-backdrop="static">
 
             </div>
     </body>

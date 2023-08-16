@@ -226,8 +226,13 @@ viewDesk = function viewDesk(dashboard_id, column_id, desk_id) {
   var column = document.querySelector("[data-column-id=\"".concat(column_id, "\"]"));
   var desk = column.querySelector("[data-desk-id=\"".concat(desk_id, "\"]"));
   var modal = document.querySelector('[data-modal-desk]');
+  var backModal = document.getElementById('backModal');
+  backModal.classList.remove('hide');
   modal.classList.remove('hide');
   document.getElementById('wrapper').style.cssText = "filter: blur(2px);";
+  backModal.addEventListener('click', function () {
+    closeModal();
+  });
   fetch('/api/modalDesk/?dashboard_id=' + dashboard_id + '&column_id=' + column_id + '&desk_id=' + desk_id, {
     method: 'get',
     headers: {
@@ -239,94 +244,153 @@ viewDesk = function viewDesk(dashboard_id, column_id, desk_id) {
   }).then(function (res) {
     var _res$data$description;
     // ----------Open modal----------
-    modal.insertAdjacentHTML('beforeend', "\n             <span class=\"close-modal\" id=\"modal-desk\">X</span>\n                <b>".concat(res.data.title, "</b>\n                <div class=\"users-desk\">\n                    <span><img src=\"/images/avatar_none.png\" alt=\"\"></span>\n                    <span><img src=\"/images/avatar_none.png\" alt=\"\"></span>\n                    <span><img src=\"/images/avatar_none.png\" alt=\"\"></span>\n                    <i class=\"bi bi-plus-circle\"></i>\n                </div>\n\n                <div class=\"description\">\n                    <label for=\"description\" class=\"form-label\">\u041E\u043F\u0438\u0441\u0430\u043D\u0438\u0435 \u0437\u0430\u0434\u0430\u0447\u0438</label>\n                    <textarea class=\"form-control\" id=\"description\" rows=\"3\">").concat((_res$data$description = res.data.description) !== null && _res$data$description !== void 0 ? _res$data$description : '', "</textarea>\n                </div>\n                    <button class=\"btn text-white ").concat(res.data.list_task_id ? 'hide' : '', "\" id=\"add-menu-tasks\">Add tasks</button>\n            "));
+    modal.insertAdjacentHTML('beforeend', "\n             <span class=\"close-modal\" id=\"modal-desk\" onclick=\"closeModal()\">X</span>\n                <b>".concat(res.data.title, "</b>\n                <div class=\"users-desk\">\n                    <span><img src=\"/images/avatar_none.png\" alt=\"\"></span>\n                    <span><img src=\"/images/avatar_none.png\" alt=\"\"></span>\n                    <span><img src=\"/images/avatar_none.png\" alt=\"\"></span>\n                    <i class=\"bi bi-plus-circle\"></i>\n                </div>\n\n                <div class=\"description\">\n                    <label for=\"description\" class=\"form-label\">Description of task</label>\n                    <textarea class=\"form-control\" id=\"description\" rows=\"3\" placeholder=\"This task mean...\">").concat((_res$data$description = res.data.description) !== null && _res$data$description !== void 0 ? _res$data$description : '', "</textarea>\n                    <button class=\"btn text-white hide\" id=\"save-desk\" onclick=\"updateDescription(").concat(dashboard_id, ",").concat(desk_id, ", ").concat(column_id, ")\"><i class=\"bi bi-check-lg\"></i>Save</button>\n                </div>\n                    <button class=\"btn text-white ").concat(res.data.list_task_id ? 'hide' : '', "\" id=\"add-menu-tasks\">Add tasks</button>\n            "));
 
-    // -----------Add check list-----------
-    fetch('/api/getTasks?dashboard_id=' + dashboard_id + "&desk_id=" + desk_id, {
-      method: 'get',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      }
-    }).then(function (response) {
-      return response.json();
-    }).then(function (res) {
-      var addWindowTasks = document.getElementById('add-menu-tasks');
-      addWindowTasks.classList.add('hide');
-      if (res.list) {
-        addWindowTasks.insertAdjacentHTML('beforebegin', "\n                    <div class=\"check-list-wrapper\">\n                        <span class=\"name-list bg-dark bg-gradient text-white\" data-name-list>".concat(res.list.title, "</span>\n                        <input type=\"text\" class=\"form-control name-list hide\">\n                        <i class=\"bi bi-check-lg save-column hide\" data-save-checkList></i>\n                        <div class=\"list-tasks d-flex flex-column\">\n                            <button class=\"btn text-white add-task\" id=\"btn-create-task\">Add task</button>\n                        </div>\n                    </div>"));
-      } else {
-        addWindowTasks.insertAdjacentHTML('beforebegin', "\n                    <div class=\"check-list-wrapper\">\n                    <span class=\"name-list bg-dark bg-gradient text-white hide\" data-name-list>Name list</span>\n                    <input type=\"text\" class=\"form-control name-list\">\n                    <i class=\"bi bi-check-lg save-column\" data-save-checkList></i>\n                    <div class=\"list-tasks d-flex flex-column\">\n                        <button class=\"btn text-white add-task\" id=\"btn-create-task\">Add task</button>\n                    </div>\n                </div>\n            </div>\n                ");
-      }
-      var createTask = document.getElementById('btn-create-task');
-      if (createTask) {
-        // ------------Create task------------
-        var _createTask = document.getElementById('btn-create-task');
-        _createTask.onclick = function () {
-          console.log('dada');
-          _createTask.insertAdjacentHTML('beforebegin', "\n                    <div class=\"form-check form-switch\">\n                        <input type=\"checkbox\" class=\"form-check-input\" role=\"switch\" id=\"checklist\">\n                        <input type=\"text\" class=\"form-control\">\n                        <button class=\"btn text-white\" id=\"saveTask\">Save</button>\n<!--                            <label for=\"checklist\" class=\"form-check-label\">Task 1</label>-->\n                    </div>\n                ");
-
-          //------------Save task------------
-          var saveTask = document.getElementById('saveTask');
-          saveTask.onclick = function () {
-            saveTask.classList.add('hide');
-            saveTask.previousElementSibling.classList.add('hide');
-            fetch('/api/saveTask', {
-              method: 'post',
-              headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify({
-                'title': saveTask.previousElementSibling.value,
-                'done': document.getElementById('checklist').checked,
-                'dashboard_id': dashboard_id,
-                'desk_id': desk_id
-              })
-            }).then(function (response) {
-              return response.json();
-            }).then(function (res) {
-              _createTask.insertAdjacentHTML('beforebegin', "\n                                        <div class=\"form-check form-switch\">\n                                            <input type=\"checkbox\" class=\"form-check-input\" role=\"switch\" id=\"checklist\">\n                                            <input type=\"text\" class=\"form-control hide\">\n                                            <button class=\"btn text-white hide\" id=\"saveTask\">Save</button>\n                                                <label for=\"checklist\" class=\"form-check-label\">".concat(res.title, "</label>\n                                        </div>\n                                    "));
-            });
-          };
-        };
-      } else {
-        addWindowTasks.onclick = function () {
-          addWindowTasks.classList.add('hide');
-          var saveCheckList = document.querySelector('[data-save-checkList]');
-          saveCheckList.addEventListener('click', function () {
-            var input = saveCheckList.previousElementSibling.value;
-            fetch('/api/createList', {
-              method: 'post',
-              headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify({
-                'title': input,
-                'dashboard_id': dashboard_id,
-                'desk_id': desk_id
-              })
-            }).then(function (response) {
-              return response.json();
-            }).then(function (res) {
-              saveCheckList.previousElementSibling.classList.add('hide');
-              saveCheckList.classList.add('hide');
-              document.querySelector('[data-name-list]').classList.remove('hide');
-              document.querySelector('[data-name-list]').textContent = res.title;
-            });
-          });
-        };
+    // --------Add Description-------
+    var textareaClicked = false;
+    document.getElementById('description').addEventListener('click', function () {
+      if (!textareaClicked) {
+        textareaClicked = true;
+        document.getElementById('save-desk').classList.remove('hide');
       }
     });
-    // ---------------END if()---------------
+    // --------End add Description-------
 
-    // ---------Close modal---------
-    document.getElementById('modal-desk').addEventListener('click', function () {
-      modal.innerHTML = "";
-      document.getElementById('wrapper').style.cssText = "filter: none;";
-      modal.classList.add('hide');
+    loadCheckList(dashboard_id, desk_id, column_id);
+  });
+};
+closeModal = function closeModal() {
+  var modal = document.querySelector('[data-modal-desk]');
+  modal.innerHTML = "";
+  document.getElementById('wrapper').style.cssText = "filter: none;";
+  modal.classList.add('hide');
+  document.getElementById('backModal').classList.add('hide');
+};
+loadCheckList = function loadCheckList(dashboard_id, desk_id, column_id) {
+  fetch('/api/getTasks?dashboard_id=' + dashboard_id + "&desk_id=" + desk_id, {
+    method: 'get',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    }
+  }).then(function (response) {
+    return response.json();
+  }).then(function (res) {
+    var addWindowTasks = document.getElementById('add-menu-tasks');
+    addWindowTasks.classList.add('hide');
+    if (res.list) {
+      addWindowTasks.insertAdjacentHTML('beforebegin', "\n                    <div class=\"check-list-wrapper\">\n                        <span class=\"name-list bg-dark bg-gradient text-white\" data-name-list>".concat(res.list.title, "</span>\n                        <input type=\"text\" class=\"form-control name-list hide\">\n                        <i class=\"bi bi-check-lg save-column hide\" data-save-checkList></i>\n                        <div class=\"list-tasks d-flex flex-column\">\n                            <button class=\"btn text-white add-task\" id=\"btn-create-task\" onclick=\"createTask(").concat(dashboard_id, ", ").concat(desk_id, ")\">Add task</button>\n                        </div>\n                    </div>"));
+      if (res.tasks) {
+        res.tasks.forEach(function (item) {
+          document.getElementById('btn-create-task').insertAdjacentHTML('beforebegin', "\n                        <div class=\"form-check form-switch\" data-task-id=\"".concat(item.id, "\">\n                            <input type=\"checkbox\" class=\"form-check-input\" role=\"switch\" id=\"checklist").concat(item.id, "\" ").concat(item.done === 0 ? "" : 'checked', "\n                             onclick=\"changeChecked(").concat(dashboard_id, ", ").concat(desk_id, ", ").concat(column_id, ", ").concat(item.id, ")\">\n                            <input type=\"text\" class=\"form-control hide\" id=\"saveTitleTask\" value=\"").concat(item.title, "\">\n                            <button class=\"btn text-white hide\" id=\"saveTask\" onclick=\"saveTask(").concat(dashboard_id, ", ").concat(desk_id, ")\">Save</button>\n                            <label for=\"checklist").concat(item.id, "\" class=\"form-check-label\">").concat(item.title, "</label>\n                        </div>\n                "));
+        });
+      }
+    } else {
+      addWindowTasks.insertAdjacentHTML('beforebegin', "\n                <div class=\"check-list-wrapper\">\n                    <span class=\"name-list bg-dark bg-gradient text-white hide\" data-name-list>Name list</span>\n                    <input type=\"text\" class=\"form-control name-list\">\n                    <i class=\"bi bi-check-lg save-column\" data-save-checkList></i>\n                    <div class=\"list-tasks d-flex flex-column\">\n                        <button class=\"btn text-white add-task\" id=\"btn-create-task\" onclick=\"createTask(".concat(dashboard_id, ", ").concat(desk_id, ")\">Add task</button>\n                    </div>\n                </div>\n                "));
+    }
+  });
+};
+createTask = function createTask(dashboard_id, desk_id) {
+  // -----------Add check list-----------
+  var createTask = document.getElementById('btn-create-task');
+  if (createTask) {
+    // ------------Create task------------
+    var _createTask = document.getElementById('btn-create-task');
+    _createTask.insertAdjacentHTML('beforebegin', "\n            <div class=\"form-check form-switch\" data-temp-task>\n                <input type=\"checkbox\" class=\"form-check-input\" role=\"switch\" id=\"checklist\">\n                <input type=\"text\" class=\"form-control\" id=\"saveTitleTask\">\n                <button class=\"btn text-white\" id=\"saveTask\" onclick=\"saveTask(".concat(dashboard_id, ", ").concat(desk_id, ")\">Save</button>\n            </div>\n        "));
+  } else {
+    addWindowTasks(dashboard_id, desk_id);
+  }
+};
+changeChecked = function changeChecked(dashboard_id, desk_id, column_id, task_id) {
+  var check = event.target;
+  fetch('/api/modalUpdate', {
+    method: 'post',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      done: check.checked,
+      id: desk_id,
+      dashboard_id: dashboard_id,
+      column_id: column_id,
+      task_id: task_id
+    })
+  }).then(function (response) {
+    return response.json();
+  }).then(function (res) {
+    check.setAttribute('checked', "checked");
+  });
+};
+saveTask = function saveTask(dashboard_id, desk_id) {
+  var title = document.querySelector('[data-temp-task]');
+  fetch('/api/saveTask', {
+    method: 'post',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      'title': title.querySelector('#saveTitleTask').value,
+      'done': event.target.previousElementSibling.previousElementSibling.checked,
+      'dashboard_id': dashboard_id,
+      'desk_id': desk_id
+    })
+  }).then(function (response) {
+    return response.json();
+  }).then(function (res) {
+    title.remove();
+    var createTask = document.getElementById('btn-create-task');
+    createTask.insertAdjacentHTML('beforebegin', "\n            <div class=\"form-check form-switch\" data-task-id=\"".concat(res.id, "\">\n                <input type=\"checkbox\" class=\"form-check-input\" role=\"switch\" id=\"checklist").concat(res.id, "\">\n                <input type=\"text\" class=\"form-control hide\" id=\"saveTitleTask\">\n                <button class=\"btn text-white hide\" id=\"saveTask\" onclick=\"saveTask(").concat(dashboard_id, ", ").concat(desk_id, ")\">Save</button>\n                <label for=\"checklist").concat(res.id, "\" class=\"form-check-label\">").concat(res.title, "</label>\n            </div>\n        "));
+  });
+};
+addWindowTasks = function addWindowTasks(dashboard_id, desk_id) {
+  var addWindowTasks = document.getElementById('add-menu-tasks');
+  addWindowTasks.onclick = function () {
+    addWindowTasks.classList.add('hide');
+    var saveCheckList = document.querySelector('[data-save-checkList]');
+    saveCheckList.addEventListener('click', function () {
+      var input = saveCheckList.previousElementSibling.value;
+      fetch('/api/createList', {
+        method: 'post',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          'title': input,
+          'dashboard_id': dashboard_id,
+          'desk_id': desk_id
+        })
+      }).then(function (response) {
+        return response.json();
+      }).then(function (res) {
+        saveCheckList.previousElementSibling.classList.add('hide');
+        saveCheckList.classList.add('hide');
+        document.querySelector('[data-name-list]').classList.remove('hide');
+        document.querySelector('[data-name-list]').textContent = res.title;
+      });
     });
+  };
+};
+updateDescription = function updateDescription(dashboard_id, desk_id, column_id) {
+  var desk = document.getElementById('description').value;
+  fetch('/api/modalUpdate', {
+    method: 'post',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      description: desk,
+      id: desk_id,
+      dashboard_id: dashboard_id,
+      column_id: column_id
+    })
+  }).then(function (response) {
+    return response.json();
+  }).then(function (res) {
+    desk.value = res.description;
   });
 };
 /******/ })()

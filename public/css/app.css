@@ -343,6 +343,8 @@ nav {
   height: 700px;
   text-align: center;
   border-radius: 8px;
+  overflow-y: auto;
+  padding-bottom: 20px;
 }
 .modal-desk b {
   font-size: 2rem;
@@ -399,6 +401,8 @@ nav {
 .modal-desk .description {
   margin: 50px auto;
   width: 90%;
+  display: flex;
+  flex-direction: column;
 }
 .modal-desk .description textarea {
   max-height: 150px;
@@ -437,4 +441,12 @@ nav {
 }
 .modal-desk .check-list-wrapper .list-tasks .add-task {
   width: 115px !important;
+}
+
+.backModal {
+  width: 100vw;
+  position: fixed;
+  height: 100vh;
+  top: 0;
+  left: 0;
 }

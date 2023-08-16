@@ -17,7 +17,7 @@ class DeskResource extends JsonResource
         return [
             'id' => $this->id,
             'title' => $this->title,
-            'desciption' => $this->description,
+            'description' => $this->description,
             'task_id' => $this->task_id,
             'image' => $this->image,
             'status' => $this->status,
