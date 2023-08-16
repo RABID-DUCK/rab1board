@@ -323,6 +323,11 @@ viewDesk = function (dashboard_id, column_id, desk_id){
     })
         .then(response => response.json())
         .then(res => {
+            document.getElementById('wrapper-modal').insertAdjacentHTML('beforeend', `
+               <div class="panel-desk bg-dark bg-gradient text-white">
+                <b>First</b>
+            </div>
+            `)
             // ----------Open modal----------
             modal.insertAdjacentHTML('beforeend', `
              <span class="close-modal" id="modal-desk" onclick="closeModal()">X</span>
