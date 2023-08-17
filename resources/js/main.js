@@ -301,13 +301,13 @@ renameDashboard = function (id){
 }
 
 viewDesk = function (dashboard_id, column_id, desk_id){
-    let column = document.querySelector(`[data-column-id="${column_id}"]`);
-    let desk = column.querySelector(`[data-desk-id="${desk_id}"]`);
     let modal = document.querySelector('[data-modal-desk]');
     let backModal = document.getElementById('backModal');
+    let wrapModal = document.getElementById('wrapper-modal');
 
     backModal.classList.remove('hide');
-    modal.classList.remove('hide');
+    wrapModal.style.cssText = 'display: flex;';
+    wrapModal.classList.remove('hide-animate');
     document.getElementById('wrapper').style.cssText = `filter: blur(2px);`;
 
     backModal.addEventListener('click', () => {
@@ -323,11 +323,20 @@ viewDesk = function (dashboard_id, column_id, desk_id){
     })
         .then(response => response.json())
         .then(res => {
-            document.getElementById('wrapper-modal').insertAdjacentHTML('beforeend', `
-               <div class="panel-desk bg-dark bg-gradient text-white">
-                <b>First</b>
+
+            if (!document.querySelector('[data-panel-modal-desk]')){
+                document.getElementById('wrapper-modal').insertAdjacentHTML('afterbegin', `
+               <div class="panel-desk bg-dark bg-gradient text-white" data-panel-modal-desk>
+                <i class="bi bi-calendar" data-title="Добавить дату выполнения"></i>
+                <i class="bi bi-image" data-title="Добавить картинку"></i>
+                <i class="bi bi-card-list" data-title="Добавить подзадачи"></i>
+                <i class="bi bi-bookmark-fill" data-title="Добавить важность задачи"></i>
+                <i class="bi bi-arrows-move" data-title="Переместить задачу"></i>
+                <i class="bi bi-files" data-title="Прикрепить файлы"></i>
             </div>
             `)
+            }
+
             // ----------Open modal----------
             modal.insertAdjacentHTML('beforeend', `
              <span class="close-modal" id="modal-desk" onclick="closeModal()">X</span>
@@ -362,11 +371,18 @@ viewDesk = function (dashboard_id, column_id, desk_id){
 }
 
 closeModal = function () {
-    let modal = document.querySelector('[data-modal-desk]');
-    modal.innerHTML = "";
+    let modal = document.getElementById('wrapper-modal');
+
+    modal.querySelector('[data-modal-desk]').innerHTML = "";
+    document.getElementById('wrapper-modal').style.cssText = `filter: none;`;
     document.getElementById('wrapper').style.cssText = `filter: none;`;
-    modal.classList.add('hide');
+    modal.classList.add('hide-animate');
     document.getElementById('backModal').classList.add('hide');
+
+    setTimeout(() =>{
+        modal.style.cssText = 'display: none !important';
+        modal.classList.add('hide-animate')
+    }, 500);
 }
 
 loadCheckList = function (dashboard_id, desk_id, column_id){
@@ -421,10 +437,8 @@ loadCheckList = function (dashboard_id, desk_id, column_id){
 }
 
 createTask = function (dashboard_id, desk_id){
-    // -----------Add check list-----------
     let createTask = document.getElementById('btn-create-task');
     if (createTask){
-        // ------------Create task------------
         let createTask = document.getElementById('btn-create-task');
         createTask.insertAdjacentHTML('beforebegin', `
             <div class="form-check form-switch" data-temp-task>

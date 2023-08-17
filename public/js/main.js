@@ -223,12 +223,12 @@ renameDashboard = function renameDashboard(id) {
   });
 };
 viewDesk = function viewDesk(dashboard_id, column_id, desk_id) {
-  var column = document.querySelector("[data-column-id=\"".concat(column_id, "\"]"));
-  var desk = column.querySelector("[data-desk-id=\"".concat(desk_id, "\"]"));
   var modal = document.querySelector('[data-modal-desk]');
   var backModal = document.getElementById('backModal');
+  var wrapModal = document.getElementById('wrapper-modal');
   backModal.classList.remove('hide');
-  modal.classList.remove('hide');
+  wrapModal.style.cssText = 'display: flex;';
+  wrapModal.classList.remove('hide-animate');
   document.getElementById('wrapper').style.cssText = "filter: blur(2px);";
   backModal.addEventListener('click', function () {
     closeModal();
@@ -243,7 +243,10 @@ viewDesk = function viewDesk(dashboard_id, column_id, desk_id) {
     return response.json();
   }).then(function (res) {
     var _res$data$description;
-    document.getElementById('wrapper-modal').insertAdjacentHTML('beforeend', "\n               <div class=\"panel-desk bg-dark bg-gradient text-white\">\n                <b>First</b>\n            </div>\n            ");
+    if (!document.querySelector('[data-panel-modal-desk]')) {
+      document.getElementById('wrapper-modal').insertAdjacentHTML('afterbegin', "\n               <div class=\"panel-desk bg-dark bg-gradient text-white\" data-panel-modal-desk>\n                <i class=\"bi bi-calendar\" data-title=\"\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u0434\u0430\u0442\u0443 \u0432\u044B\u043F\u043E\u043B\u043D\u0435\u043D\u0438\u044F\"></i>\n                <i class=\"bi bi-image\" data-title=\"\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u043A\u0430\u0440\u0442\u0438\u043D\u043A\u0443\"></i>\n                <i class=\"bi bi-card-list\" data-title=\"\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u043F\u043E\u0434\u0437\u0430\u0434\u0430\u0447\u0438\"></i>\n                <i class=\"bi bi-bookmark-fill\" data-title=\"\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u0432\u0430\u0436\u043D\u043E\u0441\u0442\u044C \u0437\u0430\u0434\u0430\u0447\u0438\"></i>\n                <i class=\"bi bi-arrows-move\" data-title=\"\u041F\u0435\u0440\u0435\u043C\u0435\u0441\u0442\u0438\u0442\u044C \u0437\u0430\u0434\u0430\u0447\u0443\"></i>\n                <i class=\"bi bi-files\" data-title=\"\u041F\u0440\u0438\u043A\u0440\u0435\u043F\u0438\u0442\u044C \u0444\u0430\u0439\u043B\u044B\"></i>\n            </div>\n            ");
+    }
+
     // ----------Open modal----------
     modal.insertAdjacentHTML('beforeend', "\n             <span class=\"close-modal\" id=\"modal-desk\" onclick=\"closeModal()\">X</span>\n                <b>".concat(res.data.title, "</b>\n                <div class=\"users-desk\">\n                    <span><img src=\"/images/avatar_none.png\" alt=\"\"></span>\n                    <span><img src=\"/images/avatar_none.png\" alt=\"\"></span>\n                    <span><img src=\"/images/avatar_none.png\" alt=\"\"></span>\n                    <i class=\"bi bi-plus-circle\"></i>\n                </div>\n\n                <div class=\"description\">\n                    <label for=\"description\" class=\"form-label\">Description of task</label>\n                    <textarea class=\"form-control\" id=\"description\" rows=\"3\" placeholder=\"This task mean...\">").concat((_res$data$description = res.data.description) !== null && _res$data$description !== void 0 ? _res$data$description : '', "</textarea>\n                    <button class=\"btn text-white hide\" id=\"save-desk\" onclick=\"updateDescription(").concat(dashboard_id, ",").concat(desk_id, ", ").concat(column_id, ")\"><i class=\"bi bi-check-lg\"></i>Save</button>\n                </div>\n                    <button class=\"btn text-white ").concat(res.data.list_task_id ? 'hide' : '', "\" id=\"add-menu-tasks\">Add tasks</button>\n            "));
 
@@ -261,11 +264,16 @@ viewDesk = function viewDesk(dashboard_id, column_id, desk_id) {
   });
 };
 closeModal = function closeModal() {
-  var modal = document.querySelector('[data-modal-desk]');
-  modal.innerHTML = "";
+  var modal = document.getElementById('wrapper-modal');
+  modal.querySelector('[data-modal-desk]').innerHTML = "";
+  document.getElementById('wrapper-modal').style.cssText = "filter: none;";
   document.getElementById('wrapper').style.cssText = "filter: none;";
-  modal.classList.add('hide');
+  modal.classList.add('hide-animate');
   document.getElementById('backModal').classList.add('hide');
+  setTimeout(function () {
+    modal.style.cssText = 'display: none !important';
+    modal.classList.add('hide-animate');
+  }, 500);
 };
 loadCheckList = function loadCheckList(dashboard_id, desk_id, column_id) {
   fetch('/api/getTasks?dashboard_id=' + dashboard_id + "&desk_id=" + desk_id, {
@@ -292,10 +300,8 @@ loadCheckList = function loadCheckList(dashboard_id, desk_id, column_id) {
   });
 };
 createTask = function createTask(dashboard_id, desk_id) {
-  // -----------Add check list-----------
   var createTask = document.getElementById('btn-create-task');
   if (createTask) {
-    // ------------Create task------------
     var _createTask = document.getElementById('btn-create-task');
     _createTask.insertAdjacentHTML('beforebegin', "\n            <div class=\"form-check form-switch\" data-temp-task>\n                <input type=\"checkbox\" class=\"form-check-input\" role=\"switch\" id=\"checklist\">\n                <input type=\"text\" class=\"form-control\" id=\"saveTitleTask\">\n                <button class=\"btn text-white\" id=\"saveTask\" onclick=\"saveTask(".concat(dashboard_id, ", ").concat(desk_id, ")\">Save</button>\n            </div>\n        "));
   } else {

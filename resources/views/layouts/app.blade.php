@@ -28,8 +28,8 @@
             <div class="backModal hide" id="backModal">
 
             </div>
-            <div id="wrapper-modal">
-                <div class="modal-desk bg-dark bg-gradient text-white hide" data-modal-desk data-keyboard="false" data-backdrop="static">
+            <div id="wrapper-modal" class="wrapper-modal hide-animate">
+                <div class="modal-desk bg-dark bg-gradient text-white" data-modal-desk data-keyboard="false" data-backdrop="static">
 
                 </div>
             </div>
