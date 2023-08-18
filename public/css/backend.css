@@ -12,7 +12,7 @@
   transition: color 0.3s;
 }
 .table-backend .action button:last-child {
-  color: rgb(224, 6, 6);
+  color: #cd1313;
   font-width: bold;
 }
 .table-backend .action button:last-child:hover {

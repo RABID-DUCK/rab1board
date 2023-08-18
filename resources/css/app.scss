@@ -646,3 +646,15 @@ nav{
         font-size: 12px;
     }
 }
+
+.output-colors{
+    width: 200px;
+    height: 22px;
+    border: 1px solid white;
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 55%;
+    left: 9%;
+    max-height: 35px;
+}

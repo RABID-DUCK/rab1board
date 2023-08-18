@@ -356,7 +356,7 @@ viewDesk = function (dashboard_id, column_id, desk_id){
                 <i id="calendarIcon" class="bi bi-calendar" onclick="openDatePicker(${dashboard_id},${desk_id})" data-title="Добавить дату выполнения"></i>
                 <i class="bi bi-image" data-title="Добавить картинку"></i>
                 <i class="bi bi-card-list" data-title="Добавить подзадачи"></i>
-                <i class="bi bi-bookmark-fill" data-title="Добавить важность задачи"></i>
+                <i class="bi bi-bookmark-fill" data-title="Добавить важность задачи" onclick="outputColors(${dashboard_id},${desk_id})"></i>
                 <i class="bi bi-arrows-move" data-title="Переместить задачу"></i>
                 <i class="bi bi-files" data-title="Прикрепить файлы"></i>
             </div>
@@ -653,5 +653,18 @@ doneTask = function (dashboard_id, desk_id){
             }else{
                 status.style.backgroundColor = '#fafafa';
             }
+        })
+}
+
+outputColors = function (dashboard_id, desk_id){
+    fetch('/api/colors')
+        .then(response => response.json())
+        .then(res => {
+            document.getElementById('wrapper-modal').insertAdjacentHTML('afterend', `
+                <div id="output-colors" class="output-colors">
+                    <span id="output-date-end">Срок до: ${convertData(res.data_end)}</span>
+                </div>
+            `)
+            console.log(res);
         })
 }

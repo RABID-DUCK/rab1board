@@ -35,3 +35,5 @@ Route::post('/modalUpdate', '\App\Http\Controllers\API\DeskController@update');
 Route::post('/saveTask', '\App\Http\Controllers\API\ListTaskController@store');
 Route::post('/createList', '\App\Http\Controllers\API\ListTaskController@createList');
 Route::get('/getTasks', '\App\Http\Controllers\API\ListTaskController@getTasks');
+
+Route::get('/colors', [\App\Http\Controllers\API\ColorController::class, 'index']);

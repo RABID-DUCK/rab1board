@@ -257,7 +257,7 @@ viewDesk = function viewDesk(dashboard_id, column_id, desk_id) {
   }).then(function (res) {
     var _res$data$description;
     if (!document.querySelector('[data-panel-modal-desk]')) {
-      document.getElementById('wrapper-modal').insertAdjacentHTML('afterbegin', "\n               <div class=\"panel-desk bg-dark bg-gradient text-white\" data-panel-modal-desk>\n                <i id=\"calendarIcon\" class=\"bi bi-calendar\" onclick=\"openDatePicker(".concat(dashboard_id, ",").concat(desk_id, ")\" data-title=\"\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u0434\u0430\u0442\u0443 \u0432\u044B\u043F\u043E\u043B\u043D\u0435\u043D\u0438\u044F\"></i>\n                <i class=\"bi bi-image\" data-title=\"\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u043A\u0430\u0440\u0442\u0438\u043D\u043A\u0443\"></i>\n                <i class=\"bi bi-card-list\" data-title=\"\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u043F\u043E\u0434\u0437\u0430\u0434\u0430\u0447\u0438\"></i>\n                <i class=\"bi bi-bookmark-fill\" data-title=\"\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u0432\u0430\u0436\u043D\u043E\u0441\u0442\u044C \u0437\u0430\u0434\u0430\u0447\u0438\"></i>\n                <i class=\"bi bi-arrows-move\" data-title=\"\u041F\u0435\u0440\u0435\u043C\u0435\u0441\u0442\u0438\u0442\u044C \u0437\u0430\u0434\u0430\u0447\u0443\"></i>\n                <i class=\"bi bi-files\" data-title=\"\u041F\u0440\u0438\u043A\u0440\u0435\u043F\u0438\u0442\u044C \u0444\u0430\u0439\u043B\u044B\"></i>\n            </div>\n            "));
+      document.getElementById('wrapper-modal').insertAdjacentHTML('afterbegin', "\n               <div class=\"panel-desk bg-dark bg-gradient text-white\" data-panel-modal-desk>\n                <i id=\"calendarIcon\" class=\"bi bi-calendar\" onclick=\"openDatePicker(".concat(dashboard_id, ",").concat(desk_id, ")\" data-title=\"\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u0434\u0430\u0442\u0443 \u0432\u044B\u043F\u043E\u043B\u043D\u0435\u043D\u0438\u044F\"></i>\n                <i class=\"bi bi-image\" data-title=\"\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u043A\u0430\u0440\u0442\u0438\u043D\u043A\u0443\"></i>\n                <i class=\"bi bi-card-list\" data-title=\"\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u043F\u043E\u0434\u0437\u0430\u0434\u0430\u0447\u0438\"></i>\n                <i class=\"bi bi-bookmark-fill\" data-title=\"\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u0432\u0430\u0436\u043D\u043E\u0441\u0442\u044C \u0437\u0430\u0434\u0430\u0447\u0438\" onclick=\"outputColors(").concat(dashboard_id, ",").concat(desk_id, ")\"></i>\n                <i class=\"bi bi-arrows-move\" data-title=\"\u041F\u0435\u0440\u0435\u043C\u0435\u0441\u0442\u0438\u0442\u044C \u0437\u0430\u0434\u0430\u0447\u0443\"></i>\n                <i class=\"bi bi-files\" data-title=\"\u041F\u0440\u0438\u043A\u0440\u0435\u043F\u0438\u0442\u044C \u0444\u0430\u0439\u043B\u044B\"></i>\n            </div>\n            "));
     }
 
     // ----------Open modal----------
@@ -475,6 +475,14 @@ doneTask = function doneTask(dashboard_id, desk_id) {
     } else {
       status.style.backgroundColor = '#fafafa';
     }
+  });
+};
+outputColors = function outputColors(dashboard_id, desk_id) {
+  fetch('/api/colors').then(function (response) {
+    return response.json();
+  }).then(function (res) {
+    document.getElementById('wrapper-modal').insertAdjacentHTML('afterend', "\n                <div id=\"output-colors\" class=\"output-colors\">\n                    <span id=\"output-date-end\">\u0421\u0440\u043E\u043A \u0434\u043E: ".concat(convertData(res.data_end), "</span>\n                </div>\n            "));
+    console.log(res);
   });
 };
 /******/ })()
