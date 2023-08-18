@@ -322,6 +322,10 @@ openDatePicker = function(dashboard_id, desk_id) {
 closeSelectDate = () => document.getElementById('selectDate').remove()
 
 viewDesk = function (dashboard_id, column_id, desk_id){
+    if(event.target.id === 'status'){
+        doneTask(dashboard_id, desk_id);
+        return;
+    }
     let modal = document.querySelector('[data-modal-desk]');
     let backModal = document.getElementById('backModal');
     let wrapModal = document.getElementById('wrapper-modal');

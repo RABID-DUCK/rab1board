@@ -231,6 +231,10 @@ closeSelectDate = function closeSelectDate() {
   return document.getElementById('selectDate').remove();
 };
 viewDesk = function viewDesk(dashboard_id, column_id, desk_id) {
+  if (event.target.id === 'status') {
+    doneTask(dashboard_id, desk_id);
+    return;
+  }
   var modal = document.querySelector('[data-modal-desk]');
   var backModal = document.getElementById('backModal');
   var wrapModal = document.getElementById('wrapper-modal');

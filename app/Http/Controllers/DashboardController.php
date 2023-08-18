@@ -8,11 +8,26 @@ use App\Models\Dashboards;
 use App\Models\Desks;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 
 class DashboardController extends Controller
 {
     public function index(){
-        $dashboards = Dashboards::all();
+        $data = Dashboards::all();
+
+        $dashboards = [];
+
+        foreach($data as $dashboard) {
+            $data[$dashboard->id] = [
+                'title' => $dashboard->title,
+                'description' => $dashboard->description,
+                'image' => $dashboard->image,
+                'data_start' => $dashboard->data_start,
+                'data_end' => $dashboard->data_end,
+                'status' => $dashboard->status ? true : false,
+                'dateTime' => Carbon::parse($dashboard->data_end)->translatedFormat('j F Y')
+            ];
+        }
 
         return view('backend.dashboards.index', compact('dashboards'));
     }

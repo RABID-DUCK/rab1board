@@ -200,7 +200,7 @@ nav {
 }
 .desk-block .desk, .desk-block .column-modal-wrapper {
   position: relative;
-  border: 1px solid #EBEFF2;
+  box-shadow: 0 0 3px 2px gray;
   margin-bottom: 15px;
   padding: 10px 15px;
 }
@@ -232,7 +232,7 @@ nav {
 .desk-wrapper .custom-checkbox {
   -webkit-appearance: none;
   background-color: #fafafa;
-  border: 1px solid #EBEFF2;
+  border: 1px solid #545454;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0px -15px 10px -12px rgba(0, 0, 0, 0.05);
   padding: 8px;
   border-radius: 3px;
@@ -254,6 +254,13 @@ nav {
   bottom: -2px;
   left: 3px;
   color: white;
+}
+
+.desk:hover {
+  cursor: pointer;
+  box-shadow: 0 0 5px 2px #545454;
+  transform: scale(1.01);
+  transition: transform 0.3s;
 }
 
 .add-desk, .add-column {

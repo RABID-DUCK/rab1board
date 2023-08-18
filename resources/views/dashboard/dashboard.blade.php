@@ -51,12 +51,7 @@
                                 <div class="data-desk">
                                     <input class="custom-checkbox" type="checkbox" id="status" name="status" value="yes"
                                         {{$desk->status ? "checked" : ''}}   onclick="doneTask({{$dashboard->id}}, {{$desk->id}})">
-                                    @php
-                                    $dataString = $desk->data_end;
-                                    $dateTime = \Illuminate\Support\Carbon::parse($dataString)->translatedFormat('j F Y');
-
-                                   echo "<time datetime='2011-11-18T14:54:39.929Z' name='date' id='data-desk'>До $dateTime</time>"
-                                    @endphp
+                                        <time datetime='2011-11-18T14:54:39.929Z' name='date' id='data-desk'>{{$desk->data_end ? "До ".$desk->data_end : ""}}</time>
                                 </div>
                                 <span>status</span>
                             </div>
