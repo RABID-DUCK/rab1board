@@ -467,10 +467,10 @@ doneTask = function doneTask(dashboard_id, desk_id) {
   }).then(function (response) {
     return response.json();
   }).then(function (res) {
-    closeSelectDate();
+    if (document.getElementById('selectDate')) closeSelectDate();
     var status = document.querySelector("[data-desk-id=\"".concat(desk_id, "\"]")).querySelector('#status');
     if (res.status) {
-      status.setAttribute('checked');
+      status.setAttribute('checked', '');
       status.style.backgroundColor = 'green';
     }
   });

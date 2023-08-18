@@ -644,10 +644,11 @@ doneTask = function (dashboard_id, desk_id){
     })
         .then(response => response.json())
         .then(res => {
-            closeSelectDate()
+            if (document.getElementById('selectDate')) closeSelectDate();
+
             let status = document.querySelector(`[data-desk-id="${desk_id}"]`).querySelector('#status');
             if(res.status){
-                status.setAttribute('checked');
+                status.setAttribute('checked', '');
                 status.style.backgroundColor = 'green';
             }
         })
