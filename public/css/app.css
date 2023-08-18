@@ -71,10 +71,15 @@ nav {
 
 .dropdown-menu {
   display: block !important;
+  visibility: hidden;
   overflow: hidden;
   opacity: 0;
   height: 0;
   transition: all 0.3s;
+}
+
+.dropdown-menu.show {
+  visibility: visible;
 }
 
 .show {

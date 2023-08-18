@@ -87,7 +87,12 @@ nav{
 
 .dropdown-menu{
     display: block !important;
+    visibility: hidden;
     @include m.dropdown(false);
+}
+
+.dropdown-menu.show{
+    visibility: visible;
 }
 
 .show{

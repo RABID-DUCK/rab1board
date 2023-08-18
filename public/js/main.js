@@ -472,6 +472,8 @@ doneTask = function doneTask(dashboard_id, desk_id) {
     if (res.status) {
       status.setAttribute('checked', '');
       status.style.backgroundColor = 'green';
+    } else {
+      status.style.backgroundColor = '#fafafa';
     }
   });
 };
