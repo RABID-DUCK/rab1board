@@ -28,8 +28,8 @@ class UpdateRequest extends FormRequest
             'image' => 'nullable|string',
             'data_start'=> 'nullable|date_format:"Y-m-d\TH:i"',
             'data_end' =>'nullable|date_format:"Y-m-d\TH:i"',
-            'status' => 'nullable|string',
-            'column_id' => 'required|integer',
+            'status' => 'nullable|boolean',
+            'column_id' => 'nullable|integer',
             'dashboard_id' => 'required|integer',
             'done' => 'nullable|boolean',
             'task_id' => 'nullable|integer'

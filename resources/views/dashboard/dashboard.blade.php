@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="panel dashboard-single">
+    <div class="panel dashboard-single" id="left-panel-dash">
         <input type="hidden" id="dashboard-id" value="{{$dashboard->id}}">
             <div class="info-left-panel">
                 <div class="dashboard-single-user">
@@ -45,10 +45,18 @@
                         @foreach($column->desks as $desk)
                             <div class="desk" onclick="viewDesk({{$dashboard->id}},{{$column->id}},{{$desk->id}})" data-desk-id="{{$desk->id}}">
                                 <p>{{ $desk->title }}</p>
+                                @if($desk->image)
                                 <img src="{{ $desk->image }}" alt="{{ $desk->title }}">
+                                @endif
                                 <div class="data-desk">
-                                    <input class="custom-checkbox" type="checkbox" id="status" name="status" value="yes">
-                                    <time datetime="2011-11-18T14:54:39.929Z" name="date">{{ $desk->created_at }}</time>
+                                    <input class="custom-checkbox" type="checkbox" id="status" name="status" value="yes"
+                                        {{$desk->status ? "checked" : ''}}   onclick="doneTask({{$dashboard->id}}, {{$desk->id}})">
+                                    @php
+                                    $dataString = $desk->data_end;
+                                    $dateTime = \Illuminate\Support\Carbon::parse($dataString)->translatedFormat('j F Y');
+
+                                   echo "<time datetime='2011-11-18T14:54:39.929Z' name='date' id='data-desk'>До $dateTime</time>"
+                                    @endphp
                                 </div>
                                 <span>status</span>
                             </div>

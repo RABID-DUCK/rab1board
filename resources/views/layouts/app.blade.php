@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+{{--<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">--}}
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>{{__('messages.title')}}</title>
+{{--        <title>{{__('messages.title')}}</title>--}}
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
@@ -21,17 +21,18 @@
         <div class="content-wrapper d-flex justify-content-between" id="wrapper">
 
             @yield('content')
-        </div>
-                    {{--    Scripts--}}
-        <script src="{{ asset('js/main.js') }}"></script>
-        <script src="{{asset('js/app.js')}}"></script>
             <div class="backModal hide" id="backModal">
 
             </div>
             <div id="wrapper-modal" class="wrapper-modal hide-animate">
                 <div class="modal-desk bg-dark bg-gradient text-white" data-modal-desk data-keyboard="false" data-backdrop="static">
-
                 </div>
             </div>
+        </div>
+                    {{--    Scripts--}}
+
+            <script src="{{ asset('js/main.js') }}" ></script>
+            <script src="{{asset('js/app.js')}}"></script>
+
     </body>
 </html>

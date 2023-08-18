@@ -222,14 +222,23 @@ renameDashboard = function renameDashboard(id) {
     }
   });
 };
+openDatePicker = function openDatePicker(dashboard_id, desk_id) {
+  if (!document.getElementById('selectDate')) {
+    document.getElementById('desk-wrapper').insertAdjacentHTML('beforebegin', "\n    <div class=\"selectDate bg-dark bg-gradient text-white\" id=\"selectDate\">\n        <div>\n        <label for=\"dateStart\">\u0414\u0430\u0442\u0430 \u043D\u0430\u0447\u0430\u043B\u0430</label>\n        <input id=\"dateStart\" type=\"datetime-local\">\n        <label for=\"dateEnd\">\u0414\u0430\u0442\u0430 \u043E\u043A\u043E\u043D\u0447\u0430\u043D\u0438\u044F</label>\n        <input id=\"dateEnd\" type=\"datetime-local\">\n    </div>\n    <div>\n        <button class=\"btn text-white\" onclick=\"saveDate(".concat(dashboard_id, ",").concat(desk_id, ")\">Save</button>\n        <button class=\"btn btn-danger\" onclick=\"closeSelectDate()\">Close</button>\n    </div>\n    </div>\n    "));
+  }
+};
+closeSelectDate = function closeSelectDate() {
+  return document.getElementById('selectDate').remove();
+};
 viewDesk = function viewDesk(dashboard_id, column_id, desk_id) {
   var modal = document.querySelector('[data-modal-desk]');
   var backModal = document.getElementById('backModal');
   var wrapModal = document.getElementById('wrapper-modal');
   backModal.classList.remove('hide');
-  wrapModal.style.cssText = 'display: flex;';
+  wrapModal.style.cssText = 'position: fixed;';
   wrapModal.classList.remove('hide-animate');
-  document.getElementById('wrapper').style.cssText = "filter: blur(2px);";
+  document.getElementById('left-panel-dash').style.cssText = "filter: blur(2px);";
+  document.getElementById('desk-wrapper').style.cssText = "filter: blur(2px);";
   backModal.addEventListener('click', function () {
     closeModal();
   });
@@ -244,11 +253,11 @@ viewDesk = function viewDesk(dashboard_id, column_id, desk_id) {
   }).then(function (res) {
     var _res$data$description;
     if (!document.querySelector('[data-panel-modal-desk]')) {
-      document.getElementById('wrapper-modal').insertAdjacentHTML('afterbegin', "\n               <div class=\"panel-desk bg-dark bg-gradient text-white\" data-panel-modal-desk>\n                <i class=\"bi bi-calendar\" data-title=\"\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u0434\u0430\u0442\u0443 \u0432\u044B\u043F\u043E\u043B\u043D\u0435\u043D\u0438\u044F\"></i>\n                <i class=\"bi bi-image\" data-title=\"\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u043A\u0430\u0440\u0442\u0438\u043D\u043A\u0443\"></i>\n                <i class=\"bi bi-card-list\" data-title=\"\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u043F\u043E\u0434\u0437\u0430\u0434\u0430\u0447\u0438\"></i>\n                <i class=\"bi bi-bookmark-fill\" data-title=\"\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u0432\u0430\u0436\u043D\u043E\u0441\u0442\u044C \u0437\u0430\u0434\u0430\u0447\u0438\"></i>\n                <i class=\"bi bi-arrows-move\" data-title=\"\u041F\u0435\u0440\u0435\u043C\u0435\u0441\u0442\u0438\u0442\u044C \u0437\u0430\u0434\u0430\u0447\u0443\"></i>\n                <i class=\"bi bi-files\" data-title=\"\u041F\u0440\u0438\u043A\u0440\u0435\u043F\u0438\u0442\u044C \u0444\u0430\u0439\u043B\u044B\"></i>\n            </div>\n            ");
+      document.getElementById('wrapper-modal').insertAdjacentHTML('afterbegin', "\n               <div class=\"panel-desk bg-dark bg-gradient text-white\" data-panel-modal-desk>\n                <i id=\"calendarIcon\" class=\"bi bi-calendar\" onclick=\"openDatePicker(".concat(dashboard_id, ",").concat(desk_id, ")\" data-title=\"\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u0434\u0430\u0442\u0443 \u0432\u044B\u043F\u043E\u043B\u043D\u0435\u043D\u0438\u044F\"></i>\n                <i class=\"bi bi-image\" data-title=\"\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u043A\u0430\u0440\u0442\u0438\u043D\u043A\u0443\"></i>\n                <i class=\"bi bi-card-list\" data-title=\"\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u043F\u043E\u0434\u0437\u0430\u0434\u0430\u0447\u0438\"></i>\n                <i class=\"bi bi-bookmark-fill\" data-title=\"\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u0432\u0430\u0436\u043D\u043E\u0441\u0442\u044C \u0437\u0430\u0434\u0430\u0447\u0438\"></i>\n                <i class=\"bi bi-arrows-move\" data-title=\"\u041F\u0435\u0440\u0435\u043C\u0435\u0441\u0442\u0438\u0442\u044C \u0437\u0430\u0434\u0430\u0447\u0443\"></i>\n                <i class=\"bi bi-files\" data-title=\"\u041F\u0440\u0438\u043A\u0440\u0435\u043F\u0438\u0442\u044C \u0444\u0430\u0439\u043B\u044B\"></i>\n            </div>\n            "));
     }
 
     // ----------Open modal----------
-    modal.insertAdjacentHTML('beforeend', "\n             <span class=\"close-modal\" id=\"modal-desk\" onclick=\"closeModal()\">X</span>\n                <b>".concat(res.data.title, "</b>\n                <div class=\"users-desk\">\n                    <span><img src=\"/images/avatar_none.png\" alt=\"\"></span>\n                    <span><img src=\"/images/avatar_none.png\" alt=\"\"></span>\n                    <span><img src=\"/images/avatar_none.png\" alt=\"\"></span>\n                    <i class=\"bi bi-plus-circle\"></i>\n                </div>\n\n                <div class=\"description\">\n                    <label for=\"description\" class=\"form-label\">Description of task</label>\n                    <textarea class=\"form-control\" id=\"description\" rows=\"3\" placeholder=\"This task mean...\">").concat((_res$data$description = res.data.description) !== null && _res$data$description !== void 0 ? _res$data$description : '', "</textarea>\n                    <button class=\"btn text-white hide\" id=\"save-desk\" onclick=\"updateDescription(").concat(dashboard_id, ",").concat(desk_id, ", ").concat(column_id, ")\"><i class=\"bi bi-check-lg\"></i>Save</button>\n                </div>\n                    <button class=\"btn text-white ").concat(res.data.list_task_id ? 'hide' : '', "\" id=\"add-menu-tasks\">Add tasks</button>\n            "));
+    modal.insertAdjacentHTML('beforeend', "\n             <span class=\"close-modal\" id=\"modal-desk\" onclick=\"closeModal()\">X</span>\n                <b>".concat(res.data.title, "</b>\n                <div class=\"users-desk\">\n                    <span><img src=\"/images/avatar_none.png\" alt=\"\"></span>\n                    <span><img src=\"/images/avatar_none.png\" alt=\"\"></span>\n                    <span><img src=\"/images/avatar_none.png\" alt=\"\"></span>\n                    <i class=\"bi bi-plus-circle\"></i>\n                </div>\n\n                <div id=\"output-date\" class=\"output-date\" style=\"").concat(!res.data.data_end ? 'display: none;' : '', "\">\n                    <span id=\"output-date-end\">\u0421\u0440\u043E\u043A \u0434\u043E: ").concat(convertData(res.data.data_end), "</span>\n                </div>\n\n                <div class=\"description\">\n                    <label for=\"description\" class=\"form-label\">Description of task</label>\n                    <textarea class=\"form-control\" id=\"description\" rows=\"3\" placeholder=\"This task mean...\">").concat((_res$data$description = res.data.description) !== null && _res$data$description !== void 0 ? _res$data$description : '', "</textarea>\n                    <button class=\"btn text-white hide\" id=\"save-desk\" onclick=\"updateDescription(").concat(dashboard_id, ",").concat(desk_id, ", ").concat(column_id, ")\"><i class=\"bi bi-check-lg\"></i>Save</button>\n                </div>\n                    <button class=\"btn text-white ").concat(res.data.list_task_id ? 'hide' : '', "\" id=\"add-menu-tasks\">Add tasks</button>\n            "));
 
     // --------Add Description-------
     var textareaClicked = false;
@@ -267,13 +276,12 @@ closeModal = function closeModal() {
   var modal = document.getElementById('wrapper-modal');
   modal.querySelector('[data-modal-desk]').innerHTML = "";
   document.getElementById('wrapper-modal').style.cssText = "filter: none;";
-  document.getElementById('wrapper').style.cssText = "filter: none;";
+  document.getElementById('left-panel-dash').style.cssText = "filter: none;";
+  document.getElementById('desk-wrapper').style.cssText = "filter: none;";
   modal.classList.add('hide-animate');
   document.getElementById('backModal').classList.add('hide');
-  setTimeout(function () {
-    modal.style.cssText = 'display: none !important';
-    modal.classList.add('hide-animate');
-  }, 500);
+  if (document.getElementById('selectDate')) closeSelectDate();
+  modal.classList.add('hide-animate');
 };
 loadCheckList = function loadCheckList(dashboard_id, desk_id, column_id) {
   fetch('/api/getTasks?dashboard_id=' + dashboard_id + "&desk_id=" + desk_id, {
@@ -398,6 +406,69 @@ updateDescription = function updateDescription(dashboard_id, desk_id, column_id)
     return response.json();
   }).then(function (res) {
     desk.value = res.description;
+  });
+};
+saveDate = function saveDate(dashboard_id, desk_id) {
+  var dateStart = document.getElementById('dateStart').value;
+  var dateEnd = document.getElementById('dateEnd').value;
+  fetch('/api/modalUpdate', {
+    method: 'post',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      dashboard_id: dashboard_id,
+      id: desk_id,
+      data_start: dateStart,
+      data_end: dateEnd
+    })
+  }).then(function (response) {
+    return response.json();
+  }).then(function (res) {
+    closeSelectDate();
+    document.getElementById('description').insertAdjacentHTML('afterend', "\n                <div id=\"output-date\" class=\"output-date\">\n                    <span id=\"output-date-end\">\u0421\u0440\u043E\u043A \u0434\u043E: ".concat(convertData(res.data_end), "</span>\n                </div>\n            "));
+    document.querySelector("[data-desk-id=\"".concat(desk_id, "\"]")).querySelector('time').innerText = convertData(res.data_end);
+  });
+};
+convertData = function convertData(data) {
+  var dateString = data;
+  var date = new Date(dateString);
+  var options = {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric'
+  };
+  var formattedDate = date.toLocaleDateString('ru-RU', options);
+  var formattedTime = date.toLocaleTimeString('ru-RU', {
+    hour: '2-digit',
+    minute: '2-digit'
+  });
+  var result = "".concat(formattedDate, " \u0432 ").concat(formattedTime);
+  return result;
+};
+doneTask = function doneTask(dashboard_id, desk_id) {
+  var check = event.target.checked;
+  fetch('/api/modalUpdate', {
+    method: 'post',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      dashboard_id: dashboard_id,
+      id: desk_id,
+      status: check
+    })
+  }).then(function (response) {
+    return response.json();
+  }).then(function (res) {
+    closeSelectDate();
+    var status = document.querySelector("[data-desk-id=\"".concat(desk_id, "\"]")).querySelector('#status');
+    if (res.status) {
+      status.setAttribute('checked');
+      status.style.backgroundColor = 'green';
+    }
   });
 };
 /******/ })()

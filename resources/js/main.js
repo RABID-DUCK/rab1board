@@ -300,15 +300,37 @@ renameDashboard = function (id){
     })
 }
 
+openDatePicker = function(dashboard_id, desk_id) {
+    if (!document.getElementById('selectDate')){
+        document.getElementById('desk-wrapper').insertAdjacentHTML('beforebegin',  `
+    <div class="selectDate bg-dark bg-gradient text-white" id="selectDate">
+        <div>
+        <label for="dateStart">Дата начала</label>
+        <input id="dateStart" type="datetime-local">
+        <label for="dateEnd">Дата окончания</label>
+        <input id="dateEnd" type="datetime-local">
+    </div>
+    <div>
+        <button class="btn text-white" onclick="saveDate(${dashboard_id},${desk_id})">Save</button>
+        <button class="btn btn-danger" onclick="closeSelectDate()">Close</button>
+    </div>
+    </div>
+    `)
+    }
+}
+
+closeSelectDate = () => document.getElementById('selectDate').remove()
+
 viewDesk = function (dashboard_id, column_id, desk_id){
     let modal = document.querySelector('[data-modal-desk]');
     let backModal = document.getElementById('backModal');
     let wrapModal = document.getElementById('wrapper-modal');
 
     backModal.classList.remove('hide');
-    wrapModal.style.cssText = 'display: flex;';
+    wrapModal.style.cssText = 'position: fixed;';
     wrapModal.classList.remove('hide-animate');
-    document.getElementById('wrapper').style.cssText = `filter: blur(2px);`;
+    document.getElementById('left-panel-dash').style.cssText = `filter: blur(2px);`;
+    document.getElementById('desk-wrapper').style.cssText = `filter: blur(2px);`;
 
     backModal.addEventListener('click', () => {
         closeModal();
@@ -327,7 +349,7 @@ viewDesk = function (dashboard_id, column_id, desk_id){
             if (!document.querySelector('[data-panel-modal-desk]')){
                 document.getElementById('wrapper-modal').insertAdjacentHTML('afterbegin', `
                <div class="panel-desk bg-dark bg-gradient text-white" data-panel-modal-desk>
-                <i class="bi bi-calendar" data-title="Добавить дату выполнения"></i>
+                <i id="calendarIcon" class="bi bi-calendar" onclick="openDatePicker(${dashboard_id},${desk_id})" data-title="Добавить дату выполнения"></i>
                 <i class="bi bi-image" data-title="Добавить картинку"></i>
                 <i class="bi bi-card-list" data-title="Добавить подзадачи"></i>
                 <i class="bi bi-bookmark-fill" data-title="Добавить важность задачи"></i>
@@ -346,6 +368,10 @@ viewDesk = function (dashboard_id, column_id, desk_id){
                     <span><img src="/images/avatar_none.png" alt=""></span>
                     <span><img src="/images/avatar_none.png" alt=""></span>
                     <i class="bi bi-plus-circle"></i>
+                </div>
+
+                <div id="output-date" class="output-date" style="${!res.data.data_end ? 'display: none;' : ''}">
+                    <span id="output-date-end">Срок до: ${convertData(res.data.data_end)}</span>
                 </div>
 
                 <div class="description">
@@ -375,14 +401,14 @@ closeModal = function () {
 
     modal.querySelector('[data-modal-desk]').innerHTML = "";
     document.getElementById('wrapper-modal').style.cssText = `filter: none;`;
-    document.getElementById('wrapper').style.cssText = `filter: none;`;
+    document.getElementById('left-panel-dash').style.cssText = `filter: none;`;
+    document.getElementById('desk-wrapper').style.cssText = `filter: none;`;
     modal.classList.add('hide-animate');
     document.getElementById('backModal').classList.add('hide');
 
-    setTimeout(() =>{
-        modal.style.cssText = 'display: none !important';
-        modal.classList.add('hide-animate')
-    }, 500);
+    if (document.getElementById('selectDate')) closeSelectDate();
+
+    modal.classList.add('hide-animate')
 }
 
 loadCheckList = function (dashboard_id, desk_id, column_id){
@@ -555,5 +581,70 @@ updateDescription = function (dashboard_id, desk_id, column_id){
         .then(response => response.json())
         .then(res => {
             desk.value = res.description
+        })
+}
+
+saveDate = function (dashboard_id, desk_id){
+    let dateStart = document.getElementById('dateStart').value;
+    let dateEnd = document.getElementById('dateEnd').value;
+
+    fetch('/api/modalUpdate', {
+        method: 'post',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            dashboard_id: dashboard_id,
+            id: desk_id,
+            data_start: dateStart,
+            data_end: dateEnd
+        })
+    })
+        .then(response => response.json())
+        .then(res => {
+            closeSelectDate()
+            document.getElementById('description').insertAdjacentHTML('afterend', `
+                <div id="output-date" class="output-date">
+                    <span id="output-date-end">Срок до: ${convertData(res.data_end)}</span>
+                </div>
+            `)
+
+            document.querySelector(`[data-desk-id="${desk_id}"]`).querySelector('time').innerText = convertData(res.data_end);
+        })
+}
+
+convertData = function (data){
+    const dateString = data;
+    const date = new Date(dateString);
+    const options = { day: 'numeric', month: 'long', year: 'numeric' };
+    const formattedDate = date.toLocaleDateString('ru-RU', options);
+    const formattedTime = date.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
+    const result = `${formattedDate} в ${formattedTime}`;
+    return result;
+}
+
+doneTask = function (dashboard_id, desk_id){
+    let check = event.target.checked;
+    fetch('/api/modalUpdate', {
+        method: 'post',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            dashboard_id: dashboard_id,
+            id: desk_id,
+            status: check
+        })
+    })
+        .then(response => response.json())
+        .then(res => {
+            closeSelectDate()
+            let status = document.querySelector(`[data-desk-id="${desk_id}"]`).querySelector('#status');
+            if(res.status){
+                status.setAttribute('checked');
+                status.style.backgroundColor = 'green';
+            }
         })
 }

@@ -46,26 +46,23 @@ class DeskController extends Controller
             return $task;
         }
 
-        switch ($data){
-            case isset($data['title']) && $column->title !== $data['title']:
-                $column->title = $data['title'];
-                break;
-            case isset($data['description']) && $column->description !== $data['description']:
-                $column->description = $data['description'];
-                break;
-            case isset($data['image']) && $column->image !== $data['image']:
-                $column->image = $data['image'];
-                break;
-            case isset($data['status']) && $column->status !== $data['status']:
-                $column->status = $data['status'];
-                break;
-            case isset($data['data_start']) && $column->data_start !== $data['data_start']:
-                $column->data_start = $data['data_start'];
-                break;
-            case isset($data['data_end']) && $column->data_end !== $data['data_end']:
-                $column->data_end = $data['data_end'];
-                break;
+        if (isset($data['title']) && $column->title !== $data['title']) {
+            $column->title = $data['title'];
+        } elseif (isset($data['description']) && $column->description !== $data['description']) {
+            $column->description = $data['description'];
+        } elseif (isset($data['image']) && $column->image !== $data['image']) {
+            $column->image = $data['image'];
+        } elseif (isset($data['status']) && $column->status !== $data['status']) {
+            $column->status = $data['status'];
+        } elseif (isset($data['data_start']) && $column->data_start !== $data['data_start']) {
+            $column->data_start = $data['data_start'];
+        } elseif (isset($data['data_end']) && $column->data_end !== $data['data_end']) {
+            $column->data_end = $data['data_end'];
         }
+        if (isset($data['data_end']) && $column->data_end !== $data['data_end']){
+            $column->data_end = $data['data_end'];
+        }
+
         $column->save();
 
         return $column;
