@@ -476,12 +476,12 @@ nav {
 
 .wrapper-modal {
   position: absolute;
-  top: 10%;
-  left: 25%;
+  top: 50%;
+  left: 50%;
   display: flex;
   opacity: 1;
   visibility: visible;
-  transform: translateY(-50px);
+  transform: translate(-50%, -50%);
   transition: visibility 0.3s ease, opacity 0.3s ease, transform 0.3s ease;
 }
 .wrapper-modal .panel-desk {
@@ -573,13 +573,21 @@ nav {
 }
 
 .output-colors {
-  width: 200px;
-  height: 22px;
+  width: auto;
+  height: 300px;
   border: 1px solid white;
   display: flex;
+  z-index: 111;
   flex-direction: column;
   position: absolute;
   top: 55%;
-  left: 9%;
-  max-height: 35px;
+  left: 5%;
+  max-width: 400px;
+}
+
+@media screen and (max-width: 820px) {
+  .wrapper-modal {
+    left: 50%;
+    width: 100%;
+  }
 }

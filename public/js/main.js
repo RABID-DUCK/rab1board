@@ -239,7 +239,6 @@ viewDesk = function viewDesk(dashboard_id, column_id, desk_id) {
   var backModal = document.getElementById('backModal');
   var wrapModal = document.getElementById('wrapper-modal');
   backModal.classList.remove('hide');
-  wrapModal.style.cssText = 'position: fixed;';
   wrapModal.classList.remove('hide-animate');
   document.getElementById('left-panel-dash').style.cssText = "filter: blur(2px);";
   document.getElementById('desk-wrapper').style.cssText = "filter: blur(2px);";
@@ -478,10 +477,11 @@ doneTask = function doneTask(dashboard_id, desk_id) {
   });
 };
 outputColors = function outputColors(dashboard_id, desk_id) {
+  var target = event.target;
   fetch('/api/colors').then(function (response) {
     return response.json();
   }).then(function (res) {
-    document.getElementById('wrapper-modal').insertAdjacentHTML('afterend', "\n                <div id=\"output-colors\" class=\"output-colors\">\n                    <span id=\"output-date-end\">\u0421\u0440\u043E\u043A \u0434\u043E: ".concat(convertData(res.data_end), "</span>\n                </div>\n            "));
+    target.insertAdjacentHTML('afterend', "\n                <div id=\"output-colors\" class=\"output-colors\">\n                    <span id=\"output-date-end\">\u0421\u0440\u043E\u043A \u0434\u043E: ".concat(convertData(res.data_end), "</span>\n                </div>\n            "));
     console.log(res);
   });
 };

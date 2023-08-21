@@ -331,7 +331,6 @@ viewDesk = function (dashboard_id, column_id, desk_id){
     let wrapModal = document.getElementById('wrapper-modal');
 
     backModal.classList.remove('hide');
-    wrapModal.style.cssText = 'position: fixed;';
     wrapModal.classList.remove('hide-animate');
     document.getElementById('left-panel-dash').style.cssText = `filter: blur(2px);`;
     document.getElementById('desk-wrapper').style.cssText = `filter: blur(2px);`;
@@ -657,10 +656,11 @@ doneTask = function (dashboard_id, desk_id){
 }
 
 outputColors = function (dashboard_id, desk_id){
+    let target = event.target;
     fetch('/api/colors')
         .then(response => response.json())
         .then(res => {
-            document.getElementById('wrapper-modal').insertAdjacentHTML('afterend', `
+            target.insertAdjacentHTML('afterend', `
                 <div id="output-colors" class="output-colors">
                     <span id="output-date-end">Срок до: ${convertData(res.data_end)}</span>
                 </div>
