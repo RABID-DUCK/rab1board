@@ -301,25 +301,33 @@ renameDashboard = function (id){
 }
 
 openDatePicker = function(dashboard_id, desk_id) {
-    if (!document.getElementById('selectDate')){
-        document.getElementById('desk-wrapper').insertAdjacentHTML('beforebegin',  `
-    <div class="selectDate bg-dark bg-gradient text-white" id="selectDate">
-        <div>
-        <label for="dateStart">Дата начала</label>
-        <input id="dateStart" type="datetime-local">
-        <label for="dateEnd">Дата окончания</label>
-        <input id="dateEnd" type="datetime-local">
-    </div>
-    <div>
-        <button class="btn text-white" onclick="saveDate(${dashboard_id},${desk_id})">Save</button>
-        <button class="btn btn-danger" onclick="closeSelectDate()">Close</button>
-    </div>
-    </div>
-    `)
-    }
+
+        fetch('/api/desk/'+desk_id)
+            .then(response => response.json())
+            .then(res => {
+                if (!document.getElementById('selectDate')) {
+
+                    document.getElementById('calendarIcon').insertAdjacentHTML('afterbegin', `
+                <div class="selectDate bg-dark bg-gradient text-white" id="selectDate">
+                    <div>
+                    <label for="dateStart">Дата начала</label>
+                    <input id="dateStart" class="form-control" type="datetime-local" value="${res.data_start ?? ''}">
+                    <label for="dateEnd">Дата окончания</label>
+                    <input id="dateEnd" class="form-control" type="datetime-local" value="${res.data_end ?? ''}">
+                </div>
+                <div>
+                    <button class="btn text-white" onclick="saveDate(${dashboard_id},${desk_id})">Save</button>
+                    <button class="btn btn-danger" onclick="event.stopPropagation(); closeSelectDate()">Close</button>
+                </div>
+                </div>
+                `)
+                }
+            })
 }
 
-closeSelectDate = () => document.getElementById('selectDate').remove()
+closeSelectDate = () => {
+    return document.getElementById('selectDate').remove();
+}
 
 viewDesk = function (dashboard_id, column_id, desk_id){
     if(event.target.id === 'status'){
@@ -348,6 +356,8 @@ viewDesk = function (dashboard_id, column_id, desk_id){
     })
         .then(response => response.json())
         .then(res => {
+            let currentDate = new Date();
+            let newDate = new Date(res.data.data_end);
 
             if (!document.querySelector('[data-panel-modal-desk]')){
                 document.getElementById('wrapper-modal').insertAdjacentHTML('afterbegin', `
@@ -374,7 +384,7 @@ viewDesk = function (dashboard_id, column_id, desk_id){
                 </div>
 
                 <div id="output-date" class="output-date" style="${!res.data.data_end ? 'display: none;' : ''}">
-                    <span id="output-date-end">Срок до: ${convertData(res.data.data_end)}</span>
+                    <span id="output-date-end" class="${res.data.data_end && currentDate - newDate <= 1 ? 'text-danger fw-bold' : ''}">Срок до: ${convertData(res.data.data_end)}</span>
                 </div>
 
                 <div class="description">
@@ -403,6 +413,7 @@ closeModal = function () {
     let modal = document.getElementById('wrapper-modal');
 
     modal.querySelector('[data-modal-desk]').innerHTML = "";
+    modal.querySelector('[data-panel-modal-desk]').remove();
     document.getElementById('wrapper-modal').style.cssText = `filter: none;`;
     document.getElementById('left-panel-dash').style.cssText = `filter: none;`;
     document.getElementById('desk-wrapper').style.cssText = `filter: none;`;
@@ -607,9 +618,11 @@ saveDate = function (dashboard_id, desk_id){
         .then(response => response.json())
         .then(res => {
             closeSelectDate()
+            let currentDate = new Date();
+            let serverDate = new Date(res.data_end);
             document.getElementById('description').insertAdjacentHTML('afterend', `
                 <div id="output-date" class="output-date">
-                    <span id="output-date-end">Срок до: ${convertData(res.data_end)}</span>
+                    <span id="output-date-end" class="${serverDate && serverDate - currentDate <= 1 ? 'text-danger fw-bold' : ''}">Срок до: ${convertData(res.data_end)}</span>
                 </div>
             `)
 

@@ -51,7 +51,12 @@
                                 <div class="data-desk">
                                     <input class="custom-checkbox" type="checkbox" id="status" name="status" value="yes"
                                         {{$desk->status ? "checked" : ''}}   onclick="doneTask({{$dashboard->id}}, {{$desk->id}})">
-                                        <time datetime='2011-11-18T14:54:39.929Z' name='date' id='data-desk'>{{$desk->data_end ? "До ".$desk->data_end : ""}}</time>
+                                    <time datetime='2011-11-18T14:54:39.929Z' name='date' id='data-desk'
+                                          class="{{ !$desk->data_end ? 'text-muted' : 'fw-bold' }}
+    {{ \Carbon\Carbon::now()->diffInDays($desk->data_end) <= 1 ? 'text-danger fw-bold' : '' }}"
+                                    >{{ $desk->data_end ?
+    "До ".\Carbon\Carbon::parse($desk->data_end)->translatedFormat('j F Y') : "Сроков нет" }}
+                                    </time>
                                 </div>
                                 <span>status</span>
                             </div>

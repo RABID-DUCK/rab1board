@@ -532,7 +532,7 @@ nav {
   border-radius: 6px;
   top: 18%;
   border: 1px solid white;
-  height: 100px;
+  height: auto;
   width: auto;
 }
 .selectDate div:first-child {
