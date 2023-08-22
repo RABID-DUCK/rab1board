@@ -59,3 +59,8 @@ Route::group(['prefix' => 'backend', 'middleware' => 'auth'], function(){
         });
 });
 
+/* Раскоммнетить когда подключим реакт
+Route::view('/{path?}', 'app')->where('path', '.*');;
+Route::get('/{path?}', function () {
+    return view('app');
+})->where('path', '.*');*/

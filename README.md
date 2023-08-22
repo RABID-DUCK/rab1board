@@ -13,6 +13,10 @@
 <li>composer install</li>
 </ul>
 Потом снова в IDE своей пиши npm install так как консоль та не поддерживает нод.
+Если ты в phpMyAdmin зашёл под другим пользователем и паролем(там то root без пароля можно, то root root или сам акк создал)
+то в .env заходишь и вот две строчки меняешь на свои данные:<br>
+DB_USERNAME=login         <br>
+DB_PASSWORD=password         <br>
 По сути всё с установкой.</p>
 
 <b style="text-align: center">Как пользоваться проектом:</b>
@@ -43,3 +47,11 @@ Route::get('/modalDesk', '\App\Http\Controllers\API\DeskController@show'); /api/
 <li>fontawesome(редко пользуюсь, я беру иконки с бутстрапа)</li>
 <li>fonts.bunny.net (шрифт)</li>
 </ul>
+
+Как я чекнул как установить реакт в ларавел. Нужно в той консоли от ОпенСервер вписать "composer global require laravel/installer"
+<br>Потом в IDE своей впиши :<br>
+npm install             <br>
+npm install react-router-dom
+<br>
+<b>Потом просто создаёшь свои js файлы(или какие у тебя там) в resources/js и в вебпаке раскомменти ".react()".
+
