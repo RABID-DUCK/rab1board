@@ -316,7 +316,7 @@ openDatePicker = function(dashboard_id, desk_id) {
                     <input id="dateEnd" class="form-control" type="datetime-local" value="${res.data_end ?? ''}">
                 </div>
                 <div>
-                    <button class="btn text-white" onclick="saveDate(${dashboard_id},${desk_id})">Save</button>
+                    <button class="btn text-white" onclick="event.stopPropagation(); saveDate(${dashboard_id},${desk_id})">Save</button>
                     <button class="btn btn-danger" onclick="event.stopPropagation(); closeSelectDate()">Close</button>
                 </div>
                 </div>
@@ -356,9 +356,6 @@ viewDesk = function (dashboard_id, column_id, desk_id){
     })
         .then(response => response.json())
         .then(res => {
-            let currentDate = new Date();
-            let newDate = new Date(res.data.data_end);
-
             if (!document.querySelector('[data-panel-modal-desk]')){
                 document.getElementById('wrapper-modal').insertAdjacentHTML('afterbegin', `
                <div class="panel-desk bg-dark bg-gradient text-white" data-panel-modal-desk>
@@ -372,6 +369,7 @@ viewDesk = function (dashboard_id, column_id, desk_id){
             `)
             }
 
+
             // ----------Open modal----------
             modal.insertAdjacentHTML('beforeend', `
              <span class="close-modal" id="modal-desk" onclick="closeModal()">X</span>
@@ -384,7 +382,8 @@ viewDesk = function (dashboard_id, column_id, desk_id){
                 </div>
 
                 <div id="output-date" class="output-date" style="${!res.data.data_end ? 'display: none;' : ''}">
-                    <span id="output-date-end" class="${res.data.data_end && currentDate - newDate <= 1 ? 'text-danger fw-bold' : ''}">Срок до: ${convertData(res.data.data_end)}</span>
+                    <span id="output-date-end" class="${differenceDate(res.data.data_end) ? 'text-danger fw-bold' : ''}">
+                    Срок до: ${convertData(res.data.data_end)}</span>
                 </div>
 
                 <div class="description">
@@ -413,14 +412,17 @@ closeModal = function () {
     let modal = document.getElementById('wrapper-modal');
 
     modal.querySelector('[data-modal-desk]').innerHTML = "";
-    modal.querySelector('[data-panel-modal-desk]').remove();
+
     document.getElementById('wrapper-modal').style.cssText = `filter: none;`;
     document.getElementById('left-panel-dash').style.cssText = `filter: none;`;
     document.getElementById('desk-wrapper').style.cssText = `filter: none;`;
-    modal.classList.add('hide-animate');
     document.getElementById('backModal').classList.add('hide');
+    modal.classList.add('hide-animate');
+    modal.querySelector('[data-panel-modal-desk]').remove();
 
-    if (document.getElementById('selectDate')) closeSelectDate();
+    if (document.getElementById('selectDate')) {
+        closeSelectDate();
+    }
 
     modal.classList.add('hide-animate')
 }
@@ -617,16 +619,27 @@ saveDate = function (dashboard_id, desk_id){
     })
         .then(response => response.json())
         .then(res => {
-            closeSelectDate()
-            let currentDate = new Date();
-            let serverDate = new Date(res.data_end);
-            document.getElementById('description').insertAdjacentHTML('afterend', `
+            let window = document.getElementById('output-date');
+            let time =  document.querySelector(`[data-desk-id="${desk_id}"]`).querySelector('time');
+            closeSelectDate();
+            if (window){
+                document.getElementById('output-date').innerHTML = `
+                <span id="output-date-end" class="${differenceDate(res.data_end) ? 'text-danger fw-bold' : ''}">Срок до: ${convertData(res.data_end)}</span>
+            `;
+                // time.innerText = convertData(res.data_end);
+            }
+            else{
+                document.getElementById('output-date').innerHTML = `
                 <div id="output-date" class="output-date">
-                    <span id="output-date-end" class="${serverDate && serverDate - currentDate <= 1 ? 'text-danger fw-bold' : ''}">Срок до: ${convertData(res.data_end)}</span>
+                    <span id="output-date-end" class="${differenceDate(res.data_end) ? 'text-danger fw-bold' : ''}">Срок до: ${convertData(res.data_end)}</span>
                 </div>
-            `)
+            `
 
-            document.querySelector(`[data-desk-id="${desk_id}"]`).querySelector('time').innerText = convertData(res.data_end);
+            }
+            differenceDate(res.data_end) ? time.classList.add('text-danger') : time.classList.remove('text-danger');
+
+
+            time.innerText = convertData(res.data_end);
         })
 }
 
@@ -638,6 +651,15 @@ convertData = function (data){
     const formattedTime = date.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
     const result = `${formattedDate} в ${formattedTime}`;
     return result;
+}
+
+// разница времени
+differenceDate = function (data){
+    let currentDate = new Date();
+    let newDate = new Date(data);
+    let differenceInMilliseconds = newDate.getTime() - currentDate.getTime();
+    let oneDayInMilliseconds = 24 * 60 * 60 * 1000;
+    return differenceInMilliseconds <= oneDayInMilliseconds;
 }
 
 doneTask = function (dashboard_id, desk_id){

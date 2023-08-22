@@ -55,7 +55,7 @@
                                           class="{{ !$desk->data_end ? 'text-muted' : 'fw-bold' }}
     {{ \Carbon\Carbon::now()->diffInDays($desk->data_end) <= 1 ? 'text-danger fw-bold' : '' }}"
                                     >{{ $desk->data_end ?
-    "До ".\Carbon\Carbon::parse($desk->data_end)->translatedFormat('j F Y') : "Сроков нет" }}
+    "До ".\Carbon\Carbon::parse($desk->data_end)->translatedFormat('j F Y H:i') : "Сроков нет" }}
                                     </time>
                                 </div>
                                 <span>status</span>
