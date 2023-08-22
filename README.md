@@ -1,66 +1,45 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+<h1 align="center">Как пользоваться этим:</h1>
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+<b style="text-align: center">Настройка проекта:</b>
+<p>
+В корневой папке есть файл с именем .env.example. Переименуй просто в .env <br />
+Далее тебе нужен какой-то сервак, я пользуюсь и рекомендую OpenServer. В OpenServer когда запустишь нажми на <i>него/Настройки/Модули</i>. <br />
+Выстави верисю <b>пхп 8.1, апатч 8.0-9.1</b>(<span style="color: #cd1313;">не ngnix</span>) и <b>MySQL-8.0-Win10</b>. <br />
+Далее жми снова на опенсервер/Дополнительно/phpMyAdmin. Создаёшь там бд с именем rab1board и заходишь в неё. <br />
+Жмёшь импорт и вставляешь файл который называется backup.sql. Жмёшь вперёд и ждёшь. <br />
+Потом делаешь npm install в проекте чтобы все расширения поставились. Если попросит что-то с композером сделать, то жмёшь OpenServer/Доплнительно/Консоль и в ней пиши: <br />
+<ul>
+<li>cd domains/rab1board</li>
+<li>composer install</li>
+</ul>
+Потом снова в IDE своей пиши npm install так как консоль та не поддерживает нод.
+По сути всё с установкой.</p>
+
+<b style="text-align: center">Как пользоваться проектом:</b>
+<p>
+Есть папка resources. В ней мы всё пишем. То что во views это странички, там блейд шаблон, но это тот же хтмл просто сделана как реакт или вью.<br />
+Тебе по всей видимости писать нужно в папке "js" так как когда я писал на вью то я писал там. Далее чтобы добавить реакт
+зайди в resources/layouts/app.blade.php и там вставь ссылки или файлы нужные для подключения реакта. Если ссылки то ссылками
+если же файлами, то npm юзай. Эта хрень: {{asset('file.js')}} подклчючает файлы из папки public. Допустим ты плагин какой-то ставишь, 
+то надо его загрузить в папку public и закинуть таким способом(asset - обращается сразу к папке public) <br>
+Как всё сделаешь добавишь файлы, то загугли как сделать чтобы вебпак их грузил в папку public всегда. Когда я писал на вью, то
+у меня просто было надо сделать в начале .vue() у тебя может также. Потом просто ебашишь npm run watch и полетел.
+Потом уже разберёмся где чё тыкать и писать. Мне просто нужно отловить твои ошибки чтобы фиксануть. 
+Если тебе нужно вытащить данные с бд чтобы на фронте оформить то есть файл routes/api.php там все апишки.<br>
+К примеру: <br>
+Route::get('/user/{id}', '\App\Http\Controllers\UserController@show'); подключаешься через js ты к нему как '/api/user/'+id;
+
+Route::get('/modalDesk', '\App\Http\Controllers\API\DeskController@show'); /api/modalDesk' подключаешься так и получаешь всё что есть там.
+Я потом как-нибудь создам вордовский файл и распишу все апишки, но пока делаешь так по файлу или через меня узнаёшь к какому коннектиться.
 </p>
 
-## About Laravel
+<b>
+В проекте уже есть:
+</b>
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
-
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
-
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
-
-## Learning Laravel
-
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
-
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
-
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-## Laravel Sponsors
-
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
-
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+<ul>
+<li>bootstrap 5</li>
+<li>SCSS</li>
+<li>fontawesome(редко пользуюсь, я беру иконки с бутстрапа)</li>
+<li>fonts.bunny.net (шрифт)</li>
+</ul>
