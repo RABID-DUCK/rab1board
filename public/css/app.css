@@ -112,6 +112,9 @@ nav {
 .user .dropdown-item {
   padding: 0;
 }
+.user .dropdown-item:hover, .user .dropdown-item:focus, .user .dropdown-item:active {
+  background-color: transparent;
+}
 
 .main-content .btn-login {
   margin: 20px auto;
@@ -456,6 +459,9 @@ nav {
 }
 .modal-desk .check-list-wrapper .list-tasks .add-task {
   width: 115px !important;
+}
+.modal-desk .check-list-wrapper .list-tasks label {
+  display: flex;
 }
 
 .backModal {

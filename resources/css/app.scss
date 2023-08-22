@@ -126,6 +126,9 @@ nav{
     margin-left: 10px;
     .dropdown-item{
         padding: 0;
+        &:hover, &:focus, &:active{
+            background-color: transparent;
+        }
     }
 }
 
@@ -517,6 +520,10 @@ nav{
 
             .add-task{
                 width: 115px !important;
+            }
+
+            label{
+                display: flex;
             }
         }
     }
