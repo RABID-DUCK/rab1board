@@ -16,34 +16,6 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `color_desks`
---
-
-DROP TABLE IF EXISTS `color_desks`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `color_desks` (
-  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `color_id` bigint unsigned NOT NULL,
-  `desk_id` bigint unsigned NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `color_desks_color_id_foreign` (`color_id`),
-  KEY `color_desks_desk_id_foreign` (`desk_id`),
-  CONSTRAINT `color_desks_color_id_foreign` FOREIGN KEY (`color_id`) REFERENCES `colors` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `color_desks_desk_id_foreign` FOREIGN KEY (`desk_id`) REFERENCES `desks` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `color_desks`
---
-
-LOCK TABLES `color_desks` WRITE;
-/*!40000 ALTER TABLE `color_desks` DISABLE KEYS */;
-/*!40000 ALTER TABLE `color_desks` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `colors`
 --
 
@@ -57,7 +29,7 @@ CREATE TABLE `colors` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -66,7 +38,7 @@ CREATE TABLE `colors` (
 
 LOCK TABLES `colors` WRITE;
 /*!40000 ALTER TABLE `colors` DISABLE KEYS */;
-INSERT INTO `colors` VALUES (1,'color.red','#cd1313',NULL,NULL),(2,'color.green','#106710',NULL,NULL),(3,'color.orange','#D64D00',NULL,NULL),(4,'color.blue','#5050ff',NULL,NULL);
+INSERT INTO `colors` VALUES (5,'color.red','#cd1313','2023-08-22 13:47:49','2023-08-22 13:47:49'),(6,'color.green','#106710','2023-08-22 13:47:49','2023-08-22 13:47:49'),(7,'color.orange','#D64D00','2023-08-22 13:48:40','2023-08-22 13:48:40'),(8,'color.blue','#5050ff','2023-08-22 13:48:40','2023-08-22 13:48:40');
 /*!40000 ALTER TABLE `colors` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -91,7 +63,7 @@ CREATE TABLE `column_desks` (
   CONSTRAINT `column_desks_column_id_foreign` FOREIGN KEY (`column_id`) REFERENCES `columns` (`id`) ON DELETE CASCADE,
   CONSTRAINT `column_desks_dashboard_id_foreign` FOREIGN KEY (`dashboard_id`) REFERENCES `dashboards` (`id`) ON DELETE CASCADE,
   CONSTRAINT `column_desks_desk_id_foreign` FOREIGN KEY (`desk_id`) REFERENCES `desks` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -100,7 +72,7 @@ CREATE TABLE `column_desks` (
 
 LOCK TABLES `column_desks` WRITE;
 /*!40000 ALTER TABLE `column_desks` DISABLE KEYS */;
-INSERT INTO `column_desks` VALUES (2,16,42,19,'2023-08-10 01:55:12','2023-08-10 01:55:12'),(3,16,26,20,'2023-08-10 02:56:26','2023-08-10 02:56:26'),(4,16,43,21,'2023-08-10 02:56:37','2023-08-10 02:56:37'),(5,16,43,22,'2023-08-10 02:56:46','2023-08-10 02:56:46'),(17,16,43,34,'2023-08-10 06:25:57','2023-08-10 06:25:57'),(18,16,26,35,'2023-08-10 06:27:31','2023-08-10 06:27:31'),(19,16,26,36,'2023-08-14 01:12:41','2023-08-14 01:12:41'),(20,16,26,37,'2023-08-14 01:12:43','2023-08-14 01:12:43'),(21,16,26,38,'2023-08-14 01:12:45','2023-08-14 01:12:45'),(22,16,26,39,'2023-08-14 01:12:47','2023-08-14 01:12:47'),(23,16,26,40,'2023-08-14 01:19:03','2023-08-14 01:19:03'),(24,16,72,41,'2023-08-21 02:46:57','2023-08-21 02:46:57');
+INSERT INTO `column_desks` VALUES (25,16,26,42,'2023-08-22 08:50:12','2023-08-22 08:50:12'),(26,16,42,43,'2023-08-22 08:50:18','2023-08-22 08:50:18'),(27,16,26,44,'2023-08-22 08:50:22','2023-08-22 08:50:22'),(28,16,26,45,'2023-08-22 08:50:26','2023-08-22 08:50:26'),(29,16,26,46,'2023-08-22 08:50:43','2023-08-22 08:50:43'),(30,16,26,47,'2023-08-22 08:54:49','2023-08-22 08:54:49');
 /*!40000 ALTER TABLE `column_desks` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -208,7 +180,6 @@ CREATE TABLE `desks` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `task_id` bigint unsigned DEFAULT NULL,
   `image` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `status` tinyint(1) DEFAULT '0',
   `data_start` datetime DEFAULT NULL,
@@ -217,14 +188,18 @@ CREATE TABLE `desks` (
   `created_at` timestamp NULL DEFAULT NULL,
   `dashboard_id` bigint unsigned NOT NULL,
   `column_id` bigint unsigned NOT NULL,
+  `color_id` bigint unsigned DEFAULT NULL,
+  `comment_id` bigint unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `desks_task_id_foreign` (`task_id`),
   KEY `desks_dashboard_id_foreign` (`dashboard_id`),
   KEY `desks_column_id_foreign` (`column_id`),
+  KEY `color_id` (`color_id`),
+  KEY `desks_comment_id_foreign` (`comment_id`),
   CONSTRAINT `desks_column_id_foreign` FOREIGN KEY (`column_id`) REFERENCES `columns` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `desks_comment_id_foreign` FOREIGN KEY (`comment_id`) REFERENCES `comments` (`id`) ON DELETE CASCADE,
   CONSTRAINT `desks_dashboard_id_foreign` FOREIGN KEY (`dashboard_id`) REFERENCES `dashboards` (`id`),
-  CONSTRAINT `desks_task_id_foreign` FOREIGN KEY (`task_id`) REFERENCES `tasks` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  CONSTRAINT `desks_ibfk_1` FOREIGN KEY (`color_id`) REFERENCES `colors` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -233,7 +208,7 @@ CREATE TABLE `desks` (
 
 LOCK TABLES `desks` WRITE;
 /*!40000 ALTER TABLE `desks` DISABLE KEYS */;
-INSERT INTO `desks` VALUES (19,'vasya',NULL,NULL,NULL,0,NULL,NULL,'2023-08-18 08:57:59','2023-08-10 01:55:12',16,42),(20,'malibu','asdfghfghd2',NULL,NULL,1,'2023-08-20 17:00:00','2023-08-22 15:26:00','2023-08-21 09:00:24','2023-08-10 02:56:26',16,26),(21,'Vangria',NULL,NULL,NULL,0,NULL,NULL,'2023-08-18 09:00:14','2023-08-10 02:56:37',16,43),(22,'fghfgh',NULL,NULL,NULL,0,NULL,NULL,'2023-08-18 08:57:15','2023-08-10 02:56:46',16,43),(34,'2222',NULL,NULL,NULL,NULL,NULL,NULL,'2023-08-10 06:25:57','2023-08-10 06:25:57',16,43),(35,'ыва',NULL,NULL,NULL,1,'2023-08-21 15:37:00','2023-08-24 15:38:00','2023-08-22 01:44:18','2023-08-10 06:27:31',16,26),(36,'xx',NULL,NULL,NULL,1,NULL,NULL,'2023-08-18 08:20:56','2023-08-14 01:12:41',16,26),(37,'xx',NULL,NULL,NULL,NULL,NULL,NULL,'2023-08-14 01:12:43','2023-08-14 01:12:43',16,26),(38,'xxx',NULL,NULL,NULL,NULL,NULL,NULL,'2023-08-14 01:12:45','2023-08-14 01:12:45',16,26),(39,'xxx',NULL,NULL,NULL,NULL,NULL,NULL,'2023-08-14 01:12:47','2023-08-14 01:12:47',16,26),(40,'hgfh',NULL,NULL,NULL,NULL,NULL,NULL,'2023-08-14 01:19:03','2023-08-14 01:19:03',16,26),(41,'234234',NULL,NULL,NULL,0,NULL,NULL,'2023-08-21 02:46:57','2023-08-21 02:46:57',16,72);
+INSERT INTO `desks` VALUES (42,'Mant',NULL,NULL,0,'2023-08-22 16:56:00','2023-09-08 16:56:00','2023-08-22 08:56:59','2023-08-22 08:50:12',16,26,NULL,NULL),(43,'Kwe',NULL,NULL,0,'2023-08-22 17:00:00','2023-09-03 17:00:00','2023-08-22 09:00:40','2023-08-22 08:50:18',16,42,NULL,NULL),(44,'iwi',NULL,NULL,0,'2023-08-22 16:58:00','2023-09-10 16:58:00','2023-08-22 08:58:43','2023-08-22 08:50:22',16,26,NULL,NULL),(45,'bobr',NULL,NULL,0,'2023-08-23 17:01:00','2023-08-27 17:01:00','2023-08-22 09:05:02','2023-08-22 08:50:26',16,26,5,NULL),(46,'dfg',NULL,NULL,0,NULL,NULL,'2023-08-22 08:50:43','2023-08-22 08:50:43',16,26,NULL,NULL),(47,'333',NULL,NULL,0,NULL,NULL,'2023-08-22 08:54:49','2023-08-22 08:54:49',16,26,NULL,NULL);
 /*!40000 ALTER TABLE `desks` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -322,7 +297,6 @@ CREATE TABLE `list_tasks` (
 
 LOCK TABLES `list_tasks` WRITE;
 /*!40000 ALTER TABLE `list_tasks` DISABLE KEYS */;
-INSERT INTO `list_tasks` VALUES (1,'fsdfsdf',16,20,'2023-08-15 04:27:35','2023-08-15 04:27:35');
 /*!40000 ALTER TABLE `list_tasks` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -338,7 +312,7 @@ CREATE TABLE `migrations` (
   `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `batch` int NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -347,7 +321,7 @@ CREATE TABLE `migrations` (
 
 LOCK TABLES `migrations` WRITE;
 /*!40000 ALTER TABLE `migrations` DISABLE KEYS */;
-INSERT INTO `migrations` VALUES (1,'2014_10_12_000000_create_users_table',1),(2,'2014_10_12_100000_create_password_reset_tokens_table',1),(3,'2014_10_12_100000_create_password_resets_table',1),(4,'2019_08_19_000000_create_failed_jobs_table',1),(5,'2019_12_14_000001_create_personal_access_tokens_table',1),(6,'2023_07_25_091108_create_langs_table',1),(7,'2023_08_01_044819_create_roles_table',1),(8,'2023_08_01_113500_create_dashboards_table',1),(9,'2023_08_01_114245_create_desks_table',1),(10,'2023_08_01_044610_add_column_role_id_table',2),(11,'2023_08_01_120034_create_tasks_table',3),(12,'2023_08_02_035853_add_task_id_to_desks_table',4),(13,'2023_08_02_040740_add_desk_id_to_tasks_table',5),(14,'2023_08_02_041845_create_columns_table',6),(15,'2023_08_02_044435_create_comments_table',7),(16,'2023_08_02_045350_create_user_desks_table',8),(17,'2023_08_02_045904_create_color_desks_table',9),(18,'2023_08_02_055033_drop_foreign_key_desk_id_in_color_desks_table',10),(19,'2023_08_02_055416_rename_color_desks_table',11),(20,'2023_08_02_055538_create_color_desks_table',12),(21,'2023_08_03_113609_add_defautl_image_to_desks_table',13),(23,'2023_08_04_085251_add_foreig_id_to_dashboards_table',14),(24,'2023_08_04_085745_add_column_title_to_dashboards_table',15),(25,'2023_08_07_054048_add_column_image_to_users_table',16),(26,'2023_08_07_095555_add_column_premium_to_users_table',17),(27,'2023_08_08_092711_add_column_dashboard_id_to_columns_table',18),(29,'2023_08_08_121604_create_column_desks_table',19),(30,'2023_08_08_121152_add_columns_to_desks_table',20),(31,'2023_08_10_055018_drop_foreign_key_desk_id_to_columns_table',21),(32,'2023_08_15_054543_add_foreign_key_dashboard_id_to_tasks_table',22),(33,'2023_08_15_063134_add_column_done_to_tasks_table',23),(34,'2023_08_15_065043_drop_columns_to_tasks_table',24),(35,'2023_08_15_065301_create_list_tasks_table',25),(36,'2023_08_15_065911_add_column_Listtaskid_to_tasks_table',26);
+INSERT INTO `migrations` VALUES (1,'2014_10_12_000000_create_users_table',1),(2,'2014_10_12_100000_create_password_reset_tokens_table',1),(3,'2014_10_12_100000_create_password_resets_table',1),(4,'2019_08_19_000000_create_failed_jobs_table',1),(5,'2019_12_14_000001_create_personal_access_tokens_table',1),(6,'2023_07_25_091108_create_langs_table',1),(7,'2023_08_01_044819_create_roles_table',1),(8,'2023_08_01_113500_create_dashboards_table',1),(9,'2023_08_01_114245_create_desks_table',1),(10,'2023_08_01_044610_add_column_role_id_table',2),(11,'2023_08_01_120034_create_tasks_table',3),(12,'2023_08_02_035853_add_task_id_to_desks_table',4),(13,'2023_08_02_040740_add_desk_id_to_tasks_table',5),(14,'2023_08_02_041845_create_columns_table',6),(15,'2023_08_02_044435_create_comments_table',7),(16,'2023_08_02_045350_create_user_desks_table',8),(17,'2023_08_02_045904_create_color_desks_table',9),(18,'2023_08_02_055033_drop_foreign_key_desk_id_in_color_desks_table',10),(19,'2023_08_02_055416_rename_color_desks_table',11),(20,'2023_08_02_055538_create_color_desks_table',12),(21,'2023_08_03_113609_add_defautl_image_to_desks_table',13),(23,'2023_08_04_085251_add_foreig_id_to_dashboards_table',14),(24,'2023_08_04_085745_add_column_title_to_dashboards_table',15),(25,'2023_08_07_054048_add_column_image_to_users_table',16),(26,'2023_08_07_095555_add_column_premium_to_users_table',17),(27,'2023_08_08_092711_add_column_dashboard_id_to_columns_table',18),(29,'2023_08_08_121604_create_column_desks_table',19),(30,'2023_08_08_121152_add_columns_to_desks_table',20),(31,'2023_08_10_055018_drop_foreign_key_desk_id_to_columns_table',21),(32,'2023_08_15_054543_add_foreign_key_dashboard_id_to_tasks_table',22),(33,'2023_08_15_063134_add_column_done_to_tasks_table',23),(34,'2023_08_15_065043_drop_columns_to_tasks_table',24),(35,'2023_08_15_065301_create_list_tasks_table',25),(36,'2023_08_15_065911_add_column_Listtaskid_to_tasks_table',26),(37,'2023_08_22_113444_drop_foreign_key_to_color_desks_table',27),(38,'2023_08_22_114611_add_foreign_key_to_desks_table',28);
 /*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -478,7 +452,7 @@ CREATE TABLE `tasks` (
   PRIMARY KEY (`id`),
   KEY `tasks_list_task_id_foreign` (`list_task_id`),
   CONSTRAINT `tasks_list_task_id_foreign` FOREIGN KEY (`list_task_id`) REFERENCES `list_tasks` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -487,7 +461,6 @@ CREATE TABLE `tasks` (
 
 LOCK TABLES `tasks` WRITE;
 /*!40000 ALTER TABLE `tasks` DISABLE KEYS */;
-INSERT INTO `tasks` VALUES (18,'dfgdfg',NULL,NULL,NULL,0,1,'2023-08-16 03:13:24','2023-08-16 09:04:55'),(19,'324',NULL,NULL,NULL,0,1,'2023-08-16 03:13:27','2023-08-16 09:08:32'),(20,'324',NULL,NULL,NULL,0,1,'2023-08-16 03:13:45','2023-08-17 03:49:09'),(21,'4564',NULL,NULL,NULL,0,1,'2023-08-16 03:38:06','2023-08-16 09:08:23'),(22,'sdfsdf',NULL,NULL,NULL,1,1,'2023-08-16 03:48:01','2023-08-16 09:08:25'),(23,'sdfsdf',NULL,NULL,NULL,1,1,'2023-08-16 03:48:05','2023-08-16 08:51:03'),(24,'sdfsdf',NULL,NULL,NULL,0,1,'2023-08-16 03:49:18','2023-08-16 03:49:18'),(25,'sdfsdf',NULL,NULL,NULL,0,1,'2023-08-16 03:49:23','2023-08-16 03:49:23'),(26,'sdfsdf',NULL,NULL,NULL,0,1,'2023-08-16 03:49:33','2023-08-16 03:49:33'),(40,'555',NULL,NULL,NULL,1,1,'2023-08-16 08:54:29','2023-08-16 08:54:29'),(41,'333',NULL,NULL,NULL,1,1,'2023-08-16 09:02:33','2023-08-16 09:02:42'),(42,'авп',NULL,NULL,NULL,0,1,'2023-08-17 03:40:01','2023-08-17 03:40:01');
 /*!40000 ALTER TABLE `tasks` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -556,7 +529,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'Masya Sagitov','Rab1d','avatar.png','onetaphack@gmail.com',NULL,'$2y$10$BSL8K8ULtETndLJVRYmET.giPP9IhZX9eBM1PMM08YT4KZ78BLsbe','0','vzRbJcENvfsFdlPsB4Siq6nASzBnNTfJhU66YF2FOkl6OICuBy0yusMin0DG',NULL,NULL,2);
+INSERT INTO `users` VALUES (1,'Masya Sagitov','Rab1d','avatar.png','onetaphack@gmail.com',NULL,'$2y$10$BSL8K8ULtETndLJVRYmET.giPP9IhZX9eBM1PMM08YT4KZ78BLsbe','0','FLwwhdgewQJGS1YUGlB2hskRkFK6o1snIil54l6nOrBTsc3R3XEUsLsKqe0P',NULL,NULL,2);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -569,4 +542,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-08-22 10:02:22
+-- Dump completed on 2023-08-22 17:18:54

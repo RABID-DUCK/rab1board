@@ -24,7 +24,8 @@ class DeskResource extends JsonResource
             'data_start' => $this->data_start,
             'data_end' => $this->data_end,
             'dashboard' => DashboardResource::make($this->whenLoaded('dashboard')),
-            'column' => ColumnResource::make($this->whenLoaded('column'))
+            'column' => ColumnResource::make($this->whenLoaded('column')),
+            'color' => $this->color
         ];
     }
 }

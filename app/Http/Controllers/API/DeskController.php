@@ -69,7 +69,8 @@ class DeskController extends Controller
     }
 
     public function show(Request $request){
-        $data = $request->validate(['dashboard_id' => 'required|integer', 'column_id' => 'required|integer', 'desk_id' => 'required|integer', 'list_task_id' => 'nullable|integer']);
+        $data = $request->validate(['dashboard_id' => 'required|integer', 'column_id' => 'required|integer', 'desk_id' => 'required|integer',
+            'list_task_id' => 'nullable|integer']);
 
         $desk = Desks::with('dashboard', 'column')->where('id', $data['desk_id'])
             ->whereHas('dashboard', function ($query) use ($data) {

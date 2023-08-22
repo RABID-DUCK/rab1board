@@ -151,13 +151,13 @@ createDesk = function createDesk(dashboard, column) {
     return response.json();
   }).then(function (res) {
     if (res.message) {
-      alert(res.message);
+      alert("Произошла ошибка! Повторите попытку позже...");
       return;
     }
     deleteDeskModal(res.column_id);
     var condition = '[data-column-id="' + res.column_id + '"]';
     var data_column = document.querySelector(condition);
-    data_column.querySelector('#add-task-title').insertAdjacentHTML('beforebegin', "\n                <div class=\"desk\">\n                    <p>".concat(res.desk.title, "</p>\n                    <img src=\"").concat(res.desk.image, "\" alt=\"").concat(res.desk.title, "\">\n                    <div class=\"data-desk\">\n                        <input class=\"custom-checkbox\" type=\"checkbox\" id=\"status\" name=\"status\" value=\"yes\">\n                        <time datetime=\"2011-11-18T14:54:39.929Z\" name=\"date\">2023-08-01 15:00</time>\n                    </div>\n                    <span>status</span>\n                </div>\n            "));
+    data_column.querySelector('#add-task-title').insertAdjacentHTML('beforebegin', "\n                <div class=\"desk\" onclick=\"viewDesk(".concat(dashboard, ", ").concat(column, ", ").concat(res.desk.id, ")\">\n                    <p>").concat(res.desk.title, "</p>\n                    <img src=\"").concat(res.desk.image, "\" alt=\"").concat(res.desk.title, "\">\n                    <div class=\"data-desk\">\n                        <input class=\"custom-checkbox\" type=\"checkbox\" id=\"status\" name=\"status\" value=\"yes\">\n                        <time datetime=\"2011-11-18T14:54:39.929Z\" name=\"date\">2023-08-01 15:00</time>\n                    </div>\n                    <span>status</span>\n                </div>\n            "));
   });
 };
 clickRenameColumn = function clickRenameColumn(id) {
@@ -261,7 +261,7 @@ viewDesk = function viewDesk(dashboard_id, column_id, desk_id) {
   }).then(function (res) {
     var _res$data$description;
     if (!document.querySelector('[data-panel-modal-desk]')) {
-      document.getElementById('wrapper-modal').insertAdjacentHTML('afterbegin', "\n               <div class=\"panel-desk bg-dark bg-gradient text-white\" data-panel-modal-desk>\n                <i id=\"calendarIcon\" class=\"bi bi-calendar\" onclick=\"openDatePicker(".concat(dashboard_id, ",").concat(desk_id, ")\" data-title=\"\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u0434\u0430\u0442\u0443 \u0432\u044B\u043F\u043E\u043B\u043D\u0435\u043D\u0438\u044F\"></i>\n                <i class=\"bi bi-image\" data-title=\"\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u043A\u0430\u0440\u0442\u0438\u043D\u043A\u0443\"></i>\n                <i class=\"bi bi-card-list\" data-title=\"\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u043F\u043E\u0434\u0437\u0430\u0434\u0430\u0447\u0438\"></i>\n                <i class=\"bi bi-bookmark-fill\" data-title=\"\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u0432\u0430\u0436\u043D\u043E\u0441\u0442\u044C \u0437\u0430\u0434\u0430\u0447\u0438\" onclick=\"outputColors(").concat(dashboard_id, ",").concat(desk_id, ")\"></i>\n                <i class=\"bi bi-arrows-move\" data-title=\"\u041F\u0435\u0440\u0435\u043C\u0435\u0441\u0442\u0438\u0442\u044C \u0437\u0430\u0434\u0430\u0447\u0443\"></i>\n                <i class=\"bi bi-files\" data-title=\"\u041F\u0440\u0438\u043A\u0440\u0435\u043F\u0438\u0442\u044C \u0444\u0430\u0439\u043B\u044B\"></i>\n            </div>\n            "));
+      document.getElementById('wrapper-modal').insertAdjacentHTML('afterbegin', "\n               <div class=\"panel-desk bg-dark bg-gradient text-white\" data-panel-modal-desk>\n                <i id=\"calendarIcon\" class=\"bi bi-calendar\" onclick=\"openDatePicker(".concat(dashboard_id, ",").concat(desk_id, ")\" data-title=\"\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u0434\u0430\u0442\u0443 \u0432\u044B\u043F\u043E\u043B\u043D\u0435\u043D\u0438\u044F\"></i>\n                <i class=\"bi bi-image\" data-title=\"\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u043A\u0430\u0440\u0442\u0438\u043D\u043A\u0443\"></i>\n                <i class=\"bi bi-card-list\" data-title=\"\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u043F\u043E\u0434\u0437\u0430\u0434\u0430\u0447\u0438\"></i>\n                <i class=\"bi bi-bookmark-fill\" data-title=\"\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u0432\u0430\u0436\u043D\u043E\u0441\u0442\u044C \u0437\u0430\u0434\u0430\u0447\u0438\" onclick=\"outputColors(").concat(desk_id, ")\"></i>\n                <i class=\"bi bi-arrows-move\" data-title=\"\u041F\u0435\u0440\u0435\u043C\u0435\u0441\u0442\u0438\u0442\u044C \u0437\u0430\u0434\u0430\u0447\u0443\"></i>\n                <i class=\"bi bi-files\" data-title=\"\u041F\u0440\u0438\u043A\u0440\u0435\u043F\u0438\u0442\u044C \u0444\u0430\u0439\u043B\u044B\"></i>\n            </div>\n            "));
     }
 
     // ----------Open modal----------
@@ -446,6 +446,7 @@ saveDate = function saveDate(dashboard_id, desk_id) {
     } else {
       document.getElementById('output-date').innerHTML = "\n                <div id=\"output-date\" class=\"output-date\">\n                    <span id=\"output-date-end\" class=\"".concat(differenceDate(res.data_end) ? 'text-danger fw-bold' : '', "\">\u0421\u0440\u043E\u043A \u0434\u043E: ").concat(convertData(res.data_end), "</span>\n                </div>\n            ");
     }
+    document.getElementById('output-date').style.display = 'flex';
     differenceDate(res.data_end) ? time.classList.add('text-danger') : time.classList.remove('text-danger');
     time.innerText = convertData(res.data_end);
   });
@@ -501,13 +502,24 @@ doneTask = function doneTask(dashboard_id, desk_id) {
     }
   });
 };
-outputColors = function outputColors(dashboard_id, desk_id) {
+outputColors = function outputColors(desk_id) {
   var target = event.target;
   fetch('/api/colors').then(function (response) {
     return response.json();
   }).then(function (res) {
-    target.insertAdjacentHTML('afterend', "\n                <div id=\"output-colors\" class=\"output-colors\">\n                    <span id=\"output-date-end\">\u0421\u0440\u043E\u043A \u0434\u043E: ".concat(convertData(res.data_end), "</span>\n                </div>\n            "));
-    console.log(res);
+    target.insertAdjacentHTML('afterend', "\n                <div id=\"output-colors\" class=\"output-colors bg-dark bg-gradient text-white\">\n                </div>\n            ");
+    res.forEach(function (item) {
+      document.getElementById('output-colors').insertAdjacentHTML('afterbegin', "\n                    <span class=\"colors-all\" style=\"background-color: ".concat(item.color, ";\" onclick=\"saveColor(").concat(item.id, ", ").concat(desk_id, ")\"></span>\n                "));
+    });
+  });
+};
+saveColor = function saveColor(color_id, desk_id) {
+  fetch('/api/colors/' + color_id + '/' + desk_id).then(function (response) {
+    return response.json();
+  }).then(function (res) {
+    console.log(res[0]);
+    document.getElementById('wrapper-modal').style.cssText = 'box-shadow: 0 0 15px 8px ' + res[0].color;
+    document.querySelector("[data-desk-id='".concat(desk_id, "']")).style.cssText = 'box-shadow: 0 0 10px 3px ' + res[0].color;
   });
 };
 /******/ })()

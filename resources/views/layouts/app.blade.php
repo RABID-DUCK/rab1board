@@ -14,6 +14,7 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
         <link rel="stylesheet" href="{{ asset('css/app.css') }}">
         <link rel="stylesheet" href="{{ asset('css/UI.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/media.css') }}">
     </head>
     <body class="antialiased">
             @include('layouts/header')

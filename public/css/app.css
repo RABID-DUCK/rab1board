@@ -579,21 +579,28 @@ nav {
 }
 
 .output-colors {
+  padding: 10px;
+  height: auto;
   width: auto;
-  height: 300px;
   border: 1px solid white;
   display: flex;
   z-index: 111;
-  flex-direction: column;
+  flex-direction: row;
   position: absolute;
   top: 55%;
   left: 5%;
-  max-width: 400px;
+  max-width: 300px;
+}
+.output-colors span:not(span:first-child) {
+  margin-left: 8px;
+}
+.output-colors span:hover {
+  cursor: pointer;
 }
 
-@media screen and (max-width: 820px) {
-  .wrapper-modal {
-    left: 50%;
-    width: 100%;
-  }
+.colors-all {
+  border-radius: 50%;
+  border: 1px solid #EBEFF2;
+  width: 30px;
+  height: 30px;
 }

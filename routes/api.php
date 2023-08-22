@@ -37,3 +37,4 @@ Route::post('/createList', '\App\Http\Controllers\API\ListTaskController@createL
 Route::get('/getTasks', '\App\Http\Controllers\API\ListTaskController@getTasks');
 
 Route::get('/colors', [\App\Http\Controllers\API\ColorController::class, 'index']);
+Route::get('/colors/{color}/{desk}', [\App\Http\Controllers\API\ColorController::class, 'addColor']);

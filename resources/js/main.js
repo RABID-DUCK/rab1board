@@ -203,14 +203,14 @@ createDesk = function (dashboard, column){
         .then(response => response.json())
         .then(res => {
             if (res.message){
-                alert(res.message)
+                alert("Произошла ошибка! Повторите попытку позже...")
                 return;
             }
             deleteDeskModal(res.column_id);
             let condition = '[data-column-id="'+res.column_id+'"]';
             let data_column = document.querySelector(condition);
             data_column.querySelector('#add-task-title').insertAdjacentHTML('beforebegin', `
-                <div class="desk">
+                <div class="desk" onclick="viewDesk(${dashboard}, ${column}, ${res.desk.id})">
                     <p>${res.desk.title}</p>
                     <img src="${res.desk.image}" alt="${res.desk.title}">
                     <div class="data-desk">
@@ -362,7 +362,7 @@ viewDesk = function (dashboard_id, column_id, desk_id){
                 <i id="calendarIcon" class="bi bi-calendar" onclick="openDatePicker(${dashboard_id},${desk_id})" data-title="Добавить дату выполнения"></i>
                 <i class="bi bi-image" data-title="Добавить картинку"></i>
                 <i class="bi bi-card-list" data-title="Добавить подзадачи"></i>
-                <i class="bi bi-bookmark-fill" data-title="Добавить важность задачи" onclick="outputColors(${dashboard_id},${desk_id})"></i>
+                <i class="bi bi-bookmark-fill" data-title="Добавить важность задачи" onclick="outputColors(${desk_id})"></i>
                 <i class="bi bi-arrows-move" data-title="Переместить задачу"></i>
                 <i class="bi bi-files" data-title="Прикрепить файлы"></i>
             </div>
@@ -636,6 +636,7 @@ saveDate = function (dashboard_id, desk_id){
             `
 
             }
+            document.getElementById('output-date').style.display = 'flex';
             differenceDate(res.data_end) ? time.classList.add('text-danger') : time.classList.remove('text-danger');
 
 
@@ -690,16 +691,31 @@ doneTask = function (dashboard_id, desk_id){
         })
 }
 
-outputColors = function (dashboard_id, desk_id){
+outputColors = function (desk_id){
     let target = event.target;
     fetch('/api/colors')
         .then(response => response.json())
         .then(res => {
             target.insertAdjacentHTML('afterend', `
-                <div id="output-colors" class="output-colors">
-                    <span id="output-date-end">Срок до: ${convertData(res.data_end)}</span>
+                <div id="output-colors" class="output-colors bg-dark bg-gradient text-white">
                 </div>
             `)
-            console.log(res);
+
+            res.forEach(item => {
+                document.getElementById('output-colors').insertAdjacentHTML('afterbegin', `
+                    <span class="colors-all" style="background-color: ${item.color};" onclick="saveColor(${item.id}, ${desk_id})"></span>
+                `)
+            })
+        })
+}
+
+saveColor = function (color_id, desk_id){
+    fetch('/api/colors/'+color_id+'/'+desk_id)
+        .then(response => response.json())
+        .then(res => {
+            console.log(res[0]);
+            document.getElementById('wrapper-modal').style.cssText = 'box-shadow: 0 0 15px 8px '+res[0].color;
+            document.querySelector(`[data-desk-id='${desk_id}']`).style.cssText = 'box-shadow: 0 0 10px 3px '+res[0].color;
+
         })
 }

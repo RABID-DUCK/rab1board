@@ -9659,6 +9659,19 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/css/media.scss":
+/*!**********************************!*\
+  !*** ./resources/css/media.scss ***!
+  \**********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ }),
+
 /***/ "./node_modules/axios/lib/adapters/adapters.js":
 /*!*****************************************************!*\
   !*** ./node_modules/axios/lib/adapters/adapters.js ***!
@@ -13848,6 +13861,7 @@ const isThenable = (thing) =>
 /******/ 		// [resolve, reject, Promise] = chunk loading, 0 = chunk loaded
 /******/ 		var installedChunks = {
 /******/ 			"/js/app": 0,
+/******/ 			"css/media": 0,
 /******/ 			"css/backend": 0,
 /******/ 			"css/UI": 0,
 /******/ 			"css/variables": 0,
@@ -13901,11 +13915,12 @@ const isThenable = (thing) =>
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module depends on other loaded chunks and execution need to be delayed
-/******/ 	__webpack_require__.O(undefined, ["css/backend","css/UI","css/variables","css/app"], () => (__webpack_require__("./resources/js/app.js")))
-/******/ 	__webpack_require__.O(undefined, ["css/backend","css/UI","css/variables","css/app"], () => (__webpack_require__("./resources/css/app.scss")))
-/******/ 	__webpack_require__.O(undefined, ["css/backend","css/UI","css/variables","css/app"], () => (__webpack_require__("./resources/css/variables.scss")))
-/******/ 	__webpack_require__.O(undefined, ["css/backend","css/UI","css/variables","css/app"], () => (__webpack_require__("./resources/css/UI.scss")))
-/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, ["css/backend","css/UI","css/variables","css/app"], () => (__webpack_require__("./resources/css/backend.scss")))
+/******/ 	__webpack_require__.O(undefined, ["css/media","css/backend","css/UI","css/variables","css/app"], () => (__webpack_require__("./resources/js/app.js")))
+/******/ 	__webpack_require__.O(undefined, ["css/media","css/backend","css/UI","css/variables","css/app"], () => (__webpack_require__("./resources/css/app.scss")))
+/******/ 	__webpack_require__.O(undefined, ["css/media","css/backend","css/UI","css/variables","css/app"], () => (__webpack_require__("./resources/css/variables.scss")))
+/******/ 	__webpack_require__.O(undefined, ["css/media","css/backend","css/UI","css/variables","css/app"], () => (__webpack_require__("./resources/css/UI.scss")))
+/******/ 	__webpack_require__.O(undefined, ["css/media","css/backend","css/UI","css/variables","css/app"], () => (__webpack_require__("./resources/css/backend.scss")))
+/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, ["css/media","css/backend","css/UI","css/variables","css/app"], () => (__webpack_require__("./resources/css/media.scss")))
 /******/ 	__webpack_exports__ = __webpack_require__.O(__webpack_exports__);
 /******/ 	
 /******/ })()

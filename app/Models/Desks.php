@@ -59,4 +59,8 @@ class Desks extends Model
     {
         return $this->belongsTo(Columns::class, 'column_id', 'id');
     }
+
+    public function color(){
+        return $this->hasMany(Colors::class, 'id', 'color_id');
+    }
 }
