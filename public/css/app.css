@@ -452,6 +452,8 @@ nav {
 }
 .modal-desk .check-list-wrapper .list-tasks {
   padding: 3px;
+  display: flex;
+  flex-direction: column;
 }
 .modal-desk .check-list-wrapper .list-tasks .btn {
   margin: 15px 0 10px 5px;

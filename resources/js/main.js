@@ -360,19 +360,25 @@ viewDesk = function (dashboard_id, column_id, desk_id){
     })
         .then(response => response.json())
         .then(res => {
+            let color;
+            if(res.data.color.length > 0){
+                color = res.data.color[0].id
+            }else{
+                color = "";
+            }
+
             if (!document.querySelector('[data-panel-modal-desk]')){
                 document.getElementById('wrapper-modal').insertAdjacentHTML('afterbegin', `
-               <div class="panel-desk bg-dark bg-gradient text-white" data-panel-modal-desk>
+           <div class="panel-desk bg-dark bg-gradient text-white" data-panel-modal-desk>
                 <i id="calendarIcon" class="bi bi-calendar" onclick="openDatePicker(${dashboard_id},${desk_id})" data-title="Добавить дату выполнения"></i>
                 <i class="bi bi-image" data-title="Добавить картинку"></i>
-                <i class="bi bi-card-list" data-title="Добавить подзадачи"></i>
-                <i class="bi bi-bookmark-fill" data-title="Добавить важность задачи" onclick="outputColors(${desk_id}, ${res.data.color[0].id})"></i>
+                <i class="bi bi-card-list" data-title="Добавить подзадачи" onclick="createTask(${dashboard_id}, ${desk_id})"></i>
+                <i class="bi bi-bookmark-fill" data-title="Добавить важность задачи" onclick="outputColors(${desk_id}, ${color})"></i>
                 <i class="bi bi-arrows-move" data-title="Переместить задачу"></i>
                 <i class="bi bi-files" data-title="Прикрепить файлы"></i>
             </div>
             `)
             }
-
 
             // ----------Open modal----------
             modal.insertAdjacentHTML('beforeend', `
@@ -390,12 +396,13 @@ viewDesk = function (dashboard_id, column_id, desk_id){
                     Срок до: ${convertData(res.data.data_end)}</span>
                 </div>
 
-                <div class="description">
+                <div class="description" id="description">
                     <label for="description" class="form-label">Description of task</label>
                     <textarea class="form-control" id="description" rows="3" placeholder="This task mean...">${res.data.description ?? ''}</textarea>
-                    <button class="btn text-white hide" id="save-desk" onclick="updateDescription(${dashboard_id},${desk_id}, ${column_id})"><i class="bi bi-check-lg"></i>Save</button>
+                    <button class="btn text-white hide" id="save-desk" onclick="updateDescription(${dashboard_id},${desk_id}, ${column_id})">
+                    <i class="bi bi-check-lg"></i>Save</button>
                 </div>
-                    <button class="btn text-white ${res.data.list_task_id ? 'hide' : ''}" id="add-menu-tasks">Add tasks</button>
+                    <button class="btn text-white ${res.data.list_task_id ? 'hide' : ''}" id="add-menu-tasks" onclick="createTask(${dashboard_id},${desk_id},${column_id})">Add tasks</button>
             `)
 
             // --------Add Description-------
@@ -408,7 +415,8 @@ viewDesk = function (dashboard_id, column_id, desk_id){
             })
             // --------End add Description-------
 
-            wrapModal.style.cssText = 'box-shadow: 0 0 15px 8px '+res.data.color[0].color;
+            if(res.data.color.length > 0) wrapModal.style.cssText = 'box-shadow: 0 0 15px 8px '+res.data.color[0].color;
+
             loadCheckList(dashboard_id, desk_id, column_id);
         })
 }
@@ -443,21 +451,24 @@ loadCheckList = function (dashboard_id, desk_id, column_id){
         .then(response => response.json())
         .then(res => {
             let addWindowTasks = document.getElementById('add-menu-tasks');
-            addWindowTasks.classList.add('hide')
+            if(res.items === null) {
+                return;
+            }
+                addWindowTasks.classList.add('hide')
 
-            if (res.list) {
-                addWindowTasks.insertAdjacentHTML('beforebegin', `
-                    <div class="check-list-wrapper">
+                if (res.list) {
+                    addWindowTasks.insertAdjacentHTML('beforebegin', `
+                    <div class="check-list-wrapper" id="check-list">
                         <span class="name-list bg-dark bg-gradient text-white" data-name-list>${res.list.title}</span>
                         <input type="text" class="form-control name-list hide">
                         <i class="bi bi-check-lg save-column hide" data-save-checkList></i>
-                        <div class="list-tasks d-flex flex-column">
+                        <div class="list-tasks d-flex flex-column" data-list-tasks>
                             <button class="btn text-white add-task" id="btn-create-task" onclick="createTask(${dashboard_id}, ${desk_id})">Add task</button>
                         </div>
                     </div>`)
-                if (res.tasks){
-                    res.tasks.forEach(item => {
-                        document.getElementById('btn-create-task').insertAdjacentHTML('beforebegin', `
+                    if (res.tasks){
+                        res.tasks.forEach(item => {
+                            document.getElementById('btn-create-task').insertAdjacentHTML('beforebegin', `
                         <div class="form-check form-switch" data-task-id="${item.id}">
                             <input type="checkbox" class="form-check-input" role="switch" id="checklist${item.id}" ${item.done === 0 ? "" : 'checked'}
                              onclick="changeChecked(${dashboard_id}, ${desk_id}, ${column_id}, ${item.id})">
@@ -466,24 +477,40 @@ loadCheckList = function (dashboard_id, desk_id, column_id){
                             <label for="checklist${item.id}" class="form-check-label">${item.title}</label>
                         </div>
                 `)
-                    })
-                }
-            } else {
-                addWindowTasks.insertAdjacentHTML('beforebegin', `
-                <div class="check-list-wrapper">
+                        })
+                    }
+
+                } else {
+                    addWindowTasks.insertAdjacentHTML('beforebegin', `
+                <div class="check-list-wrapper" id="check-list">
                     <span class="name-list bg-dark bg-gradient text-white hide" data-name-list>Name list</span>
                     <input type="text" class="form-control name-list">
-                    <i class="bi bi-check-lg save-column" data-save-checkList></i>
+                    <i class="bi bi-check-lg save-column" data-save-checkList onclick="addWindowTasks(${dashboard_id}, ${desk_id})"></i>
                     <div class="list-tasks d-flex flex-column">
                         <button class="btn text-white add-task" id="btn-create-task" onclick="createTask(${dashboard_id}, ${desk_id})">Add task</button>
                     </div>
                 </div>
                 `)
-            }
+                }
         })
 }
 
-createTask = function (dashboard_id, desk_id){
+createTask = function (dashboard_id, desk_id, column_id){
+    let checkList = document.getElementById('check-list');
+    if(!checkList){
+        document.getElementById('description').insertAdjacentHTML('afterend',`
+                <div class="check-list-wrapper" id="check-list">
+                    <span class="name-list bg-dark bg-gradient text-white hide" data-name-list>Name list</span>
+                    <input type="text" class="form-control name-list">
+                    <i class="bi bi-check-lg save-column" data-save-checkList onclick="addWindowTasks(${dashboard_id}, ${desk_id})"></i>
+                    <div class="list-tasks" data-list-tasks style="display: none;">
+                        <button class="btn text-white add-task" id="btn-create-task" onclick="createTask(${dashboard_id}, ${desk_id})">Add task</button>
+                    </div>
+                </div>
+        `)
+        document.getElementById('add-menu-tasks').classList.add('hide')
+        return;
+    }
     let createTask = document.getElementById('btn-create-task');
     if (createTask){
         let createTask = document.getElementById('btn-create-task');
@@ -496,7 +523,7 @@ createTask = function (dashboard_id, desk_id){
         `)
     }
     else{
-        addWindowTasks(dashboard_id, desk_id)
+        addWindowTasks(dashboard_id, desk_id, column_id)
     }
 }
 
@@ -533,7 +560,7 @@ saveTask = function (dashboard_id, desk_id){
         },
         body: JSON.stringify({
             'title': title.querySelector('#saveTitleTask').value,
-            'done': event.target.previousElementSibling.previousElementSibling.checked,
+            'done': title.querySelector('#checklist').checked,
             'dashboard_id': dashboard_id,
             'desk_id': desk_id
         })
@@ -544,7 +571,8 @@ saveTask = function (dashboard_id, desk_id){
             let createTask = document.getElementById('btn-create-task');
             createTask.insertAdjacentHTML('beforebegin', `
             <div class="form-check form-switch" data-task-id="${res.id}">
-                <input type="checkbox" class="form-check-input" role="switch" id="checklist${res.id}">
+                <input type="checkbox" class="form-check-input" role="switch" id="checklist${res.id}"
+                onclick="changeChecked(${dashboard_id}, ${desk_id}, null, ${res.id})" ${res.done ? 'checked' : ''}>
                 <input type="text" class="form-control hide" id="saveTitleTask">
                 <button class="btn text-white hide" id="saveTask" onclick="saveTask(${dashboard_id}, ${desk_id})">Save</button>
                 <label for="checklist${res.id}" class="form-check-label">${res.title}</label>
@@ -553,35 +581,37 @@ saveTask = function (dashboard_id, desk_id){
         })
 }
 
-addWindowTasks = function (dashboard_id, desk_id){
+addWindowTasks = function (dashboard_id, desk_id, column_id){
     let addWindowTasks = document.getElementById('add-menu-tasks');
-    addWindowTasks.onclick = function (){
-        addWindowTasks.classList.add('hide')
+    addWindowTasks.classList.add('hide')
 
-        let saveCheckList = document.querySelector('[data-save-checkList]');
-        saveCheckList.addEventListener('click', function (){
-            let input = saveCheckList.previousElementSibling.value;
-            fetch('/api/createList', {
-                method: 'post',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    'title': input,
-                    'dashboard_id': dashboard_id,
-                    'desk_id': desk_id
-                })
-            })
-                .then(response => response.json())
-                .then(res => {
-                    saveCheckList.previousElementSibling.classList.add('hide')
-                    saveCheckList.classList.add('hide')
-                    document.querySelector('[data-name-list]').classList.remove('hide');
-                    document.querySelector('[data-name-list]').textContent = res.title;
-                })
-        })
+    let saveCheckList = document.querySelector('[data-save-checkList]');
+    if(!saveCheckList){
+        loadCheckList(dashboard_id, desk_id, column_id)
+        return;
     }
+    let input = saveCheckList.previousElementSibling.value;
+    fetch('/api/createList', {
+        method: 'post',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            'title': input,
+            'dashboard_id': dashboard_id,
+            'desk_id': desk_id
+        })
+    })
+        .then(response => response.json())
+        .then(res => {
+            saveCheckList.previousElementSibling.classList.add('hide')
+            saveCheckList.classList.add('hide')
+            document.querySelector('[data-name-list]').classList.remove('hide');
+            document.querySelector('[data-name-list]').textContent = res.title;
+            let listTask = document.querySelector('[data-list-tasks]');
+            if(listTask) listTask.setAttribute('style', '')
+        })
 }
 
 updateDescription = function (dashboard_id, desk_id, column_id){
@@ -716,8 +746,8 @@ outputColors = function (desk_id, color_id){
             // тут по сути output.insertAdjacentHTML должен быть, но он не видит эту функцию, а тип var писать для него я не хочу.
             res.forEach(item => {
                 document.getElementById('output-colors').insertAdjacentHTML('afterbegin', `
-                    <span class="colors-all" style="background-color: ${item.color};
-                        ${item.id === color_id ? 'box-shadow: 0 0 4px 4px silver;' : ''}" onclick="saveColor(${item.id}, ${desk_id})"></span>
+                    <span class="colors-all" style="${item.color.length > 0 && item.id === color_id ? 'box-shadow: 0 0 4px 4px silver;' : ''}"
+                    onclick="saveColor(${item.id}, ${desk_id})"></span>
                 `)
             })
         })

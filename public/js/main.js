@@ -265,12 +265,18 @@ viewDesk = function viewDesk(dashboard_id, column_id, desk_id) {
     return response.json();
   }).then(function (res) {
     var _res$data$description;
+    var color;
+    if (res.data.color.length > 0) {
+      color = res.data.color[0].id;
+    } else {
+      color = "";
+    }
     if (!document.querySelector('[data-panel-modal-desk]')) {
-      document.getElementById('wrapper-modal').insertAdjacentHTML('afterbegin', "\n               <div class=\"panel-desk bg-dark bg-gradient text-white\" data-panel-modal-desk>\n                <i id=\"calendarIcon\" class=\"bi bi-calendar\" onclick=\"openDatePicker(".concat(dashboard_id, ",").concat(desk_id, ")\" data-title=\"\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u0434\u0430\u0442\u0443 \u0432\u044B\u043F\u043E\u043B\u043D\u0435\u043D\u0438\u044F\"></i>\n                <i class=\"bi bi-image\" data-title=\"\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u043A\u0430\u0440\u0442\u0438\u043D\u043A\u0443\"></i>\n                <i class=\"bi bi-card-list\" data-title=\"\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u043F\u043E\u0434\u0437\u0430\u0434\u0430\u0447\u0438\"></i>\n                <i class=\"bi bi-bookmark-fill\" data-title=\"\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u0432\u0430\u0436\u043D\u043E\u0441\u0442\u044C \u0437\u0430\u0434\u0430\u0447\u0438\" onclick=\"outputColors(").concat(desk_id, ", ").concat(res.data.color[0].id, ")\"></i>\n                <i class=\"bi bi-arrows-move\" data-title=\"\u041F\u0435\u0440\u0435\u043C\u0435\u0441\u0442\u0438\u0442\u044C \u0437\u0430\u0434\u0430\u0447\u0443\"></i>\n                <i class=\"bi bi-files\" data-title=\"\u041F\u0440\u0438\u043A\u0440\u0435\u043F\u0438\u0442\u044C \u0444\u0430\u0439\u043B\u044B\"></i>\n            </div>\n            "));
+      document.getElementById('wrapper-modal').insertAdjacentHTML('afterbegin', "\n           <div class=\"panel-desk bg-dark bg-gradient text-white\" data-panel-modal-desk>\n                <i id=\"calendarIcon\" class=\"bi bi-calendar\" onclick=\"openDatePicker(".concat(dashboard_id, ",").concat(desk_id, ")\" data-title=\"\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u0434\u0430\u0442\u0443 \u0432\u044B\u043F\u043E\u043B\u043D\u0435\u043D\u0438\u044F\"></i>\n                <i class=\"bi bi-image\" data-title=\"\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u043A\u0430\u0440\u0442\u0438\u043D\u043A\u0443\"></i>\n                <i class=\"bi bi-card-list\" data-title=\"\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u043F\u043E\u0434\u0437\u0430\u0434\u0430\u0447\u0438\" onclick=\"createTask(").concat(dashboard_id, ", ").concat(desk_id, ")\"></i>\n                <i class=\"bi bi-bookmark-fill\" data-title=\"\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u0432\u0430\u0436\u043D\u043E\u0441\u0442\u044C \u0437\u0430\u0434\u0430\u0447\u0438\" onclick=\"outputColors(").concat(desk_id, ", ").concat(color, ")\"></i>\n                <i class=\"bi bi-arrows-move\" data-title=\"\u041F\u0435\u0440\u0435\u043C\u0435\u0441\u0442\u0438\u0442\u044C \u0437\u0430\u0434\u0430\u0447\u0443\"></i>\n                <i class=\"bi bi-files\" data-title=\"\u041F\u0440\u0438\u043A\u0440\u0435\u043F\u0438\u0442\u044C \u0444\u0430\u0439\u043B\u044B\"></i>\n            </div>\n            "));
     }
 
     // ----------Open modal----------
-    modal.insertAdjacentHTML('beforeend', "\n             <span class=\"close-modal\" id=\"modal-desk\" onclick=\"closeModal()\">X</span>\n                <b>".concat(res.data.title, "</b>\n                <div class=\"users-desk\">\n                    <span><img src=\"/images/avatar_none.png\" alt=\"\"></span>\n                    <span><img src=\"/images/avatar_none.png\" alt=\"\"></span>\n                    <span><img src=\"/images/avatar_none.png\" alt=\"\"></span>\n                    <i class=\"bi bi-plus-circle\"></i>\n                </div>\n\n                <div id=\"output-date\" class=\"output-date\" style=\"").concat(!res.data.data_end ? 'display: none;' : '', "\">\n                    <span id=\"output-date-end\" class=\"").concat(differenceDate(res.data.data_end) ? 'text-danger fw-bold' : '', "\">\n                    \u0421\u0440\u043E\u043A \u0434\u043E: ").concat(convertData(res.data.data_end), "</span>\n                </div>\n\n                <div class=\"description\">\n                    <label for=\"description\" class=\"form-label\">Description of task</label>\n                    <textarea class=\"form-control\" id=\"description\" rows=\"3\" placeholder=\"This task mean...\">").concat((_res$data$description = res.data.description) !== null && _res$data$description !== void 0 ? _res$data$description : '', "</textarea>\n                    <button class=\"btn text-white hide\" id=\"save-desk\" onclick=\"updateDescription(").concat(dashboard_id, ",").concat(desk_id, ", ").concat(column_id, ")\"><i class=\"bi bi-check-lg\"></i>Save</button>\n                </div>\n                    <button class=\"btn text-white ").concat(res.data.list_task_id ? 'hide' : '', "\" id=\"add-menu-tasks\">Add tasks</button>\n            "));
+    modal.insertAdjacentHTML('beforeend', "\n             <span class=\"close-modal\" id=\"modal-desk\" onclick=\"closeModal()\">X</span>\n                <b>".concat(res.data.title, "</b>\n                <div class=\"users-desk\">\n                    <span><img src=\"/images/avatar_none.png\" alt=\"\"></span>\n                    <span><img src=\"/images/avatar_none.png\" alt=\"\"></span>\n                    <span><img src=\"/images/avatar_none.png\" alt=\"\"></span>\n                    <i class=\"bi bi-plus-circle\"></i>\n                </div>\n\n                <div id=\"output-date\" class=\"output-date\" style=\"").concat(!res.data.data_end ? 'display: none;' : '', "\">\n                    <span id=\"output-date-end\" class=\"").concat(differenceDate(res.data.data_end) ? 'text-danger fw-bold' : '', "\">\n                    \u0421\u0440\u043E\u043A \u0434\u043E: ").concat(convertData(res.data.data_end), "</span>\n                </div>\n\n                <div class=\"description\" id=\"description\">\n                    <label for=\"description\" class=\"form-label\">Description of task</label>\n                    <textarea class=\"form-control\" id=\"description\" rows=\"3\" placeholder=\"This task mean...\">").concat((_res$data$description = res.data.description) !== null && _res$data$description !== void 0 ? _res$data$description : '', "</textarea>\n                    <button class=\"btn text-white hide\" id=\"save-desk\" onclick=\"updateDescription(").concat(dashboard_id, ",").concat(desk_id, ", ").concat(column_id, ")\">\n                    <i class=\"bi bi-check-lg\"></i>Save</button>\n                </div>\n                    <button class=\"btn text-white ").concat(res.data.list_task_id ? 'hide' : '', "\" id=\"add-menu-tasks\" onclick=\"createTask(").concat(dashboard_id, ",").concat(desk_id, ",").concat(column_id, ")\">Add tasks</button>\n            "));
 
     // --------Add Description-------
     var textareaClicked = false;
@@ -282,7 +288,7 @@ viewDesk = function viewDesk(dashboard_id, column_id, desk_id) {
     });
     // --------End add Description-------
 
-    wrapModal.style.cssText = 'box-shadow: 0 0 15px 8px ' + res.data.color[0].color;
+    if (res.data.color.length > 0) wrapModal.style.cssText = 'box-shadow: 0 0 15px 8px ' + res.data.color[0].color;
     loadCheckList(dashboard_id, desk_id, column_id);
   });
 };
@@ -311,26 +317,35 @@ loadCheckList = function loadCheckList(dashboard_id, desk_id, column_id) {
     return response.json();
   }).then(function (res) {
     var addWindowTasks = document.getElementById('add-menu-tasks');
+    if (res.items === null) {
+      return;
+    }
     addWindowTasks.classList.add('hide');
     if (res.list) {
-      addWindowTasks.insertAdjacentHTML('beforebegin', "\n                    <div class=\"check-list-wrapper\">\n                        <span class=\"name-list bg-dark bg-gradient text-white\" data-name-list>".concat(res.list.title, "</span>\n                        <input type=\"text\" class=\"form-control name-list hide\">\n                        <i class=\"bi bi-check-lg save-column hide\" data-save-checkList></i>\n                        <div class=\"list-tasks d-flex flex-column\">\n                            <button class=\"btn text-white add-task\" id=\"btn-create-task\" onclick=\"createTask(").concat(dashboard_id, ", ").concat(desk_id, ")\">Add task</button>\n                        </div>\n                    </div>"));
+      addWindowTasks.insertAdjacentHTML('beforebegin', "\n                    <div class=\"check-list-wrapper\" id=\"check-list\">\n                        <span class=\"name-list bg-dark bg-gradient text-white\" data-name-list>".concat(res.list.title, "</span>\n                        <input type=\"text\" class=\"form-control name-list hide\">\n                        <i class=\"bi bi-check-lg save-column hide\" data-save-checkList></i>\n                        <div class=\"list-tasks d-flex flex-column\" data-list-tasks>\n                            <button class=\"btn text-white add-task\" id=\"btn-create-task\" onclick=\"createTask(").concat(dashboard_id, ", ").concat(desk_id, ")\">Add task</button>\n                        </div>\n                    </div>"));
       if (res.tasks) {
         res.tasks.forEach(function (item) {
           document.getElementById('btn-create-task').insertAdjacentHTML('beforebegin', "\n                        <div class=\"form-check form-switch\" data-task-id=\"".concat(item.id, "\">\n                            <input type=\"checkbox\" class=\"form-check-input\" role=\"switch\" id=\"checklist").concat(item.id, "\" ").concat(item.done === 0 ? "" : 'checked', "\n                             onclick=\"changeChecked(").concat(dashboard_id, ", ").concat(desk_id, ", ").concat(column_id, ", ").concat(item.id, ")\">\n                            <input type=\"text\" class=\"form-control hide\" id=\"saveTitleTask\" value=\"").concat(item.title, "\">\n                            <button class=\"btn text-white hide\" id=\"saveTask\" onclick=\"saveTask(").concat(dashboard_id, ", ").concat(desk_id, ")\">Save</button>\n                            <label for=\"checklist").concat(item.id, "\" class=\"form-check-label\">").concat(item.title, "</label>\n                        </div>\n                "));
         });
       }
     } else {
-      addWindowTasks.insertAdjacentHTML('beforebegin', "\n                <div class=\"check-list-wrapper\">\n                    <span class=\"name-list bg-dark bg-gradient text-white hide\" data-name-list>Name list</span>\n                    <input type=\"text\" class=\"form-control name-list\">\n                    <i class=\"bi bi-check-lg save-column\" data-save-checkList></i>\n                    <div class=\"list-tasks d-flex flex-column\">\n                        <button class=\"btn text-white add-task\" id=\"btn-create-task\" onclick=\"createTask(".concat(dashboard_id, ", ").concat(desk_id, ")\">Add task</button>\n                    </div>\n                </div>\n                "));
+      addWindowTasks.insertAdjacentHTML('beforebegin', "\n                <div class=\"check-list-wrapper\" id=\"check-list\">\n                    <span class=\"name-list bg-dark bg-gradient text-white hide\" data-name-list>Name list</span>\n                    <input type=\"text\" class=\"form-control name-list\">\n                    <i class=\"bi bi-check-lg save-column\" data-save-checkList onclick=\"addWindowTasks(".concat(dashboard_id, ", ").concat(desk_id, ")\"></i>\n                    <div class=\"list-tasks d-flex flex-column\">\n                        <button class=\"btn text-white add-task\" id=\"btn-create-task\" onclick=\"createTask(").concat(dashboard_id, ", ").concat(desk_id, ")\">Add task</button>\n                    </div>\n                </div>\n                "));
     }
   });
 };
-createTask = function createTask(dashboard_id, desk_id) {
+createTask = function createTask(dashboard_id, desk_id, column_id) {
+  var checkList = document.getElementById('check-list');
+  if (!checkList) {
+    document.getElementById('description').insertAdjacentHTML('afterend', "\n                <div class=\"check-list-wrapper\" id=\"check-list\">\n                    <span class=\"name-list bg-dark bg-gradient text-white hide\" data-name-list>Name list</span>\n                    <input type=\"text\" class=\"form-control name-list\">\n                    <i class=\"bi bi-check-lg save-column\" data-save-checkList onclick=\"addWindowTasks(".concat(dashboard_id, ", ").concat(desk_id, ")\"></i>\n                    <div class=\"list-tasks\" data-list-tasks style=\"display: none;\">\n                        <button class=\"btn text-white add-task\" id=\"btn-create-task\" onclick=\"createTask(").concat(dashboard_id, ", ").concat(desk_id, ")\">Add task</button>\n                    </div>\n                </div>\n        "));
+    document.getElementById('add-menu-tasks').classList.add('hide');
+    return;
+  }
   var createTask = document.getElementById('btn-create-task');
   if (createTask) {
     var _createTask = document.getElementById('btn-create-task');
     _createTask.insertAdjacentHTML('beforebegin', "\n            <div class=\"form-check form-switch\" data-temp-task>\n                <input type=\"checkbox\" class=\"form-check-input\" role=\"switch\" id=\"checklist\">\n                <input type=\"text\" class=\"form-control\" id=\"saveTitleTask\">\n                <button class=\"btn text-white\" id=\"saveTask\" onclick=\"saveTask(".concat(dashboard_id, ", ").concat(desk_id, ")\">Save</button>\n            </div>\n        "));
   } else {
-    addWindowTasks(dashboard_id, desk_id);
+    addWindowTasks(dashboard_id, desk_id, column_id);
   }
 };
 changeChecked = function changeChecked(dashboard_id, desk_id, column_id, task_id) {
@@ -364,7 +379,7 @@ saveTask = function saveTask(dashboard_id, desk_id) {
     },
     body: JSON.stringify({
       'title': title.querySelector('#saveTitleTask').value,
-      'done': event.target.previousElementSibling.previousElementSibling.checked,
+      'done': title.querySelector('#checklist').checked,
       'dashboard_id': dashboard_id,
       'desk_id': desk_id
     })
@@ -373,37 +388,39 @@ saveTask = function saveTask(dashboard_id, desk_id) {
   }).then(function (res) {
     title.remove();
     var createTask = document.getElementById('btn-create-task');
-    createTask.insertAdjacentHTML('beforebegin', "\n            <div class=\"form-check form-switch\" data-task-id=\"".concat(res.id, "\">\n                <input type=\"checkbox\" class=\"form-check-input\" role=\"switch\" id=\"checklist").concat(res.id, "\">\n                <input type=\"text\" class=\"form-control hide\" id=\"saveTitleTask\">\n                <button class=\"btn text-white hide\" id=\"saveTask\" onclick=\"saveTask(").concat(dashboard_id, ", ").concat(desk_id, ")\">Save</button>\n                <label for=\"checklist").concat(res.id, "\" class=\"form-check-label\">").concat(res.title, "</label>\n            </div>\n        "));
+    createTask.insertAdjacentHTML('beforebegin', "\n            <div class=\"form-check form-switch\" data-task-id=\"".concat(res.id, "\">\n                <input type=\"checkbox\" class=\"form-check-input\" role=\"switch\" id=\"checklist").concat(res.id, "\"\n                onclick=\"changeChecked(").concat(dashboard_id, ", ").concat(desk_id, ", null, ").concat(res.id, ")\" ").concat(res.done ? 'checked' : '', ">\n                <input type=\"text\" class=\"form-control hide\" id=\"saveTitleTask\">\n                <button class=\"btn text-white hide\" id=\"saveTask\" onclick=\"saveTask(").concat(dashboard_id, ", ").concat(desk_id, ")\">Save</button>\n                <label for=\"checklist").concat(res.id, "\" class=\"form-check-label\">").concat(res.title, "</label>\n            </div>\n        "));
   });
 };
-addWindowTasks = function addWindowTasks(dashboard_id, desk_id) {
+addWindowTasks = function addWindowTasks(dashboard_id, desk_id, column_id) {
   var addWindowTasks = document.getElementById('add-menu-tasks');
-  addWindowTasks.onclick = function () {
-    addWindowTasks.classList.add('hide');
-    var saveCheckList = document.querySelector('[data-save-checkList]');
-    saveCheckList.addEventListener('click', function () {
-      var input = saveCheckList.previousElementSibling.value;
-      fetch('/api/createList', {
-        method: 'post',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          'title': input,
-          'dashboard_id': dashboard_id,
-          'desk_id': desk_id
-        })
-      }).then(function (response) {
-        return response.json();
-      }).then(function (res) {
-        saveCheckList.previousElementSibling.classList.add('hide');
-        saveCheckList.classList.add('hide');
-        document.querySelector('[data-name-list]').classList.remove('hide');
-        document.querySelector('[data-name-list]').textContent = res.title;
-      });
-    });
-  };
+  addWindowTasks.classList.add('hide');
+  var saveCheckList = document.querySelector('[data-save-checkList]');
+  if (!saveCheckList) {
+    loadCheckList(dashboard_id, desk_id, column_id);
+    return;
+  }
+  var input = saveCheckList.previousElementSibling.value;
+  fetch('/api/createList', {
+    method: 'post',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      'title': input,
+      'dashboard_id': dashboard_id,
+      'desk_id': desk_id
+    })
+  }).then(function (response) {
+    return response.json();
+  }).then(function (res) {
+    saveCheckList.previousElementSibling.classList.add('hide');
+    saveCheckList.classList.add('hide');
+    document.querySelector('[data-name-list]').classList.remove('hide');
+    document.querySelector('[data-name-list]').textContent = res.title;
+    var listTask = document.querySelector('[data-list-tasks]');
+    if (listTask) listTask.setAttribute('style', '');
+  });
 };
 updateDescription = function updateDescription(dashboard_id, desk_id, column_id) {
   var desk = document.getElementById('description').value;
@@ -522,7 +539,7 @@ outputColors = function outputColors(desk_id, color_id) {
 
     // тут по сути output.insertAdjacentHTML должен быть, но он не видит эту функцию, а тип var писать для него я не хочу.
     res.forEach(function (item) {
-      document.getElementById('output-colors').insertAdjacentHTML('afterbegin', "\n                    <span class=\"colors-all\" style=\"background-color: ".concat(item.color, ";\n                        ").concat(item.id === color_id ? 'box-shadow: 0 0 4px 4px silver;' : '', "\" onclick=\"saveColor(").concat(item.id, ", ").concat(desk_id, ")\"></span>\n                "));
+      document.getElementById('output-colors').insertAdjacentHTML('afterbegin', "\n                    <span class=\"colors-all\" style=\"".concat(item.color.length > 0 && item.id === color_id ? 'box-shadow: 0 0 4px 4px silver;' : '', "\"\n                    onclick=\"saveColor(").concat(item.id, ", ").concat(desk_id, ")\"></span>\n                "));
     });
   });
 };

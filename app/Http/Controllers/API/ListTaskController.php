@@ -10,7 +10,8 @@ use Illuminate\Http\Request;
 class ListTaskController extends Controller
 {
     public function store(Request $request){
-        $data = $request->validate(['dashboard_id' => 'required|integer', 'desk_id' => 'required|integer', 'title' => 'required|string', 'done' => 'nullable|boolean']);
+        $data = $request->validate(['dashboard_id' => 'required|integer',
+            'desk_id' => 'required|integer', 'title' => 'required|string', 'done' => 'nullable|boolean']);
 
         $list = ListTasks::where('dashboard_id', $data['dashboard_id'])->where('desk_id', $data['desk_id'])->first();
 
