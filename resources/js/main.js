@@ -790,13 +790,10 @@ moveColumn = function (dashboard_id, desk_id, item_id, column_id){
     fetch('/api/moveColor/'+dashboard_id+"/"+desk_id+"/"+item_id+"/"+column_id)
         .then(response => response.json())
         .then(res => {
-            console.log(item_id)
-            console.log(column_id)
-
             let desk = document.querySelector(`[data-desk-id='${desk_id}']`);
             let column = document.querySelector(`[data-column-id='${res.column_id}'] #desk-list`);
             let oldColumn = document.querySelector(`[data-column-id='${column_id}']`);
-            column.appendChild(desk);
+            column.insertBefore(desk, column.querySelector('#add-task-title'));
             oldColumn.querySelector('#desk-list').querySelector(`[data-desk-id='${desk_id}']`).remove();
         })
 }

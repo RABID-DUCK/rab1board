@@ -570,12 +570,10 @@ moveColumn = function moveColumn(dashboard_id, desk_id, item_id, column_id) {
   fetch('/api/moveColor/' + dashboard_id + "/" + desk_id + "/" + item_id + "/" + column_id).then(function (response) {
     return response.json();
   }).then(function (res) {
-    console.log(item_id);
-    console.log(column_id);
     var desk = document.querySelector("[data-desk-id='".concat(desk_id, "']"));
     var column = document.querySelector("[data-column-id='".concat(res.column_id, "'] #desk-list"));
     var oldColumn = document.querySelector("[data-column-id='".concat(column_id, "']"));
-    column.appendChild(desk);
+    column.insertBefore(desk, column.querySelector('#add-task-title'));
     oldColumn.querySelector('#desk-list').querySelector("[data-desk-id='".concat(desk_id, "']")).remove();
   });
 };
