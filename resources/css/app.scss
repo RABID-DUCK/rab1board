@@ -610,6 +610,7 @@ nav{
     border: 1px solid white;
     height: auto;
     width: auto;
+    margin-left: 22px;
 
     div:first-child{
         display: flex;
@@ -664,13 +665,13 @@ nav{
     flex-direction: row;
     position: absolute;
     top: 55%;
-    left: 5%;
+    left: 8%;
     max-width: 300px;
 
     span:not(span:first-child){
         margin-left: 8px;
     }
-    
+
     span{
         &:hover{
             cursor: pointer;

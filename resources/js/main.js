@@ -301,11 +301,15 @@ renameDashboard = function (id){
 }
 
 openDatePicker = function(dashboard_id, desk_id) {
-
+    let selectData = document.getElementById('selectDate');
+    if(selectData) {
+        selectData.remove();
+        return;
+    }
         fetch('/api/desk/'+desk_id)
             .then(response => response.json())
             .then(res => {
-                if (!document.getElementById('selectDate')) {
+                if (!selectData) {
 
                     document.getElementById('calendarIcon').insertAdjacentHTML('afterbegin', `
                 <div class="selectDate bg-dark bg-gradient text-white" id="selectDate">
@@ -362,7 +366,7 @@ viewDesk = function (dashboard_id, column_id, desk_id){
                 <i id="calendarIcon" class="bi bi-calendar" onclick="openDatePicker(${dashboard_id},${desk_id})" data-title="Добавить дату выполнения"></i>
                 <i class="bi bi-image" data-title="Добавить картинку"></i>
                 <i class="bi bi-card-list" data-title="Добавить подзадачи"></i>
-                <i class="bi bi-bookmark-fill" data-title="Добавить важность задачи" onclick="outputColors(${desk_id})"></i>
+                <i class="bi bi-bookmark-fill" data-title="Добавить важность задачи" onclick="outputColors(${desk_id}, ${res.data.color[0].id})"></i>
                 <i class="bi bi-arrows-move" data-title="Переместить задачу"></i>
                 <i class="bi bi-files" data-title="Прикрепить файлы"></i>
             </div>
@@ -404,6 +408,7 @@ viewDesk = function (dashboard_id, column_id, desk_id){
             })
             // --------End add Description-------
 
+            wrapModal.style.cssText = 'box-shadow: 0 0 15px 8px '+res.data.color[0].color;
             loadCheckList(dashboard_id, desk_id, column_id);
         })
 }
@@ -418,7 +423,7 @@ closeModal = function () {
     document.getElementById('desk-wrapper').style.cssText = `filter: none;`;
     document.getElementById('backModal').classList.add('hide');
     modal.classList.add('hide-animate');
-    modal.querySelector('[data-panel-modal-desk]').remove();
+    if(modal.querySelector('[data-panel-modal-desk]')) modal.querySelector('[data-panel-modal-desk]').remove();
 
     if (document.getElementById('selectDate')) {
         closeSelectDate();
@@ -691,8 +696,15 @@ doneTask = function (dashboard_id, desk_id){
         })
 }
 
-outputColors = function (desk_id){
+outputColors = function (desk_id, color_id){
     let target = event.target;
+    const output = document.getElementById('output-colors');
+
+    if(output){
+        output.remove();
+        return;
+    }
+
     fetch('/api/colors')
         .then(response => response.json())
         .then(res => {
@@ -701,9 +713,11 @@ outputColors = function (desk_id){
                 </div>
             `)
 
+            // тут по сути output.insertAdjacentHTML должен быть, но он не видит эту функцию, а тип var писать для него я не хочу.
             res.forEach(item => {
                 document.getElementById('output-colors').insertAdjacentHTML('afterbegin', `
-                    <span class="colors-all" style="background-color: ${item.color};" onclick="saveColor(${item.id}, ${desk_id})"></span>
+                    <span class="colors-all" style="background-color: ${item.color};
+                        ${item.id === color_id ? 'box-shadow: 0 0 4px 4px silver;' : ''}" onclick="saveColor(${item.id}, ${desk_id})"></span>
                 `)
             })
         })
@@ -713,9 +727,8 @@ saveColor = function (color_id, desk_id){
     fetch('/api/colors/'+color_id+'/'+desk_id)
         .then(response => response.json())
         .then(res => {
-            console.log(res[0]);
             document.getElementById('wrapper-modal').style.cssText = 'box-shadow: 0 0 15px 8px '+res[0].color;
             document.querySelector(`[data-desk-id='${desk_id}']`).style.cssText = 'box-shadow: 0 0 10px 3px '+res[0].color;
-
+            deleteColumnModal('output-colors');
         })
 }

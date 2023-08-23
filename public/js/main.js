@@ -223,10 +223,15 @@ renameDashboard = function renameDashboard(id) {
   });
 };
 openDatePicker = function openDatePicker(dashboard_id, desk_id) {
+  var selectData = document.getElementById('selectDate');
+  if (selectData) {
+    selectData.remove();
+    return;
+  }
   fetch('/api/desk/' + desk_id).then(function (response) {
     return response.json();
   }).then(function (res) {
-    if (!document.getElementById('selectDate')) {
+    if (!selectData) {
       var _res$data_start, _res$data_end;
       document.getElementById('calendarIcon').insertAdjacentHTML('afterbegin', "\n                <div class=\"selectDate bg-dark bg-gradient text-white\" id=\"selectDate\">\n                    <div>\n                    <label for=\"dateStart\">\u0414\u0430\u0442\u0430 \u043D\u0430\u0447\u0430\u043B\u0430</label>\n                    <input id=\"dateStart\" class=\"form-control\" type=\"datetime-local\" value=\"".concat((_res$data_start = res.data_start) !== null && _res$data_start !== void 0 ? _res$data_start : '', "\">\n                    <label for=\"dateEnd\">\u0414\u0430\u0442\u0430 \u043E\u043A\u043E\u043D\u0447\u0430\u043D\u0438\u044F</label>\n                    <input id=\"dateEnd\" class=\"form-control\" type=\"datetime-local\" value=\"").concat((_res$data_end = res.data_end) !== null && _res$data_end !== void 0 ? _res$data_end : '', "\">\n                </div>\n                <div>\n                    <button class=\"btn text-white\" onclick=\"event.stopPropagation(); saveDate(").concat(dashboard_id, ",").concat(desk_id, ")\">Save</button>\n                    <button class=\"btn btn-danger\" onclick=\"event.stopPropagation(); closeSelectDate()\">Close</button>\n                </div>\n                </div>\n                "));
     }
@@ -261,7 +266,7 @@ viewDesk = function viewDesk(dashboard_id, column_id, desk_id) {
   }).then(function (res) {
     var _res$data$description;
     if (!document.querySelector('[data-panel-modal-desk]')) {
-      document.getElementById('wrapper-modal').insertAdjacentHTML('afterbegin', "\n               <div class=\"panel-desk bg-dark bg-gradient text-white\" data-panel-modal-desk>\n                <i id=\"calendarIcon\" class=\"bi bi-calendar\" onclick=\"openDatePicker(".concat(dashboard_id, ",").concat(desk_id, ")\" data-title=\"\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u0434\u0430\u0442\u0443 \u0432\u044B\u043F\u043E\u043B\u043D\u0435\u043D\u0438\u044F\"></i>\n                <i class=\"bi bi-image\" data-title=\"\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u043A\u0430\u0440\u0442\u0438\u043D\u043A\u0443\"></i>\n                <i class=\"bi bi-card-list\" data-title=\"\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u043F\u043E\u0434\u0437\u0430\u0434\u0430\u0447\u0438\"></i>\n                <i class=\"bi bi-bookmark-fill\" data-title=\"\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u0432\u0430\u0436\u043D\u043E\u0441\u0442\u044C \u0437\u0430\u0434\u0430\u0447\u0438\" onclick=\"outputColors(").concat(desk_id, ")\"></i>\n                <i class=\"bi bi-arrows-move\" data-title=\"\u041F\u0435\u0440\u0435\u043C\u0435\u0441\u0442\u0438\u0442\u044C \u0437\u0430\u0434\u0430\u0447\u0443\"></i>\n                <i class=\"bi bi-files\" data-title=\"\u041F\u0440\u0438\u043A\u0440\u0435\u043F\u0438\u0442\u044C \u0444\u0430\u0439\u043B\u044B\"></i>\n            </div>\n            "));
+      document.getElementById('wrapper-modal').insertAdjacentHTML('afterbegin', "\n               <div class=\"panel-desk bg-dark bg-gradient text-white\" data-panel-modal-desk>\n                <i id=\"calendarIcon\" class=\"bi bi-calendar\" onclick=\"openDatePicker(".concat(dashboard_id, ",").concat(desk_id, ")\" data-title=\"\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u0434\u0430\u0442\u0443 \u0432\u044B\u043F\u043E\u043B\u043D\u0435\u043D\u0438\u044F\"></i>\n                <i class=\"bi bi-image\" data-title=\"\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u043A\u0430\u0440\u0442\u0438\u043D\u043A\u0443\"></i>\n                <i class=\"bi bi-card-list\" data-title=\"\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u043F\u043E\u0434\u0437\u0430\u0434\u0430\u0447\u0438\"></i>\n                <i class=\"bi bi-bookmark-fill\" data-title=\"\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u0432\u0430\u0436\u043D\u043E\u0441\u0442\u044C \u0437\u0430\u0434\u0430\u0447\u0438\" onclick=\"outputColors(").concat(desk_id, ", ").concat(res.data.color[0].id, ")\"></i>\n                <i class=\"bi bi-arrows-move\" data-title=\"\u041F\u0435\u0440\u0435\u043C\u0435\u0441\u0442\u0438\u0442\u044C \u0437\u0430\u0434\u0430\u0447\u0443\"></i>\n                <i class=\"bi bi-files\" data-title=\"\u041F\u0440\u0438\u043A\u0440\u0435\u043F\u0438\u0442\u044C \u0444\u0430\u0439\u043B\u044B\"></i>\n            </div>\n            "));
     }
 
     // ----------Open modal----------
@@ -277,6 +282,7 @@ viewDesk = function viewDesk(dashboard_id, column_id, desk_id) {
     });
     // --------End add Description-------
 
+    wrapModal.style.cssText = 'box-shadow: 0 0 15px 8px ' + res.data.color[0].color;
     loadCheckList(dashboard_id, desk_id, column_id);
   });
 };
@@ -288,7 +294,7 @@ closeModal = function closeModal() {
   document.getElementById('desk-wrapper').style.cssText = "filter: none;";
   document.getElementById('backModal').classList.add('hide');
   modal.classList.add('hide-animate');
-  modal.querySelector('[data-panel-modal-desk]').remove();
+  if (modal.querySelector('[data-panel-modal-desk]')) modal.querySelector('[data-panel-modal-desk]').remove();
   if (document.getElementById('selectDate')) {
     closeSelectDate();
   }
@@ -502,14 +508,21 @@ doneTask = function doneTask(dashboard_id, desk_id) {
     }
   });
 };
-outputColors = function outputColors(desk_id) {
+outputColors = function outputColors(desk_id, color_id) {
   var target = event.target;
+  var output = document.getElementById('output-colors');
+  if (output) {
+    output.remove();
+    return;
+  }
   fetch('/api/colors').then(function (response) {
     return response.json();
   }).then(function (res) {
     target.insertAdjacentHTML('afterend', "\n                <div id=\"output-colors\" class=\"output-colors bg-dark bg-gradient text-white\">\n                </div>\n            ");
+
+    // тут по сути output.insertAdjacentHTML должен быть, но он не видит эту функцию, а тип var писать для него я не хочу.
     res.forEach(function (item) {
-      document.getElementById('output-colors').insertAdjacentHTML('afterbegin', "\n                    <span class=\"colors-all\" style=\"background-color: ".concat(item.color, ";\" onclick=\"saveColor(").concat(item.id, ", ").concat(desk_id, ")\"></span>\n                "));
+      document.getElementById('output-colors').insertAdjacentHTML('afterbegin', "\n                    <span class=\"colors-all\" style=\"background-color: ".concat(item.color, ";\n                        ").concat(item.id === color_id ? 'box-shadow: 0 0 4px 4px silver;' : '', "\" onclick=\"saveColor(").concat(item.id, ", ").concat(desk_id, ")\"></span>\n                "));
     });
   });
 };
@@ -517,9 +530,9 @@ saveColor = function saveColor(color_id, desk_id) {
   fetch('/api/colors/' + color_id + '/' + desk_id).then(function (response) {
     return response.json();
   }).then(function (res) {
-    console.log(res[0]);
     document.getElementById('wrapper-modal').style.cssText = 'box-shadow: 0 0 15px 8px ' + res[0].color;
     document.querySelector("[data-desk-id='".concat(desk_id, "']")).style.cssText = 'box-shadow: 0 0 10px 3px ' + res[0].color;
+    deleteColumnModal('output-colors');
   });
 };
 /******/ })()
