@@ -256,7 +256,7 @@ viewDesk = function viewDesk(dashboard_id, column_id, desk_id) {
     closeModal();
   });
   fetch('/api/modalDesk/?dashboard_id=' + dashboard_id + '&column_id=' + column_id + '&desk_id=' + desk_id, {
-    method: 'get',
+    method: 'post',
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
@@ -272,7 +272,7 @@ viewDesk = function viewDesk(dashboard_id, column_id, desk_id) {
       color = "";
     }
     if (!document.querySelector('[data-panel-modal-desk]')) {
-      document.getElementById('wrapper-modal').insertAdjacentHTML('afterbegin', "\n           <div class=\"panel-desk bg-dark bg-gradient text-white\" data-panel-modal-desk>\n                <i id=\"calendarIcon\" class=\"bi bi-calendar\" onclick=\"openDatePicker(".concat(dashboard_id, ",").concat(desk_id, ")\" data-title=\"\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u0434\u0430\u0442\u0443 \u0432\u044B\u043F\u043E\u043B\u043D\u0435\u043D\u0438\u044F\"></i>\n                <i class=\"bi bi-image\" data-title=\"\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u043A\u0430\u0440\u0442\u0438\u043D\u043A\u0443\"></i>\n                <i class=\"bi bi-card-list\" data-title=\"\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u043F\u043E\u0434\u0437\u0430\u0434\u0430\u0447\u0438\" onclick=\"createTask(").concat(dashboard_id, ", ").concat(desk_id, ")\"></i>\n                <i class=\"bi bi-bookmark-fill\" data-title=\"\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u0432\u0430\u0436\u043D\u043E\u0441\u0442\u044C \u0437\u0430\u0434\u0430\u0447\u0438\" onclick=\"outputColors(").concat(desk_id, ", ").concat(color, ")\"></i>\n                <i class=\"bi bi-arrows-move\" data-title=\"\u041F\u0435\u0440\u0435\u043C\u0435\u0441\u0442\u0438\u0442\u044C \u0437\u0430\u0434\u0430\u0447\u0443\"></i>\n                <i class=\"bi bi-files\" data-title=\"\u041F\u0440\u0438\u043A\u0440\u0435\u043F\u0438\u0442\u044C \u0444\u0430\u0439\u043B\u044B\"></i>\n            </div>\n            "));
+      document.getElementById('wrapper-modal').insertAdjacentHTML('afterbegin', "\n           <div class=\"panel-desk bg-dark bg-gradient text-white\" data-panel-modal-desk>\n                <i id=\"calendarIcon\" class=\"bi bi-calendar\" onclick=\"openDatePicker(".concat(dashboard_id, ",").concat(desk_id, ")\" data-title=\"\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u0434\u0430\u0442\u0443 \u0432\u044B\u043F\u043E\u043B\u043D\u0435\u043D\u0438\u044F\"></i>\n                <i class=\"bi bi-image\" data-title=\"\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u043A\u0430\u0440\u0442\u0438\u043D\u043A\u0443\"></i>\n                <i class=\"bi bi-card-list\" data-title=\"\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u043F\u043E\u0434\u0437\u0430\u0434\u0430\u0447\u0438\" onclick=\"createTask(").concat(dashboard_id, ", ").concat(desk_id, ")\"></i>\n                <i class=\"bi bi-bookmark-fill\" data-title=\"\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u0432\u0430\u0436\u043D\u043E\u0441\u0442\u044C \u0437\u0430\u0434\u0430\u0447\u0438\" onclick=\"outputColors(").concat(desk_id, ", ").concat(color, ")\"></i>\n                <i class=\"bi bi-arrows-move\" data-title=\"\u041F\u0435\u0440\u0435\u043C\u0435\u0441\u0442\u0438\u0442\u044C \u0437\u0430\u0434\u0430\u0447\u0443\" onclick=\"outputColumns(").concat(dashboard_id, ", ").concat(desk_id, ", ").concat(column_id, ")\"></i>\n                <i class=\"bi bi-files\" data-title=\"\u041F\u0440\u0438\u043A\u0440\u0435\u043F\u0438\u0442\u044C \u0444\u0430\u0439\u043B\u044B\"></i>\n            </div>\n            "));
     }
 
     // ----------Open modal----------
@@ -550,6 +550,33 @@ saveColor = function saveColor(color_id, desk_id) {
     document.getElementById('wrapper-modal').style.cssText = 'box-shadow: 0 0 15px 8px ' + res[0].color;
     document.querySelector("[data-desk-id='".concat(desk_id, "']")).style.cssText = 'box-shadow: 0 0 10px 3px ' + res[0].color;
     deleteColumnModal('output-colors');
+  });
+};
+outputColumns = function outputColumns(dashboard_id, desk_id, column_id) {
+  var target = event.target;
+  fetch('/api/getColumns/' + dashboard_id + '/' + desk_id).then(function (response) {
+    return response.json();
+  }).then(function (res) {
+    if (!document.getElementById('output-columns')) {
+      target.insertAdjacentHTML('beforeend', "\n                    <div id=\"output-columns\" class=\"output-columns bg-dark bg-gradient text-white\">\n                    </div>\n                ");
+    }
+    var output = document.getElementById('output-columns');
+    res.forEach(function (item) {
+      output.insertAdjacentHTML('beforeend', "\n                    <span class=\"btn-column\" onclick=\"moveColumn(".concat(dashboard_id, ", ").concat(desk_id, ", ").concat(item.id, ", ").concat(column_id, ")\">").concat(item.title, "</span>\n                "));
+    });
+  });
+};
+moveColumn = function moveColumn(dashboard_id, desk_id, item_id, column_id) {
+  fetch('/api/moveColor/' + dashboard_id + "/" + desk_id + "/" + item_id + "/" + column_id).then(function (response) {
+    return response.json();
+  }).then(function (res) {
+    console.log(item_id);
+    console.log(column_id);
+    var desk = document.querySelector("[data-desk-id='".concat(desk_id, "']"));
+    var column = document.querySelector("[data-column-id='".concat(res.column_id, "'] #desk-list"));
+    var oldColumn = document.querySelector("[data-column-id='".concat(column_id, "']"));
+    column.appendChild(desk);
+    oldColumn.querySelector('#desk-list').querySelector("[data-desk-id='".concat(desk_id, "']")).remove();
   });
 };
 /******/ })()

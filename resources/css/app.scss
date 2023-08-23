@@ -657,7 +657,7 @@ nav{
     }
 }
 
-.output-colors{
+.output-colors, .output-columns{
     padding: 10px;
     height: auto;
     width: auto;
@@ -670,6 +670,8 @@ nav{
     left: 8%;
     max-width: 300px;
 
+
+
     span:not(span:first-child){
         margin-left: 8px;
     }
@@ -678,6 +680,40 @@ nav{
         &:hover{
             cursor: pointer;
         }
+    }
+}
+
+.output-columns{
+    left: 0;
+    margin-left: 22px;
+    min-width: 100px;
+    width: 300px;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    font-size: 1rem;
+    max-height: 166px;
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    span{
+        box-shadow: 0 0 4px 1px silver;
+        padding: 5px;
+        cursor: pointer;
+        width: 70px;
+        text-align: center;
+        height: 30px;
+        margin-left: 0 !important;
+        overflow-x: hidden;
+        overflow-y: hidden;
+
+        &:hover{
+            transform: scale(1.02);
+            transition: transform 0.2s;
+        }
+    }
+
+    span:not(span:nth-child(1)):not(span:nth-child(2)):not(span:nth-child(3)){
+        margin-top: 8px;
     }
 }
 

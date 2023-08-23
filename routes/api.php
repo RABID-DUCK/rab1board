@@ -38,3 +38,6 @@ Route::get('/getTasks', '\App\Http\Controllers\API\ListTaskController@getTasks')
 
 Route::get('/colors', [\App\Http\Controllers\API\ColorController::class, 'index']);
 Route::get('/colors/{color}/{desk}', [\App\Http\Controllers\API\ColorController::class, 'addColor']);
+
+Route::get('/getColumns/{dashboard}/{desk}', [\App\Http\Controllers\API\ColumnController::class, 'index']);
+Route::get('/moveColor/{dashboard}/{desk}/{item_id}/{column_id}', [\App\Http\Controllers\API\ColumnController::class, 'moveColumn']);

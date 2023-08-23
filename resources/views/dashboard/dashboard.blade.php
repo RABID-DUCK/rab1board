@@ -43,7 +43,8 @@
                     </div>
                     <div class="desk-block" id="desk-list">
                         @foreach($column->desks as $desk)
-                            <div class="desk" onclick="viewDesk({{$dashboard->id}},{{$column->id}},{{$desk->id}})" data-desk-id="{{$desk->id}}"
+                            @dd($desk)
+                            <div class="desk" onclick="viewDesk({{$dashboard->id}},{{$column->id}},{{$desk->desk_id}})" data-desk-id="{{$desk->id}}"
                              style="{{$desk->color_id ? "box-shadow: 0 0 10px 3px ".$desk->color[0]->color : '' }}"
                             >
                                 <p>{{ $desk->title }}</p>

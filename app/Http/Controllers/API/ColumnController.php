@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Models\ColumnDesks;
 use App\Models\Columns;
 use Illuminate\Http\Request;
 
@@ -26,4 +27,24 @@ class ColumnController extends Controller
         $column->save();
         return response()->json(['title' => $column['title']]);
     }
+
+    public function index(){
+        return Columns::all();
+    }
+
+    public function moveColumn($dashboard, $desk, $item_id, $column_id){
+        if($column = ColumnDesks::where('dashboard_id', $dashboard)->where('column_id', $column_id)->where('desk_id', $desk)->first()){
+            $column->column_id = $item_id;
+            $column->save();
+            return $column;
+        }else{
+            return ColumnDesks::firstOrCreate([
+                'dashboard_id' => $dashboard,
+                'column_id' => $item_id,
+                'desk_id' => $desk
+            ]);
+        }
+    }
+
+
 }

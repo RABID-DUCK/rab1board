@@ -352,7 +352,7 @@ viewDesk = function (dashboard_id, column_id, desk_id){
     });
 
     fetch('/api/modalDesk/?dashboard_id=' + dashboard_id + '&column_id=' + column_id + '&desk_id=' + desk_id, {
-        method: 'get',
+        method: 'post',
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
@@ -374,7 +374,7 @@ viewDesk = function (dashboard_id, column_id, desk_id){
                 <i class="bi bi-image" data-title="Добавить картинку"></i>
                 <i class="bi bi-card-list" data-title="Добавить подзадачи" onclick="createTask(${dashboard_id}, ${desk_id})"></i>
                 <i class="bi bi-bookmark-fill" data-title="Добавить важность задачи" onclick="outputColors(${desk_id}, ${color})"></i>
-                <i class="bi bi-arrows-move" data-title="Переместить задачу"></i>
+                <i class="bi bi-arrows-move" data-title="Переместить задачу" onclick="outputColumns(${dashboard_id}, ${desk_id}, ${column_id})"></i>
                 <i class="bi bi-files" data-title="Прикрепить файлы"></i>
             </div>
             `)
@@ -760,5 +760,43 @@ saveColor = function (color_id, desk_id){
             document.getElementById('wrapper-modal').style.cssText = 'box-shadow: 0 0 15px 8px '+res[0].color;
             document.querySelector(`[data-desk-id='${desk_id}']`).style.cssText = 'box-shadow: 0 0 10px 3px '+res[0].color;
             deleteColumnModal('output-colors');
+        })
+}
+
+outputColumns = function (dashboard_id, desk_id, column_id){
+    let target = event.target;
+
+    fetch('/api/getColumns/'+dashboard_id+'/'+desk_id)
+        .then(response => response.json())
+        .then(res => {
+            if(!document.getElementById('output-columns')){
+
+            target.insertAdjacentHTML('beforeend', `
+                    <div id="output-columns" class="output-columns bg-dark bg-gradient text-white">
+                    </div>
+                `)
+            }
+
+            const output = document.getElementById('output-columns')
+            res.forEach(item => {
+                output.insertAdjacentHTML('beforeend', `
+                    <span class="btn-column" onclick="moveColumn(${dashboard_id}, ${desk_id}, ${item.id}, ${column_id})">${item.title}</span>
+                `)
+            })
+        })
+}
+
+moveColumn = function (dashboard_id, desk_id, item_id, column_id){
+    fetch('/api/moveColor/'+dashboard_id+"/"+desk_id+"/"+item_id+"/"+column_id)
+        .then(response => response.json())
+        .then(res => {
+            console.log(item_id)
+            console.log(column_id)
+
+            let desk = document.querySelector(`[data-desk-id='${desk_id}']`);
+            let column = document.querySelector(`[data-column-id='${res.column_id}'] #desk-list`);
+            let oldColumn = document.querySelector(`[data-column-id='${column_id}']`);
+            column.appendChild(desk);
+            oldColumn.querySelector('#desk-list').querySelector(`[data-desk-id='${desk_id}']`).remove();
         })
 }
