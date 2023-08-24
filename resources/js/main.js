@@ -770,19 +770,21 @@ outputColumns = function (dashboard_id, desk_id, column_id){
         .then(response => response.json())
         .then(res => {
             if(!document.getElementById('output-columns')){
-
             target.insertAdjacentHTML('beforeend', `
                     <div id="output-columns" class="output-columns bg-dark bg-gradient text-white">
                     </div>
                 `)
-            }
+                target.classList.add('move-title');
 
-            const output = document.getElementById('output-columns')
-            res.forEach(item => {
-                output.insertAdjacentHTML('beforeend', `
+                const output = document.getElementById('output-columns')
+                res.forEach(item => {
+                    output.insertAdjacentHTML('beforeend', `
                     <span class="btn-column" onclick="moveColumn(${dashboard_id}, ${desk_id}, ${item.id}, ${column_id})">${item.title}</span>
                 `)
-            })
+                })
+            }else{
+                document.getElementById('output-columns').remove()
+            }
         })
 }
 
@@ -793,7 +795,13 @@ moveColumn = function (dashboard_id, desk_id, item_id, column_id){
             let desk = document.querySelector(`[data-desk-id='${desk_id}']`);
             let column = document.querySelector(`[data-column-id='${res.column_id}'] #desk-list`);
             let oldColumn = document.querySelector(`[data-column-id='${column_id}']`);
+
+            if(res.column_id === column_id) return;
+
+            if(oldColumn.querySelector('#desk-list')) oldColumn.querySelector('#desk-list').querySelector(`[data-desk-id='${desk_id}']`).remove();
+
             column.insertBefore(desk, column.querySelector('#add-task-title'));
-            oldColumn.querySelector('#desk-list').querySelector(`[data-desk-id='${desk_id}']`).remove();
+
+            if(document.getElementById('output-columns')) document.getElementById('output-columns').remove()
         })
 }

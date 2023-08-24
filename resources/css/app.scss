@@ -724,7 +724,6 @@ nav{
     height: 30px;
 }
 
-
-
-
-
+.move-title:after, .move-title:hover:after{
+    content: none !important;
+}

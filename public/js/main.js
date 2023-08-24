@@ -559,11 +559,14 @@ outputColumns = function outputColumns(dashboard_id, desk_id, column_id) {
   }).then(function (res) {
     if (!document.getElementById('output-columns')) {
       target.insertAdjacentHTML('beforeend', "\n                    <div id=\"output-columns\" class=\"output-columns bg-dark bg-gradient text-white\">\n                    </div>\n                ");
+      target.classList.add('move-title');
+      var output = document.getElementById('output-columns');
+      res.forEach(function (item) {
+        output.insertAdjacentHTML('beforeend', "\n                    <span class=\"btn-column\" onclick=\"moveColumn(".concat(dashboard_id, ", ").concat(desk_id, ", ").concat(item.id, ", ").concat(column_id, ")\">").concat(item.title, "</span>\n                "));
+      });
+    } else {
+      document.getElementById('output-columns').remove();
     }
-    var output = document.getElementById('output-columns');
-    res.forEach(function (item) {
-      output.insertAdjacentHTML('beforeend', "\n                    <span class=\"btn-column\" onclick=\"moveColumn(".concat(dashboard_id, ", ").concat(desk_id, ", ").concat(item.id, ", ").concat(column_id, ")\">").concat(item.title, "</span>\n                "));
-    });
   });
 };
 moveColumn = function moveColumn(dashboard_id, desk_id, item_id, column_id) {
@@ -573,8 +576,10 @@ moveColumn = function moveColumn(dashboard_id, desk_id, item_id, column_id) {
     var desk = document.querySelector("[data-desk-id='".concat(desk_id, "']"));
     var column = document.querySelector("[data-column-id='".concat(res.column_id, "'] #desk-list"));
     var oldColumn = document.querySelector("[data-column-id='".concat(column_id, "']"));
+    if (res.column_id === column_id) return;
+    if (oldColumn.querySelector('#desk-list')) oldColumn.querySelector('#desk-list').querySelector("[data-desk-id='".concat(desk_id, "']")).remove();
     column.insertBefore(desk, column.querySelector('#add-task-title'));
-    oldColumn.querySelector('#desk-list').querySelector("[data-desk-id='".concat(desk_id, "']")).remove();
+    if (document.getElementById('output-columns')) document.getElementById('output-columns').remove();
   });
 };
 /******/ })()

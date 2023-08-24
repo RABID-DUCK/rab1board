@@ -43,40 +43,6 @@ INSERT INTO `colors` VALUES (5,'color.red','#cd1313','2023-08-22 13:47:49','2023
 UNLOCK TABLES;
 
 --
--- Table structure for table `column_desks`
---
-
-DROP TABLE IF EXISTS `column_desks`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `column_desks` (
-  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `dashboard_id` bigint unsigned NOT NULL,
-  `column_id` bigint unsigned NOT NULL,
-  `desk_id` bigint unsigned NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `column_desks_dashboard_id_foreign` (`dashboard_id`),
-  KEY `column_desks_column_id_foreign` (`column_id`),
-  KEY `column_desks_desk_id_foreign` (`desk_id`),
-  CONSTRAINT `column_desks_column_id_foreign` FOREIGN KEY (`column_id`) REFERENCES `columns` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `column_desks_dashboard_id_foreign` FOREIGN KEY (`dashboard_id`) REFERENCES `dashboards` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `column_desks_desk_id_foreign` FOREIGN KEY (`desk_id`) REFERENCES `desks` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `column_desks`
---
-
-LOCK TABLES `column_desks` WRITE;
-/*!40000 ALTER TABLE `column_desks` DISABLE KEYS */;
-INSERT INTO `column_desks` VALUES (25,16,26,42,'2023-08-22 08:50:12','2023-08-22 08:50:12'),(26,16,42,43,'2023-08-22 08:50:18','2023-08-22 08:50:18'),(27,16,26,44,'2023-08-22 08:50:22','2023-08-22 08:50:22'),(28,16,26,45,'2023-08-22 08:50:26','2023-08-22 08:50:26'),(29,16,26,46,'2023-08-22 08:50:43','2023-08-22 08:50:43'),(30,16,26,47,'2023-08-22 08:54:49','2023-08-22 08:54:49');
-/*!40000 ALTER TABLE `column_desks` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `columns`
 --
 
@@ -101,7 +67,7 @@ CREATE TABLE `columns` (
 
 LOCK TABLES `columns` WRITE;
 /*!40000 ALTER TABLE `columns` DISABLE KEYS */;
-INSERT INTO `columns` VALUES (26,'Taskss',16,'2023-08-09 03:54:23','2023-08-11 06:06:27'),(42,'Process',16,'2023-08-09 05:33:48','2023-08-11 06:20:33'),(43,'Ready',16,'2023-08-09 05:38:07','2023-08-11 06:20:31'),(70,'Bucket',16,'2023-08-11 06:16:23','2023-08-11 06:16:32'),(71,'dfg',16,'2023-08-21 02:46:52','2023-08-21 02:46:52'),(72,'234',16,'2023-08-21 02:46:54','2023-08-21 02:46:54');
+INSERT INTO `columns` VALUES (26,'Taskss',16,'2023-08-09 03:54:23','2023-08-11 06:06:27'),(42,'Process',16,'2023-08-09 05:33:48','2023-08-11 06:20:33'),(43,'Ready',16,'2023-08-09 05:38:07','2023-08-11 06:20:31'),(70,'Bucket',16,'2023-08-11 06:16:23','2023-08-11 06:16:32');
 /*!40000 ALTER TABLE `columns` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -199,7 +165,7 @@ CREATE TABLE `desks` (
   CONSTRAINT `desks_comment_id_foreign` FOREIGN KEY (`comment_id`) REFERENCES `comments` (`id`) ON DELETE CASCADE,
   CONSTRAINT `desks_dashboard_id_foreign` FOREIGN KEY (`dashboard_id`) REFERENCES `dashboards` (`id`),
   CONSTRAINT `desks_ibfk_1` FOREIGN KEY (`color_id`) REFERENCES `colors` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -208,7 +174,7 @@ CREATE TABLE `desks` (
 
 LOCK TABLES `desks` WRITE;
 /*!40000 ALTER TABLE `desks` DISABLE KEYS */;
-INSERT INTO `desks` VALUES (42,'Mant',NULL,NULL,0,'2023-08-22 16:56:00','2023-09-08 16:56:00','2023-08-22 08:56:59','2023-08-22 08:50:12',16,26,NULL,NULL),(43,'Kwe',NULL,NULL,0,'2023-08-22 17:00:00','2023-09-03 17:00:00','2023-08-22 09:00:40','2023-08-22 08:50:18',16,42,NULL,NULL),(44,'iwi',NULL,NULL,0,'2023-08-22 16:58:00','2023-09-10 16:58:00','2023-08-22 08:58:43','2023-08-22 08:50:22',16,26,NULL,NULL),(45,'bobr',NULL,NULL,0,'2023-08-23 17:01:00','2023-08-27 17:01:00','2023-08-22 09:05:02','2023-08-22 08:50:26',16,26,5,NULL),(46,'dfg',NULL,NULL,0,NULL,NULL,'2023-08-22 08:50:43','2023-08-22 08:50:43',16,26,NULL,NULL),(47,'333',NULL,NULL,0,NULL,NULL,'2023-08-22 08:54:49','2023-08-22 08:54:49',16,26,NULL,NULL);
+INSERT INTO `desks` VALUES (42,'Mant',NULL,NULL,0,'2023-08-22 16:56:00','2023-09-08 16:56:00','2023-08-24 01:32:30','2023-08-22 08:50:12',16,26,6,NULL),(43,'Kwe',NULL,NULL,0,'2023-08-22 17:00:00','2023-09-03 17:00:00','2023-08-23 04:01:16','2023-08-22 08:50:18',16,42,NULL,NULL),(44,'iwi',NULL,NULL,0,'2023-08-22 16:58:00','2023-09-10 16:58:00','2023-08-24 00:41:51','2023-08-22 08:50:22',16,43,NULL,NULL),(45,'bobr',NULL,NULL,0,'2023-08-23 17:01:00','2023-08-27 17:01:00','2023-08-24 01:31:39','2023-08-22 08:50:26',16,26,5,NULL),(46,'dfg',NULL,NULL,0,NULL,NULL,'2023-08-22 08:50:43','2023-08-22 08:50:43',16,26,NULL,NULL),(47,'333',NULL,NULL,0,NULL,NULL,'2023-08-22 08:54:49','2023-08-22 08:54:49',16,26,NULL,NULL),(48,'test',NULL,NULL,0,NULL,NULL,'2023-08-24 01:29:20','2023-08-23 08:54:46',16,26,NULL,NULL);
 /*!40000 ALTER TABLE `desks` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -288,7 +254,7 @@ CREATE TABLE `list_tasks` (
   KEY `list_tasks_desk_id_foreign` (`desk_id`),
   CONSTRAINT `list_tasks_dashboard_id_foreign` FOREIGN KEY (`dashboard_id`) REFERENCES `dashboards` (`id`) ON DELETE CASCADE,
   CONSTRAINT `list_tasks_desk_id_foreign` FOREIGN KEY (`desk_id`) REFERENCES `desks` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -297,6 +263,7 @@ CREATE TABLE `list_tasks` (
 
 LOCK TABLES `list_tasks` WRITE;
 /*!40000 ALTER TABLE `list_tasks` DISABLE KEYS */;
+INSERT INTO `list_tasks` VALUES (3,'fghgf',16,45,'2023-08-23 02:59:05','2023-08-23 02:59:05'),(4,'dgfdfg',16,42,'2023-08-23 03:53:17','2023-08-23 03:53:17'),(20,'666',16,43,'2023-08-23 06:14:02','2023-08-23 06:14:02'),(21,'вапвап',16,44,'2023-08-23 06:55:27','2023-08-23 06:55:27');
 /*!40000 ALTER TABLE `list_tasks` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -452,7 +419,7 @@ CREATE TABLE `tasks` (
   PRIMARY KEY (`id`),
   KEY `tasks_list_task_id_foreign` (`list_task_id`),
   CONSTRAINT `tasks_list_task_id_foreign` FOREIGN KEY (`list_task_id`) REFERENCES `list_tasks` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=58 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -461,6 +428,7 @@ CREATE TABLE `tasks` (
 
 LOCK TABLES `tasks` WRITE;
 /*!40000 ALTER TABLE `tasks` DISABLE KEYS */;
+INSERT INTO `tasks` VALUES (49,'gfhfgh',NULL,NULL,NULL,0,20,'2023-08-23 06:14:07','2023-08-23 06:14:07'),(50,'вапвап',NULL,NULL,NULL,1,3,'2023-08-23 06:23:05','2023-08-23 06:23:12'),(51,'546456',NULL,NULL,NULL,1,3,'2023-08-23 06:23:16','2023-08-23 06:23:17'),(52,'прпар',NULL,NULL,NULL,1,3,'2023-08-23 06:23:25','2023-08-23 06:23:25'),(53,'о',NULL,NULL,NULL,0,3,'2023-08-23 06:27:04','2023-08-23 06:27:04'),(54,'ghgh',NULL,NULL,NULL,1,3,'2023-08-23 06:35:27','2023-08-23 06:35:27'),(55,'gfh',NULL,NULL,NULL,0,3,'2023-08-23 06:36:35','2023-08-23 06:36:35'),(56,'45',NULL,NULL,NULL,1,3,'2023-08-23 06:36:39','2023-08-23 06:36:39'),(57,'вапвап',NULL,NULL,NULL,1,21,'2023-08-23 06:55:30','2023-08-23 06:55:30');
 /*!40000 ALTER TABLE `tasks` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -542,4 +510,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-08-22 17:18:54
+-- Dump completed on 2023-08-24  9:52:21
