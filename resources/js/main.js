@@ -1,4 +1,6 @@
-openModalLangs = function(id){
+import {Dropzone} from "dropzone";
+
+window.openModalLangs = function(id){
     fetch('/api/langs/'+id)
         .then(response => response.json())
         .then(data => {
@@ -9,7 +11,7 @@ openModalLangs = function(id){
         })
 }
 
-openModalUsers = function(id){
+window.openModalUsers = function(id){
     fetch('/api/user/'+id)
         .then(response => response.json())
         .then(data => {
@@ -29,7 +31,7 @@ openModalUsers = function(id){
         })
 }
 
-openModalDesk = function (id){
+window.openModalDesk = function (id){
     fetch('/api/desk/'+id)
         .then(response => response.json())
         .then(data => {
@@ -42,7 +44,7 @@ openModalDesk = function (id){
         })
 }
 
-openCreateDashboardModal = function(user_id){
+window.openCreateDashboardModal = function(user_id){
     document.getElementById('btn-create-dashboard').insertAdjacentHTML( 'afterend',`
         <div class="col-sm-6 mb-3 mb-sm-0 create-dashboard-window" id="create-dashboard-window">
                 <div class="card">
@@ -92,7 +94,7 @@ openCreateDashboardModal = function(user_id){
     });
 }
 
-addColumnModal = function (dashboard){
+window.addColumnModal = function (dashboard){
     if (!document.getElementById('modal-column')){
         document.getElementById('add-column-panel').insertAdjacentHTML('beforeend', `
             <div class="column-modal-wrapper text-center" id="modal-column">
@@ -105,9 +107,9 @@ addColumnModal = function (dashboard){
     }
 }
 
-deleteColumnModal = (id_name) => document.getElementById(id_name).remove()
+window.deleteColumnModal = (id_name) => document.getElementById(id_name).remove()
 
-addColumn = function (dashboard){
+window.addColumn = function (dashboard){
     const title = document.getElementById('text-column-create').value;
     fetch('/api/column/create', {
         method: "post",
@@ -164,7 +166,7 @@ addColumn = function (dashboard){
         })
 }
 
-createDeskMiniModal = function (dashboard, column){
+window.createDeskMiniModal = function (dashboard, column){
     let condition = '[data-column-id="'+column+'"]';
     let data_column = document.querySelector(condition);
     if(document.querySelector(condition).getAttribute('data-column-id') !== column && !data_column.querySelector('#create-modal-desk')){
@@ -179,13 +181,13 @@ createDeskMiniModal = function (dashboard, column){
     }
 }
 
-deleteDeskModal = (column) => {
+window.deleteDeskModal = (column) => {
     let condition = '[data-column-id="'+column+'"]';
     let data_column = document.querySelector(condition);
     data_column.querySelector('#create-modal-desk').remove()
 }
 
-createDesk = function (dashboard, column){
+window.createDesk = function (dashboard, column){
     let title = document.getElementById('desk-title-modal').value;
 
     fetch('/api/desk/create', {
@@ -223,7 +225,7 @@ createDesk = function (dashboard, column){
         })
 }
 
-clickRenameColumn = function (id) {
+window.clickRenameColumn = function (id) {
     let target = event.target.textContent.trim();
     var div = document.querySelector(`[data-column-id="${id}"] [data-column-title]`);
     div.style.cssText = `position: relative;`
@@ -258,7 +260,7 @@ clickRenameColumn = function (id) {
     }
 };
 
-renameDashboard = function (id){
+window.renameDashboard = function (id){
     let div = document.querySelector('[data-rename-dashboard]');
     let title = div.querySelector('h2').textContent.trim();
 
@@ -300,7 +302,7 @@ renameDashboard = function (id){
     })
 }
 
-openDatePicker = function(dashboard_id, desk_id) {
+window.openDatePicker = function(dashboard_id, desk_id) {
     let selectData = document.getElementById('selectDate');
     if(selectData) {
         selectData.remove();
@@ -329,11 +331,11 @@ openDatePicker = function(dashboard_id, desk_id) {
             })
 }
 
-closeSelectDate = () => {
+window.closeSelectDate = () => {
     return document.getElementById('selectDate').remove();
 }
 
-viewDesk = function (dashboard_id, column_id, desk_id){
+window.viewDesk = function (dashboard_id, column_id, desk_id){
     if(event.target.id === 'status'){
         doneTask(dashboard_id, desk_id);
         return;
@@ -371,7 +373,7 @@ viewDesk = function (dashboard_id, column_id, desk_id){
                 document.getElementById('wrapper-modal').insertAdjacentHTML('afterbegin', `
            <div class="panel-desk bg-dark bg-gradient text-white" data-panel-modal-desk>
                 <i id="calendarIcon" class="bi bi-calendar" onclick="openDatePicker(${dashboard_id},${desk_id})" data-title="Добавить дату выполнения"></i>
-                <i class="bi bi-image" data-title="Добавить картинку"></i>
+                <i class="bi bi-image" data-title="Добавить картинку" onclick="modalImages(${dashboard_id},${desk_id})"></i>
                 <i class="bi bi-card-list" data-title="Добавить подзадачи" onclick="createTask(${dashboard_id}, ${desk_id})"></i>
                 <i class="bi bi-bookmark-fill" data-title="Добавить важность задачи" onclick="outputColors(${desk_id}, ${color})"></i>
                 <i class="bi bi-arrows-move" data-title="Переместить задачу" onclick="outputColumns(${dashboard_id}, ${desk_id}, ${column_id})"></i>
@@ -421,7 +423,7 @@ viewDesk = function (dashboard_id, column_id, desk_id){
         })
 }
 
-closeModal = function () {
+window.closeModal = function () {
     let modal = document.getElementById('wrapper-modal');
 
     modal.querySelector('[data-modal-desk]').innerHTML = "";
@@ -440,7 +442,7 @@ closeModal = function () {
     modal.classList.add('hide-animate')
 }
 
-loadCheckList = function (dashboard_id, desk_id, column_id){
+window.loadCheckList = function (dashboard_id, desk_id, column_id){
     fetch('/api/getTasks?dashboard_id='+dashboard_id+"&desk_id="+desk_id, {
         method: 'get',
         headers: {
@@ -495,7 +497,7 @@ loadCheckList = function (dashboard_id, desk_id, column_id){
         })
 }
 
-createTask = function (dashboard_id, desk_id, column_id){
+window.createTask = function (dashboard_id, desk_id, column_id){
     let checkList = document.getElementById('check-list');
     if(!checkList){
         document.getElementById('description').insertAdjacentHTML('afterend',`
@@ -527,7 +529,7 @@ createTask = function (dashboard_id, desk_id, column_id){
     }
 }
 
-changeChecked = function (dashboard_id, desk_id, column_id, task_id){
+window.changeChecked = function (dashboard_id, desk_id, column_id, task_id){
     let check = event.target;
     fetch('/api/modalUpdate', {
         method: 'post',
@@ -549,7 +551,7 @@ changeChecked = function (dashboard_id, desk_id, column_id, task_id){
         })
 }
 
-saveTask = function (dashboard_id, desk_id){
+window.saveTask = function (dashboard_id, desk_id){
     let title = document.querySelector('[data-temp-task]')
 
     fetch('/api/saveTask', {
@@ -581,7 +583,7 @@ saveTask = function (dashboard_id, desk_id){
         })
 }
 
-addWindowTasks = function (dashboard_id, desk_id, column_id){
+window.addWindowTasks = function (dashboard_id, desk_id, column_id){
     let addWindowTasks = document.getElementById('add-menu-tasks');
     addWindowTasks.classList.add('hide')
 
@@ -614,7 +616,7 @@ addWindowTasks = function (dashboard_id, desk_id, column_id){
         })
 }
 
-updateDescription = function (dashboard_id, desk_id, column_id){
+window.updateDescription = function (dashboard_id, desk_id, column_id){
     let desk = document.getElementById('description').value;
     fetch('/api/modalUpdate', {
         method: 'post',
@@ -635,7 +637,7 @@ updateDescription = function (dashboard_id, desk_id, column_id){
         })
 }
 
-saveDate = function (dashboard_id, desk_id){
+window.saveDate = function (dashboard_id, desk_id){
     let dateStart = document.getElementById('dateStart').value;
     let dateEnd = document.getElementById('dateEnd').value;
 
@@ -679,7 +681,7 @@ saveDate = function (dashboard_id, desk_id){
         })
 }
 
-convertData = function (data){
+window.convertData = function (data){
     const dateString = data;
     const date = new Date(dateString);
     const options = { day: 'numeric', month: 'long', year: 'numeric' };
@@ -690,7 +692,7 @@ convertData = function (data){
 }
 
 // разница времени
-differenceDate = function (data){
+window.differenceDate = function (data){
     let currentDate = new Date();
     let newDate = new Date(data);
     let differenceInMilliseconds = newDate.getTime() - currentDate.getTime();
@@ -698,7 +700,7 @@ differenceDate = function (data){
     return differenceInMilliseconds <= oneDayInMilliseconds;
 }
 
-doneTask = function (dashboard_id, desk_id){
+window.doneTask = function (dashboard_id, desk_id){
     let check = event.target.checked;
     fetch('/api/modalUpdate', {
         method: 'post',
@@ -726,7 +728,7 @@ doneTask = function (dashboard_id, desk_id){
         })
 }
 
-outputColors = function (desk_id, color_id){
+window.outputColors = function (desk_id, color_id){
     let target = event.target;
     const output = document.getElementById('output-colors');
 
@@ -753,7 +755,7 @@ outputColors = function (desk_id, color_id){
         })
 }
 
-saveColor = function (color_id, desk_id){
+window.saveColor = function (color_id, desk_id){
     fetch('/api/colors/'+color_id+'/'+desk_id)
         .then(response => response.json())
         .then(res => {
@@ -763,7 +765,7 @@ saveColor = function (color_id, desk_id){
         })
 }
 
-outputColumns = function (dashboard_id, desk_id, column_id){
+window.outputColumns = function (dashboard_id, desk_id, column_id){
     let target = event.target;
 
     fetch('/api/getColumns/'+dashboard_id+'/'+desk_id)
@@ -788,7 +790,7 @@ outputColumns = function (dashboard_id, desk_id, column_id){
         })
 }
 
-moveColumn = function (dashboard_id, desk_id, item_id, column_id){
+window.moveColumn = function (dashboard_id, desk_id, item_id, column_id){
     fetch('/api/moveColor/'+dashboard_id+"/"+desk_id+"/"+item_id+"/"+column_id)
         .then(response => response.json())
         .then(res => {
@@ -805,3 +807,39 @@ moveColumn = function (dashboard_id, desk_id, item_id, column_id){
             if(document.getElementById('output-columns')) document.getElementById('output-columns').remove()
         })
 }
+
+window.modalImages = function(dashboard_id, desk_id) {
+    document.querySelector('[data-modal-desk]').insertAdjacentHTML('beforeend', `
+        <div class="upload-images">
+            <div class="dropzone images mb-2" id="upload-images"></div>
+            <button class="btn text-white" id="saveImages">Save</button>
+        </div>
+    `);
+    let myDropzone = new Dropzone("#upload-images", {
+        url: '/api/addImages',
+        autoProcessQueue: false,
+        addRemoveLinks: true
+    })
+
+    let sendImages = document.getElementById('saveImages');
+    sendImages.onclick = function (){
+        const data = new FormData();
+        const files = myDropzone.getAcceptedFiles()
+        files.forEach(file => {
+            data.append('images[]', file)
+        })
+        console.log(data);
+        fetch('/api/addImages', {
+            method: 'post',
+            body: data
+        })
+            .then(response => response.json())
+            .then(res => {
+                console.log(res);
+            })
+    }
+    let btnZone = document.getElementById('upload-images').querySelector('.dz-button');
+    btnZone.classList.add('btn') ;
+    btnZone.classList.add('text-white');
+}
+

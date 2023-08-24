@@ -15,6 +15,9 @@
         <link rel="stylesheet" href="{{ asset('css/app.css') }}">
         <link rel="stylesheet" href="{{ asset('css/UI.css') }}">
         <link rel="stylesheet" href="{{ asset('css/media.css') }}">
+        <script src="{{asset('js/plugins/dropzone-min.js')}}"></script>
+        <link href="{{asset('css/plugins/basic.css')}}" rel="stylesheet" type="text/css" />
+        <link href="{{asset('css/plugins/dropzone.css')}}" rel="stylesheet" type="text/css" />
     </head>
     <body class="antialiased">
             @include('layouts/header')
@@ -34,6 +37,7 @@
 
             <script src="{{ asset('js/main.js') }}" ></script>
             <script src="{{asset('js/app.js')}}"></script>
+            <script src="{{asset('js/module.js')}}"></script>
 
     </body>
 </html>

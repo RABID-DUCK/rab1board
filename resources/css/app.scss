@@ -727,3 +727,25 @@ nav{
 .move-title:after, .move-title:hover:after{
     content: none !important;
 }
+
+.upload-images{
+    padding: 30px;
+    border: 1px solid $border;
+    width: 95%;
+    margin: 50px auto;
+    border-radius: 6px;
+
+    .dropzone{
+        border: none;
+        box-shadow: 0 0 3px 1px silver;
+
+        &:hover{
+            background-color: $link;
+            transition: background-color .3s;
+        }
+
+        .dz-button{
+            padding: 5px !important;
+        }
+    }
+}

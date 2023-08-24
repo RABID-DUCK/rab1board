@@ -83,4 +83,14 @@ class DeskController extends Controller
 
         return DeskResource::make($desk);
     }
+
+    public function addImages(Request $request){
+        $data = $request->validate(['file' => 'nullable']);
+//        $array = json_decode($data, true);
+//        foreach ($array as $image){
+//            Desks::
+//        }
+        dd($data);
+    }
+
 }

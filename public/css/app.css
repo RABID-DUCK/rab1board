@@ -642,3 +642,22 @@ nav {
 .move-title:after, .move-title:hover:after {
   content: none !important;
 }
+
+.upload-images {
+  padding: 30px;
+  border: 1px solid #EBEFF2;
+  width: 95%;
+  margin: 50px auto;
+  border-radius: 6px;
+}
+.upload-images .dropzone {
+  border: none;
+  box-shadow: 0 0 3px 1px silver;
+}
+.upload-images .dropzone:hover {
+  background-color: rgb(40, 35, 40);
+  transition: background-color 0.3s;
+}
+.upload-images .dropzone .dz-button {
+  padding: 5px !important;
+}
