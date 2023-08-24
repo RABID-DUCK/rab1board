@@ -19,7 +19,9 @@
         <link href="{{asset('css/plugins/basic.css')}}" rel="stylesheet" type="text/css" />
         <link href="{{asset('css/plugins/dropzone.css')}}" rel="stylesheet" type="text/css" />
     </head>
-    <body class="antialiased">
+    {{--REACT--}}
+    <body class="antialiased" id="root">
+    {{---------}}
             @include('layouts/header')
 
         <div class="content-wrapper d-flex justify-content-between" id="wrapper">
@@ -36,7 +38,10 @@
                     {{--    Scripts--}}
 
             <script src="{{ asset('js/main.js') }}" ></script>
+
+            {{-- React --}}
             <script src="{{asset('js/app.js')}}"></script>
+            {{-----------}}
             <script src="{{asset('js/module.js')}}"></script>
 
     </body>
