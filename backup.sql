@@ -146,7 +146,7 @@ CREATE TABLE `desks` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `image` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `image` varchar(10000) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `status` tinyint(1) DEFAULT '0',
   `data_start` datetime DEFAULT NULL,
   `data_end` datetime DEFAULT NULL,
@@ -156,6 +156,7 @@ CREATE TABLE `desks` (
   `column_id` bigint unsigned NOT NULL,
   `color_id` bigint unsigned DEFAULT NULL,
   `comment_id` bigint unsigned DEFAULT NULL,
+  `files` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `desks_dashboard_id_foreign` (`dashboard_id`),
   KEY `desks_column_id_foreign` (`column_id`),
@@ -174,7 +175,7 @@ CREATE TABLE `desks` (
 
 LOCK TABLES `desks` WRITE;
 /*!40000 ALTER TABLE `desks` DISABLE KEYS */;
-INSERT INTO `desks` VALUES (42,'Mant',NULL,NULL,0,'2023-08-22 16:56:00','2023-09-08 16:56:00','2023-08-24 01:32:30','2023-08-22 08:50:12',16,26,6,NULL),(43,'Kwe',NULL,NULL,0,'2023-08-22 17:00:00','2023-09-03 17:00:00','2023-08-23 04:01:16','2023-08-22 08:50:18',16,42,NULL,NULL),(44,'iwi',NULL,NULL,0,'2023-08-22 16:58:00','2023-09-10 16:58:00','2023-08-24 00:41:51','2023-08-22 08:50:22',16,43,NULL,NULL),(45,'bobr',NULL,NULL,0,'2023-08-23 17:01:00','2023-08-27 17:01:00','2023-08-24 01:31:39','2023-08-22 08:50:26',16,26,5,NULL),(46,'dfg',NULL,NULL,0,NULL,NULL,'2023-08-22 08:50:43','2023-08-22 08:50:43',16,26,NULL,NULL),(47,'333',NULL,NULL,0,NULL,NULL,'2023-08-22 08:54:49','2023-08-22 08:54:49',16,26,NULL,NULL),(48,'test',NULL,NULL,0,NULL,NULL,'2023-08-24 01:29:20','2023-08-23 08:54:46',16,26,NULL,NULL);
+INSERT INTO `desks` VALUES (42,'Mant',NULL,'[\"\\/storage\\/images\\/250588e47febd31a0480703bebeb633c.gif\",\"\\/storage\\/images\\/61f03388216a3965da0ab6cf379bcb23.zip\"]',0,'2023-08-22 16:56:00','2023-09-08 16:56:00','2023-08-25 07:28:52','2023-08-22 08:50:12',16,26,6,NULL,'[\"\\/storage\\/files\\/9a02d8aaa131e785bc72b78f16e99b1c.txt\",\"\\/storage\\/files\\/ecb3e8d3a571d6a915b4313c74690395.pdf\"]'),(43,'Kwe',NULL,'',0,'2023-08-22 17:00:00','2023-09-03 17:00:00','2023-08-25 03:20:25','2023-08-22 08:50:18',16,42,NULL,NULL,NULL),(44,'iwi',NULL,'',0,'2023-08-22 16:58:00','2023-09-10 16:58:00','2023-08-25 03:18:51','2023-08-22 08:50:22',16,43,NULL,NULL,NULL),(45,'bobr',NULL,'[\"\\/storage\\/images\\/4748c0e43d2cc65e391bba6d3946b878.png\",\"\\/storage\\/images\\/d60a2342fd77ad573b09127734ac5c99.png\"]',0,'2023-08-23 17:01:00','2023-08-27 17:01:00','2023-08-25 04:44:11','2023-08-22 08:50:26',16,26,5,NULL,NULL),(46,'dfg',NULL,NULL,0,NULL,NULL,'2023-08-22 08:50:43','2023-08-22 08:50:43',16,26,NULL,NULL,NULL),(47,'333',NULL,NULL,0,NULL,NULL,'2023-08-22 08:54:49','2023-08-22 08:54:49',16,26,NULL,NULL,NULL),(48,'test',NULL,NULL,0,NULL,NULL,'2023-08-24 01:29:20','2023-08-23 08:54:46',16,26,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `desks` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -279,7 +280,7 @@ CREATE TABLE `migrations` (
   `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `batch` int NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -288,7 +289,7 @@ CREATE TABLE `migrations` (
 
 LOCK TABLES `migrations` WRITE;
 /*!40000 ALTER TABLE `migrations` DISABLE KEYS */;
-INSERT INTO `migrations` VALUES (1,'2014_10_12_000000_create_users_table',1),(2,'2014_10_12_100000_create_password_reset_tokens_table',1),(3,'2014_10_12_100000_create_password_resets_table',1),(4,'2019_08_19_000000_create_failed_jobs_table',1),(5,'2019_12_14_000001_create_personal_access_tokens_table',1),(6,'2023_07_25_091108_create_langs_table',1),(7,'2023_08_01_044819_create_roles_table',1),(8,'2023_08_01_113500_create_dashboards_table',1),(9,'2023_08_01_114245_create_desks_table',1),(10,'2023_08_01_044610_add_column_role_id_table',2),(11,'2023_08_01_120034_create_tasks_table',3),(12,'2023_08_02_035853_add_task_id_to_desks_table',4),(13,'2023_08_02_040740_add_desk_id_to_tasks_table',5),(14,'2023_08_02_041845_create_columns_table',6),(15,'2023_08_02_044435_create_comments_table',7),(16,'2023_08_02_045350_create_user_desks_table',8),(17,'2023_08_02_045904_create_color_desks_table',9),(18,'2023_08_02_055033_drop_foreign_key_desk_id_in_color_desks_table',10),(19,'2023_08_02_055416_rename_color_desks_table',11),(20,'2023_08_02_055538_create_color_desks_table',12),(21,'2023_08_03_113609_add_defautl_image_to_desks_table',13),(23,'2023_08_04_085251_add_foreig_id_to_dashboards_table',14),(24,'2023_08_04_085745_add_column_title_to_dashboards_table',15),(25,'2023_08_07_054048_add_column_image_to_users_table',16),(26,'2023_08_07_095555_add_column_premium_to_users_table',17),(27,'2023_08_08_092711_add_column_dashboard_id_to_columns_table',18),(29,'2023_08_08_121604_create_column_desks_table',19),(30,'2023_08_08_121152_add_columns_to_desks_table',20),(31,'2023_08_10_055018_drop_foreign_key_desk_id_to_columns_table',21),(32,'2023_08_15_054543_add_foreign_key_dashboard_id_to_tasks_table',22),(33,'2023_08_15_063134_add_column_done_to_tasks_table',23),(34,'2023_08_15_065043_drop_columns_to_tasks_table',24),(35,'2023_08_15_065301_create_list_tasks_table',25),(36,'2023_08_15_065911_add_column_Listtaskid_to_tasks_table',26),(37,'2023_08_22_113444_drop_foreign_key_to_color_desks_table',27),(38,'2023_08_22_114611_add_foreign_key_to_desks_table',28);
+INSERT INTO `migrations` VALUES (1,'2014_10_12_000000_create_users_table',1),(2,'2014_10_12_100000_create_password_reset_tokens_table',1),(3,'2014_10_12_100000_create_password_resets_table',1),(4,'2019_08_19_000000_create_failed_jobs_table',1),(5,'2019_12_14_000001_create_personal_access_tokens_table',1),(6,'2023_07_25_091108_create_langs_table',1),(7,'2023_08_01_044819_create_roles_table',1),(8,'2023_08_01_113500_create_dashboards_table',1),(9,'2023_08_01_114245_create_desks_table',1),(10,'2023_08_01_044610_add_column_role_id_table',2),(11,'2023_08_01_120034_create_tasks_table',3),(12,'2023_08_02_035853_add_task_id_to_desks_table',4),(13,'2023_08_02_040740_add_desk_id_to_tasks_table',5),(14,'2023_08_02_041845_create_columns_table',6),(15,'2023_08_02_044435_create_comments_table',7),(16,'2023_08_02_045350_create_user_desks_table',8),(17,'2023_08_02_045904_create_color_desks_table',9),(18,'2023_08_02_055033_drop_foreign_key_desk_id_in_color_desks_table',10),(19,'2023_08_02_055416_rename_color_desks_table',11),(20,'2023_08_02_055538_create_color_desks_table',12),(21,'2023_08_03_113609_add_defautl_image_to_desks_table',13),(23,'2023_08_04_085251_add_foreig_id_to_dashboards_table',14),(24,'2023_08_04_085745_add_column_title_to_dashboards_table',15),(25,'2023_08_07_054048_add_column_image_to_users_table',16),(26,'2023_08_07_095555_add_column_premium_to_users_table',17),(27,'2023_08_08_092711_add_column_dashboard_id_to_columns_table',18),(29,'2023_08_08_121604_create_column_desks_table',19),(30,'2023_08_08_121152_add_columns_to_desks_table',20),(31,'2023_08_10_055018_drop_foreign_key_desk_id_to_columns_table',21),(32,'2023_08_15_054543_add_foreign_key_dashboard_id_to_tasks_table',22),(33,'2023_08_15_063134_add_column_done_to_tasks_table',23),(34,'2023_08_15_065043_drop_columns_to_tasks_table',24),(35,'2023_08_15_065301_create_list_tasks_table',25),(36,'2023_08_15_065911_add_column_Listtaskid_to_tasks_table',26),(37,'2023_08_22_113444_drop_foreign_key_to_color_desks_table',27),(38,'2023_08_22_114611_add_foreign_key_to_desks_table',28),(39,'2023_08_25_100502_add_column_files_to_desks_table',29);
 /*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -510,4 +511,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-08-24  9:52:21
+-- Dump completed on 2023-08-25 15:36:36
