@@ -21,6 +21,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('/user/login', [\App\Http\Controllers\API\Auth\AuthController::class, 'login']);
 Route::post('/user/register', [\App\Http\Controllers\API\Auth\AuthController::class, 'register']);
 Route::post('/user/logout', [\App\Http\Controllers\API\Auth\AuthController::class, 'logout']);
+Route::post('/user/getUser', [\App\Http\Controllers\API\Auth\AuthController::class, 'getUser']);
 
 
 Route::get('/langs/{id}', '\App\Http\Controllers\LangsController@show');

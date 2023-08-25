@@ -40,4 +40,9 @@ class AuthController extends Controller
         Auth::user()->tokens()->delete();
         return response()->json(['status' => 403]);
     }
+
+    public function getUser(Request $request){
+        $user = $request->user();
+        return response()->json(['user' => $user]);
+    }
 }
