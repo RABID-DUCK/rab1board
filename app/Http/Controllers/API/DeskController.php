@@ -10,19 +10,15 @@ use App\Models\Columns;
 use App\Models\Desks;
 use App\Models\Tasks;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Storage;
 
 class DeskController extends Controller
 {
     public function store(Request $request){
-        $messages = [
-            'title.required' => "Поле названия обязательно к заполнению!"
-        ];
+        $messages = ['title.required' => "Поле названия обязательно к заполнению!"];
 
-        $data = $request->validate([
-            'title' => 'required|string|max:30',
-            'dashboard_id' => 'required',
-            'column_id' => 'required',
-        ], $messages);
+        $data = $request->validate(['title' => 'required|string|max:30', 'dashboard_id' => 'required', 'column_id' => 'required',], $messages);
 
         $desk = Desks::create($data);
 
@@ -85,12 +81,21 @@ class DeskController extends Controller
     }
 
     public function addImages(Request $request){
-        $data = $request->validate(['file' => 'nullable']);
-//        $array = json_decode($data, true);
-//        foreach ($array as $image){
-//            Desks::
-//        }
-        dd($data);
-    }
+        $data = $request->validate(['images' => 'nullable|array', 'dashboard_id' => 'required', 'desk_id' => 'required']);
+        $images = [];
 
+        if($data['images']){
+            foreach ($data['images'] as $image){
+                $name = md5(Carbon::now() . '_'.$image->getClientOriginalName()) . '.' . $image->getClientOriginalExtension();
+                $filePath = Storage::disk('public')->putFileAs('/images', $image, $name);
+                $images[] = '/storage/' . $filePath;
+            }
+            $desk = Desks::where('id', $data['desk_id'])->first();
+            $desk->image = json_encode($images);
+            $desk->save();
+
+            return response()->json(['status' => 200, 'images' => $desk->image]);
+        }
+        return response()->json(['message_user' => 'Не найдено ни одной картинки!']);
+     }
 }

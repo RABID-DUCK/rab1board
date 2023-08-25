@@ -420,6 +420,7 @@ window.viewDesk = function (dashboard_id, column_id, desk_id){
             if(res.data.color.length > 0) wrapModal.style.cssText = 'box-shadow: 0 0 15px 8px '+res.data.color[0].color;
 
             loadCheckList(dashboard_id, desk_id, column_id);
+            loadImages(dashboard_id, desk_id, res.data.image);
         })
 }
 
@@ -440,6 +441,20 @@ window.closeModal = function () {
     }
 
     modal.classList.add('hide-animate')
+}
+
+window.loadImages = function (dashboard_id, desk_id, images){
+    if(images){
+        let modal = document.querySelector('[data-modal-desk]');
+        modal.insertAdjacentHTML('beforeend', `
+        <div class="block-images" id="block-images"><div>
+    `)
+        JSON.parse(images).forEach(item => {
+            document.getElementById('block-images').insertAdjacentHTML('beforeend', `
+            <img src="${item}" width="150" height="80">
+        `)
+        })
+    }
 }
 
 window.loadCheckList = function (dashboard_id, desk_id, column_id){
@@ -809,12 +824,15 @@ window.moveColumn = function (dashboard_id, desk_id, item_id, column_id){
 }
 
 window.modalImages = function(dashboard_id, desk_id) {
+    if(!document.getElementById('wrapper-upload-images')){
+
     document.querySelector('[data-modal-desk]').insertAdjacentHTML('beforeend', `
-        <div class="upload-images">
+        <div class="upload-images" id="wrapper-upload-images">
             <div class="dropzone images mb-2" id="upload-images"></div>
             <button class="btn text-white" id="saveImages">Save</button>
         </div>
     `);
+
     let myDropzone = new Dropzone("#upload-images", {
         url: '/api/addImages',
         autoProcessQueue: false,
@@ -828,18 +846,26 @@ window.modalImages = function(dashboard_id, desk_id) {
         files.forEach(file => {
             data.append('images[]', file)
         })
-        console.log(data);
+        data.append('dashboard_id', dashboard_id);
+        data.append('desk_id', desk_id);
+
         fetch('/api/addImages', {
             method: 'post',
             body: data
         })
             .then(response => response.json())
             .then(res => {
-                console.log(res);
+                if(res.status === 200) {
+                    setTimeout(deleteColumnModal('wrapper-upload-images'), 2000)
+                    loadImages(dashboard_id, desk_id, res.images)
+                    ;
+                }
+                if(res.message_user) alert(res.message_user);
             })
     }
-    let btnZone = document.getElementById('upload-images').querySelector('.dz-button');
-    btnZone.classList.add('btn') ;
-    btnZone.classList.add('text-white');
+        let btnZone = document.getElementById('upload-images').querySelector('.dz-button');
+        btnZone.classList.add('btn') ;
+        btnZone.classList.add('text-white');
+    }
 }
 

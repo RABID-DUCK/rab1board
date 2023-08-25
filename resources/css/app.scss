@@ -749,3 +749,19 @@ nav{
         }
     }
 }
+
+.block-images{
+    width: 90%;
+    height: 300px;
+    border: 1px solid #EBEFF2;
+    overflow-x: hidden;
+    overflow-y: auto;
+    margin: 30px 15px 0 15px;
+    display: flex;
+    justify-content: start;
+
+    img:not(img:first-child){
+        margin-left: 10px;
+    }
+
+}

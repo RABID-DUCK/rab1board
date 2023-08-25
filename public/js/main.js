@@ -2569,6 +2569,7 @@ window.viewDesk = function (dashboard_id, column_id, desk_id) {
 
     if (res.data.color.length > 0) wrapModal.style.cssText = 'box-shadow: 0 0 15px 8px ' + res.data.color[0].color;
     loadCheckList(dashboard_id, desk_id, column_id);
+    loadImages(dashboard_id, desk_id, res.data.image);
   });
 };
 window.closeModal = function () {
@@ -2584,6 +2585,15 @@ window.closeModal = function () {
     closeSelectDate();
   }
   modal.classList.add('hide-animate');
+};
+window.loadImages = function (dashboard_id, desk_id, images) {
+  if (images) {
+    var modal = document.querySelector('[data-modal-desk]');
+    modal.insertAdjacentHTML('beforeend', "\n        <div class=\"block-images\" id=\"block-images\"><div>\n    ");
+    JSON.parse(images).forEach(function (item) {
+      document.getElementById('block-images').insertAdjacentHTML('beforeend', "\n            <img src=\"".concat(item, "\" width=\"150\" height=\"80\">\n        "));
+    });
+  }
 };
 window.loadCheckList = function (dashboard_id, desk_id, column_id) {
   fetch('/api/getTasks?dashboard_id=' + dashboard_id + "&desk_id=" + desk_id, {
@@ -2862,32 +2872,39 @@ window.moveColumn = function (dashboard_id, desk_id, item_id, column_id) {
   });
 };
 window.modalImages = function (dashboard_id, desk_id) {
-  document.querySelector('[data-modal-desk]').insertAdjacentHTML('beforeend', "\n        <div class=\"upload-images\">\n            <div class=\"dropzone images mb-2\" id=\"upload-images\"></div>\n            <button class=\"btn text-white\" id=\"saveImages\">Save</button>\n        </div>\n    ");
-  var myDropzone = new dropzone__WEBPACK_IMPORTED_MODULE_0__.Dropzone("#upload-images", {
-    url: '/api/addImages',
-    autoProcessQueue: false,
-    addRemoveLinks: true
-  });
-  var sendImages = document.getElementById('saveImages');
-  sendImages.onclick = function () {
-    var data = new FormData();
-    var files = myDropzone.getAcceptedFiles();
-    files.forEach(function (file) {
-      data.append('images[]', file);
+  if (!document.getElementById('wrapper-upload-images')) {
+    document.querySelector('[data-modal-desk]').insertAdjacentHTML('beforeend', "\n        <div class=\"upload-images\" id=\"wrapper-upload-images\">\n            <div class=\"dropzone images mb-2\" id=\"upload-images\"></div>\n            <button class=\"btn text-white\" id=\"saveImages\">Save</button>\n        </div>\n    ");
+    var myDropzone = new dropzone__WEBPACK_IMPORTED_MODULE_0__.Dropzone("#upload-images", {
+      url: '/api/addImages',
+      autoProcessQueue: false,
+      addRemoveLinks: true
     });
-    console.log(data);
-    fetch('/api/addImages', {
-      method: 'post',
-      body: data
-    }).then(function (response) {
-      return response.json();
-    }).then(function (res) {
-      console.log(res);
-    });
-  };
-  var btnZone = document.getElementById('upload-images').querySelector('.dz-button');
-  btnZone.classList.add('btn');
-  btnZone.classList.add('text-white');
+    var sendImages = document.getElementById('saveImages');
+    sendImages.onclick = function () {
+      var data = new FormData();
+      var files = myDropzone.getAcceptedFiles();
+      files.forEach(function (file) {
+        data.append('images[]', file);
+      });
+      data.append('dashboard_id', dashboard_id);
+      data.append('desk_id', desk_id);
+      fetch('/api/addImages', {
+        method: 'post',
+        body: data
+      }).then(function (response) {
+        return response.json();
+      }).then(function (res) {
+        if (res.status === 200) {
+          setTimeout(deleteColumnModal('wrapper-upload-images'), 2000);
+          loadImages(dashboard_id, desk_id, res.images);
+        }
+        if (res.message_user) alert(res.message_user);
+      });
+    };
+    var btnZone = document.getElementById('upload-images').querySelector('.dz-button');
+    btnZone.classList.add('btn');
+    btnZone.classList.add('text-white');
+  }
 };
 })();
 
