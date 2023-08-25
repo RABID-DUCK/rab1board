@@ -76,8 +76,8 @@ const Header = (id) => {
                         </>
                     ) : (
                         <>
-                        <li><Link className="dropdown-item auth-link" href="">Login</Link></li>
-                        <li><Link className="dropdown-item auth-link" href="">Register</Link></li>
+                            <li><Link to="/login"  class="dropdown-item auth-link">Войти</Link></li>
+                            <li><button class="dropdown-item auth-link">Зарегистрироваться</button></li>
                         </>
                         )}
 
@@ -91,3 +91,26 @@ const Header = (id) => {
     )
 }
 export default Header
+
+const Form = () => {
+    
+
+    const Login =  async() => {
+       const auth = await axios.post('api/login', {
+            username: username,
+            password: password
+        })
+
+    }
+    useEffect(() => {
+
+    }, [])
+    return (
+        <form onSubmit={Login}>
+            <input type="text" />
+            <input type="password" />
+            <button type="submit">Login</button>
+        </form>
+    )
+
+}
