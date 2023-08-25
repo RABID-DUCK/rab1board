@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { Link, NavLink } from "react-router-dom"
 import axios, { AxiosError } from "axios"
 
-const Header = (id) => {
+const Header = () => {
     const [Auth, setAuth] = useState(false)
     useEffect(() => {
         const fetchData = async () => {
@@ -68,15 +68,13 @@ const Header = (id) => {
                                     <Link className="dropdown-item" href="/logout" onclick="">
                                         Logout
                                     </Link>
-                                    <form id="logout-form" action="/logout" method="POST" className="d-none">
-                                        @csrf
-                                    </form>
+                                    
                                 </li>
                             </ul>
                         </>
                     ) : (
                         <>
-                            <li><Link to="/login"  class="dropdown-item auth-link">Войти</Link></li>
+                            <li><Link   class="dropdown-item auth-link">Войти</Link></li>
                             <li><button class="dropdown-item auth-link">Зарегистрироваться</button></li>
                         </>
                         )}
