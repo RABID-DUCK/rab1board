@@ -18,6 +18,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::post('/user/login', [\App\Http\Controllers\API\Auth\AuthController::class, 'login']);
+Route::post('/user/register', [\App\Http\Controllers\API\Auth\AuthController::class, 'register']);
+Route::post('/user/logout', [\App\Http\Controllers\API\Auth\AuthController::class, 'logout']);
+
+
 Route::get('/langs/{id}', '\App\Http\Controllers\LangsController@show');
 Route::get('/user/{id}', '\App\Http\Controllers\UserController@show');
 
