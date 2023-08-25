@@ -3,7 +3,7 @@ import { Link, NavLink } from "react-router-dom"
 import axios, { AxiosError } from "axios"
 
 const Header = (id) => {
-    const [Auth, setAuth] = useState()
+    const [Auth, setAuth] = useState(false)
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -58,40 +58,29 @@ const Header = (id) => {
                     <li class="nav-item dropdown">
                     {Auth ? (
                         <>
-                            <Link class="nav-link dropdown-toggle" href="" role="button" data-bs-toggle="dropdown"
-                           aria-expanded="false">
+                            <Link className="nav-link dropdown-toggle" href="" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                User
                             </Link>
-                            <ul class="dropdown-menu">
-                                <li><Link class="dropdown-item" href="">Action</Link></li>
-                                <li><Link class="dropdown-item" href="">Admin</Link></li>
+                            <ul className="dropdown-menu">
+                                <li><Link className="dropdown-item" href="">Action</Link></li>
+                                <li><Link className="dropdown-item" href="">Admin</Link></li>
                                 <li>
-                                    <Link class="dropdown-item" href=""
-                                    onclick="">
+                                    <Link className="dropdown-item" href="/logout" onclick="">
+                                        Logout
                                     </Link>
-
-                                    <form id="logout-form" action="" method="POST" class="d-none">
-                                    
+                                    <form id="logout-form" action="/logout" method="POST" className="d-none">
+                                        @csrf
                                     </form>
                                 </li>
                             </ul>
                         </>
-                    )
-                            
-                        
-                     : (
+                    ) : (
                         <>
-                            <li><Link class="dropdown-item auth-link" href="">Войти</Link></li>
-                            <li><Link class="dropdown-item auth-link" href="">Зарегистрироваться</Link></li>
+                        <li><Link className="dropdown-item auth-link" href="">Login</Link></li>
+                        <li><Link className="dropdown-item auth-link" href="">Register</Link></li>
                         </>
-                        
-                     )
-                            
-                    }
-                    
-                        
-                        
-                            
-                        
+                        )}
+
                     </li>
                 </ul>
             </div>
