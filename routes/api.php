@@ -33,11 +33,11 @@ Route::post('/dashboard/rename', '\App\Http\Controllers\API\DashboardController@
 Route::post('/column/create', '\App\Http\Controllers\API\ColumnController@store');
 Route::post('/column/rename', '\App\Http\Controllers\API\ColumnController@update');
 
-Route::get('/desk/{id}', '\App\Http\Controllers\DeskController@show');
-Route::get('/modalDesk', '\App\Http\Controllers\API\DeskController@show');
 Route::post('/desk/create', '\App\Http\Controllers\API\DeskController@store');
 Route::post('/modalUpdate', '\App\Http\Controllers\API\DeskController@update');
 Route::post('/addImages', '\App\Http\Controllers\API\DeskController@addImages');
+Route::get('/modalDesk', '\App\Http\Controllers\API\DeskController@show');
+Route::get('/desk/{id}', '\App\Http\Controllers\DeskController@show');
 
 Route::post('/saveTask', '\App\Http\Controllers\API\ListTaskController@store');
 Route::post('/createList', '\App\Http\Controllers\API\ListTaskController@createList');
