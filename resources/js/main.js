@@ -377,7 +377,7 @@ window.viewDesk = function (dashboard_id, column_id, desk_id){
                 <i class="bi bi-card-list" data-title="Добавить подзадачи" onclick="createTask(${dashboard_id}, ${desk_id})"></i>
                 <i class="bi bi-bookmark-fill" data-title="Добавить важность задачи" onclick="outputColors(${desk_id}, ${color})"></i>
                 <i class="bi bi-arrows-move" data-title="Переместить задачу" onclick="outputColumns(${dashboard_id}, ${desk_id}, ${column_id})"></i>
-                <i class="bi bi-files" data-title="Прикрепить файлы"></i>
+                <i class="bi bi-files" data-title="Прикрепить файлы" onclick="modalFiles(${dashboard_id}, ${desk_id})"></i>
             </div>
             `)
             }
@@ -421,6 +421,7 @@ window.viewDesk = function (dashboard_id, column_id, desk_id){
 
             loadCheckList(dashboard_id, desk_id, column_id);
             loadImages(dashboard_id, desk_id, res.data.image);
+            loadFiles(dashboard_id, desk_id, res.data.files)
         })
 }
 
@@ -452,6 +453,21 @@ window.loadImages = function (dashboard_id, desk_id, images){
         JSON.parse(images).forEach(item => {
             document.getElementById('block-images').insertAdjacentHTML('beforeend', `
             <img src="${item}" width="150" height="80">
+        `)
+        })
+    }
+}
+
+window.loadFiles = function (dashboard_id, desk_id, files){
+    if(files){
+        let modal = document.querySelector('[data-modal-desk]');
+        modal.insertAdjacentHTML('beforeend', `
+        <div class="block-files" id="block-files"><div>
+    `)
+        JSON.parse(files).forEach(item => {
+            console.log(item)
+            document.getElementById('block-files').insertAdjacentHTML('beforeend', `
+            <a href="${item}" download>${item}</a>
         `)
         })
     }
@@ -836,7 +852,8 @@ window.modalImages = function(dashboard_id, desk_id) {
     let myDropzone = new Dropzone("#upload-images", {
         url: '/api/addImages',
         autoProcessQueue: false,
-        addRemoveLinks: true
+        addRemoveLinks: true,
+        acceptedFiles: 'image/*'
     })
 
     let sendImages = document.getElementById('saveImages');
@@ -869,3 +886,46 @@ window.modalImages = function(dashboard_id, desk_id) {
     }
 }
 
+window.modalFiles = function (dashboard_id, desk_id){
+    document.querySelector('[data-modal-desk]').insertAdjacentHTML('beforeend', `
+        <div class="modal-files" id="modalFiles">
+        <div class="dropzone images mb-2" id="upload-files"></div>
+            <button class="btn text-white" id="saveFiles">Save</button>
+        </div>
+    `)
+
+    let myDropzone = new Dropzone("#upload-files", {
+        url: '/api/addFiles',
+        autoProcessQueue: false,
+        addRemoveLinks: true,
+        acceptedFiles: '.psd,.pdf,.docx,.zip,.sql,.txt'
+    })
+
+    let sendFiles = document.getElementById('saveFiles');
+    sendFiles.onclick = function (){
+        const data = new FormData();
+        const files = myDropzone.getAcceptedFiles()
+        files.forEach(file => {
+            data.append('files[]', file)
+        })
+        data.append('dashboard_id', dashboard_id);
+        data.append('desk_id', desk_id);
+
+        fetch('/api/addFiles', {
+            method: 'post',
+            body: data
+        })
+            .then(response => response.json())
+            .then(res => {
+                if(res.status === 200) {
+                    setTimeout(deleteColumnModal('modalFiles'), 2000)
+                    loadImages(dashboard_id, desk_id, res.files)
+                    ;
+                }
+                if(res.message_user) alert(res.message_user);
+            })
+    }
+    let btnZone = document.getElementById('upload-files').querySelector('.dz-button');
+    btnZone.classList.add('btn') ;
+    btnZone.classList.add('text-white');
+}

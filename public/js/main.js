@@ -2551,7 +2551,7 @@ window.viewDesk = function (dashboard_id, column_id, desk_id) {
       color = "";
     }
     if (!document.querySelector('[data-panel-modal-desk]')) {
-      document.getElementById('wrapper-modal').insertAdjacentHTML('afterbegin', "\n           <div class=\"panel-desk bg-dark bg-gradient text-white\" data-panel-modal-desk>\n                <i id=\"calendarIcon\" class=\"bi bi-calendar\" onclick=\"openDatePicker(".concat(dashboard_id, ",").concat(desk_id, ")\" data-title=\"\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u0434\u0430\u0442\u0443 \u0432\u044B\u043F\u043E\u043B\u043D\u0435\u043D\u0438\u044F\"></i>\n                <i class=\"bi bi-image\" data-title=\"\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u043A\u0430\u0440\u0442\u0438\u043D\u043A\u0443\" onclick=\"modalImages(").concat(dashboard_id, ",").concat(desk_id, ")\"></i>\n                <i class=\"bi bi-card-list\" data-title=\"\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u043F\u043E\u0434\u0437\u0430\u0434\u0430\u0447\u0438\" onclick=\"createTask(").concat(dashboard_id, ", ").concat(desk_id, ")\"></i>\n                <i class=\"bi bi-bookmark-fill\" data-title=\"\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u0432\u0430\u0436\u043D\u043E\u0441\u0442\u044C \u0437\u0430\u0434\u0430\u0447\u0438\" onclick=\"outputColors(").concat(desk_id, ", ").concat(color, ")\"></i>\n                <i class=\"bi bi-arrows-move\" data-title=\"\u041F\u0435\u0440\u0435\u043C\u0435\u0441\u0442\u0438\u0442\u044C \u0437\u0430\u0434\u0430\u0447\u0443\" onclick=\"outputColumns(").concat(dashboard_id, ", ").concat(desk_id, ", ").concat(column_id, ")\"></i>\n                <i class=\"bi bi-files\" data-title=\"\u041F\u0440\u0438\u043A\u0440\u0435\u043F\u0438\u0442\u044C \u0444\u0430\u0439\u043B\u044B\"></i>\n            </div>\n            "));
+      document.getElementById('wrapper-modal').insertAdjacentHTML('afterbegin', "\n           <div class=\"panel-desk bg-dark bg-gradient text-white\" data-panel-modal-desk>\n                <i id=\"calendarIcon\" class=\"bi bi-calendar\" onclick=\"openDatePicker(".concat(dashboard_id, ",").concat(desk_id, ")\" data-title=\"\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u0434\u0430\u0442\u0443 \u0432\u044B\u043F\u043E\u043B\u043D\u0435\u043D\u0438\u044F\"></i>\n                <i class=\"bi bi-image\" data-title=\"\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u043A\u0430\u0440\u0442\u0438\u043D\u043A\u0443\" onclick=\"modalImages(").concat(dashboard_id, ",").concat(desk_id, ")\"></i>\n                <i class=\"bi bi-card-list\" data-title=\"\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u043F\u043E\u0434\u0437\u0430\u0434\u0430\u0447\u0438\" onclick=\"createTask(").concat(dashboard_id, ", ").concat(desk_id, ")\"></i>\n                <i class=\"bi bi-bookmark-fill\" data-title=\"\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u0432\u0430\u0436\u043D\u043E\u0441\u0442\u044C \u0437\u0430\u0434\u0430\u0447\u0438\" onclick=\"outputColors(").concat(desk_id, ", ").concat(color, ")\"></i>\n                <i class=\"bi bi-arrows-move\" data-title=\"\u041F\u0435\u0440\u0435\u043C\u0435\u0441\u0442\u0438\u0442\u044C \u0437\u0430\u0434\u0430\u0447\u0443\" onclick=\"outputColumns(").concat(dashboard_id, ", ").concat(desk_id, ", ").concat(column_id, ")\"></i>\n                <i class=\"bi bi-files\" data-title=\"\u041F\u0440\u0438\u043A\u0440\u0435\u043F\u0438\u0442\u044C \u0444\u0430\u0439\u043B\u044B\" onclick=\"modalFiles(").concat(dashboard_id, ", ").concat(desk_id, ")\"></i>\n            </div>\n            "));
     }
 
     // ----------Open modal----------
@@ -2570,6 +2570,7 @@ window.viewDesk = function (dashboard_id, column_id, desk_id) {
     if (res.data.color.length > 0) wrapModal.style.cssText = 'box-shadow: 0 0 15px 8px ' + res.data.color[0].color;
     loadCheckList(dashboard_id, desk_id, column_id);
     loadImages(dashboard_id, desk_id, res.data.image);
+    loadFiles(dashboard_id, desk_id, res.data.files);
   });
 };
 window.closeModal = function () {
@@ -2592,6 +2593,16 @@ window.loadImages = function (dashboard_id, desk_id, images) {
     modal.insertAdjacentHTML('beforeend', "\n        <div class=\"block-images\" id=\"block-images\"><div>\n    ");
     JSON.parse(images).forEach(function (item) {
       document.getElementById('block-images').insertAdjacentHTML('beforeend', "\n            <img src=\"".concat(item, "\" width=\"150\" height=\"80\">\n        "));
+    });
+  }
+};
+window.loadFiles = function (dashboard_id, desk_id, files) {
+  if (files) {
+    var modal = document.querySelector('[data-modal-desk]');
+    modal.insertAdjacentHTML('beforeend', "\n        <div class=\"block-files\" id=\"block-files\"><div>\n    ");
+    JSON.parse(files).forEach(function (item) {
+      console.log(item);
+      document.getElementById('block-files').insertAdjacentHTML('beforeend', "\n            <a href=\"".concat(item, "\" download>").concat(item, "</a>\n        "));
     });
   }
 };
@@ -2877,7 +2888,8 @@ window.modalImages = function (dashboard_id, desk_id) {
     var myDropzone = new dropzone__WEBPACK_IMPORTED_MODULE_0__.Dropzone("#upload-images", {
       url: '/api/addImages',
       autoProcessQueue: false,
-      addRemoveLinks: true
+      addRemoveLinks: true,
+      acceptedFiles: 'image/*'
     });
     var sendImages = document.getElementById('saveImages');
     sendImages.onclick = function () {
@@ -2905,6 +2917,40 @@ window.modalImages = function (dashboard_id, desk_id) {
     btnZone.classList.add('btn');
     btnZone.classList.add('text-white');
   }
+};
+window.modalFiles = function (dashboard_id, desk_id) {
+  document.querySelector('[data-modal-desk]').insertAdjacentHTML('beforeend', "\n        <div class=\"modal-files\" id=\"modalFiles\">\n        <div class=\"dropzone images mb-2\" id=\"upload-files\"></div>\n            <button class=\"btn text-white\" id=\"saveFiles\">Save</button>\n        </div>\n    ");
+  var myDropzone = new dropzone__WEBPACK_IMPORTED_MODULE_0__.Dropzone("#upload-files", {
+    url: '/api/addFiles',
+    autoProcessQueue: false,
+    addRemoveLinks: true,
+    acceptedFiles: '.psd,.pdf,.docx,.zip,.sql,.txt'
+  });
+  var sendFiles = document.getElementById('saveFiles');
+  sendFiles.onclick = function () {
+    var data = new FormData();
+    var files = myDropzone.getAcceptedFiles();
+    files.forEach(function (file) {
+      data.append('files[]', file);
+    });
+    data.append('dashboard_id', dashboard_id);
+    data.append('desk_id', desk_id);
+    fetch('/api/addFiles', {
+      method: 'post',
+      body: data
+    }).then(function (response) {
+      return response.json();
+    }).then(function (res) {
+      if (res.status === 200) {
+        setTimeout(deleteColumnModal('modalFiles'), 2000);
+        loadImages(dashboard_id, desk_id, res.files);
+      }
+      if (res.message_user) alert(res.message_user);
+    });
+  };
+  var btnZone = document.getElementById('upload-files').querySelector('.dz-button');
+  btnZone.classList.add('btn');
+  btnZone.classList.add('text-white');
 };
 })();
 

@@ -728,7 +728,7 @@ nav{
     content: none !important;
 }
 
-.upload-images{
+.upload-images, .modal-files{
     padding: 30px;
     border: 1px solid $border;
     width: 95%;
@@ -764,4 +764,29 @@ nav{
         margin-left: 10px;
     }
 
+}
+
+.block-files{
+    width: 90%;
+    height: 300px;
+    border: 1px solid #EBEFF2;
+    overflow-x: hidden;
+    overflow-y: auto;
+    margin: 30px 15px 0 15px;
+    display: flex;
+    justify-content: start;
+    color: white;
+
+    a{
+        box-shadow: 0 0 3px 3px silver;
+        width: 200px;
+        height: 50px;
+        color: white !important;
+        word-wrap: break-word;
+        overflow: hidden;
+    }
+
+    a:not(a:first-child){
+        margin-left: 20px;
+    }
 }

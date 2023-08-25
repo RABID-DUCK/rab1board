@@ -32,6 +32,7 @@ Route::get('/modalDesk', '\App\Http\Controllers\API\DeskController@show');
 Route::post('/desk/create', '\App\Http\Controllers\API\DeskController@store');
 Route::post('/modalUpdate', '\App\Http\Controllers\API\DeskController@update');
 Route::post('/addImages', '\App\Http\Controllers\API\DeskController@addImages');
+Route::post('/addFiles', '\App\Http\Controllers\API\DeskController@addFiles');
 
 Route::post('/saveTask', '\App\Http\Controllers\API\ListTaskController@store');
 Route::post('/createList', '\App\Http\Controllers\API\ListTaskController@createList');

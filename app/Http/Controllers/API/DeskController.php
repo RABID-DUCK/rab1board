@@ -98,4 +98,23 @@ class DeskController extends Controller
         }
         return response()->json(['message_user' => 'Не найдено ни одной картинки!']);
      }
+
+     public function addFiles(Request $request){
+         $data = $request->validate(['files' => 'nullable|array', 'dashboard_id' => 'required', 'desk_id' => 'required']);
+         $files = [];
+
+         if($data['files']){
+             foreach ($data['files'] as $file){
+                 $name = md5(Carbon::now() . '_'.$file->getClientOriginalName()) . '.' . $file->getClientOriginalExtension();
+                 $filePath = Storage::disk('public')->putFileAs('/files', $file, $name);
+                 $files[] = '/storage/' . $filePath;
+             }
+             $desk = Desks::where('id', $data['desk_id'])->first();
+             $desk->files = json_encode($files);
+             $desk->save();
+
+             return response()->json(['status' => 200, 'files' => $desk->image]);
+         }
+         return response()->json(['message_user' => 'Не найдено ни одного файла!']);
+     }
 }

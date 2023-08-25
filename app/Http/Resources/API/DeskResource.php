@@ -20,6 +20,7 @@ class DeskResource extends JsonResource
             'description' => $this->description,
             'task_id' => $this->task_id,
             'image' => $this->image,
+            'files' => $this->files,
             'status' => $this->status,
             'data_start' => $this->data_start,
             'data_end' => $this->data_end,
