@@ -1,14 +1,34 @@
 import { useEffect, useState } from "react"
 import { Link, NavLink } from "react-router-dom"
 import axios, { AxiosError } from "axios"
+import cookie from "js-cookie"
+import { set } from "lodash"
 
 const Header = () => {
     const [Auth, setAuth] = useState(false)
+    const token = cookie.get('access_token')
+    console.log(token);
+    const LogOut = () => {
+        cookie.remove("access_token")
+        window.location.reload()
+    }
+    console.log(token);
     useEffect(() => {
         const fetchData = async () => {
             try {
-                await axios.get("api/user")
-                setAuth(true)
+                const da = await axios.post("api/user/getUser", {
+                    // header: {
+                    //     Authorization: `Bearer maxlox`
+                    // }
+                })
+                if(da.data.user === null){
+                    console.log("maksGey");
+                    setAuth(false)
+                }
+                else {
+                    setAuth(true)
+                }
+                
             } catch (error) {
                 console.log(error);
                 setAuth(false)
@@ -65,17 +85,16 @@ const Header = () => {
                                 <li><Link className="dropdown-item" href="">Action</Link></li>
                                 <li><Link className="dropdown-item" href="">Admin</Link></li>
                                 <li>
-                                    <Link className="dropdown-item" href="/logout" onclick="">
+                                    <button className="dropdown-item" href="/logout" onClick={LogOut}>
                                         Logout
-                                    </Link>
-                                    
+                                    </button>
                                 </li>
                             </ul>
                         </>
                     ) : (
                         <>
-                            <li><Link   class="dropdown-item auth-link">Войти</Link></li>
-                            <li><button class="dropdown-item auth-link">Зарегистрироваться</button></li>
+                            <Link to="/login" class="dropdown-item auth-link">Войти</Link>
+                            <Link to="/reg" class="dropdown-item auth-link">Зарегистрироваться</Link>
                         </>
                         )}
 
@@ -88,27 +107,4 @@ const Header = () => {
         </header>
     )
 }
-export default Header
-
-const Form = () => {
-    
-
-    const Login =  async() => {
-       const auth = await axios.post('api/login', {
-            username: username,
-            password: password
-        })
-
-    }
-    useEffect(() => {
-
-    }, [])
-    return (
-        <form onSubmit={Login}>
-            <input type="text" />
-            <input type="password" />
-            <button type="submit">Login</button>
-        </form>
-    )
-
-}
+export default Header;
