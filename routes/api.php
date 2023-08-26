@@ -18,9 +18,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/user/login', [\App\Http\Controllers\API\Auth\AuthController::class, 'login']);
+Route::post('/user/login', [\App\Http\Controllers\API\Auth\AuthController::class, 'login'])->middleware('token');
 Route::post('/user/register', [\App\Http\Controllers\API\Auth\AuthController::class, 'register']);
-Route::post('/user/logout', [\App\Http\Controllers\API\Auth\AuthController::class, 'logout']);
+Route::post('/user/logout', [\App\Http\Controllers\API\Auth\AuthController::class, 'logout'])->middleware('token');
 Route::post('/user/getUser', [\App\Http\Controllers\API\Auth\AuthController::class, 'getUser']);
 
 

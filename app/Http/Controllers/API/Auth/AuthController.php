@@ -18,7 +18,9 @@ class AuthController extends Controller
         if (Auth::attempt($credetials)){
             $user = User::where('email', $credetials['email'])->first();
             $token = $user->createToken('token')->plainTextToken;
-            return response()->json(['access_token' => $token]);
+            $user->remember_token = $token;
+            $user->save();
+            return response()->json(['access_token' => $token, 'user' => $user]);
         }
 
         return response()->json(['message' => "Логин или пароль неверны!"]);
@@ -33,16 +35,30 @@ class AuthController extends Controller
         ]);
         $user = User::create($credentials);
         $token = $user->createToken('token')->plainTextToken;
-        return response()->json(['access_token' => $token]);
+        $user->remember_token = $token;
+        $user->save();
+
+        return response()->json(['access_token' => $token, 'user' => $user]);
     }
 
     public function logout(Request $request){
-        Auth::user()->tokens()->delete();
-        return response()->json(['status' => 403]);
+        $data = $request->validate(['id' => 'required|integer']);
+        if($user = User::where('id', $data['id'])->first()){
+            $user->remember_token = null;
+            $user->save();
+            return response()->json(['status' => 401, 'message' => 'Unauthorized']);
+        }else{
+            return response()->json(['status' => 404, 'message' => 'Пользователь не найден']);
+        }
     }
 
     public function getUser(Request $request){
-        $user = $request->user();
-        return response()->json(['user' => $user]);
+        $data = $request->validate(['id' => 'nullable|integer', 'email' => 'nullable|string']);
+        if ($data['id']) {
+            return User::where('id', $data['id'])->first();
+        }elseif($data['email']){
+            return User::where('email', $data['email'])->first();
+        }
+        return response()->json(['message' => 'Нет пользователя с таким email!']);
     }
 }
