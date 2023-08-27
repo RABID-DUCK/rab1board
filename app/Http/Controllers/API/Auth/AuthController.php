@@ -53,12 +53,9 @@ class AuthController extends Controller
     }
 
     public function getUser(Request $request){
-        $data = $request->validate(['id' => 'nullable|integer', 'email' => 'nullable|string']);
-        if ($data['id']) {
-            return User::where('id', $data['id'])->first();
-        }elseif($data['email']){
-            return User::where('email', $data['email'])->first();
+        if($user = User::where('remember_token', $request->bearerToken())->first()){
+            return response()->json(['user', $user]);
         }
-        return response()->json(['message' => 'Нет пользователя с таким email!']);
+        return response()->json(['message' => 'Пользователь не найден!']);
     }
 }
