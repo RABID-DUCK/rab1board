@@ -1,35 +1,34 @@
 import { useEffect, useState } from "react"
-import { Link, NavLink } from "react-router-dom"
+import { Link, NavLink} from "react-router-dom"
 import axios, { AxiosError } from "axios"
 import cookie from "js-cookie"
-import { set } from "lodash"
 
 const Header = () => {
     const [Auth, setAuth] = useState(false)
-    const token = cookie.get('access_token')
-    console.log(token);
+    const token = cookie.get('toke')
     const LogOut = () => {
-        cookie.remove("access_token")
+        cookie.remove("toke")
         window.location.reload()
     }
-    console.log(token);
+    const test = axios.create({
+        baseURL: "api/user",
+        headers:{
+            Authorization: `Bearer ${token}`
+        }
+    })
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const da = await axios.post("api/user/getUser", {
-                    // header: {
-                    //     Authorization: `Bearer maxlox`
-                    // }
-                })
-                if(da.data.user === null){
-                    console.log("maksGey");
-                    setAuth(false)
-                }
-                else {
+                const da = await test.post(`/getUser`, {})  
+                if(da.data.length === 2) {
                     setAuth(true)
                 }
-                
-            } catch (error) {
+                else {
+                    console.log("lox");
+                }
+                }
+
+             catch (error) {
                 console.log(error);
                 setAuth(false)
             }
@@ -85,7 +84,7 @@ const Header = () => {
                                 <li><Link className="dropdown-item" href="">Action</Link></li>
                                 <li><Link className="dropdown-item" href="">Admin</Link></li>
                                 <li>
-                                    <button className="dropdown-item" href="/logout" onClick={LogOut}>
+                                    <button className="dropdown-item" onClick={LogOut}>
                                         Logout
                                     </button>
                                 </li>

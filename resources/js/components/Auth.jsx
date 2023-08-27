@@ -1,22 +1,32 @@
 import { useState } from "react"
+import { useNavigate } from "react-router"
 import cookie from "js-cookie"
+import axios from "axios"
 
 const Auth = () => {
-    
+    const nav = useNavigate()
     const [email, setEmail] = useState()
     const [password, setPassword] = useState()
-
+    const token = cookie.get("access_token")
+    const test = axios.create({
+        baseURL: "api/user",
+        headers:{
+            Authorization: `Bearer ${token}`
+        }
+    })
     const Login =  async(e) => {
+        e.preventDefault()
         try{
-            const auth = await axios.post('api/user/login', {
+            const auth = await test.post(("/login"),{
                         email: email,
-                        password: password
+                        password: password,
                     })
-                    
-                const token = cookie.set('access_token', auth.data.access_token, {
-                    expires: 1
-                })
-                console.log(token)
+
+            cookie.set('toke', auth.data.access_token, {
+                expires: 1
+            })
+            nav("/")
+            window.location.reload()
         }
         catch(error){
             console.log(error);
