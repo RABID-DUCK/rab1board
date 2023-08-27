@@ -1,30 +1,25 @@
 import { useEffect, useState } from "react"
 import { Link, NavLink} from "react-router-dom"
-import axios, { AxiosError } from "axios"
 import cookie from "js-cookie"
+import api from "../API/Api"
 
 const Header = () => {
     const [Auth, setAuth] = useState(false)
-    const token = cookie.get('toke')
+    const [user, setUser] = useState([])
     const LogOut = () => {
         cookie.remove("toke")
         window.location.reload()
     }
-    const test = axios.create({
-        baseURL: "api/user",
-        headers:{
-            Authorization: `Bearer ${token}`
-        }
-    })
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const da = await test.post(`/getUser`, {})  
+                const da = await api.post(`/user/getUser`, {})  
                 if(da.data.length === 2) {
+                    setUser(da.data[1])
                     setAuth(true)
                 }
                 else {
-                    console.log("lox");
+
                 }
                 }
 
@@ -35,7 +30,7 @@ const Header = () => {
         }
         fetchData()
     }, [])
-    console.log(Auth);
+    
     return (
         <header className="navbar navbar-expand-lg bg-body-tertiary">
             <div className="container-fluid">
@@ -45,40 +40,40 @@ const Header = () => {
                 aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
                 </button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mb-2 mb-lg-0">
-                <li class="nav-item dropdown">
-                    <Link class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                <div className="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul className="navbar-nav mb-2 mb-lg-0">
+                <li className="nav-item dropdown">
+                    <Link className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                        aria-expanded="false">
                         Your boards
                     </Link>
 
-                    <ul class="dropdown-menu">
-                        <li><Link class="dropdown-item" href="#">Action</Link></li>
+                    <ul className="dropdown-menu">
+                        <li><Link className="dropdown-item" href="#">Action</Link></li>
                     </ul>
                 </li>
 
-                <li class="nav-item dropdown">
-                    <select class="form-select" aria-label="Default select example">
-                        <option value="ru" selected>Russian</option>
+                <li className="nav-item dropdown">
+                    <select className="form-select" defaultValue="ru" aria-label="Default select example">
+                        <option value="ru" >Russian</option>
                         <option value="en">English</option>
                     </select>
 
                 </li>
             </ul>
 
-            <form class="d-flex w-50" role="search">
-                <input class="form-control search me-2" type="search" placeholder="Search" aria-label="Search"/>
-                <button class="btn btn-search" type="submit">Search</button>
+            <form className="d-flex w-50" role="search">
+                <input className="form-control search me-2" type="search" placeholder="Search" aria-label="Search"/>
+                <button className="btn btn-search" type="submit">Search</button>
             </form>
 
-            <div class="user">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item dropdown">
+            <div className="user">
+                <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li className="nav-item dropdown">
                     {Auth ? (
                         <>
                             <Link className="nav-link dropdown-toggle" href="" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                User
+                                {user.name}
                             </Link>
                             <ul className="dropdown-menu">
                                 <li><Link className="dropdown-item" href="">Action</Link></li>
@@ -92,8 +87,8 @@ const Header = () => {
                         </>
                     ) : (
                         <>
-                            <Link to="/login" class="dropdown-item auth-link">Войти</Link>
-                            <Link to="/reg" class="dropdown-item auth-link">Зарегистрироваться</Link>
+                            <Link to="/login" className="dropdown-item auth-link">Войти</Link>
+                            <Link to="/reg" className="dropdown-item auth-link">Зарегистрироваться</Link>
                         </>
                         )}
 

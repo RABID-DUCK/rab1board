@@ -20,11 +20,11 @@
         <link href="{{asset('css/plugins/dropzone.css')}}" rel="stylesheet" type="text/css" />
     </head>
     {{--REACT--}}
-    <body class="antialiased" id="root">
+    <body class="antialiased">
     {{---------}}
-            @include('layouts/header')
-
-        <div class="content-wrapper d-flex justify-content-between" id="wrapper">
+            <!-- @include('layouts/header') -->
+        <div id="root">
+            <!-- <div class="content-wrapper d-flex justify-content-between" id="wrapper">
 
             @yield('content')
             <div class="backModal hide" id="backModal">
@@ -34,6 +34,7 @@
                 <div class="modal-desk bg-dark bg-gradient text-white" data-modal-desk data-keyboard="false" data-backdrop="static">
                 </div>
             </div>
+            </div> -->
         </div>
                     {{--    Scripts--}}
 

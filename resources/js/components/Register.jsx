@@ -1,17 +1,21 @@
 import { useState } from "react"
+import { useNavigate } from "react-router"
 import cookie from "js-cookie"
+import api from "../API/Api"
 
 const Register = () => {
+    const nav = useNavigate()
     const [Name, setName] = useState()
     const [login, setLogin] = useState()
     const [email, setEmail] = useState()
     const [password, setPassword] = useState()
     const [password_conf, setPassword_conf] = useState()
+
     const Login =  async(e) => {
         e.preventDefault()
 
         try{
-            const auth = await axios.post('api/user/register', {
+            const auth = await api.post('/user/register', {
                         name: Name,
                         login: login,
                         email: email,
@@ -22,6 +26,9 @@ const Register = () => {
                     cookie.set('access_token', auth.data.access_token, {
                         expires: 1
                     })
+                    nav('/login')
+                    window.location.reload()
+                    
         }
         catch(error){
             console.log(error);
