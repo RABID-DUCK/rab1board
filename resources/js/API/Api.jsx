@@ -7,7 +7,7 @@ const tokenLogin = cookie.get('toke')
 const api = axios.create({
     baseURL: "api",
     headers: {
-        Authorization: `Bearer ${ !tokenReg ? tokenReg : tokenLogin}`
+        Authorization: `Bearer ${ !tokenReg ? tokenLogin : tokenReg}`
     }
 })
 
