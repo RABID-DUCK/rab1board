@@ -13664,7 +13664,7 @@ var tokenLogin = js_cookie__WEBPACK_IMPORTED_MODULE_0__["default"].get('toke');
 var api = axios__WEBPACK_IMPORTED_MODULE_1__["default"].create({
   baseURL: "api",
   headers: {
-    Authorization: "Bearer ".concat(!tokenReg ? tokenReg : tokenLogin)
+    Authorization: "Bearer ".concat(!tokenReg ? tokenLogin : tokenReg)
   }
 });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (api);
@@ -13885,7 +13885,7 @@ var Header = function Header() {
                   role: "button",
                   "data-bs-toggle": "dropdown",
                   "aria-expanded": "false",
-                  children: user.name
+                  children: user.login
                 }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("ul", {
                   className: "dropdown-menu",
                   children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("li", {

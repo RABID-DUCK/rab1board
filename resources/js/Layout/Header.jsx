@@ -13,7 +13,7 @@ const Header = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const da = await api.post(`/user/getUser`, {})  
+                const da = await api.post(`/user/getUser`, {})
                 if(da.data.length === 2) {
                     setUser(da.data[1])
                     setAuth(true)
@@ -30,7 +30,7 @@ const Header = () => {
         }
         fetchData()
     }, [])
-    
+
     return (
         <header className="navbar navbar-expand-lg bg-body-tertiary">
             <div className="container-fluid">
@@ -73,7 +73,7 @@ const Header = () => {
                     {Auth ? (
                         <>
                             <Link className="nav-link dropdown-toggle" href="" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                {user.name}
+                                {user.login}
                             </Link>
                             <ul className="dropdown-menu">
                                 <li><Link className="dropdown-item" href="">Action</Link></li>

@@ -6,18 +6,20 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Testing\Fluent\Concerns\Has;
 
 class AuthController extends Controller
 {
     public function login(Request $request){
-        $credetials = $request->validate([
+        $credentials = $request->validate([
             'email' => ['required', 'email'],
             'password' => ['required']
         ]);
 
-        if (Auth::attempt($credetials)){
-            $user = User::where('email', $credetials['email'])->first();
-            $token = $user->createToken('token')->plainTextToken;
+        if (Auth::attempt($credentials)){
+            $user = User::where('email', $credentials['email'])->first();
+            $token = Hash::make($user->createToken('token')->plainTextToken);
             $user->remember_token = $token;
             $user->save();
             return response()->json(['access_token' => $token, 'user' => $user]);
@@ -34,7 +36,7 @@ class AuthController extends Controller
             'password' => 'required|string|confirmed'
         ]);
         $user = User::create($credentials);
-        $token = $user->createToken('token')->plainTextToken;
+        $token = Hash::make($user->createToken('token')->plainTextToken);
         $user->remember_token = $token;
         $user->save();
 
