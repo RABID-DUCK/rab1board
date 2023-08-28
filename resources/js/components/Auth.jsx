@@ -30,12 +30,14 @@ const Auth = () => {
     }
     
     return (
-        <form onSubmit={Login}>
-            <input type="email" value={email} onChange={(e) => {setEmail(e.target.value)}}/>
-            <input type="password" value={password} onChange={(e) => {setPassword(e.target.value)}}/>
-            <button type="submit">Login</button>
-            
-        </form>
+        <div className="wrapper">
+            <form onSubmit={Login}>
+                <input type="email" value={email} onChange={(e) => {setEmail(e.target.value)}}/>
+                <input type="password" value={password} onChange={(e) => {setPassword(e.target.value)}}/>
+                <button type="submit">Login</button> 
+            </form>
+        </div>
+        
     )
 
 }
