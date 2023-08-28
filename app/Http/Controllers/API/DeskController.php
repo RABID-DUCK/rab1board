@@ -93,4 +93,14 @@ class DeskController extends Controller
         dd($data);
     }
 
+    public function outputDesks(Request $request){
+        $data = $request->validate(['dashboard_id' => 'required|integer']);
+        if (Desks::where('dashboard_id', $data['dashboard_id'])->get()->count() > 0){
+            $desks = Desks::where('dashboard_id', $data['dashboard_id'])->get();
+            return response()->json(['desks' => $desks]);
+        }
+
+        return response()->json(['message' => 'Доски не найдены']);
+    }
+
 }
