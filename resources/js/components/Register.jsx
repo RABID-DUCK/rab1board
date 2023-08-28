@@ -4,6 +4,7 @@ import cookie from "js-cookie"
 import api from "../API/Api"
 
 const Register = () => {
+
     const nav = useNavigate()
     const [Name, setName] = useState()
     const [login, setLogin] = useState()
@@ -11,9 +12,8 @@ const Register = () => {
     const [password, setPassword] = useState()
     const [password_conf, setPassword_conf] = useState()
 
-    const Login =  async(e) => {
+    const Reg =  async(e) => {
         e.preventDefault()
-
         try{
             const auth = await api.post('/user/register', {
                         name: Name,
@@ -22,22 +22,19 @@ const Register = () => {
                         password: password,
                         password_confirmation: password_conf
                     })
-                    
                     cookie.set('access_token', auth.data.access_token, {
                         expires: 1
                     })
-                    nav('/login')
+                    nav('/')
                     window.location.reload()
-                    
         }
         catch(error){
             console.log(error);
         }
-
     }
 
     return (
-        <form onSubmit={Login}>
+        <form onSubmit={Reg}>
             <p>name</p>
             <input type="text" value={Name} onChange={(e) => {setName(e.target.value)}} />
             <p>login</p>
@@ -49,7 +46,6 @@ const Register = () => {
             <p>confirm</p>
             <input type="password" value={password_conf} onChange={(e) => {setPassword_conf(e.target.value)}}/>
             <button type="submit">Login</button>
-            
         </form>
     )
 

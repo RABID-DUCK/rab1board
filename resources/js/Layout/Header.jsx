@@ -2,12 +2,15 @@ import { useEffect, useState } from "react"
 import { Link, NavLink} from "react-router-dom"
 import cookie from "js-cookie"
 import api from "../API/Api"
+import { useSelector, useDispatch } from "react-redux" 
+import { Authorization } from "../store/Slice/AuthSlice"
 
 const Header = () => {
-    const [Auth, setAuth] = useState(false)
+    const dispatch = useDispatch()
+    const Auth = useSelector(state => state.value)
     const [user, setUser] = useState([])
     const LogOut = () => {
-        cookie.remove("toke")
+        cookie.remove("access_token")
         window.location.reload()
     }
     useEffect(() => {
@@ -16,16 +19,17 @@ const Header = () => {
                 const da = await api.post(`/user/getUser`, {})
                 if(da.data.length === 2) {
                     setUser(da.data[1])
-                    setAuth(true)
+                    dispatch(Authorization(true))
+                    // setAuth(true)
                 }
                 else {
 
                 }
                 }
-
              catch (error) {
                 console.log(error);
-                setAuth(false)
+                dispatch(Authorization(false))
+                // setAuth(false)
             }
         }
         fetchData()
@@ -86,10 +90,10 @@ const Header = () => {
                             </ul>
                         </>
                     ) : (
-                        <>
-                            <Link to="/login" className="dropdown-item auth-link">Войти</Link>
-                            <Link to="/reg" className="dropdown-item auth-link">Зарегистрироваться</Link>
-                        </>
+                            <>
+                                <Link to="/login" className="dropdown-item auth-link">Войти</Link>
+                                <Link to="/reg" className="dropdown-item auth-link">Зарегистрироваться</Link>
+                            </>
                         )}
 
                     </li>

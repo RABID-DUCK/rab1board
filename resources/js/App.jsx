@@ -5,6 +5,7 @@ import Home from "./Pages/Home";
 import Auth from "./components/Auth"
 import Register from "./components/Register";
 
+
 const App = () => {
     return (
         <Routes>

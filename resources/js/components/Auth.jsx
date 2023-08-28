@@ -3,7 +3,6 @@ import { useNavigate } from "react-router"
 import cookie from "js-cookie"
 import api from "../API/Api"
 
-
 const Auth = () => {
     const nav = useNavigate()
 
@@ -17,8 +16,7 @@ const Auth = () => {
                         email: email,
                         password: password,
                     })
-
-            cookie.set('toke', auth.data.access_token, {
+            cookie.set('access_token', auth.data.access_token, {
                 expires: 1
             })
             nav("/")
@@ -37,9 +35,7 @@ const Auth = () => {
                 <button type="submit">Login</button> 
             </form>
         </div>
-        
     )
-
 }
 
 export default Auth;
