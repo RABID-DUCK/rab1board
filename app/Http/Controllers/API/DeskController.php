@@ -7,6 +7,8 @@ use App\Http\Requests\Desk\UpdateRequest;
 use App\Http\Resources\API\DeskResource;
 use App\Models\ColumnDesks;
 use App\Models\Columns;
+use App\Models\DeskFiles;
+use App\Models\DeskImages;
 use App\Models\Desks;
 use App\Models\Tasks;
 use Illuminate\Http\Request;
@@ -81,40 +83,42 @@ class DeskController extends Controller
     }
 
     public function addImages(Request $request){
-        $data = $request->validate(['images' => 'nullable|array', 'dashboard_id' => 'required', 'desk_id' => 'required']);
-        $images = [];
+        $data = $request->validate(['image' => 'required', 'dashboard_id' => 'required', 'desk_id' => 'required']);
 
-        if($data['images']){
-            foreach ($data['images'] as $image){
-                $name = md5(Carbon::now() . '_'.$image->getClientOriginalName()) . '.' . $image->getClientOriginalExtension();
-                $filePath = Storage::disk('public')->putFileAs('/images', $image, $name);
-                $images[] = '/storage/' . $filePath;
-            }
-            $desk = Desks::where('id', $data['desk_id'])->first();
-            $desk->image = json_encode($images);
-            $desk->save();
+        if($data['image']){
+            $filePath = Storage::disk('public')->put('/images', $data['image']);
+            $file = '/storage/' . $filePath;
+            DeskImages::create([
+                'desk_id' => $data['desk_id'],
+                'image' => $file
+            ]);
 
-            return response()->json(['status' => 200, 'images' => $desk->image]);
+            $images = DeskImages::where('desk_id', $data['desk_id'])->get();
+            return response()->json(['status' => 200, 'images' => $images]);
         }
         return response()->json(['message_user' => 'Не найдено ни одной картинки!']);
      }
 
-     public function addFiles(Request $request){
-         $data = $request->validate(['files' => 'nullable|array', 'dashboard_id' => 'required', 'desk_id' => 'required']);
-         $files = [];
+    public function addFiles(Request $request)
+    {
+        $data = $request->validate(['file' => 'required', 'dashboard_id' => 'required', 'desk_id' => 'required']);
+        if ($data['file']) {
+            $fileName = $data['file']->getClientOriginalName();
+            if (!DeskFiles::where('file', 'files/'.$fileName)->first()) {
+                $filePath = Storage::disk('public')->putFileAs('/files', $data['file'], $fileName);
+                DeskFiles::create([
+                    'desk_id' => $data['desk_id'],
+                    'file' => $filePath
+                ]);
 
-         if($data['files']){
-             foreach ($data['files'] as $file){
-                 $name = md5(Carbon::now() . '_'.$file->getClientOriginalName()) . '.' . $file->getClientOriginalExtension();
-                 $filePath = Storage::disk('public')->putFileAs('/files', $file, $name);
-                 $files[] = '/storage/' . $filePath;
-             }
-             $desk = Desks::where('id', $data['desk_id'])->first();
-             $desk->files = json_encode($files);
-             $desk->save();
+                $files = DeskFiles::where('desk_id', $data['desk_id'])->get();
 
-             return response()->json(['status' => 200, 'files' => $desk->image]);
-         }
-         return response()->json(['message_user' => 'Не найдено ни одного файла!']);
-     }
+                return response()->json(['status' => 200, 'files' => $files]);
+            }
+            else{
+                return response()->json(['message_user' => 'Такой файл уже существует!']);
+            }
+        }
+        return response()->json(['message_user' => 'Не найдено ни одного файла!']);
+    }
 }

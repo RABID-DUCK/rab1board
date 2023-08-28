@@ -47,9 +47,9 @@
                              style="{{$desk->color_id ? "box-shadow: 0 0 10px 3px ".$desk->color[0]->color : '' }}"
                             >
                                 <p>{{ $desk->title }}</p>
-                                @if($desk->image)
-                                <img src="{{ $desk->image }}" alt="{{ $desk->title }}">
-                                @endif
+{{--                                @if($desk->image)--}}
+{{--                                <img src="{{ $desk->image }}" alt="{{ $desk->title }}">--}}
+{{--                                @endif--}}
                                 <div class="data-desk">
                                     <input class="custom-checkbox" type="checkbox" id="status" name="status" value="yes"
                                         {{$desk->status ? "checked" : ''}}   onclick="doneTask({{$dashboard->id}}, {{$desk->id}})">

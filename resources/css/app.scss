@@ -738,6 +738,8 @@ nav{
     .dropzone{
         border: none;
         box-shadow: 0 0 3px 1px silver;
+        height: 60px !important;
+        max-height: 60px;
 
         &:hover{
             background-color: $link;
@@ -747,21 +749,48 @@ nav{
         .dz-button{
             padding: 5px !important;
         }
+
+        .dz-message{
+            margin: 0 !important;
+
+            button{
+                padding: 3px !important;
+            }
+        }
     }
 }
 
-.block-images{
+.block-images, .block-files{
     width: 90%;
     height: 300px;
     border: 1px solid #EBEFF2;
-    overflow-x: hidden;
-    overflow-y: auto;
     margin: 30px 15px 0 15px;
     display: flex;
-    justify-content: start;
+    flex-direction: column;
 
     img:not(img:first-child){
         margin-left: 10px;
+    }
+
+    .output-images, .output-images{
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+
+    .images{
+        padding: 10px 20px !important;
+        margin-top: 20px;
+        border: none;
+        overflow-x: hidden !important;
+        overflow-y: auto !important;
+
+        .dz-message{
+            margin: 0 !important;
+
+            button{
+                padding: 5px;
+            }
+        }
     }
 
 }

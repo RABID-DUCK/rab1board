@@ -653,6 +653,8 @@ nav {
 .upload-images .dropzone, .modal-files .dropzone {
   border: none;
   box-shadow: 0 0 3px 1px silver;
+  height: 60px !important;
+  max-height: 60px;
 }
 .upload-images .dropzone:hover, .modal-files .dropzone:hover {
   background-color: rgb(40, 35, 40);
@@ -661,19 +663,40 @@ nav {
 .upload-images .dropzone .dz-button, .modal-files .dropzone .dz-button {
   padding: 5px !important;
 }
+.upload-images .dropzone .dz-message, .modal-files .dropzone .dz-message {
+  margin: 0 !important;
+}
+.upload-images .dropzone .dz-message button, .modal-files .dropzone .dz-message button {
+  padding: 3px !important;
+}
 
-.block-images {
+.block-images, .block-files {
   width: 90%;
   height: 300px;
   border: 1px solid #EBEFF2;
-  overflow-x: hidden;
-  overflow-y: auto;
   margin: 30px 15px 0 15px;
   display: flex;
-  justify-content: start;
+  flex-direction: column;
 }
-.block-images img:not(img:first-child) {
+.block-images img:not(img:first-child), .block-files img:not(img:first-child) {
   margin-left: 10px;
+}
+.block-images .output-images, .block-images .output-images, .block-files .output-images, .block-files .output-images {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+.block-images .images, .block-files .images {
+  padding: 10px 20px !important;
+  margin-top: 20px;
+  border: none;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+}
+.block-images .images .dz-message, .block-files .images .dz-message {
+  margin: 0 !important;
+}
+.block-images .images .dz-message button, .block-files .images .dz-message button {
+  padding: 5px;
 }
 
 .block-files {
