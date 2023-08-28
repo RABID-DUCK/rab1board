@@ -390,7 +390,7 @@ window.viewDesk = function (dashboard_id, column_id, desk_id){
                     <span><img src="/images/avatar_none.png" alt=""></span>
                     <span><img src="/images/avatar_none.png" alt=""></span>
                     <span><img src="/images/avatar_none.png" alt=""></span>
-                    <i class="bi bi-plus-circle"></i>
+                    <i class="bi bi-plus-circle" onclick="addUsersModal(${desk_id})"></i>
                 </div>
 
                 <div id="output-date" class="output-date" style="${!res.data.data_end ? 'display: none;' : ''}">
@@ -923,4 +923,29 @@ window.modalFiles = function (dashboard_id, desk_id){
     `)
         dropZoneFiles(dashboard_id, desk_id)
     }
+}
+
+window.addUsersModal = function (desk_id){
+    if(!document.getElementById('addUserModal')){
+        document.querySelector('[data-modal-desk]').insertAdjacentHTML('beforeend', `
+        <div class="modal-desk bg-dark bg-gradient text-white add-user" id="addUserModal">
+            <label class="form-label" for="user-email">Почта пользователя</label>
+            <input class="form-control" type="text" id="user-email">
+            <button class="btn text-white" onclick="sendInvite(${desk_id})">Отправить</button>
+        </div>
+    `)
+    }else{
+        deleteColumnModal('addUserModal')
+            return;
+    }
+}
+
+window.sendInvite = function (desk_id){
+    // if(document.getElementById('addUserModal')){
+    //     console.log('da')
+    //     deleteColumnModal('addUserModal')
+    //     return;
+    // }
+    let input = event.target.previousElementSibling;
+
 }

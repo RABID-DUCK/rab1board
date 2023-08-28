@@ -2555,7 +2555,7 @@ window.viewDesk = function (dashboard_id, column_id, desk_id) {
     }
 
     // ----------Open modal----------
-    modal.insertAdjacentHTML('beforeend', "\n             <span class=\"close-modal\" id=\"modal-desk\" onclick=\"closeModal()\">X</span>\n                <b>".concat(res.data.title, "</b>\n                <div class=\"users-desk\">\n                    <span><img src=\"/images/avatar_none.png\" alt=\"\"></span>\n                    <span><img src=\"/images/avatar_none.png\" alt=\"\"></span>\n                    <span><img src=\"/images/avatar_none.png\" alt=\"\"></span>\n                    <i class=\"bi bi-plus-circle\"></i>\n                </div>\n\n                <div id=\"output-date\" class=\"output-date\" style=\"").concat(!res.data.data_end ? 'display: none;' : '', "\">\n                    <span id=\"output-date-end\" class=\"").concat(differenceDate(res.data.data_end) ? 'text-danger fw-bold' : '', "\">\n                    \u0421\u0440\u043E\u043A \u0434\u043E: ").concat(convertData(res.data.data_end), "</span>\n                </div>\n\n                <div class=\"description\" id=\"description\">\n                    <label for=\"description\" class=\"form-label\">Description of task</label>\n                    <textarea class=\"form-control\" id=\"description\" rows=\"3\" placeholder=\"This task mean...\">").concat((_res$data$description = res.data.description) !== null && _res$data$description !== void 0 ? _res$data$description : '', "</textarea>\n                    <button class=\"btn text-white hide\" id=\"save-desk\" onclick=\"updateDescription(").concat(dashboard_id, ",").concat(desk_id, ", ").concat(column_id, ")\">\n                    <i class=\"bi bi-check-lg\"></i>Save</button>\n                </div>\n                    <button class=\"btn text-white ").concat(res.data.list_task_id ? 'hide' : '', "\" id=\"add-menu-tasks\" onclick=\"createTask(").concat(dashboard_id, ",").concat(desk_id, ",").concat(column_id, ")\">Add tasks</button>\n            "));
+    modal.insertAdjacentHTML('beforeend', "\n             <span class=\"close-modal\" id=\"modal-desk\" onclick=\"closeModal()\">X</span>\n                <b>".concat(res.data.title, "</b>\n                <div class=\"users-desk\">\n                    <span><img src=\"/images/avatar_none.png\" alt=\"\"></span>\n                    <span><img src=\"/images/avatar_none.png\" alt=\"\"></span>\n                    <span><img src=\"/images/avatar_none.png\" alt=\"\"></span>\n                    <i class=\"bi bi-plus-circle\" onclick=\"addUsersModal(").concat(desk_id, ")\"></i>\n                </div>\n\n                <div id=\"output-date\" class=\"output-date\" style=\"").concat(!res.data.data_end ? 'display: none;' : '', "\">\n                    <span id=\"output-date-end\" class=\"").concat(differenceDate(res.data.data_end) ? 'text-danger fw-bold' : '', "\">\n                    \u0421\u0440\u043E\u043A \u0434\u043E: ").concat(convertData(res.data.data_end), "</span>\n                </div>\n\n                <div class=\"description\" id=\"description\">\n                    <label for=\"description\" class=\"form-label\">Description of task</label>\n                    <textarea class=\"form-control\" id=\"description\" rows=\"3\" placeholder=\"This task mean...\">").concat((_res$data$description = res.data.description) !== null && _res$data$description !== void 0 ? _res$data$description : '', "</textarea>\n                    <button class=\"btn text-white hide\" id=\"save-desk\" onclick=\"updateDescription(").concat(dashboard_id, ",").concat(desk_id, ", ").concat(column_id, ")\">\n                    <i class=\"bi bi-check-lg\"></i>Save</button>\n                </div>\n                    <button class=\"btn text-white ").concat(res.data.list_task_id ? 'hide' : '', "\" id=\"add-menu-tasks\" onclick=\"createTask(").concat(dashboard_id, ",").concat(desk_id, ",").concat(column_id, ")\">Add tasks</button>\n            "));
 
     // --------Add Description-------
     var textareaClicked = false;
@@ -2943,6 +2943,22 @@ window.modalFiles = function (dashboard_id, desk_id) {
     document.querySelector('[data-modal-desk]').insertAdjacentHTML('beforeend', "\n        <div class=\"modal-files\" id=\"modalFiles\">\n        <div class=\"dropzone images mb-2\" id=\"upload-files\"></div>\n        </div>\n    ");
     dropZoneFiles(dashboard_id, desk_id);
   }
+};
+window.addUsersModal = function (desk_id) {
+  if (!document.getElementById('addUserModal')) {
+    document.querySelector('[data-modal-desk]').insertAdjacentHTML('beforeend', "\n        <div class=\"modal-desk bg-dark bg-gradient text-white add-user\" id=\"addUserModal\">\n            <label class=\"form-label\" for=\"user-email\">\u041F\u043E\u0447\u0442\u0430 \u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044F</label>\n            <input class=\"form-control\" type=\"text\" id=\"user-email\">\n            <button class=\"btn text-white\" onclick=\"sendInvite(".concat(desk_id, ")\">\u041E\u0442\u043F\u0440\u0430\u0432\u0438\u0442\u044C</button>\n        </div>\n    "));
+  } else {
+    deleteColumnModal('addUserModal');
+    return;
+  }
+};
+window.sendInvite = function (desk_id) {
+  // if(document.getElementById('addUserModal')){
+  //     console.log('da')
+  //     deleteColumnModal('addUserModal')
+  //     return;
+  // }
+  var input = event.target.previousElementSibling;
 };
 })();
 
