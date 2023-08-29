@@ -21,13 +21,13 @@ class CommentsController extends Controller
     }
 
     public function update(Request $request){
-        $data = $request->validate(['id' => 'required|integer', 'title' => 'required|string', 'like' => 'nullable|integer']);
+        $data = $request->validate(['id' => 'required|integer', 'title' => 'required|string', 'like' => 'nullable|string']);
         if($comment = Comments::where('id', $data['id'])->first()){
             if($comment !== $data['title']){
                 $comment->title = $data['title'];
             }
             if(isset($data['like']) && !empty($data['like'])){
-                $comment->count_likes += 1;
+                $data['like'] === 'plus' ? $comment->count_likes + 1 : $comment->count_likes - 1;
             }
             $comment->save();
             return response()->json($comment);

@@ -24,9 +24,9 @@ class ListTaskController extends Controller
     }
 
     public function update(Request $request){
-        $data = $request->validate(['id' => 'required|integer','title' => 'required|string', 'emoji' => 'nullable',
+        $data = $request->validate(['task_id' => 'required|integer','title' => 'required|string', 'emoji' => 'nullable',
             'data_start' => 'nullable|date_format:Y-m-d H:i:s', 'data_end' => 'nullable|date_format:Y-m-d H:i:s', 'done' => 'nullable|boolean']);
-        $task = Tasks::where('id', $data['id'])->first();
+        $task = Tasks::where('id', $data['task_id'])->first();
 
         if (isset($data['title']) && $task->title !== $data['title']) {
             $task->title = $data['title'];
