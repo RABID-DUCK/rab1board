@@ -27,7 +27,7 @@ class CommentsController extends Controller
                 $comment->title = $data['title'];
             }
             if(isset($data['like']) && !empty($data['like'])){
-                $data['like'] === 'plus' ? $comment->count_likes + 1 : $comment->count_likes - 1;
+                $data['like'] === 'plus' ? $comment->count_likes += 1 : $comment->count_likes -= 1;
             }
             $comment->save();
             return response()->json($comment);
