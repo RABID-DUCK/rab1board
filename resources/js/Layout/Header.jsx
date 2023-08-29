@@ -92,7 +92,7 @@ const Header = () => {
                     ) : (
                             <>
                                 <Link to="/login" className="dropdown-item auth-link">Войти</Link>
-                                <Link to="/reg" className="dropdown-item auth-link">Зарегистрироваться</Link>
+                                <Link to="/register" className="dropdown-item auth-link">Зарегистрироваться</Link>
                             </>
                         )}
 

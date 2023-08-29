@@ -5,6 +5,9 @@ import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import api from "../API/Api";
 
+import DashboardItem from "../components/DashboardItem";
+import DashboardList from "../components/DashboardList";
+
 const Home = () => {
     const Auth = useSelector(state => state.value)
     const [add, setAdd] = useState(false)
@@ -21,7 +24,7 @@ const Home = () => {
                 setUser(id.data[1].id)
                 const allDash = await api.get(`/getDashboards`)
                 setDesk(allDash.data)
-                console.log(desk);
+                
             }
     const addBoard = async() => {
         await api.post("/dashboard/create", {
@@ -29,7 +32,6 @@ const Home = () => {
             user_id: user
         })
         setboard('')
-        console.log('hello');
         fetch()
     }
     useEffect(() => {
@@ -44,9 +46,9 @@ const Home = () => {
             {
                 Auth ? 
                 <> {false? <h1>нету досок</h1> :
-                    <>{desk.map((de) => (
-                        <li key={de.id}>{de.title}</li>
-                    ))}</>
+                    <>
+                        <DashboardList desk={desk}/>
+                    </>
                 }
                     <button onClick={toggleAdd}>Добавить доску</button>
                     {add ? <>
@@ -67,7 +69,7 @@ const Home = () => {
                         <Link to="/login"> Login</Link>
                     </button>
                     <button>
-                        <Link to="/reg">REg</Link>
+                        <Link to="/register">REg</Link>
                     </button>
                 </>
             }

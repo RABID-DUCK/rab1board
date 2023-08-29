@@ -5,7 +5,7 @@ const tokenReg = cookie.get("access_token")
 // const tokenLogin = cookie.get('toke')
 
 const api = axios.create({
-    baseURL: "api",
+    baseURL: "http://hui/api",
     headers: {
         Authorization: `Bearer ${tokenReg}`
     }

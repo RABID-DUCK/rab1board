@@ -5,6 +5,7 @@ import Home from "./Pages/Home";
 import Auth from "./components/Auth"
 import Register from "./components/Register";
 import Test from "./Pages/Test";
+import Dashboard from "./Pages/Dashboard";
 
 
 const App = () => {
@@ -13,8 +14,9 @@ const App = () => {
             <Route path="/" element={<Layout/>}>
                 <Route index element={<Home/>}></Route>
                 <Route path="/login" element={<Auth/>}/>
-                <Route path="/reg" element={<Register/>}/>
+                <Route path="/register" element={<Register/>}/>
                 <Route path="/test" element={<Test/>}/>
+                <Route path="/dashboard/:id" element={<Dashboard/>}/>
             </Route>
         </Routes>
             
