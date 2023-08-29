@@ -11,6 +11,7 @@ use App\Models\Desks;
 use App\Models\Tasks;
 use App\Models\User;
 use App\Models\UserDashboards;
+use App\Models\UserDesks;
 use Illuminate\Http\Request;
 
 class DeskController extends Controller
@@ -98,7 +99,9 @@ class DeskController extends Controller
     public function outputDesks(Request $request){
         $data = $request->validate(['dashboard_id' => 'required|integer']);
         $user = User::where('remember_token', $request->bearerToken())->first();
-        if (UserDashboards::where('user_id', $user->id)){
+        if ($userDash = UserDashboards::where('user_id', $user->id)->first()){
+            if(!$userDash->invited) return response()->json(['message' => 'Вы ещё не приняли приглашение!']);
+
             if (Desks::where('dashboard_id', $data['dashboard_id'])->get()->count() > 0){
                 $desk = Desks::with('columnDesk')->where('dashboard_id', $data['dashboard_id'])
                     ->whereHas('columnDesk', function ($query) use ($data) {
@@ -106,12 +109,34 @@ class DeskController extends Controller
                     })
                     ->get()
                     ->toJson();
+
                 return $desk;
             }
 
             return response()->json(['message' => 'Доски не найдены']);
         }
         return response()->json(['message' => 'Вы не состоите в этом проекте!']);
+    }
+
+    public function addUser(Request $request){
+        $data = $request->validate(['desk_id' => 'required|integer', 'user_id' => 'required|integer']);
+        if($user = User::where('id', $data['user_id'])->first()){
+            if($userDash = UserDashboards::where('user_id', $user->id)->first()){
+                if(!$userDash->invited) return response()->json(['message' => 'Пользователя не существует в этом проекте!']);
+                if(UserDesks::where('desk_id', $data['desk_id'])->where('user_id', $data['user_id'])->first()) return false;
+
+                UserDesks::create([
+                    'desk_id' => $data['desk_id'],
+                    'user_id' => $data['user_id']
+                ]);
+                $users = UserDesks::with('userDesks')->where('desk_id', $data['desk_id'])
+                    ->whereHas('userDesks', function ($query) use ($data){
+                        $query->where('desk_id', $data['desk_id']);
+                    })->get();
+
+                return response()->json(['users' => $users]);
+            }
+        }
     }
 
 }

@@ -19,7 +19,8 @@ class DashboardController extends Controller
         $dash = Dashboards::create($data);
         UserDashboards::create([
             'user_id' => $data['user_id'],
-            'dashboard_id' => $dash->id
+            'dashboard_id' => $dash->id,
+            'invited' => true
         ]);
 
         return Dashboards::where('user_id',  $data['user_id'])->get();
@@ -37,5 +38,14 @@ class DashboardController extends Controller
             $dashboard->save();
         }
         return response()->json(['title' => $dashboard->title, 'id' => $dashboard->id]);
+    }
+
+    public function addUser(Request $request){
+        $data = $request->validate(['user_id' => 'required|integer', 'dashboard_id' => 'required|integer']);
+        UserDashboards::create([
+            'user_id' => $data['user_id'],
+            'dashboard_id' => $data['dashboard_id']
+        ]);
+//        return response()->json()
     }
 }
