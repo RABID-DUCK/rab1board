@@ -139,4 +139,9 @@ class DeskController extends Controller
         }
     }
 
+    public function delete(Request $request){
+        Desks::where('id', $request->id)->delete();
+        return response()->json(['status' => 200]);
+    }
+
 }

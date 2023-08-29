@@ -19,7 +19,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 // Аутентификация
-Route::post('/user/login', [\App\Http\Controllers\API\Auth\AuthController::class, 'login'])->middleware('token');
+Route::post('/user/login', [\App\Http\Controllers\API\Auth\AuthController::class, 'login']);
 Route::post('/user/register', [\App\Http\Controllers\API\Auth\AuthController::class, 'register']);
 Route::post('/user/logout', [\App\Http\Controllers\API\Auth\AuthController::class, 'logout'])->middleware('token');
 Route::post('/user/getUser', [\App\Http\Controllers\API\Auth\AuthController::class, 'getUser'])->middleware('token');
@@ -32,6 +32,7 @@ Route::group(['middleware' => 'token'], function(){
     Route::post('/dashboard/create', '\App\Http\Controllers\API\DashboardController@store'); // создать проект
     Route::post('/dashboard/rename', '\App\Http\Controllers\API\DashboardController@update'); // переименовать проект
     Route::post('/dashboard/addUser', '\App\Http\Controllers\API\DashboardController@addUser'); // добавить пользователя/ей на проект
+    Route::post('/dashboard/confirmInvite', '\App\Http\Controllers\API\DashboardController@confirmInvite'); // принятие приглашения на проект. Отправлять 1 либо 0
 
     Route::post('/column/create', '\App\Http\Controllers\API\ColumnController@store'); // создать колонку
     Route::post('/column/rename', '\App\Http\Controllers\API\ColumnController@update'); // переименовать колонку
@@ -42,10 +43,13 @@ Route::group(['middleware' => 'token'], function(){
     Route::get('/modalDesk', '\App\Http\Controllers\API\DeskController@show'); // показать доску
     Route::post('/addUserDesk', '\App\Http\Controllers\API\DeskController@addUser'); // добавить пользователя на задачу
     Route::post('/desk', '\App\Http\Controllers\API\DeskController@outputDesks'); // вывести доски с их колонками
+    Route::post('/desk/delete', '\App\Http\Controllers\API\DeskController@delete'); // вывести доски с их колонками
     Route::get('/desk/{id}', '\App\Http\Controllers\DeskController@show'); // показать одну доску(без всего)
 
     Route::post('/saveTask', '\App\Http\Controllers\API\ListTaskController@store'); // сохранить подзадачу
     Route::post('/createList', '\App\Http\Controllers\API\ListTaskController@createList'); // создать чек-лист(список подзадач для задачи)
+    Route::post('/addUsersTask', '\App\Http\Controllers\API\ListTaskController@addUsers'); // создать чек-лист(список подзадач для задачи)
+    Route::post('/updateTask', '\App\Http\Controllers\API\ListTaskController@update'); // обновить подзадачу
     Route::get('/getTasks', '\App\Http\Controllers\API\ListTaskController@getTasks'); // получить подзадачи для задачи
 
     Route::get('/colors', [\App\Http\Controllers\API\ColorController::class, 'index']); // вывести все цвета
@@ -54,4 +58,7 @@ Route::group(['middleware' => 'token'], function(){
     Route::get('/getColumns/{dashboard}/{desk}', [\App\Http\Controllers\API\ColumnController::class, 'index']); // получить колонку задачи
     Route::get('/moveColor/{dashboard}/{desk}/{item_id}/{column_id}',
         [\App\Http\Controllers\API\ColumnController::class, 'moveColumn']); // изменить колонку у задачи
+
+    Route::post('/addComment', '\App\Http\Controllers\API\CommentsController@addComment'); // добавить комментарий к задаче
+    Route::post('/comment/update', '\App\Http\Controllers\API\CommentsController@update'); // обновить данные комментарий
 });

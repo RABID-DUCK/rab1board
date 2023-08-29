@@ -48,4 +48,15 @@ class DashboardController extends Controller
         ]);
 //        return response()->json()
     }
+
+    public function confirmInvite(Request $request){
+        $data = $request->validate(['user_id' => 'required|integer', 'dashboard_id' => 'required|integer', 'invited' => 'required|boolean']);
+        if($invite = UserDashboards::where('dashboard_id', $data['dashboard_id'])->where('user_id', $data['user_id'])->first()){
+            $invite->invited = $data['invited'];
+            $invite->save();
+            return response()->json(['status' => 200]);
+        }
+
+        return response()->json(['message' => 'Произошла ошибка...попробуйте позже!']);
+    }
 }
