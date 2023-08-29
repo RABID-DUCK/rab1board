@@ -27,7 +27,7 @@ Route::group(['namespace' => 'frontend'], function (){
 
 Auth::routes();
 
-Route::group(['prefix' => 'backend', 'middleware' => 'auth'], function(){
+Route::group(['prefix' => 'backend', 'middleware' => 'isAdmin'], function(){
         Route::get('/admin', [App\Http\Controllers\MainController::class, 'index'])->name('backend.index');
 
         Route::group(['namespace' => 'langs'], function (){

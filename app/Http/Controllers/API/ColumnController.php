@@ -40,4 +40,13 @@ class ColumnController extends Controller
             return $column;
         }
     }
+
+    public function delete(Request $request){
+        $id = $request->validate(['id' => 'required|integer']);
+        if ($dash = Columns::where('id', $id)->first()){
+            $dash->delete();
+            return response()->json(['status' => 200]);
+        }
+        return response()->json(['message' => 'Произошла ошибка! Не найден проект...']);
+    }
 }
