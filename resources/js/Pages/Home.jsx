@@ -16,30 +16,37 @@ const Home = () => {
     const toggleAdd = ()  => {
         setAdd(!add)
     }
-
-    useEffect(() => {
-        const fetch = async() => {
-            const id = await api.post("/user/getUser",{})
-            setUser(id.data[1].id)
-            const allDash = await api.get(`/dashboard/13`)
-            setDesk(allDash.data)
-            console.log(allDash);
-        }
-        fetch()
-    }, [])
-    
+    const fetch = async() => {
+                const id = await api.post("/user/getUser",{})
+                setUser(id.data[1].id)
+                const allDash = await api.get(`/getDashboards`)
+                setDesk(allDash.data)
+                console.log(desk);
+            }
     const addBoard = async() => {
-        const da = await api.post("/dashboard/create", {
+        await api.post("/dashboard/create", {
             title: board,
             user_id: user
         })
+        setboard('')
+        console.log('hello');
+        fetch()
     }
+    useEffect(() => {
+        
+        fetch()
+    }, [])
+    
+    
     return (
         <>
+        <Link to="/test">TEST верстка</Link>
             {
                 Auth ? 
                 <> {false? <h1>нету досок</h1> :
-                    <>dasd</>
+                    <>{desk.map((de) => (
+                        <li key={de.id}>{de.title}</li>
+                    ))}</>
                 }
                     <button onClick={toggleAdd}>Добавить доску</button>
                     {add ? <>

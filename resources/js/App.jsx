@@ -4,6 +4,7 @@ import { Routes, Route } from "react-router";
 import Home from "./Pages/Home";
 import Auth from "./components/Auth"
 import Register from "./components/Register";
+import Test from "./Pages/Test";
 
 
 const App = () => {
@@ -13,6 +14,7 @@ const App = () => {
                 <Route index element={<Home/>}></Route>
                 <Route path="/login" element={<Auth/>}/>
                 <Route path="/reg" element={<Register/>}/>
+                <Route path="/test" element={<Test/>}/>
             </Route>
         </Routes>
             
