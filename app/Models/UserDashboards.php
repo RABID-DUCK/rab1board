@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class UserDashboards extends Model
 {
     use HasFactory;
+    protected $table = 'user_dashboards';
+    protected $guarded = false;
 }
