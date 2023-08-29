@@ -140,8 +140,12 @@ class DeskController extends Controller
     }
 
     public function delete(Request $request){
-        Desks::where('id', $request->id)->delete();
-        return response()->json(['status' => 200]);
+        $id = $request->validate(['id' => 'required|integer']);
+        if ($dash = Desks::where('id', $id)->first()){
+            $dash->delete();
+            return response()->json(['status' => 200]);
+        }
+        return response()->json(['message' => 'Произошла ошибка! Не найден проект...']);
     }
 
 }

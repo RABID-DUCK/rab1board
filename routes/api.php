@@ -31,11 +31,13 @@ Route::group(['middleware' => 'token'], function(){
 
     Route::post('/dashboard/create', '\App\Http\Controllers\API\DashboardController@store'); // создать проект
     Route::post('/dashboard/rename', '\App\Http\Controllers\API\DashboardController@update'); // переименовать проект
+    Route::post('/dashboard/delete', '\App\Http\Controllers\API\DashboardController@delete'); // удалить проект
     Route::post('/dashboard/addUser', '\App\Http\Controllers\API\DashboardController@addUser'); // добавить пользователя/ей на проект
     Route::post('/dashboard/confirmInvite', '\App\Http\Controllers\API\DashboardController@confirmInvite'); // принятие приглашения на проект. Отправлять 1 либо 0
 
     Route::post('/column/create', '\App\Http\Controllers\API\ColumnController@store'); // создать колонку
     Route::post('/column/rename', '\App\Http\Controllers\API\ColumnController@update'); // переименовать колонку
+    Route::post('/column/delete', '\App\Http\Controllers\API\ColumnController@delete'); // удалить колонку
 
     Route::post('/desk/create', '\App\Http\Controllers\API\DeskController@store'); // создать задачу
     Route::post('/modalUpdate', '\App\Http\Controllers\API\DeskController@update'); // обновить данные модального окна
@@ -43,13 +45,16 @@ Route::group(['middleware' => 'token'], function(){
     Route::get('/modalDesk', '\App\Http\Controllers\API\DeskController@show'); // показать доску
     Route::post('/addUserDesk', '\App\Http\Controllers\API\DeskController@addUser'); // добавить пользователя на задачу
     Route::post('/desk', '\App\Http\Controllers\API\DeskController@outputDesks'); // вывести доски с их колонками
-    Route::post('/desk/delete', '\App\Http\Controllers\API\DeskController@delete'); // вывести доски с их колонками
+    Route::post('/desk/delete', '\App\Http\Controllers\API\DeskController@delete'); // удалить задачу
     Route::get('/desk/{id}', '\App\Http\Controllers\DeskController@show'); // показать одну доску(без всего)
 
     Route::post('/saveTask', '\App\Http\Controllers\API\ListTaskController@store'); // сохранить подзадачу
     Route::post('/createList', '\App\Http\Controllers\API\ListTaskController@createList'); // создать чек-лист(список подзадач для задачи)
+    Route::post('/list/delete', '\App\Http\Controllers\API\ListTaskController@delete'); // удалить чек-лист
     Route::post('/addUsersTask', '\App\Http\Controllers\API\ListTaskController@addUsers'); // создать чек-лист(список подзадач для задачи)
+
     Route::post('/updateTask', '\App\Http\Controllers\API\ListTaskController@update'); // обновить подзадачу
+    Route::post('/task/delete', '\App\Http\Controllers\API\ListTaskController@deleteTask'); // обновить подзадачу
     Route::get('/getTasks', '\App\Http\Controllers\API\ListTaskController@getTasks'); // получить подзадачи для задачи
 
     Route::get('/colors', [\App\Http\Controllers\API\ColorController::class, 'index']); // вывести все цвета
@@ -61,4 +66,5 @@ Route::group(['middleware' => 'token'], function(){
 
     Route::post('/addComment', '\App\Http\Controllers\API\CommentsController@addComment'); // добавить комментарий к задаче
     Route::post('/comment/update', '\App\Http\Controllers\API\CommentsController@update'); // обновить данные комментарий
+    Route::post('/comment/delete', '\App\Http\Controllers\API\CommentsController@delete'); // удалить комментарий
 });

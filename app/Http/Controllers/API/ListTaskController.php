@@ -76,4 +76,22 @@ class ListTaskController extends Controller
             })->get();
         return response()->json($users);
     }
+
+    public function delete(Request $request){
+        $id = $request->validate(['id' => 'required|integer']);
+        if ($dash = ListTasks::where('id', $id)->first()){
+            $dash->delete();
+            return response()->json(['status' => 200]);
+        }
+        return response()->json(['message' => 'Произошла ошибка! Не найден проект...']);
+    }
+
+    public function deleteTask(Request $request){
+        $id = $request->validate(['id' => 'required|integer']);
+        if ($dash = Tasks::where('id', $id)->first()){
+            $dash->delete();
+            return response()->json(['status' => 200]);
+        }
+        return response()->json(['message' => 'Произошла ошибка! Не найден проект...']);
+    }
 }

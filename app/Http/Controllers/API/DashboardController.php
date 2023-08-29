@@ -59,4 +59,13 @@ class DashboardController extends Controller
 
         return response()->json(['message' => 'Произошла ошибка...попробуйте позже!']);
     }
+
+    public function delete(Request $request){
+        $id = $request->validate(['id' => 'required|integer']);
+        if ($dash = Dashboards::where('id', $id)->first()){
+            $dash->delete();
+            return response()->json(['status' => 200]);
+        }
+        return response()->json(['message' => 'Произошла ошибка! Не найден проект...']);
+    }
 }

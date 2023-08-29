@@ -35,4 +35,13 @@ class CommentsController extends Controller
 
         return response()->json(['status' => 404, 'message' => 'Произошла ошибка...попробуйте позже!']);
     }
+
+    public function delete(Request $request){
+        $id = $request->validate(['id' => 'required|integer']);
+        if ($dash = Comments::where('id', $id)->first()){
+            $dash->delete();
+            return response()->json(['status' => 200]);
+        }
+        return response()->json(['message' => 'Произошла ошибка! Не найден проект...']);
+    }
 }
