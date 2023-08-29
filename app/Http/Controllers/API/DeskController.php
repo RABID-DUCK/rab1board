@@ -9,6 +9,8 @@ use App\Models\ColumnDesks;
 use App\Models\Columns;
 use App\Models\Desks;
 use App\Models\Tasks;
+use App\Models\User;
+use App\Models\UserDashboards;
 use Illuminate\Http\Request;
 
 class DeskController extends Controller
@@ -95,12 +97,21 @@ class DeskController extends Controller
 
     public function outputDesks(Request $request){
         $data = $request->validate(['dashboard_id' => 'required|integer']);
-        if (Desks::where('dashboard_id', $data['dashboard_id'])->get()->count() > 0){
-            $desks = Desks::where('dashboard_id', $data['dashboard_id'])->get();
-            return response()->json(['desks' => $desks]);
-        }
+        $user = User::where('remember_token', $request->bearerToken())->first();
+        if (UserDashboards::where('user_id', $user->id)){
+            if (Desks::where('dashboard_id', $data['dashboard_id'])->get()->count() > 0){
+                $desk = Desks::with('columnDesk')->where('dashboard_id', $data['dashboard_id'])
+                    ->whereHas('columnDesk', function ($query) use ($data) {
+                        $query->where('dashboard_id', $data['dashboard_id']);
+                    })
+                    ->get()
+                    ->toJson();
+                return $desk;
+            }
 
-        return response()->json(['message' => 'Доски не найдены']);
+            return response()->json(['message' => 'Доски не найдены']);
+        }
+        return response()->json(['message' => 'Вы не состоите в этом проекте!']);
     }
 
 }

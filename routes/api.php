@@ -24,28 +24,30 @@ Route::post('/user/logout', [\App\Http\Controllers\API\Auth\AuthController::clas
 Route::post('/user/getUser', [\App\Http\Controllers\API\Auth\AuthController::class, 'getUser'])->middleware('token');
 
 
-Route::get('/langs/{id}', '\App\Http\Controllers\LangsController@show');
-Route::get('/user/{id}', '\App\Http\Controllers\UserController@show');
+Route::group(['middleware' => 'token'], function(){
+    Route::get('/langs/{id}', '\App\Http\Controllers\LangsController@show');
+    Route::get('/user/{id}', '\App\Http\Controllers\UserController@show');
 
-Route::post('/dashboard/create', '\App\Http\Controllers\API\DashboardController@store');
-Route::post('/dashboard/rename', '\App\Http\Controllers\API\DashboardController@update');
+    Route::post('/dashboard/create', '\App\Http\Controllers\API\DashboardController@store');
+    Route::post('/dashboard/rename', '\App\Http\Controllers\API\DashboardController@update');
 
-Route::post('/column/create', '\App\Http\Controllers\API\ColumnController@store');
-Route::post('/column/rename', '\App\Http\Controllers\API\ColumnController@update');
+    Route::post('/column/create', '\App\Http\Controllers\API\ColumnController@store');
+    Route::post('/column/rename', '\App\Http\Controllers\API\ColumnController@update');
 
-Route::post('/desk/create', '\App\Http\Controllers\API\DeskController@store');
-Route::post('/modalUpdate', '\App\Http\Controllers\API\DeskController@update');
-Route::post('/addImages', '\App\Http\Controllers\API\DeskController@addImages');
-Route::get('/modalDesk', '\App\Http\Controllers\API\DeskController@show');
-Route::post('/desk', '\App\Http\Controllers\API\DeskController@outputDesks');
-Route::get('/desk/{id}', '\App\Http\Controllers\DeskController@show');
+    Route::post('/desk/create', '\App\Http\Controllers\API\DeskController@store');
+    Route::post('/modalUpdate', '\App\Http\Controllers\API\DeskController@update');
+    Route::post('/addImages', '\App\Http\Controllers\API\DeskController@addImages');
+    Route::get('/modalDesk', '\App\Http\Controllers\API\DeskController@show');
+    Route::post('/desk', '\App\Http\Controllers\API\DeskController@outputDesks');
+    Route::get('/desk/{id}', '\App\Http\Controllers\DeskController@show');
 
-Route::post('/saveTask', '\App\Http\Controllers\API\ListTaskController@store');
-Route::post('/createList', '\App\Http\Controllers\API\ListTaskController@createList');
-Route::get('/getTasks', '\App\Http\Controllers\API\ListTaskController@getTasks');
+    Route::post('/saveTask', '\App\Http\Controllers\API\ListTaskController@store');
+    Route::post('/createList', '\App\Http\Controllers\API\ListTaskController@createList');
+    Route::get('/getTasks', '\App\Http\Controllers\API\ListTaskController@getTasks');
 
-Route::get('/colors', [\App\Http\Controllers\API\ColorController::class, 'index']);
-Route::get('/colors/{color}/{desk}', [\App\Http\Controllers\API\ColorController::class, 'addColor']);
+    Route::get('/colors', [\App\Http\Controllers\API\ColorController::class, 'index']);
+    Route::get('/colors/{color}/{desk}', [\App\Http\Controllers\API\ColorController::class, 'addColor']);
 
-Route::get('/getColumns/{dashboard}/{desk}', [\App\Http\Controllers\API\ColumnController::class, 'index']);
-Route::get('/moveColor/{dashboard}/{desk}/{item_id}/{column_id}', [\App\Http\Controllers\API\ColumnController::class, 'moveColumn']);
+    Route::get('/getColumns/{dashboard}/{desk}', [\App\Http\Controllers\API\ColumnController::class, 'index']);
+    Route::get('/moveColor/{dashboard}/{desk}/{item_id}/{column_id}', [\App\Http\Controllers\API\ColumnController::class, 'moveColumn']);
+});
