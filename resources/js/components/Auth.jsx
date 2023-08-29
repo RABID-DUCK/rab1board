@@ -6,8 +6,8 @@ import api from "../API/Api"
 const Auth = () => {
     const nav = useNavigate()
 
-    const [email, setEmail] = useState()
-    const [password, setPassword] = useState()
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
 
     const Login =  async(e) => {
         e.preventDefault()

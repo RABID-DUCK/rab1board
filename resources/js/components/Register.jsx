@@ -6,11 +6,11 @@ import api from "../API/Api"
 const Register = () => {
 
     const nav = useNavigate()
-    const [Name, setName] = useState()
-    const [login, setLogin] = useState()
-    const [email, setEmail] = useState()
-    const [password, setPassword] = useState()
-    const [password_conf, setPassword_conf] = useState()
+    const [Name, setName] = useState('')
+    const [login, setLogin] = useState('')
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const [password_conf, setPassword_conf] = useState('')
 
     const Reg =  async(e) => {
         e.preventDefault()

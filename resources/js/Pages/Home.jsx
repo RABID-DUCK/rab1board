@@ -11,7 +11,7 @@ const Home = () => {
     const [user, setUser] = useState()
     const [desk, setDesk] = useState([])
 
-    const [board, setboard] = useState()
+    const [board, setboard] = useState('')
 
     const toggleAdd = ()  => {
         setAdd(!add)
