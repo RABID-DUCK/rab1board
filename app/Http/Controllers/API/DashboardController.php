@@ -68,4 +68,9 @@ class DashboardController extends Controller
         }
         return response()->json(['message' => 'Произошла ошибка! Не найден проект...']);
     }
+
+    public function getDashboards(Request $request){
+        $user = User::where('remember_token', $request->bearerToken())->first();
+        return Dashboards::where('user_id', $user->id)->get();
+    }
 }

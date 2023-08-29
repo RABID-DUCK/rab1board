@@ -34,6 +34,7 @@ Route::group(['middleware' => 'token'], function(){
     Route::post('/dashboard/delete', '\App\Http\Controllers\API\DashboardController@delete'); // удалить проект
     Route::post('/dashboard/addUser', '\App\Http\Controllers\API\DashboardController@addUser'); // добавить пользователя/ей на проект
     Route::post('/dashboard/confirmInvite', '\App\Http\Controllers\API\DashboardController@confirmInvite'); // принятие приглашения на проект. Отправлять 1 либо 0
+    Route::get('/getDashboards', '\App\Http\Controllers\API\DashboardController@getDashboards'); // получить проекты
 
     Route::post('/column/create', '\App\Http\Controllers\API\ColumnController@store'); // создать колонку
     Route::post('/column/rename', '\App\Http\Controllers\API\ColumnController@update'); // переименовать колонку
