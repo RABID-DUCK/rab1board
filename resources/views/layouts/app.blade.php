@@ -21,8 +21,8 @@
     </head>
     {{--REACT--}}
     <body class="antialiased">
-    {{---------}}
-            <!-- @include('layouts/header') -->
+    <!-- {{---------}}
+            @include('layouts/header') -->
         <div id="root">
             <!-- <div class="content-wrapper d-flex justify-content-between" id="wrapper">
 
