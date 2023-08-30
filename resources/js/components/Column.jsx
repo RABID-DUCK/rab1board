@@ -11,9 +11,9 @@ const Column = ({column, id}) => {
     }
     return (
         <>
-            {column.column_desk.title}
+            
             {column.title}
-            <button onClick={addDesk}>Добавить задачу</button>
+            <button  onClick={addDesk}>Добавить задачу</button>
         </>
     )
 }
