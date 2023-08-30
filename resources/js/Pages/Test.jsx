@@ -1,5 +1,6 @@
 // сюда компоненты импортировать
 import TestButton from "../components/TestButton"
+import DashboardBody from "../components/DashboardBody"
 import api from "../API/Api";
 const Test = () => {
 
@@ -15,6 +16,7 @@ const Test = () => {
             {/* СЮДА ТЕСТИТЬ ВЕРСТКУ */}
             {/* <INPUT/> - ТАКОЙ ФОРМАТ*/}
             <TestButton desk={desk} />
+            <DashboardBody />
         </>
     )
 }
