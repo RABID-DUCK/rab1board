@@ -35,4 +35,8 @@ class Columns extends Model
     {
         return $this->hasMany(Desks::class, 'column_id');
     }
+
+    public function desksColumn(){
+        return $this->hasMany(Desks::class, 'column_id', 'id');
+    }
 }

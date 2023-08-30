@@ -4,8 +4,9 @@ import api from "../API/Api";
 const Test = () => {
 
     const desk = async() => {
-        const req = await api.post("/desk", {
-            dashboard_id: 16
+        const req = await api.post("/column/getDesks", {
+            dash_id: 16,
+            col_id: 26
         })
         console.log(req.data)
     }

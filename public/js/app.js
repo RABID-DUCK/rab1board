@@ -16653,8 +16653,9 @@ var Test = function Test() {
         while (1) switch (_context.prev = _context.next) {
           case 0:
             _context.next = 2;
-            return _API_Api__WEBPACK_IMPORTED_MODULE_1__["default"].post("/desk", {
-              dashboard_id: 16
+            return _API_Api__WEBPACK_IMPORTED_MODULE_1__["default"].post("/column/getDesks", {
+              dash_id: 16,
+              col_id: 26
             });
           case 2:
             req = _context.sent;
