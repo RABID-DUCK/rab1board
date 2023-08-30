@@ -11,11 +11,11 @@ const Dashboard = () => {
 
     useEffect(() => {
         const fetch = async () => {
-            const allDash = await api.post(`/desk`, {
+            const allDash = await api.post(`/column/get`, {
                 dashboard_id: parseInt(id)
             })
             
-            setColumn(allDash.data.columns)
+            setColumn(allDash.data)
         }
         fetch()
     }, [])
