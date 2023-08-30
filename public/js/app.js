@@ -16371,6 +16371,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
+
 var Dashboard = function Dashboard() {
   var match = (0,react_router__WEBPACK_IMPORTED_MODULE_3__.useParams)();
   var id = match.id;
@@ -16386,7 +16387,9 @@ var Dashboard = function Dashboard() {
           while (1) switch (_context.prev = _context.next) {
             case 0:
               _context.next = 2;
-              return _API_Api__WEBPACK_IMPORTED_MODULE_1__["default"].get("/getDashboards");
+              return _API_Api__WEBPACK_IMPORTED_MODULE_1__["default"].post("/desk", {
+                dashboard_id: parseInt(id)
+              });
             case 2:
               allDash = _context.sent;
               setDash(allDash.data);
@@ -16402,11 +16405,38 @@ var Dashboard = function Dashboard() {
     }();
     fetch();
   }, []);
+  var addColumn = /*#__PURE__*/function () {
+    var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
+      var column;
+      return _regeneratorRuntime().wrap(function _callee2$(_context2) {
+        while (1) switch (_context2.prev = _context2.next) {
+          case 0:
+            _context2.next = 2;
+            return _API_Api__WEBPACK_IMPORTED_MODULE_1__["default"].post('/column/create', {
+              dashboard_id: parseInt(id),
+              title: 'первая колонка'
+            });
+          case 2:
+            column = _context2.sent;
+            console.log(column.data);
+          case 4:
+          case "end":
+            return _context2.stop();
+        }
+      }, _callee2);
+    }));
+    return function addColumn() {
+      return _ref2.apply(this, arguments);
+    };
+  }();
   console.log(dash);
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.Fragment, {
-    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("h1", {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.Fragment, {
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("h1", {
       children: "Project"
-    })
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
+      onClick: addColumn,
+      children: "\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u0434\u043E\u0441\u043A\u0443"
+    })]
   });
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Dashboard);
