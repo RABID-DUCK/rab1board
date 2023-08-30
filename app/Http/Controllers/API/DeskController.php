@@ -103,14 +103,13 @@ class DeskController extends Controller
             if(!$userDash->invited) return response()->json(['message' => 'Вы ещё не приняли приглашение!']);
 
             if (Desks::where('dashboard_id', $data['dashboard_id'])->get()->count() > 0){
-                $desk = Desks::with('columnDesk')->where('dashboard_id', $data['dashboard_id'])
+                $desk = Desks::with('columnDesk', 'column')->where('dashboard_id', $data['dashboard_id'])
                     ->whereHas('columnDesk', function ($query) use ($data) {
                         $query->where('dashboard_id', $data['dashboard_id']);
                     })
-                    ->get()
-                    ->toJson();
-
-                return $desk;
+                    ->get();
+                $columns = Columns::where('dashboard_id', $data['dashboard_id'])->get();
+                return ['desks' => $desk, 'columns' => $columns];
             }
 
             return response()->json(Columns::where('dashboard_id', $data['dashboard_id'])->get());
