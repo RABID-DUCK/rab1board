@@ -59,8 +59,7 @@ Route::group(['prefix' => 'backend', 'middleware' => 'isAdmin'], function(){
         });
 });
 
-/* Раскоммнетить когда подключим реакт
 Route::view('/{path?}', 'app')->where('path', '.*');;
 Route::get('/{path?}', function () {
-    return view('app');
-})->where('path', '.*');*/
+    return view('layouts.app');
+})->where('path', '.*');
