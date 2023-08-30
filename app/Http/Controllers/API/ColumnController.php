@@ -49,4 +49,9 @@ class ColumnController extends Controller
         }
         return response()->json(['message' => 'Произошла ошибка! Не найден проект...']);
     }
+
+    public function getColumns(Request $request){
+        $data = $request->validate(['dashboard_id' => 'required|integer']);
+        return Columns::where('dashboard_id', $data['dashboard_id'])->get();
+    }
 }

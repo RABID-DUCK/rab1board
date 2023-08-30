@@ -39,6 +39,7 @@ Route::group(['middleware' => 'token'], function(){
     Route::post('/column/create', '\App\Http\Controllers\API\ColumnController@store'); // создать колонку
     Route::post('/column/rename', '\App\Http\Controllers\API\ColumnController@update'); // переименовать колонку
     Route::post('/column/delete', '\App\Http\Controllers\API\ColumnController@delete'); // удалить колонку
+    Route::post('/column/get', '\App\Http\Controllers\API\ColumnController@getColumns'); // удалить колонку
 
     Route::post('/desk/create', '\App\Http\Controllers\API\DeskController@store'); // создать задачу
     Route::post('/desk', '\App\Http\Controllers\API\DeskController@outputDesks'); // вывести доски с их колонками
