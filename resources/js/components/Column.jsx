@@ -3,8 +3,10 @@ import api from "../API/Api"
 
 const Column = ({column, id}) => {
     const fetch = async() => {
-        const desk = await api.post('/desk',  {
-            dashboard_id: parseInt(id)
+        const desk = await api.post('/column/getDesks',  {
+            dashboard_id: parseInt(id),
+            col_id: column.id
+
         })
         console.log(desk.data);
     }
