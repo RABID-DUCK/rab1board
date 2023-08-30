@@ -14,7 +14,7 @@ const DashboardBody = () => {
     //вызов функции при рендеринг
     useEffect(() => {
         fetch()
-    }, [])
+    }, [] )
     // Тут запросы нужны на сервер
     // const desk = {color_id: 1};
     const dashboard = {};
