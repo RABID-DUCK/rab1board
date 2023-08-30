@@ -1,19 +1,23 @@
+import { useEffect } from "react"
 import api from "../API/Api"
+import TestDesk from "./TestDesk"
 
 const Column = ({column, id}) => {
-    const addDesk = async() => {
-        const desk = await api.post('/desk/create', {
-            title: '1',
-            column_id: column.id,
-            dashboard_id: id
-        }) 
-        console.log(desk);
-    }
+    // const fetch = async() => {
+    //     const desk = await api.post('/desk',  {
+    //         dashboard_id: parseInt(id)
+    //     })
+    //     console.log(desk.data.desk[column.id]);
+    // }
+    // useEffect(() => {
+    //     fetch()
+    // })
     return (
         <>
-            
+            {column.id}
             {column.title}
-            <button  onClick={addDesk}>Добавить задачу</button>
+            <TestDesk id={id} column={column.id}></TestDesk>
+            <button>Добавить задачу</button>
         </>
     )
 }
