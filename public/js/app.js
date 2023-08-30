@@ -16435,6 +16435,7 @@ var Dashboard = function Dashboard() {
       return _ref2.apply(this, arguments);
     };
   }();
+  console.log(col);
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.Fragment, {
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("h1", {
       children: "Project"
@@ -16901,8 +16902,9 @@ var Column = function Column(_ref) {
         while (1) switch (_context.prev = _context.next) {
           case 0:
             _context.next = 2;
-            return _API_Api__WEBPACK_IMPORTED_MODULE_1__["default"].post('/desk', {
-              dashboard_id: parseInt(id)
+            return _API_Api__WEBPACK_IMPORTED_MODULE_1__["default"].post('/column/getDesks', {
+              dashboard_id: parseInt(id),
+              col_id: column.id
             });
           case 2:
             desk = _context.sent;

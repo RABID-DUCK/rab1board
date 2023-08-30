@@ -26,6 +26,7 @@ const Dashboard = () => {
         })
         setTitle('')
     }
+    console.log(col);
     return (
         <>
             <h1>Project</h1>
