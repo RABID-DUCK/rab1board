@@ -1,6 +1,6 @@
-const TestButton = () => {
+const TestButton = ({desk}) => {
     return (
-        <button>Кнопка</button>
+        <button onClick={desk}>Кнопка</button>
     )
 }
 

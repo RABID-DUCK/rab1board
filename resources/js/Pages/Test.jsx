@@ -13,7 +13,7 @@ const Test = () => {
         <>
             {/* СЮДА ТЕСТИТЬ ВЕРСТКУ */}
             {/* <INPUT/> - ТАКОЙ ФОРМАТ*/}
-            <TestButton onClick={desk} />
+            <TestButton desk={desk} />
         </>
     )
 }
