@@ -54,4 +54,13 @@ class ColumnController extends Controller
         $data = $request->validate(['dashboard_id' => 'required|integer']);
         return Columns::where('dashboard_id', $data['dashboard_id'])->get();
     }
+
+    public function getDesks(Request $request){
+        $data = $request->validate(['dash_id' => 'required|integer', 'col_id' => 'required|integer']);
+        return Columns::with('desksColumn')->where('id', $data['col_id'])->
+        whereHas('desksColumn', function ($query) use ($data){
+            $query->where('column_id', $data['col_id']);
+        })->
+        get()->toJson();
+    }
 }
