@@ -15,7 +15,6 @@ const Test = () => {
         <>
             {/* СЮДА ТЕСТИТЬ ВЕРСТКУ */}
             {/* <INPUT/> - ТАКОЙ ФОРМАТ*/}
-            <TestButton desk={desk} />
             <DashboardBody />
         </>
     )
