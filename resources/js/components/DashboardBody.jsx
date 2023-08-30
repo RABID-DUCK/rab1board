@@ -1,17 +1,26 @@
+import { useEffect, useState } from "react";
 import api from "../API/Api";
 
 const DashboardBody = () => {
-
+    // для управлением состояния
+    const [column, setColumn] = useState([])
+    // функция запроса
+    const fetch = async() => {
+        const colData = await api.post('/column/get', {
+            dashboard_id: 16
+        });
+        setColumn(colData.data)
+    }
+    //вызов функции при рендеринг
+    useEffect(() => {
+        fetch()
+    }, [])
     // Тут запросы нужны на сервер
     // const desk = {color_id: 1};
     const dashboard = {};
     const mute = {};
 
     const user = api.post('/user/getUser', {});
-    const column = api.post('/column/get', {
-        dashboard_id: 16
-    });
-    console.log(column)
 
 
     return (
@@ -55,7 +64,7 @@ const DashboardBody = () => {
                 <i className="bi bi-check-lg save-column hide"></i>
             </div>
             <div className="desk-block" id="desk-list">
-                {column.data.map((column) => (
+                {column.map((column) => (
                     <div className="desk" onClick="viewDesk({{$dashboard->id}},{{$column->id}},{{$desk->id}})" data-desk-id={column.id}
                          style={column.color_id ? {boxShadow: `0 0 10px 3px desk.color[0].color`} : undefined }>
                             <p>{column.title}</p>
@@ -67,7 +76,7 @@ const DashboardBody = () => {
                                     checked={column.status}   onClick="doneTask({{$dashboard->id}}, {{$desk->id}})" />
                                 <span id='data-desk'
                                       className={ !column.data_end ? 'text-muted' : column.data_end <= 1 ?? 'text-danger fw-bold' }>
-                                    { column.data_end ? "До " + column.data_end : "Сроков нет" }}
+                                    { column.data_end ? "До " + column.data_end : "Сроков нет" }
                                 </span>
                             </div>
                             <span>status</span>
