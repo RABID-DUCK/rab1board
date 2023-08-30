@@ -6,7 +6,7 @@ import Column from "../components/Column"
 const Dashboard = () => {
     const match = useParams()
     const id = match.id
-    const [dash, setDash] = useState([])
+    const [col, setColumn] = useState([])
     const [title, setTitle] = useState('')
 
     useEffect(() => {
@@ -14,8 +14,8 @@ const Dashboard = () => {
             const allDash = await api.post(`/desk`, {
                 dashboard_id: parseInt(id)
             })
-            console.log(allDash.data);
-            setDash(allDash.data)
+            
+            setColumn(allDash.data.columns)
         }
         fetch()
     }, [])
@@ -25,13 +25,11 @@ const Dashboard = () => {
             title: title
         })
         setTitle('')
-        console.log(column.data);
     }
-    console.log(dash);
     return (
         <>
             <h1>Project</h1>
-            {dash.map((column) => (
+            {col.map((column) => (
                 <Column id={id} key={column.id} column={column}/>
             ))}
             <input type="text" value={title} onChange={(e) => {setTitle(e.target.value)}}  />
