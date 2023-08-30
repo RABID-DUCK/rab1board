@@ -1,18 +1,23 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import api from "../API/Api"
 
-const Column = ({column, id}) => {
-    const fetch = async() => {
-        const desk = await api.post('/column/getDesks',  {
-            dashboard_id: parseInt(id),
-            col_id: column.id
 
+const Column = ({column, id}) => {
+
+    const [desk, setDesk] = useState([])
+    const fetch = async() => {
+        const Desk = await api.post('/column/getDesks',  {
+            dash_id: parseInt(id),
+            col_id: column.id
         })
-        console.log(desk.data);
+        setDesk(Desk.data[0])
+        
     }
     useEffect(() => {
         fetch()
     }, [])
+    console.log(desk);
+   
     return (
         <>
             {column.id}
