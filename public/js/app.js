@@ -16028,7 +16028,7 @@ var tokenReg = js_cookie__WEBPACK_IMPORTED_MODULE_0__["default"].get("access_tok
 // const tokenLogin = cookie.get('toke')
 
 var api = axios__WEBPACK_IMPORTED_MODULE_1__["default"].create({
-  baseURL: "http://hui/api",
+  baseURL: "/api/",
   headers: {
     Authorization: "Bearer ".concat(tokenReg)
   }
