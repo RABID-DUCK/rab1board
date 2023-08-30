@@ -113,7 +113,7 @@ class DeskController extends Controller
                 return $desk;
             }
 
-            return response()->json(['message' => 'Доски не найдены']);
+            return response()->json(Columns::where('dashboard_id', $data['dashboard_id'])->get());
         }
         return response()->json(['message' => 'Вы не состоите в этом проекте!']);
     }
