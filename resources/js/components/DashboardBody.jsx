@@ -1,12 +1,18 @@
+import api from "../API/Api";
 
 const DashboardBody = () => {
 
     // Тут запросы нужны на сервер
     // const desk = {color_id: 1};
-    const user = {premium: ''};
-    const column = {color_id: ''};
     const dashboard = {};
     const mute = {};
+
+    const user = api.post('/user/getUser', {});
+    const column = api.post('/column/get', {
+        dashboard_id: 16
+    });
+    console.log(column)
+
 
     return (
         <>
@@ -49,10 +55,9 @@ const DashboardBody = () => {
                 <i className="bi bi-check-lg save-column hide"></i>
             </div>
             <div className="desk-block" id="desk-list">
-                {column.map((column) => {
-                    return (
-                        <div className="desk" onClick="viewDesk({{$dashboard->id}},{{$column->id}},{{$desk->id}})" data-desk-id={column.id}
-                             style={column.color_id ? {boxShadow: `0 0 10px 3px desk.color[0].color`} : undefined }>
+                {column.data.map((column) => (
+                    <div className="desk" onClick="viewDesk({{$dashboard->id}},{{$column->id}},{{$desk->id}})" data-desk-id={column.id}
+                         style={column.color_id ? {boxShadow: `0 0 10px 3px desk.color[0].color`} : undefined }>
                             <p>{column.title}</p>
                             {/*@if(column.image)*/}
                             <img src={column.image } alt={column.title} />
@@ -67,8 +72,7 @@ const DashboardBody = () => {
                             </div>
                             <span>status</span>
                         </div>
-                    )
-                })}
+                ))}
 
             <button className="add-desk" id="add-task-title" onClick="createDeskMiniModal({{ $dashboard->id }}, {{ $column->id }})">+ Add desk</button>
         </div>
