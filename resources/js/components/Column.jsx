@@ -10,20 +10,30 @@ const Column = ({column, id}) => {
             dash_id: parseInt(id),
             col_id: column.id
         })
-        setDesk(Desk.data[0])
-        
+        setDesk(Desk.data)
     }
     useEffect(() => {
         fetch()
     }, [])
-    console.log(desk);
+    
+    const addDesk = async() => {
+        const da = await api.post("/desk/create", {
+            title: "Zadacha",
+            dashboard_id: id,
+            column_id: column.id
+        })
+        fetch()
+    }
+
    
     return (
         <>
             {column.id}
             {column.title}
-            
-            <button>Добавить задачу</button>
+            {desk.map((de) => (
+                <li>{de.title}</li>
+            ))}
+            <button onClick={addDesk}>Добавить задачу</button>
         </>
     )
 }

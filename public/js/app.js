@@ -16917,7 +16917,7 @@ var Column = function Column(_ref) {
             });
           case 2:
             Desk = _context.sent;
-            setDesk(Desk.data[0]);
+            setDesk(Desk.data);
           case 4:
           case "end":
             return _context.stop();
@@ -16931,9 +16931,38 @@ var Column = function Column(_ref) {
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     fetch();
   }, []);
-  console.log(desk);
+  var addDesk = /*#__PURE__*/function () {
+    var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
+      var da;
+      return _regeneratorRuntime().wrap(function _callee2$(_context2) {
+        while (1) switch (_context2.prev = _context2.next) {
+          case 0:
+            _context2.next = 2;
+            return _API_Api__WEBPACK_IMPORTED_MODULE_1__["default"].post("/desk/create", {
+              title: "Zadacha",
+              dashboard_id: id,
+              column_id: column.id
+            });
+          case 2:
+            da = _context2.sent;
+            fetch();
+          case 4:
+          case "end":
+            return _context2.stop();
+        }
+      }, _callee2);
+    }));
+    return function addDesk() {
+      return _ref3.apply(this, arguments);
+    };
+  }();
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.Fragment, {
-    children: [column.id, column.title, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
+    children: [column.id, column.title, desk.map(function (de) {
+      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("li", {
+        children: de.title
+      });
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
+      onClick: addDesk,
       children: "\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u0437\u0430\u0434\u0430\u0447\u0443"
     })]
   });
