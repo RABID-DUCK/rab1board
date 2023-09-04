@@ -59,7 +59,7 @@ Route::group(['prefix' => 'backend', 'middleware' => 'isAdmin'], function(){
         });
 });
 
-Route::view('/{path?}', 'app')->where('path', '.*');;
-Route::get('/{path?}', function () {
-    return view('layouts.app');
-})->where('path', '.*');
+//Route::view('/{path?}', 'app')->where('path', '.*');;
+//Route::get('/{path?}', function () {
+//    return view('layouts.app');
+//})->where('path', '.*');

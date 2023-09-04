@@ -27,14 +27,6 @@ class DeskController extends Controller
 
         $desk = Desks::create($data);
 
-        $column_desk_list = [
-            'dashboard_id' => $data['dashboard_id'],
-            'desk_id' => $desk->id,
-            'column_id' => $data['column_id'],
-        ];
-
-         ColumnDesks::create($column_desk_list);
-
         return response()->json(['desk' => $desk, 'column_id' => $data['column_id']]);
     }
 
@@ -86,18 +78,25 @@ class DeskController extends Controller
     }
 
     public function addImages(Request $request){
-        $data = $request->validate(['image' => 'required', 'dashboard_id' => 'required', 'desk_id' => 'required']);
+        $data = $request->validate(['image' => 'nullable', 'desk_id' => 'required|integer']);
+        foreach ($data as $image){
+            DeskImages::create([
+               'image' => $data['image'],
+               'desk_id' => $data['desk_id']
+            ]);
+        }
+    }
 
     public function outputDesks(Request $request){
         $data = $request->validate(['dashboard_id' => 'required|integer']);
-        $user = User::where('remember_token', $request->bearerToken())->first();
-        if ($userDash = UserDashboards::where('user_id', $user->id)->first()){
-            if(!$userDash->invited) return response()->json(['message' => 'Вы ещё не приняли приглашение!']);
+//        $user = User::where('remember_token', $request->bearerToken())->first();
+//        if ($userDash = UserDashboards::where('user_id', $user->id)->first()){
+//            if(!$userDash->invited) return response()->json(['message' => 'Вы ещё не приняли приглашение!']);
 
             if (Desks::where('dashboard_id', $data['dashboard_id'])->get()->count() > 0){
                 return Desks::where('dashboard_id', $data['dashboard_id'])->get();
             }
-        }
+//        }
         return response()->json(['message' => 'Вы не состоите в этом проекте!']);
     }
 

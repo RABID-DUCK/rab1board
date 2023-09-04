@@ -22,9 +22,8 @@
     {{--REACT--}}
     <body class="antialiased">
     {{---------}}
-            <!-- @include('layouts/header') -->
-        <div id="root">
-            <!-- <div class="content-wrapper d-flex justify-content-between" id="wrapper">
+             @include('layouts/header')
+           <div class="content-wrapper d-flex justify-content-between" id="wrapper">
 
             @yield('content')
             <div class="backModal hide" id="backModal">
@@ -34,16 +33,11 @@
                 <div class="modal-desk bg-dark bg-gradient text-white" data-modal-desk data-keyboard="false" data-backdrop="static">
                 </div>
             </div>
-            </div> -->
-        </div>
-                    {{--    Scripts--}}
+            </div>
 
+                {{--    Scripts--}}
             <script src="{{ asset('js/main.js') }}" ></script>
-
-            {{-- React --}}
-            <script src="{{asset('js/app.js')}}"></script>
-            {{-----------}}
-            <script src="{{asset('js/module.js')}}"></script>
+            <script src="{{ asset('js/app.js') }}"></script>
 
     </body>
 </html>

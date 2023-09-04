@@ -47,17 +47,17 @@
                              style="{{$desk->color_id ? "box-shadow: 0 0 10px 3px ".$desk->color[0]->color : '' }}"
                             >
                                 <p>{{ $desk->title }}</p>
-{{--                                @if($desk->image)--}}
-{{--                                <img src="{{ $desk->image }}" alt="{{ $desk->title }}">--}}
-{{--                                @endif--}}
+                                @if($desk->image)
+                                <img src="{{ $desk->image }}" alt="{{ $desk->title }}">
+                                @endif
                                 <div class="data-desk">
                                     <input class="custom-checkbox" type="checkbox" id="status" name="status" value="yes"
                                         {{$desk->status ? "checked" : ''}}   onclick="doneTask({{$dashboard->id}}, {{$desk->id}})">
                                     <time datetime='2011-11-18T14:54:39.929Z' name='date' id='data-desk'
-                                          class="{{ !$desk->data_end ? 'text-muted' : 'fw-bold' }}
-    {{ \Carbon\Carbon::now()->diffInDays($desk->data_end) <= 1 ? 'text-danger fw-bold' : '' }}"
-                                    >{{ $desk->data_end ?
-    "До ".\Carbon\Carbon::parse($desk->data_end)->translatedFormat('j F Y H:i') : "Сроков нет" }}
+                                          class="{{ !$desk->data_end ? 'text-muted' : (\Carbon\Carbon::parse($desk->data_end)->isPast() ? 'text-danger fw-bold' : 'fw-bold') }}">
+                                        {{ $desk->data_end ?
+                                            (\Carbon\Carbon::parse($desk->data_end)->isToday() ? 'Сегодня' : 'До '.\Carbon\Carbon::parse($desk->data_end)->translatedFormat('j F Y H:i')) :
+                                            'Сроков нет' }}
                                     </time>
                                 </div>
                                 <span>status</span>

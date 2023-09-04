@@ -12,8 +12,8 @@ class ColumnController extends Controller
 {
     public function store(Request $request){
         $data = $request->validate(['dashboard_id' => 'required', 'title' => "required|string"]);
-        $column = Columns::query()->create($data);
-        $columns = Columns::query()->where('dashboard_id', $data['dashboard_id'])->get();
+        $column = Columns::create($data);
+        $columns = Columns::where('dashboard_id', $data['dashboard_id'])->get();
 
         return response()->json(['columns' => $columns, 'column_id' => $column->id, 'dashboard_id' => $data['dashboard_id']]);
     }
@@ -29,8 +29,8 @@ class ColumnController extends Controller
         return response()->json(['title' => $column['title']]);
     }
 
-    public function index(){
-        return Columns::all();
+    public function index(Request $request){
+        return Columns::where('dashboard_id', $request->dashboard_id)->get();
     }
 
     public function moveColumn($dashboard, $desk, $item_id, $column_id){

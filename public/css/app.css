@@ -554,14 +554,15 @@ nav {
 .selectDate {
   padding: 10px;
   position: absolute;
-  left: 25%;
+  left: 6%;
   z-index: 111;
   font-size: 17px;
   border-radius: 6px;
-  top: 18%;
+  top: 1%;
   border: 1px solid white;
   height: auto;
   width: auto;
+  max-width: 300px;
   margin-left: 22px;
 }
 .selectDate div:first-child {
@@ -588,7 +589,7 @@ nav {
 
 .output-date {
   width: 200px;
-  height: 22px;
+  height: auto;
   border: 1px solid white;
   display: flex;
   flex-direction: column;
@@ -675,6 +676,7 @@ nav {
   box-shadow: 0 0 3px 1px silver;
   height: 60px !important;
   max-height: 60px;
+  overflow: auto;
 }
 .upload-images .dropzone:hover, .modal-files .dropzone:hover {
   background-color: rgb(40, 35, 40);

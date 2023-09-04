@@ -124,7 +124,6 @@ window.addColumn = function (dashboard){
     })
         .then(response => response.json())
         .then(data => {
-            this.title = "";
             deleteColumnModal('modal-column')
             if (!document.querySelector('.column')){
                 let dashboard = document.getElementById('dashboard-id').value;
@@ -313,8 +312,8 @@ window.openDatePicker = function(dashboard_id, desk_id) {
             .then(res => {
                 if (!selectData) {
 
-                    document.getElementById('calendarIcon').insertAdjacentHTML('afterbegin', `
-                <div class="selectDate bg-dark bg-gradient text-white" id="selectDate">
+                    document.getElementById('calendarIcon').insertAdjacentHTML('afterend', `
+                <div class="selectDate bg-dark bg-gradient text-white" id="selectDate" onclick="event.stopPropagation();">
                     <div>
                     <label for="dateStart">Дата начала</label>
                     <input id="dateStart" class="form-control" type="datetime-local" value="${res.data_start ?? ''}">
@@ -398,7 +397,7 @@ window.viewDesk = function (dashboard_id, column_id, desk_id){
                     Срок до: ${convertData(res.data.data_end)}</span>
                 </div>
 
-                <div class="description" id="description">
+                <div class="description" id="description-wrap">
                     <label for="description" class="form-label">Description of task</label>
                     <textarea class="form-control" id="description" rows="3" placeholder="This task mean...">${res.data.description ?? ''}</textarea>
                     <button class="btn text-white hide" id="save-desk" onclick="updateDescription(${dashboard_id},${desk_id}, ${column_id})">
@@ -408,12 +407,8 @@ window.viewDesk = function (dashboard_id, column_id, desk_id){
             `)
 
             // --------Add Description-------
-            let textareaClicked = false;
             document.getElementById('description').addEventListener('click', function (){
-                if(!textareaClicked){
-                    textareaClicked = true;
-                    document.getElementById('save-desk').classList.remove('hide')
-                }
+                document.getElementById('save-desk').classList.remove('hide')
             })
             // --------End add Description-------
 
@@ -538,7 +533,7 @@ window.loadCheckList = function (dashboard_id, desk_id, column_id){
 window.createTask = function (dashboard_id, desk_id, column_id){
     let checkList = document.getElementById('check-list');
     if(!checkList){
-        document.getElementById('description').insertAdjacentHTML('afterend',`
+        document.getElementById('description-wrap').insertAdjacentHTML('afterend',`
                 <div class="check-list-wrapper" id="check-list">
                     <span class="name-list bg-dark bg-gradient text-white hide" data-name-list>Name list</span>
                     <input type="text" class="form-control name-list">
@@ -671,8 +666,27 @@ window.updateDescription = function (dashboard_id, desk_id, column_id){
     })
         .then(response => response.json())
         .then(res => {
-            desk.value = res.description
+            desk = res.description
+            document.getElementById('save-desk').classList.add('hide')
         })
+}
+
+window.popupTooltip = function (text){
+    if (!document.getElementById('tooltip')){
+        document.querySelector('body').insertAdjacentHTML('beforeend', `
+        <div class="toast align-items-center bg-danger text-white" role="alert" aria-live="assertive" aria-atomic="true" id="tooltip">
+      <div class="d-flex">
+        <div class="toast-body">
+        ${text}
+       </div>
+        <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+    </div>
+    `)
+        setTimeout(function (){
+            deleteColumnModal('tooltip')
+        }, 1500);
+    }
 }
 
 window.saveDate = function (dashboard_id, desk_id){
@@ -697,25 +711,22 @@ window.saveDate = function (dashboard_id, desk_id){
             let window = document.getElementById('output-date');
             let time =  document.querySelector(`[data-desk-id="${desk_id}"]`).querySelector('time');
             closeSelectDate();
-            if (window){
-                document.getElementById('output-date').innerHTML = `
-                <span id="output-date-end" class="${differenceDate(res.data_end) ? 'text-danger fw-bold' : ''}">Срок до: ${convertData(res.data_end)}</span>
-            `;
-                // time.innerText = convertData(res.data_end);
-            }
-            else{
-                document.getElementById('output-date').innerHTML = `
+            if(res.data_end) {
+                if (window) {
+                    document.getElementById('output-date').innerHTML = `
+                <span id="output-date-end" class="${differenceDate(res.data_end) ? 'text-danger fw-bold' : ''}">Срок до: ${convertData(res.data_end)}</span>`;
+                    time.innerText = convertData(res.data_end);
+                } else {
+                    document.getElementById('output-date').innerHTML = `
                 <div id="output-date" class="output-date">
                     <span id="output-date-end" class="${differenceDate(res.data_end) ? 'text-danger fw-bold' : ''}">Срок до: ${convertData(res.data_end)}</span>
-                </div>
-            `
+                </div>`
+                }
+                document.getElementById('output-date').style.display = 'flex';
+                differenceDate(res.data_end) ? time.classList.add('text-danger') : time.classList.remove('text-danger');
 
+                time.innerText = convertData(res.data_end);
             }
-            document.getElementById('output-date').style.display = 'flex';
-            differenceDate(res.data_end) ? time.classList.add('text-danger') : time.classList.remove('text-danger');
-
-
-            time.innerText = convertData(res.data_end);
         })
 }
 
@@ -786,7 +797,7 @@ window.outputColors = function (desk_id, color_id){
             // тут по сути output.insertAdjacentHTML должен быть, но он не видит эту функцию, а тип var писать для него я не хочу.
             res.forEach(item => {
                 document.getElementById('output-colors').insertAdjacentHTML('afterbegin', `
-                    <span class="colors-all" style="${item.color.length > 0 && item.id === color_id ? 'box-shadow: 0 0 4px 4px silver;' : ''}"
+                    <span class="colors-all" style="${item.color.length > 0 && item.id === color_id ? 'box-shadow: 0 0 4px 4px silver;' : `background-color: ${item.color}`}"
                     onclick="saveColor(${item.id}, ${desk_id})"></span>
                 `)
             })
@@ -806,7 +817,7 @@ window.saveColor = function (color_id, desk_id){
 window.outputColumns = function (dashboard_id, desk_id, column_id){
     let target = event.target;
 
-    fetch('/api/getColumns/'+dashboard_id+'/'+desk_id)
+    fetch('/api/getColumns/'+dashboard_id)
         .then(response => response.json())
         .then(res => {
             if(!document.getElementById('output-columns')){
@@ -829,7 +840,7 @@ window.outputColumns = function (dashboard_id, desk_id, column_id){
 }
 
 window.moveColumn = function (dashboard_id, desk_id, item_id, column_id){
-    fetch('/api/moveColor/'+dashboard_id+"/"+desk_id+"/"+item_id+"/"+column_id)
+    fetch('/api/moveColumn/'+dashboard_id+"/"+desk_id+"/"+item_id+"/"+column_id)
         .then(response => response.json())
         .then(res => {
             let desk = document.querySelector(`[data-desk-id='${desk_id}']`);
