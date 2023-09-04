@@ -78,13 +78,48 @@ class DeskController extends Controller
     }
 
     public function addImages(Request $request){
-        $data = $request->validate(['image' => 'nullable', 'desk_id' => 'required|integer']);
-        foreach ($data as $image){
+    $data = $request->validate(['image' => 'required', 'dashboard_id' => 'required', 'desk_id' => 'required']);
+
+    if($data['image']){
+        $fileName = $data['image']->getClientOriginalName();
+        if(!DeskImages::where('image', 'images/'.$fileName)->first()){
+            $filePath = Storage::disk('public')->putFileAs('/images', $data['image'], $fileName);
             DeskImages::create([
-               'image' => $data['image'],
-               'desk_id' => $data['desk_id']
+                'desk_id' => $data['desk_id'],
+                'image' => $filePath
             ]);
+
+            $images = DeskImages::where('desk_id', $data['desk_id'])->get();
+            return response()->json(['status' => 200, 'files' => $images]);
         }
+        else{
+            return response()->json(['message_user' => 'Такой файл уже существует!']);
+        }
+    }
+        return response()->json(['message_user' => 'Не найдено ни одного файла!']);
+    }
+
+    public function addFiles(Request $request)
+    {
+        $data = $request->validate(['file' => 'required', 'dashboard_id' => 'required', 'desk_id' => 'required']);
+        if ($data['file']) {
+            $fileName = $data['file']->getClientOriginalName();
+            if (!DeskFiles::where('file', 'files/'.$fileName)->first()) {
+                $filePath = Storage::disk('public')->putFileAs('/files', $data['file'], $fileName);
+                DeskFiles::create([
+                    'desk_id' => $data['desk_id'],
+                    'file' => $filePath
+                ]);
+
+                $files = DeskFiles::where('desk_id', $data['desk_id'])->get();
+
+                return response()->json(['status' => 200, 'files' => $files]);
+            }
+            else{
+                return response()->json(['message_user' => 'Такой файл уже существует!']);
+            }
+        }
+        return response()->json(['message_user' => 'Не найдено ни одного файла!']);
     }
 
     public function outputDesks(Request $request){

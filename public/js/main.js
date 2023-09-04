@@ -2586,7 +2586,7 @@ window.loadImages = function (dashboard_id, desk_id, images) {
     var modal = document.querySelector('[data-modal-desk]');
     modal.insertAdjacentHTML('beforeend', "\n        <div class=\"block-images\" id=\"block-images\">\n            <div class=\"output-images\" id=\"output-images\"></div>\n            <div class=\"dropzone images mb-2\" id=\"upload-images\"></div>\n        <div>\n    ");
     images.forEach(function (item) {
-      document.getElementById('output-images').insertAdjacentHTML('beforeend', "\n            <a href=\"".concat(item.image, "\" target=\"_blank\"><img src=\"").concat(item.image, "\" width=\"250\" height=\"100\"></a>\n        "));
+      document.getElementById('output-images').insertAdjacentHTML('beforeend', "\n            <a href=\"".concat(item.image, "\" target=\"_blank\"><img src=\"/storage/").concat(item.image, "\" width=\"250\" height=\"100\"></a>\n        "));
     });
     dropZoneImages(dashboard_id, desk_id);
   }
@@ -2596,7 +2596,7 @@ window.loadFiles = function (dashboard_id, desk_id, files) {
     var modal = document.querySelector('[data-modal-desk]');
     modal.insertAdjacentHTML('beforeend', "\n        <div class=\"block-files\" id=\"modalFiles\">\n            <div class=\"output-images\" id=\"output-files\"></div>\n            <div class=\"dropzone images mb-2\" id=\"upload-files\"></div>\n        <div>\n    ");
     files.forEach(function (item) {
-      document.getElementById('output-files').insertAdjacentHTML('beforeend', "\n            <a href=\"".concat(item.file, "\" download>").concat(item.file, "</a>\n        "));
+      document.getElementById('output-files').insertAdjacentHTML('beforeend', "\n            <a href=\"/storage/".concat(item.file, "\" download>").concat(item.file, "</a>\n        "));
     });
     dropZoneFiles(dashboard_id, desk_id);
   }
@@ -2900,7 +2900,7 @@ window.dropZoneImages = function (dashboard_id, desk_id) {
       url: '/api/addImages',
       autoProcessQueue: true,
       addRemoveLinks: true,
-      acceptedFiles: 'image/*',
+      acceptedFiles: '.jpeg,.jpg,.png,.webp,.gif',
       init: function init() {
         this.on('sending', function (file, xhr, formData) {
           formData.append('dashboard_id', dashboard_id);
@@ -2909,7 +2909,7 @@ window.dropZoneImages = function (dashboard_id, desk_id) {
         });
         this.on("success", function (files, response) {
           deleteColumnModal('block-images');
-          loadImages(dashboard_id, desk_id, response.images);
+          loadImages(dashboard_id, desk_id, response.files);
         });
       }
     });
@@ -2933,7 +2933,6 @@ window.dropZoneFiles = function (dashboard_id, desk_id) {
         });
         this.on("success", function (files, response) {
           deleteColumnModal('modalFiles');
-          console.log(response);
           loadFiles(dashboard_id, desk_id, response.files);
         });
       }

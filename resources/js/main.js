@@ -450,7 +450,7 @@ window.loadImages = function (dashboard_id, desk_id, images){
     `)
         images.forEach(item => {
             document.getElementById('output-images').insertAdjacentHTML('beforeend', `
-            <a href="${item.image}" target="_blank"><img src="${item.image}" width="250" height="100"></a>
+            <a href="${item.image}" target="_blank"><img src="/storage/${item.image}" width="250" height="100"></a>
         `)
         })
         dropZoneImages(dashboard_id, desk_id)
@@ -468,7 +468,7 @@ window.loadFiles = function (dashboard_id, desk_id, files){
     `)
         files.forEach(item => {
             document.getElementById('output-files').insertAdjacentHTML('beforeend', `
-            <a href="${item.file}" download>${item.file}</a>
+            <a href="/storage/${item.file}" download>${item.file}</a>
         `)
         })
         dropZoneFiles(dashboard_id, desk_id)
@@ -876,7 +876,7 @@ window.dropZoneImages = function (dashboard_id, desk_id){
             url: '/api/addImages',
             autoProcessQueue: true,
             addRemoveLinks: true,
-            acceptedFiles: 'image/*',
+            acceptedFiles: '.jpeg,.jpg,.png,.webp,.gif',
             init: function (){
                 this.on('sending', function (file, xhr, formData){
                     formData.append('dashboard_id', dashboard_id)
@@ -886,7 +886,7 @@ window.dropZoneImages = function (dashboard_id, desk_id){
 
                 this.on("success", function(files, response) {
                     deleteColumnModal('block-images');
-                    loadImages(dashboard_id, desk_id, response.images)
+                    loadImages(dashboard_id, desk_id, response.files)
                 });
             }
         })
@@ -913,7 +913,6 @@ window.dropZoneFiles = function (dashboard_id, desk_id){
 
                 this.on("success", function(files, response) {
                     deleteColumnModal('modalFiles');
-                    console.log(response);
                     loadFiles(dashboard_id, desk_id, response.files)
                 });
             }
