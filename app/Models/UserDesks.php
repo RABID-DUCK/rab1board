@@ -30,4 +30,8 @@ class UserDesks extends Model
     use HasFactory;
     protected $table = 'user_desks';
     protected $guarded = false;
+
+    public function userDesks(){
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
 }

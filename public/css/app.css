@@ -13,6 +13,26 @@
   color: #D64D00 !important;
 }
 
+#root {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+#root .navbar {
+  max-width: 1440px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+#root .wrapper {
+  max-width: 1440px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
 html, body {
   width: 100%;
   height: 100%;

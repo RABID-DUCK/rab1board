@@ -40,4 +40,23 @@ class ColumnController extends Controller
             return $column;
         }
     }
+
+    public function delete(Request $request){
+        $id = $request->validate(['id' => 'required|integer']);
+        if ($dash = Columns::where('id', $id)->first()){
+            $dash->delete();
+            return response()->json(['status' => 200]);
+        }
+        return response()->json(['message' => 'Произошла ошибка! Не найден проект...']);
+    }
+
+    public function getColumns(Request $request){
+        $data = $request->validate(['dashboard_id' => 'required|integer']);
+        return Columns::where('dashboard_id', $data['dashboard_id'])->get();
+    }
+
+    public function getDesks(Request $request){
+        $data = $request->validate(['dash_id' => 'required|integer', 'col_id' => 'required|integer']);
+        return Desks::where('column_id', $data['col_id'])->get();
+    }
 }

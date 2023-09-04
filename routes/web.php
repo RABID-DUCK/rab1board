@@ -27,7 +27,7 @@ Route::group(['namespace' => 'frontend'], function (){
 
 Auth::routes();
 
-Route::group(['prefix' => 'backend', 'middleware' => 'auth'], function(){
+Route::group(['prefix' => 'backend', 'middleware' => 'isAdmin'], function(){
         Route::get('/admin', [App\Http\Controllers\MainController::class, 'index'])->name('backend.index');
 
         Route::group(['namespace' => 'langs'], function (){
@@ -59,8 +59,7 @@ Route::group(['prefix' => 'backend', 'middleware' => 'auth'], function(){
         });
 });
 
-/* Раскоммнетить когда подключим реакт
 Route::view('/{path?}', 'app')->where('path', '.*');;
 Route::get('/{path?}', function () {
-    return view('app');
-})->where('path', '.*');*/
+    return view('layouts.app');
+})->where('path', '.*');

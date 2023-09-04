@@ -11,6 +11,9 @@ use App\Models\DeskFiles;
 use App\Models\DeskImages;
 use App\Models\Desks;
 use App\Models\Tasks;
+use App\Models\User;
+use App\Models\UserDashboards;
+use App\Models\UserDesks;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Storage;
@@ -85,40 +88,47 @@ class DeskController extends Controller
     public function addImages(Request $request){
         $data = $request->validate(['image' => 'required', 'dashboard_id' => 'required', 'desk_id' => 'required']);
 
-        if($data['image']){
-            $filePath = Storage::disk('public')->put('/images', $data['image']);
-            $file = '/storage/' . $filePath;
-            DeskImages::create([
-                'desk_id' => $data['desk_id'],
-                'image' => $file
-            ]);
+    public function outputDesks(Request $request){
+        $data = $request->validate(['dashboard_id' => 'required|integer']);
+        $user = User::where('remember_token', $request->bearerToken())->first();
+        if ($userDash = UserDashboards::where('user_id', $user->id)->first()){
+            if(!$userDash->invited) return response()->json(['message' => 'Вы ещё не приняли приглашение!']);
 
-            $images = DeskImages::where('desk_id', $data['desk_id'])->get();
-            return response()->json(['status' => 200, 'images' => $images]);
-        }
-        return response()->json(['message_user' => 'Не найдено ни одной картинки!']);
-     }
-
-    public function addFiles(Request $request)
-    {
-        $data = $request->validate(['file' => 'required', 'dashboard_id' => 'required', 'desk_id' => 'required']);
-        if ($data['file']) {
-            $fileName = $data['file']->getClientOriginalName();
-            if (!DeskFiles::where('file', 'files/'.$fileName)->first()) {
-                $filePath = Storage::disk('public')->putFileAs('/files', $data['file'], $fileName);
-                DeskFiles::create([
-                    'desk_id' => $data['desk_id'],
-                    'file' => $filePath
-                ]);
-
-                $files = DeskFiles::where('desk_id', $data['desk_id'])->get();
-
-                return response()->json(['status' => 200, 'files' => $files]);
-            }
-            else{
-                return response()->json(['message_user' => 'Такой файл уже существует!']);
+            if (Desks::where('dashboard_id', $data['dashboard_id'])->get()->count() > 0){
+                return Desks::where('dashboard_id', $data['dashboard_id'])->get();
             }
         }
-        return response()->json(['message_user' => 'Не найдено ни одного файла!']);
+        return response()->json(['message' => 'Вы не состоите в этом проекте!']);
     }
+
+    public function addUser(Request $request){
+        $data = $request->validate(['desk_id' => 'required|integer', 'user_id' => 'required|integer']);
+        if($user = User::where('id', $data['user_id'])->first()){
+            if($userDash = UserDashboards::where('user_id', $user->id)->first()){
+                if(!$userDash->invited) return response()->json(['message' => 'Пользователя не существует в этом проекте!']);
+                if(UserDesks::where('desk_id', $data['desk_id'])->where('user_id', $data['user_id'])->first()) return false;
+
+                UserDesks::create([
+                    'desk_id' => $data['desk_id'],
+                    'user_id' => $data['user_id']
+                ]);
+                $users = UserDesks::with('userDesks')->where('desk_id', $data['desk_id'])
+                    ->whereHas('userDesks', function ($query) use ($data){
+                        $query->where('desk_id', $data['desk_id']);
+                    })->get();
+
+                return response()->json(['users' => $users]);
+            }
+        }
+    }
+
+    public function delete(Request $request){
+        $id = $request->validate(['id' => 'required|integer']);
+        if ($dash = Desks::where('id', $id)->first()){
+            $dash->delete();
+            return response()->json(['status' => 200]);
+        }
+        return response()->json(['message' => 'Произошла ошибка! Не найден проект...']);
+    }
+
 }

@@ -67,7 +67,7 @@ CREATE TABLE `columns` (
 
 LOCK TABLES `columns` WRITE;
 /*!40000 ALTER TABLE `columns` DISABLE KEYS */;
-INSERT INTO `columns` VALUES (26,'Taskss',16,'2023-08-09 03:54:23','2023-08-11 06:06:27'),(42,'Process',16,'2023-08-09 05:33:48','2023-08-11 06:20:33'),(43,'Ready',16,'2023-08-09 05:38:07','2023-08-11 06:20:31'),(70,'Bucket',16,'2023-08-11 06:16:23','2023-08-11 06:16:32');
+INSERT INTO `columns` VALUES (26,'Taskss',16,'2023-08-09 03:54:23','2023-08-11 06:06:27'),(42,'Process',16,'2023-08-09 05:33:48','2023-08-11 06:20:33'),(43,'Ready',16,'2023-08-09 05:38:07','2023-08-11 06:20:31');
 /*!40000 ALTER TABLE `columns` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -82,16 +82,16 @@ CREATE TABLE `comments` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `count_likes` int NOT NULL,
-  `task_id` bigint unsigned NOT NULL,
   `user_id` bigint unsigned NOT NULL,
+  `desk_id` bigint unsigned NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `comments_task_id_foreign` (`task_id`),
   KEY `comments_user_id_foreign` (`user_id`),
-  CONSTRAINT `comments_task_id_foreign` FOREIGN KEY (`task_id`) REFERENCES `tasks` (`id`) ON DELETE CASCADE,
+  KEY `comments_desk_id_foreign` (`desk_id`),
+  CONSTRAINT `comments_desk_id_foreign` FOREIGN KEY (`desk_id`) REFERENCES `desks` (`id`) ON DELETE CASCADE,
   CONSTRAINT `comments_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -100,6 +100,7 @@ CREATE TABLE `comments` (
 
 LOCK TABLES `comments` WRITE;
 /*!40000 ALTER TABLE `comments` DISABLE KEYS */;
+INSERT INTO `comments` VALUES (2,'test',3,3,44,NULL,'2023-08-29 08:55:25');
 /*!40000 ALTER TABLE `comments` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -122,7 +123,7 @@ CREATE TABLE `dashboards` (
   KEY `dashboards_desk_id_foreign` (`desk_id`),
   CONSTRAINT `dashboards_desk_id_foreign` FOREIGN KEY (`desk_id`) REFERENCES `desks` (`id`) ON DELETE CASCADE,
   CONSTRAINT `dashboards_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -131,7 +132,7 @@ CREATE TABLE `dashboards` (
 
 LOCK TABLES `dashboards` WRITE;
 /*!40000 ALTER TABLE `dashboards` DISABLE KEYS */;
-INSERT INTO `dashboards` VALUES (16,'Pingvi',1,NULL,'2023-08-09 03:30:49','2023-08-11 08:07:42');
+INSERT INTO `dashboards` VALUES (16,'Pingvi',1,NULL,'2023-08-09 03:30:49','2023-08-11 08:07:42'),(17,'test',1,NULL,'2023-08-29 03:16:04','2023-08-29 03:16:04');
 /*!40000 ALTER TABLE `dashboards` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -232,7 +233,7 @@ CREATE TABLE `desks` (
 
 LOCK TABLES `desks` WRITE;
 /*!40000 ALTER TABLE `desks` DISABLE KEYS */;
-INSERT INTO `desks` VALUES (42,'Mant',NULL,NULL,0,'2023-08-22 16:56:00','2023-09-08 16:56:00','2023-08-28 06:45:55','2023-08-22 08:50:12',16,26,6,NULL),(43,'Kwe',NULL,'',0,'2023-08-22 17:00:00','2023-09-03 17:00:00','2023-08-25 03:20:25','2023-08-22 08:50:18',16,42,NULL,NULL),(44,'iwi',NULL,NULL,0,'2023-08-22 16:58:00','2023-09-10 16:58:00','2023-08-28 06:55:41','2023-08-22 08:50:22',16,43,NULL,NULL),(45,'bobr',NULL,NULL,0,'2023-08-23 17:01:00','2023-08-27 17:01:00','2023-08-28 04:34:09','2023-08-22 08:50:26',16,26,5,NULL),(46,'dfg',NULL,NULL,0,NULL,NULL,'2023-08-22 08:50:43','2023-08-22 08:50:43',16,26,NULL,NULL),(47,'333',NULL,NULL,0,NULL,NULL,'2023-08-22 08:54:49','2023-08-22 08:54:49',16,26,NULL,NULL),(48,'test',NULL,NULL,0,NULL,NULL,'2023-08-24 01:29:20','2023-08-23 08:54:46',16,26,NULL,NULL);
+INSERT INTO `desks` VALUES (42,'Mant',NULL,NULL,0,'2023-08-22 16:56:00','2023-09-08 16:56:00','2023-08-28 06:45:55','2023-08-22 08:50:12',16,26,6,NULL),(43,'Kwe',NULL,'',0,'2023-08-22 17:00:00','2023-09-03 17:00:00','2023-08-25 03:20:25','2023-08-22 08:50:18',16,42,NULL,NULL),(44,'iwi',NULL,NULL,0,'2023-08-22 16:58:00','2023-09-10 16:58:00','2023-08-28 06:55:41','2023-08-22 08:50:22',16,43,NULL,NULL),(45,'bobr',NULL,NULL,0,'2023-08-23 17:01:00','2023-08-27 17:01:00','2023-08-28 04:34:09','2023-08-22 08:50:26',16,26,5,NULL),(48,'test',NULL,NULL,0,NULL,NULL,'2023-08-24 01:29:20','2023-08-23 08:54:46',16,26,NULL,NULL);
 /*!40000 ALTER TABLE `desks` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -321,7 +322,7 @@ CREATE TABLE `list_tasks` (
 
 LOCK TABLES `list_tasks` WRITE;
 /*!40000 ALTER TABLE `list_tasks` DISABLE KEYS */;
-INSERT INTO `list_tasks` VALUES (3,'fghgf',16,45,'2023-08-23 02:59:05','2023-08-23 02:59:05'),(4,'dgfdfg',16,42,'2023-08-23 03:53:17','2023-08-23 03:53:17'),(20,'666',16,43,'2023-08-23 06:14:02','2023-08-23 06:14:02'),(21,'вапвап',16,44,'2023-08-23 06:55:27','2023-08-23 06:55:27');
+INSERT INTO `list_tasks` VALUES (3,'fghgf',16,45,'2023-08-23 02:59:05','2023-08-23 02:59:05'),(4,'dgfdfg',16,42,'2023-08-23 03:53:17','2023-08-23 03:53:17'),(20,'666',16,43,'2023-08-23 06:14:02','2023-08-23 06:14:02');
 /*!40000 ALTER TABLE `list_tasks` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -337,7 +338,7 @@ CREATE TABLE `migrations` (
   `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `batch` int NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=50 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -346,7 +347,7 @@ CREATE TABLE `migrations` (
 
 LOCK TABLES `migrations` WRITE;
 /*!40000 ALTER TABLE `migrations` DISABLE KEYS */;
-INSERT INTO `migrations` VALUES (1,'2014_10_12_000000_create_users_table',1),(2,'2014_10_12_100000_create_password_reset_tokens_table',1),(3,'2014_10_12_100000_create_password_resets_table',1),(4,'2019_08_19_000000_create_failed_jobs_table',1),(5,'2019_12_14_000001_create_personal_access_tokens_table',1),(6,'2023_07_25_091108_create_langs_table',1),(7,'2023_08_01_044819_create_roles_table',1),(8,'2023_08_01_113500_create_dashboards_table',1),(9,'2023_08_01_114245_create_desks_table',1),(10,'2023_08_01_044610_add_column_role_id_table',2),(11,'2023_08_01_120034_create_tasks_table',3),(12,'2023_08_02_035853_add_task_id_to_desks_table',4),(13,'2023_08_02_040740_add_desk_id_to_tasks_table',5),(14,'2023_08_02_041845_create_columns_table',6),(15,'2023_08_02_044435_create_comments_table',7),(16,'2023_08_02_045350_create_user_desks_table',8),(17,'2023_08_02_045904_create_color_desks_table',9),(18,'2023_08_02_055033_drop_foreign_key_desk_id_in_color_desks_table',10),(19,'2023_08_02_055416_rename_color_desks_table',11),(20,'2023_08_02_055538_create_color_desks_table',12),(21,'2023_08_03_113609_add_defautl_image_to_desks_table',13),(23,'2023_08_04_085251_add_foreig_id_to_dashboards_table',14),(24,'2023_08_04_085745_add_column_title_to_dashboards_table',15),(25,'2023_08_07_054048_add_column_image_to_users_table',16),(26,'2023_08_07_095555_add_column_premium_to_users_table',17),(27,'2023_08_08_092711_add_column_dashboard_id_to_columns_table',18),(29,'2023_08_08_121604_create_column_desks_table',19),(30,'2023_08_08_121152_add_columns_to_desks_table',20),(31,'2023_08_10_055018_drop_foreign_key_desk_id_to_columns_table',21),(32,'2023_08_15_054543_add_foreign_key_dashboard_id_to_tasks_table',22),(33,'2023_08_15_063134_add_column_done_to_tasks_table',23),(34,'2023_08_15_065043_drop_columns_to_tasks_table',24),(35,'2023_08_15_065301_create_list_tasks_table',25),(36,'2023_08_15_065911_add_column_Listtaskid_to_tasks_table',26),(37,'2023_08_22_113444_drop_foreign_key_to_color_desks_table',27),(38,'2023_08_22_114611_add_foreign_key_to_desks_table',28),(39,'2023_08_25_100502_add_column_files_to_desks_table',29),(40,'2023_08_28_095855_create_desk_images_table',30),(41,'2023_08_28_105150_create_desk_files_table',31);
+INSERT INTO `migrations` VALUES (1,'2014_10_12_000000_create_users_table',1),(2,'2014_10_12_100000_create_password_reset_tokens_table',1),(3,'2014_10_12_100000_create_password_resets_table',1),(4,'2019_08_19_000000_create_failed_jobs_table',1),(5,'2019_12_14_000001_create_personal_access_tokens_table',1),(6,'2023_07_25_091108_create_langs_table',1),(7,'2023_08_01_044819_create_roles_table',1),(8,'2023_08_01_113500_create_dashboards_table',1),(9,'2023_08_01_114245_create_desks_table',1),(10,'2023_08_01_044610_add_column_role_id_table',2),(11,'2023_08_01_120034_create_tasks_table',3),(12,'2023_08_02_035853_add_task_id_to_desks_table',4),(13,'2023_08_02_040740_add_desk_id_to_tasks_table',5),(14,'2023_08_02_041845_create_columns_table',6),(15,'2023_08_02_044435_create_comments_table',7),(16,'2023_08_02_045350_create_user_desks_table',8),(17,'2023_08_02_045904_create_color_desks_table',9),(18,'2023_08_02_055033_drop_foreign_key_desk_id_in_color_desks_table',10),(19,'2023_08_02_055416_rename_color_desks_table',11),(20,'2023_08_02_055538_create_color_desks_table',12),(21,'2023_08_03_113609_add_defautl_image_to_desks_table',13),(23,'2023_08_04_085251_add_foreig_id_to_dashboards_table',14),(24,'2023_08_04_085745_add_column_title_to_dashboards_table',15),(25,'2023_08_07_054048_add_column_image_to_users_table',16),(26,'2023_08_07_095555_add_column_premium_to_users_table',17),(27,'2023_08_08_092711_add_column_dashboard_id_to_columns_table',18),(29,'2023_08_08_121604_create_column_desks_table',19),(30,'2023_08_08_121152_add_columns_to_desks_table',20),(31,'2023_08_10_055018_drop_foreign_key_desk_id_to_columns_table',21),(32,'2023_08_15_054543_add_foreign_key_dashboard_id_to_tasks_table',22),(33,'2023_08_15_063134_add_column_done_to_tasks_table',23),(34,'2023_08_15_065043_drop_columns_to_tasks_table',24),(35,'2023_08_15_065301_create_list_tasks_table',25),(36,'2023_08_15_065911_add_column_Listtaskid_to_tasks_table',26),(37,'2023_08_22_113444_drop_foreign_key_to_color_desks_table',27),(38,'2023_08_22_114611_add_foreign_key_to_desks_table',28),(39,'2023_08_25_100502_add_column_files_to_desks_table',29),(40,'2023_08_28_095855_create_desk_images_table',30),(41,'2023_08_28_105150_create_desk_files_table',31),(42,'2023_08_28_115730_add_column_confirmed_to_user_desks_table',32),(43,'2023_08_29_045322_create_user_dashboards_table',33),(44,'2023_08_29_063854_add_column_invited_to_user_dashboards_table',34),(45,'2023_08_29_072511_drop_columns_to_user_desks_table',35),(46,'2023_08_29_073710_add_user_id_to_tasks_table',36),(47,'2023_08_29_084140_create_user_tasks_table',37),(48,'2023_08_29_084505_add_foreign_task_id_to_user_tasks_table',38),(49,'2023_08_29_093908_add_foreign_desk_id_to_comments_table',39);
 /*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -419,7 +420,7 @@ CREATE TABLE `personal_access_tokens` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `personal_access_tokens_token_unique` (`token`),
   KEY `personal_access_tokens_tokenable_type_tokenable_id_index` (`tokenable_type`,`tokenable_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -428,7 +429,7 @@ CREATE TABLE `personal_access_tokens` (
 
 LOCK TABLES `personal_access_tokens` WRITE;
 /*!40000 ALTER TABLE `personal_access_tokens` DISABLE KEYS */;
-INSERT INTO `personal_access_tokens` VALUES (1,'App\\Models\\User',1,'token','ebd11ad31cf3a448b4e3cd7350fe621e41cdadb477237d8ce4c6191276845179','[\"*\"]',NULL,NULL,'2023-08-25 08:40:10','2023-08-25 08:40:10'),(2,'App\\Models\\User',1,'token','5ec4fa3df7a320909d31b34b9c6cdf00aa9c734c48a78774ea4962694639e036','[\"*\"]',NULL,NULL,'2023-08-25 08:40:21','2023-08-25 08:40:21'),(3,'App\\Models\\User',3,'token','6a5a341a875954c2783d39832286ec0dd8d9b000db092b876de8c15b08e56c5a','[\"*\"]',NULL,NULL,'2023-08-25 08:56:40','2023-08-25 08:56:40'),(4,'App\\Models\\User',3,'token','c33a74c52d783535fa29e0ec1a5a6bd488ae2070a7bb6dcd009ded437996fd88','[\"*\"]',NULL,NULL,'2023-08-25 09:10:02','2023-08-25 09:10:02'),(5,'App\\Models\\User',1,'token','5976470b459a4b99e24a6c2469f940df55d95f540ad84eb6e1b081448c2cedb1','[\"*\"]',NULL,NULL,'2023-08-28 00:52:06','2023-08-28 00:52:06'),(6,'App\\Models\\User',1,'token','a54965dd0cfa41301a66503342662892f4665cd4688f5957c365787024fc8816','[\"*\"]',NULL,NULL,'2023-08-28 01:22:55','2023-08-28 01:22:55'),(7,'App\\Models\\User',1,'token','bfe3f9968129b0e0358c796535b529f1627c435d31b2fb336b495297087cdba7','[\"*\"]',NULL,NULL,'2023-08-28 01:25:31','2023-08-28 01:25:31'),(8,'App\\Models\\User',1,'token','4c2ad147ad1998e34f38ff2fe23ec2a5698b30d7911e7fccc5a9c7f953924627','[\"*\"]',NULL,NULL,'2023-08-28 01:26:27','2023-08-28 01:26:27'),(9,'App\\Models\\User',1,'token','c6b661e92c5c781b1cda6ef41fb6c5daf1cdc45dbdc7b34c67b56c93e590f845','[\"*\"]',NULL,NULL,'2023-08-28 01:26:53','2023-08-28 01:26:53'),(10,'App\\Models\\User',1,'token','0c2da8d2cc563f4011119e0da4d8a2fc0f28291caa000bf274cd68be65bf85e2','[\"*\"]',NULL,NULL,'2023-08-28 01:32:36','2023-08-28 01:32:36'),(11,'App\\Models\\User',4,'token','94f1b86d2911daa286600e1b52e505ba4c1b23525bacf4a3d55d28f3700b0191','[\"*\"]',NULL,NULL,'2023-08-28 01:39:17','2023-08-28 01:39:17');
+INSERT INTO `personal_access_tokens` VALUES (1,'App\\Models\\User',1,'token','ebd11ad31cf3a448b4e3cd7350fe621e41cdadb477237d8ce4c6191276845179','[\"*\"]',NULL,NULL,'2023-08-25 08:40:10','2023-08-25 08:40:10'),(2,'App\\Models\\User',1,'token','5ec4fa3df7a320909d31b34b9c6cdf00aa9c734c48a78774ea4962694639e036','[\"*\"]',NULL,NULL,'2023-08-25 08:40:21','2023-08-25 08:40:21'),(3,'App\\Models\\User',3,'token','6a5a341a875954c2783d39832286ec0dd8d9b000db092b876de8c15b08e56c5a','[\"*\"]',NULL,NULL,'2023-08-25 08:56:40','2023-08-25 08:56:40'),(4,'App\\Models\\User',3,'token','c33a74c52d783535fa29e0ec1a5a6bd488ae2070a7bb6dcd009ded437996fd88','[\"*\"]',NULL,NULL,'2023-08-25 09:10:02','2023-08-25 09:10:02'),(5,'App\\Models\\User',1,'token','5976470b459a4b99e24a6c2469f940df55d95f540ad84eb6e1b081448c2cedb1','[\"*\"]',NULL,NULL,'2023-08-28 00:52:06','2023-08-28 00:52:06'),(6,'App\\Models\\User',1,'token','a54965dd0cfa41301a66503342662892f4665cd4688f5957c365787024fc8816','[\"*\"]',NULL,NULL,'2023-08-28 01:22:55','2023-08-28 01:22:55'),(7,'App\\Models\\User',1,'token','bfe3f9968129b0e0358c796535b529f1627c435d31b2fb336b495297087cdba7','[\"*\"]',NULL,NULL,'2023-08-28 01:25:31','2023-08-28 01:25:31'),(8,'App\\Models\\User',1,'token','4c2ad147ad1998e34f38ff2fe23ec2a5698b30d7911e7fccc5a9c7f953924627','[\"*\"]',NULL,NULL,'2023-08-28 01:26:27','2023-08-28 01:26:27'),(9,'App\\Models\\User',1,'token','c6b661e92c5c781b1cda6ef41fb6c5daf1cdc45dbdc7b34c67b56c93e590f845','[\"*\"]',NULL,NULL,'2023-08-28 01:26:53','2023-08-28 01:26:53'),(10,'App\\Models\\User',1,'token','0c2da8d2cc563f4011119e0da4d8a2fc0f28291caa000bf274cd68be65bf85e2','[\"*\"]',NULL,NULL,'2023-08-28 01:32:36','2023-08-28 01:32:36'),(11,'App\\Models\\User',4,'token','94f1b86d2911daa286600e1b52e505ba4c1b23525bacf4a3d55d28f3700b0191','[\"*\"]',NULL,NULL,'2023-08-28 01:39:17','2023-08-28 01:39:17'),(12,'App\\Models\\User',1,'token','c28deb28d8b6d74314436f8a96a5d5ecbc51d6275a711cc1ba71d6fdd0511cbd','[\"*\"]',NULL,NULL,'2023-08-29 07:13:48','2023-08-29 07:13:48');
 /*!40000 ALTER TABLE `personal_access_tokens` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -487,8 +488,40 @@ CREATE TABLE `tasks` (
 
 LOCK TABLES `tasks` WRITE;
 /*!40000 ALTER TABLE `tasks` DISABLE KEYS */;
-INSERT INTO `tasks` VALUES (49,'gfhfgh',NULL,NULL,NULL,0,20,'2023-08-23 06:14:07','2023-08-23 06:14:07'),(50,'вапвап',NULL,NULL,NULL,1,3,'2023-08-23 06:23:05','2023-08-23 06:23:12'),(51,'546456',NULL,NULL,NULL,1,3,'2023-08-23 06:23:16','2023-08-23 06:23:17'),(52,'прпар',NULL,NULL,NULL,1,3,'2023-08-23 06:23:25','2023-08-23 06:23:25'),(53,'о',NULL,NULL,NULL,0,3,'2023-08-23 06:27:04','2023-08-23 06:27:04'),(54,'ghgh',NULL,NULL,NULL,1,3,'2023-08-23 06:35:27','2023-08-23 06:35:27'),(55,'gfh',NULL,NULL,NULL,0,3,'2023-08-23 06:36:35','2023-08-23 06:36:35'),(56,'45',NULL,NULL,NULL,1,3,'2023-08-23 06:36:39','2023-08-23 06:36:39'),(57,'вапвап',NULL,NULL,NULL,1,21,'2023-08-23 06:55:30','2023-08-23 06:55:30');
+INSERT INTO `tasks` VALUES (49,'tttt',NULL,'2022-01-01 12:00:00','2023-01-01 12:00:00',0,20,'2023-08-23 06:14:07','2023-08-29 06:35:22'),(50,'вапвап',NULL,NULL,NULL,1,3,'2023-08-23 06:23:05','2023-08-23 06:23:12'),(51,'546456',NULL,NULL,NULL,1,3,'2023-08-23 06:23:16','2023-08-23 06:23:17'),(52,'прпар',NULL,NULL,NULL,1,3,'2023-08-23 06:23:25','2023-08-23 06:23:25'),(53,'о',NULL,NULL,NULL,0,3,'2023-08-23 06:27:04','2023-08-23 06:27:04'),(54,'ghgh',NULL,NULL,NULL,1,3,'2023-08-23 06:35:27','2023-08-23 06:35:27'),(55,'gfh',NULL,NULL,NULL,0,3,'2023-08-23 06:36:35','2023-08-23 06:36:35');
 /*!40000 ALTER TABLE `tasks` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `user_dashboards`
+--
+
+DROP TABLE IF EXISTS `user_dashboards`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `user_dashboards` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` bigint unsigned NOT NULL,
+  `dashboard_id` bigint unsigned NOT NULL,
+  `invited` tinyint(1) NOT NULL DEFAULT '0',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `user_dashboards_user_id_foreign` (`user_id`),
+  KEY `user_dashboards_dashboard_id_foreign` (`dashboard_id`),
+  CONSTRAINT `user_dashboards_dashboard_id_foreign` FOREIGN KEY (`dashboard_id`) REFERENCES `dashboards` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `user_dashboards_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `user_dashboards`
+--
+
+LOCK TABLES `user_dashboards` WRITE;
+/*!40000 ALTER TABLE `user_dashboards` DISABLE KEYS */;
+INSERT INTO `user_dashboards` VALUES (1,1,16,1,NULL,NULL);
+/*!40000 ALTER TABLE `user_dashboards` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -500,7 +533,6 @@ DROP TABLE IF EXISTS `user_desks`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `user_desks` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `access` tinyint(1) NOT NULL,
   `desk_id` bigint unsigned NOT NULL,
   `user_id` bigint unsigned NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -510,7 +542,7 @@ CREATE TABLE `user_desks` (
   KEY `user_desks_user_id_foreign` (`user_id`),
   CONSTRAINT `user_desks_desk_id_foreign` FOREIGN KEY (`desk_id`) REFERENCES `desks` (`id`) ON DELETE CASCADE,
   CONSTRAINT `user_desks_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -519,7 +551,42 @@ CREATE TABLE `user_desks` (
 
 LOCK TABLES `user_desks` WRITE;
 /*!40000 ALTER TABLE `user_desks` DISABLE KEYS */;
+INSERT INTO `user_desks` VALUES (1,42,1,'2023-08-29 04:28:31','2023-08-29 04:28:31');
 /*!40000 ALTER TABLE `user_desks` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `user_tasks`
+--
+
+DROP TABLE IF EXISTS `user_tasks`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `user_tasks` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` bigint unsigned NOT NULL,
+  `desk_id` bigint unsigned NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `task_id` bigint unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `user_tasks_user_id_foreign` (`user_id`),
+  KEY `user_tasks_desk_id_foreign` (`desk_id`),
+  KEY `user_tasks_task_id_foreign` (`task_id`),
+  CONSTRAINT `user_tasks_desk_id_foreign` FOREIGN KEY (`desk_id`) REFERENCES `desks` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `user_tasks_task_id_foreign` FOREIGN KEY (`task_id`) REFERENCES `list_tasks` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `user_tasks_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `user_tasks`
+--
+
+LOCK TABLES `user_tasks` WRITE;
+/*!40000 ALTER TABLE `user_tasks` DISABLE KEYS */;
+INSERT INTO `user_tasks` VALUES (1,1,42,'2023-08-29 06:20:06','2023-08-29 06:20:06',3);
+/*!40000 ALTER TABLE `user_tasks` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -547,7 +614,7 @@ CREATE TABLE `users` (
   UNIQUE KEY `users_email_unique` (`email`),
   KEY `users_role_id_foreign` (`role_id`),
   CONSTRAINT `users_role_id_foreign` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -556,7 +623,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'Masya Sagitov','Rab1d','avatar.png','onetaphack@gmail.com',NULL,'$2y$10$BSL8K8ULtETndLJVRYmET.giPP9IhZX9eBM1PMM08YT4KZ78BLsbe','0','$2y$10$Hx0.htN3zsxX7x.unFseCu63PENfZDjVQY./I2NszO.j6U5Cbg3Ce',NULL,'2023-08-28 01:32:36',2),(3,'sdfsdf','sfsdfsdfsdf','avatar.png','sdfsdfsdf@mail.ru',NULL,'$2y$10$XUTAX4mRyVQ9XiGT5S8cz.1qkc1knz.o304R51EfaldPACqn8xgoy','0',NULL,'2023-08-25 08:56:40','2023-08-25 08:56:40',1),(4,'авпвапва','вапвапвапва','avatar.png','sfdsfn@mail.ru',NULL,'$2y$10$sbDWr2E7ky5PONK7nnLbxOTirLuOh84tr0nIXXR8z63QIXyaSPvla','0','$2y$10$zqgPhL/eGQGW23ZHDFgfgOoTc/28hU2kn0bo8uAML5lXjN6tZv07u','2023-08-28 01:39:17','2023-08-28 01:39:17',1);
+INSERT INTO `users` VALUES (1,'Masya Sagitov','Rab1d','avatar.png','onetaphack@gmail.com',NULL,'$2y$10$BSL8K8ULtETndLJVRYmET.giPP9IhZX9eBM1PMM08YT4KZ78BLsbe','0','$2y$10$k91mNVD3rhpQuResUWOr3Oq/6a.tFiZvsEWR8v7V0H75nj0U9HBZ.',NULL,'2023-08-29 07:13:48',2),(3,'sdfsdf','sfsdfsdfsdf','avatar.png','sdfsdfsdf@mail.ru',NULL,'$2y$10$XUTAX4mRyVQ9XiGT5S8cz.1qkc1knz.o304R51EfaldPACqn8xgoy','0',NULL,'2023-08-25 08:56:40','2023-08-25 08:56:40',1),(4,'авпвапва','вапвапвапва','avatar.png','sfdsfn@mail.ru',NULL,'$2y$10$sbDWr2E7ky5PONK7nnLbxOTirLuOh84tr0nIXXR8z63QIXyaSPvla','0','$2y$10$zqgPhL/eGQGW23ZHDFgfgOoTc/28hU2kn0bo8uAML5lXjN6tZv07u','2023-08-28 01:39:17','2023-08-28 01:39:17',1),(5,'Сагитов Максим','123123123','avatar.png','asadasd@mail.ru',NULL,'$2y$10$e6o0QIB17DD4qeTdY6Ug2u9nU676ri59nplMhf3t9DSKLxwQkxn06','0',NULL,'2023-08-28 09:20:18','2023-08-28 09:20:18',1);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -569,4 +636,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-08-28 16:52:59
+-- Dump completed on 2023-08-29 16:56:24
