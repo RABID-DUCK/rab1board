@@ -7,6 +7,7 @@ use App\Models\Columns;
 use App\Models\Dashboards;
 use App\Models\Desks;
 use App\Models\User;
+use App\Models\UserDashboards;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 
@@ -35,11 +36,43 @@ class DashboardController extends Controller
 
     }
 
-    public function update(){
-
+    public function addUser(Request $request){
+        $data = $request->validate(['user' => 'required|string', 'dashboard_id' => 'required|integer']);
+        if($user = User::where('email', $data['user'])->first()){
+            UserDashboards::create([
+                'user_id' => $user->id,
+                'dashboard_id' => $data['dashboard_id'],
+                'confirmed' => false
+            ]);
+            return response()->json(['status' => 200,'message' => 'Приглашение отправлено']);
+        }
+        else{
+            return response()->json(['status' => 404,'message' => 'Пользователь не найден']);
+        }
     }
 
-    public function delete($id){
+    public function confirmInvite(Request $request){
+        $data = $request->validate(['user_id' => 'required|integer', 'dashboard_id' => 'required|integer', 'invited' => 'required|boolean']);
+        if($invite = UserDashboards::where('dashboard_id', $data['dashboard_id'])->where('user_id', $data['user_id'])->first()){
+            $invite->invited = $data['invited'];
+            $invite->save();
+            return response()->json(['status' => 200]);
+        }
 
+        return response()->json(['message' => 'Произошла ошибка...попробуйте позже!']);
+    }
+
+    public function delete(Request $request){
+        $id = $request->validate(['id' => 'required|integer']);
+        if ($dash = Dashboards::where('id', $id)->first()){
+            $dash->delete();
+            return response()->json(['status' => 200]);
+        }
+        return response()->json(['message' => 'Произошла ошибка! Не найден проект...']);
+    }
+
+    public function getDashboards(Request $request){
+        $user = User::where('remember_token', $request->bearerToken())->first();
+        return Dashboards::where('user_id', $user->id)->get();
     }
 }

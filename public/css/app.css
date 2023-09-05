@@ -502,6 +502,12 @@ nav {
   position: fixed;
 }
 
+.hide-slow {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  transition: all 0.6s ease;
+}
+
 .wrapper-modal {
   position: absolute;
   top: 50%;
@@ -748,10 +754,37 @@ nav {
   width: 500px;
   height: 150px;
   position: absolute;
-  top: 0;
-  left: 15%;
-  padding-top: 20px;
+  top: 5%;
+  left: 2px;
+  padding: 20px 5px 0 5px;
+  z-index: 1;
 }
 .add-user input {
   margin-bottom: 15px;
+}
+
+.modal-notification {
+  width: 300px;
+  height: 50%;
+  position: fixed;
+  top: 0;
+  right: 0;
+  order: 111111;
+  border-radius: 0 0 0 8px;
+  border-left: 1px solid black;
+  border-bottom: 1px solid black;
+  overflow-y: auto;
+  overflow-x: hidden;
+  visibility: visible;
+  opacity: 1;
+  transition: visibility 0.3s ease, opacity 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+.modal-notification .notif:first-child {
+  margin-top: 50px;
+}
+.modal-notification .notif:not(.notif:first-child) {
+  margin-top: 10px;
 }

@@ -937,7 +937,7 @@ window.modalFiles = function (dashboard_id, desk_id){
 
 window.addUsersModal = function (desk_id){
     if(!document.getElementById('addUserModal')){
-        document.querySelector('[data-modal-desk]').insertAdjacentHTML('beforeend', `
+        document.getElementById('left-panel-dash').insertAdjacentHTML('beforeend', `
         <div class="modal-desk bg-dark bg-gradient text-white add-user" id="addUserModal">
             <label class="form-label" for="user-email">Почта пользователя</label>
             <input class="form-control" type="text" id="user-email">
@@ -945,17 +945,32 @@ window.addUsersModal = function (desk_id){
         </div>
     `)
     }else{
-        deleteColumnModal('addUserModal')
-            return;
+        return deleteColumnModal('addUserModal');
     }
 }
 
-window.sendInvite = function (desk_id){
-    // if(document.getElementById('addUserModal')){
-    //     console.log('da')
-    //     deleteColumnModal('addUserModal')
-    //     return;
-    // }
+window.sendInvite = function (dashboard_id){
     let input = event.target.previousElementSibling;
-
+    fetch('/api/dashboard/addUser', {
+        method: 'post',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            dashboard_id: dashboard_id,
+            user: input.value,
+        })
+            .then(response => response.json())
+            .then(res => {
+                console.log(res);
+            })
+    })
 }
+
+window.openNotif = function (){
+    let modal = document.getElementById('notification-modal');
+    modal.classList.remove('hide-slow')
+}
+
+window.closeModalSlow = (id) => document.getElementById(id).classList.add('hide-slow');

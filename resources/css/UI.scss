@@ -126,3 +126,13 @@ nav .container-fluid{
     bottom: 20px;
     display: block !important;
 }
+
+.notification{
+    cursor: pointer;
+    float: right;
+
+    &:hover{
+        filter: drop-shadow(0 0 2px $orange);
+        transition: filter .3s;
+    }
+}

@@ -2950,19 +2950,35 @@ window.modalFiles = function (dashboard_id, desk_id) {
 };
 window.addUsersModal = function (desk_id) {
   if (!document.getElementById('addUserModal')) {
-    document.querySelector('[data-modal-desk]').insertAdjacentHTML('beforeend', "\n        <div class=\"modal-desk bg-dark bg-gradient text-white add-user\" id=\"addUserModal\">\n            <label class=\"form-label\" for=\"user-email\">\u041F\u043E\u0447\u0442\u0430 \u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044F</label>\n            <input class=\"form-control\" type=\"text\" id=\"user-email\">\n            <button class=\"btn text-white\" onclick=\"sendInvite(".concat(desk_id, ")\">\u041E\u0442\u043F\u0440\u0430\u0432\u0438\u0442\u044C</button>\n        </div>\n    "));
+    document.getElementById('left-panel-dash').insertAdjacentHTML('beforeend', "\n        <div class=\"modal-desk bg-dark bg-gradient text-white add-user\" id=\"addUserModal\">\n            <label class=\"form-label\" for=\"user-email\">\u041F\u043E\u0447\u0442\u0430 \u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044F</label>\n            <input class=\"form-control\" type=\"text\" id=\"user-email\">\n            <button class=\"btn text-white\" onclick=\"sendInvite(".concat(desk_id, ")\">\u041E\u0442\u043F\u0440\u0430\u0432\u0438\u0442\u044C</button>\n        </div>\n    "));
   } else {
-    deleteColumnModal('addUserModal');
-    return;
+    return deleteColumnModal('addUserModal');
   }
 };
-window.sendInvite = function (desk_id) {
-  // if(document.getElementById('addUserModal')){
-  //     console.log('da')
-  //     deleteColumnModal('addUserModal')
-  //     return;
-  // }
+window.sendInvite = function (dashboard_id) {
   var input = event.target.previousElementSibling;
+  fetch('/api/dashboard/addUser', {
+    method: 'post',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      dashboard_id: dashboard_id,
+      user: input.value
+    }).then(function (response) {
+      return response.json();
+    }).then(function (res) {
+      console.log(res);
+    })
+  });
+};
+window.openNotif = function () {
+  var modal = document.getElementById('notification-modal');
+  modal.classList.remove('hide-slow');
+};
+window.closeModalSlow = function (id) {
+  return document.getElementById(id).classList.add('hide-slow');
 };
 })();
 

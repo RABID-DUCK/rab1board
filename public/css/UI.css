@@ -105,3 +105,12 @@ nav .container-fluid .navbar-nav .dropdown-menu {
   bottom: 20px;
   display: block !important;
 }
+
+.notification {
+  cursor: pointer;
+  float: right;
+}
+.notification:hover {
+  filter: drop-shadow(0 0 2px #D64D00);
+  transition: filter 0.3s;
+}

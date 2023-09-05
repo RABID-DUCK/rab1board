@@ -33,6 +33,13 @@
                 <div class="modal-desk bg-dark bg-gradient text-white" data-modal-desk data-keyboard="false" data-backdrop="static">
                 </div>
             </div>
+               <div class="modal-notification hide-slow bg-dark bg-gradient text-white" id="notification-modal">
+                   <span class="close-modal" onclick="closeModalSlow('notification-modal')">X</span>
+                   <button type="button btn">SFKDSFSDF</button>
+                   <button type="button btn">SFKDSFSDF</button>
+                   <button type="button btn">SFKDSFSDF</button>
+                   <button type="button btn">SFKDSFSDF</button>
+               </div>
             </div>
 
                 {{--    Scripts--}}
