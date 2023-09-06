@@ -2393,7 +2393,7 @@ window.addColumn = function (dashboard) {
     deleteColumnModal('modal-column');
     if (!document.querySelector('.column')) {
       var _dashboard = document.getElementById('dashboard-id').value;
-      document.getElementById('add-column-panel').insertAdjacentHTML('beforebegin', "\n                     <div class=\"wrap\" data-column-id=\"".concat(data.column_id, "\">\n                        <div class=\"column\" onclick=\"clickRenameColumn(").concat(data.column_id, ")\" data-column-title=\"\">\n                            <span>").concat(data.columns[data.columns.length - 1].title, "</span>\n                            <i class=\"bi bi-check-lg save-column hide\"></i>\n                        </div>\n                        <div class=\"desk-block\">\n                        <div class=\"desk\">\n                            <p>").concat(data.desk.title, "</p>\n                            <img src=\"").concat(data.desk.image, "\" alt=\"").concat(data.desk.title, "\">\n                            <div class=\"data-desk\">\n                                <input class=\"custom-checkbox\" type=\"checkbox\" id=\"status\" name=\"status\" value=\"yes\">\n                                <time datetime=\"2011-11-18T14:54:39.929Z\" name=\"date\">").concat(data.desk.created_at, "</time>\n                            </div>\n                            <span>status</span>\n                        </div>\n                        <button class=\"add-desk\" id=\"add-task-title\" onclick=\"createDeskMiniModal(").concat(_dashboard, ", ").concat(data.column_id, ")\">+ Add desk</button>\n                    </div>\n                    </div>\n                "));
+      document.getElementById('add-column-panel').insertAdjacentHTML('beforebegin', "\n                     <div class=\"wrap\" data-column-id=\"".concat(data.column_id, "\">\n                        <div class=\"column\" onclick=\"clickRenameColumn(").concat(data.column_id, ")\" data-column-title=\"\">\n                            <span>").concat(data.columns[data.columns.length - 1].title, "</span>\n                            <i class=\"bi bi-check-lg save-column hide\"></i>\n                        </div>\n                        <div class=\"desk-block\">\n                            <button class=\"add-desk\" id=\"add-task-title\" onclick=\"createDeskMiniModal(").concat(_dashboard, ", ").concat(data.column_id, ")\">+ Add desk</button>\n                        </div>\n                    </div>\n                "));
     } else {
       document.getElementById('add-column-panel').insertAdjacentHTML('beforebegin', "\n             <div class=\"wrap\" data-column-id=\"".concat(data.column_id, "\">\n                <div class=\"column\" onclick=\"clickRenameColumn(").concat(data.column_id, ")\" data-column-title=\"\">\n                    <span>").concat(data.columns[data.columns.length - 1].title, "</span>\n                    <i class=\"bi bi-check-lg save-column hide\"></i>\n                </div>\n                    <div class=\"desk-block\">\n                        <button class=\"add-desk\" id=\"add-task-title\" onclick=\"createDeskMiniModal(").concat(data.dashboard_id, ", ").concat(data.column_id, ")\">+ Add desk</button>\n                    </div>\n            </div>\n            "));
     }
@@ -2950,7 +2950,7 @@ window.modalFiles = function (dashboard_id, desk_id) {
 };
 window.addUsersModal = function (desk_id) {
   if (!document.getElementById('addUserModal')) {
-    document.getElementById('left-panel-dash').insertAdjacentHTML('beforeend', "\n        <div class=\"modal-desk bg-dark bg-gradient text-white add-user\" id=\"addUserModal\">\n            <label class=\"form-label\" for=\"user-email\">\u041F\u043E\u0447\u0442\u0430 \u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044F</label>\n            <input class=\"form-control\" type=\"text\" id=\"user-email\">\n            <button class=\"btn text-white\" onclick=\"sendInvite(".concat(desk_id, ")\">\u041E\u0442\u043F\u0440\u0430\u0432\u0438\u0442\u044C</button>\n        </div>\n    "));
+    document.getElementById('left-panel-dash').insertAdjacentHTML('beforeend', "\n        <div class=\"modal-desk bg-dark bg-gradient text-white add-user\" id=\"addUserModal\">\n        <span class=\"close-modal\" onclick=\"closeModalSlow('addUserModal')\">X</span>\n            <label class=\"form-label\" for=\"user-email\">\u041F\u043E\u0447\u0442\u0430 \u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044F</label>\n            <input class=\"form-control\" type=\"text\" id=\"user-email\">\n            <button class=\"btn text-white\" onclick=\"sendInvite(".concat(desk_id, ")\">\u041E\u0442\u043F\u0440\u0430\u0432\u0438\u0442\u044C</button>\n        </div>\n    "));
   } else {
     return deleteColumnModal('addUserModal');
   }
@@ -2966,16 +2966,31 @@ window.sendInvite = function (dashboard_id) {
     body: JSON.stringify({
       dashboard_id: dashboard_id,
       user: input.value
-    }).then(function (response) {
-      return response.json();
-    }).then(function (res) {
-      console.log(res);
     })
+  }).then(function (response) {
+    return response.json();
+  }).then(function (res) {
+    console.log(res);
   });
 };
-window.openNotif = function () {
+window.openNotif = function (user_id, message) {
   var modal = document.getElementById('notification-modal');
   modal.classList.remove('hide-slow');
+  fetch('/api/getNotification', {
+    method: 'post',
+    headers: {
+      'Accept': 'aplication/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      user_id: user_id,
+      message: message
+    })
+  }).then(function (response) {
+    return response.json();
+  }).then(function (res) {
+    console.log(res);
+  });
 };
 window.closeModalSlow = function (id) {
   return document.getElementById(id).classList.add('hide-slow');

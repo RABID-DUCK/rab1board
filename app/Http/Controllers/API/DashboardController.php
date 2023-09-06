@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Helpers\Helper;
 use App\Http\Controllers\Controller;
+use App\Http\Interfaces\NotificationInterface;
 use App\Models\Dashboards;
+use App\Models\Notification;
 use App\Models\User;
 use App\Models\UserDashboards;
 use Illuminate\Http\Request;
@@ -41,12 +44,35 @@ class DashboardController extends Controller
     }
 
     public function addUser(Request $request){
-        $data = $request->validate(['user_id' => 'required|integer', 'dashboard_id' => 'required|integer']);
-        UserDashboards::create([
-            'user_id' => $data['user_id'],
-            'dashboard_id' => $data['dashboard_id']
-        ]);
-//        return response()->json()
+        $data = $request->validate(['user' => 'required|string', 'dashboard_id' => 'required|integer']);
+
+        if($user = User::where('email', $data['user'])->first()){
+            if($users = UserDashboards::where('dashboard_id', $data['dashboard_id'])->where('user_id', $user->id)->get()){
+                foreach ($users as $userDash){
+                    if(!$userDash->confirmed) return response()->json(['status' => 403,'message' => 'Приглашение уже было отправлено!']);
+                }
+            }
+
+           $userDashboard = UserDashboards::create([
+                'user_id' => $user->id,
+                'dashboard_id' => $data['dashboard_id'],
+                'confirmed' => false
+            ]);
+
+            $script = "<div class='notif'>Пользователь $user->email пригласил вас в своё рабочее пространство. <div class='notif-btns'>
+                    <button onclick='setConfirm($userDashboard)'>Принять</button></div>
+                    <button onclick='setConfirm($userDashboard)'>Отклонить</button></div>
+                </div>
+
+                ";
+
+            Helper::sendNotification($data['user_id'], $script);
+
+            return response()->json(['status' => 200,'message' => 'Приглашение отправлено']);
+        }
+        else{
+            return response()->json(['status' => 403,'message' => 'Пользователь не найден']);
+        }
     }
 
     public function confirmInvite(Request $request){

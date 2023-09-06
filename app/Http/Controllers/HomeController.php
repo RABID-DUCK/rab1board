@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Dashboards;
+use App\Models\UserDashboards;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -10,7 +11,14 @@ class HomeController extends Controller
     public function index()
     {
         if (auth()->user()) {
-            $dashboards = Dashboards::where('user_id', auth()->user()->id)->get();
+            $dashboards = array();
+            if(UserDashboards::where('user_id', auth()->user()->id)->first()){
+                foreach (UserDashboards::where('user_id', auth()->user()->id)->get() as $dash){
+                    if($dash->invited) {
+                        $dashboards[] = $dash->getDashboards;
+                    }
+                }
+            }
             return view('main.main', compact('dashboards'));
         }
 

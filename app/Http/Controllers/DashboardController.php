@@ -20,30 +20,39 @@ class DashboardController extends Controller
     }
 
     public function show($id){
-        if (!auth()->user()) return redirect()->route('board.index');
+        if (!auth()->user()) return redirect()->route('login');
         $user = User::where('id', auth()->user()->id)->first();
-        if(!$user) return redirect()->route('login');
 
-        $dashboard = Dashboards::where('id', $id)->first();
-        if(!$dashboard) return redirect()->route('board.index');
-        $columns = Columns::where('dashboard_id', $id)->get();
-        $desks = Desks::all();
+        if($dashboard = Dashboards::where('id', $id)->first()){
+            if(!UserDashboards::where('dashboard_id', $id)->where('user_id', auth()->user()->id)->first() ?? !UserDashboards::where('dashboard_id', $id)
+                    ->where('user_id', auth()->user()->id)->first()->invited) return redirect()->route('board.index');
 
-        return view('dashboard.dashboard', compact('dashboard', 'user', 'columns', 'desks'));
-    }
+            $columns = Columns::where('dashboard_id', $id)->get();
+            $desks = Desks::all();
 
-    public function store(StoreRequest $request){
 
+            return view('dashboard.dashboard', compact('dashboard', 'user', 'columns', 'desks'));
+        }
+
+        return redirect()->route('board.index');
     }
 
     public function addUser(Request $request){
         $data = $request->validate(['user' => 'required|string', 'dashboard_id' => 'required|integer']);
+
         if($user = User::where('email', $data['user'])->first()){
+            if($users = UserDashboards::where('dashboard_id', $data['dashboard_id'])->where('user_id', $user->id)->get()){
+                foreach ($users as $userDash){
+                    if(!$userDash->confirmed) return response()->json(['status' => 403,'message' => 'Приглашение уже было отправлено!']);
+                }
+            }
+
             UserDashboards::create([
                 'user_id' => $user->id,
                 'dashboard_id' => $data['dashboard_id'],
                 'confirmed' => false
             ]);
+
             return response()->json(['status' => 200,'message' => 'Приглашение отправлено']);
         }
         else{

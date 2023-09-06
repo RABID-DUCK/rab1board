@@ -110,7 +110,7 @@ window.addColumnModal = function (dashboard){
 window.deleteColumnModal = (id_name) => document.getElementById(id_name).remove()
 
 window.addColumn = function (dashboard){
-    const title = document.getElementById('text-column-create').value;
+    let title = document.getElementById('text-column-create').value;
     fetch('/api/column/create', {
         method: "post",
         headers: {
@@ -135,17 +135,8 @@ window.addColumn = function (dashboard){
                             <i class="bi bi-check-lg save-column hide"></i>
                         </div>
                         <div class="desk-block">
-                        <div class="desk">
-                            <p>${data.desk.title}</p>
-                            <img src="${data.desk.image}" alt="${data.desk.title}">
-                            <div class="data-desk">
-                                <input class="custom-checkbox" type="checkbox" id="status" name="status" value="yes">
-                                <time datetime="2011-11-18T14:54:39.929Z" name="date">${data.desk.created_at}</time>
-                            </div>
-                            <span>status</span>
+                            <button class="add-desk" id="add-task-title" onclick="createDeskMiniModal(${dashboard}, ${data.column_id})">+ Add desk</button>
                         </div>
-                        <button class="add-desk" id="add-task-title" onclick="createDeskMiniModal(${dashboard}, ${data.column_id})">+ Add desk</button>
-                    </div>
                     </div>
                 `)
             }
@@ -939,6 +930,7 @@ window.addUsersModal = function (desk_id){
     if(!document.getElementById('addUserModal')){
         document.getElementById('left-panel-dash').insertAdjacentHTML('beforeend', `
         <div class="modal-desk bg-dark bg-gradient text-white add-user" id="addUserModal">
+        <span class="close-modal" onclick="closeModalSlow('addUserModal')">X</span>
             <label class="form-label" for="user-email">Почта пользователя</label>
             <input class="form-control" type="text" id="user-email">
             <button class="btn text-white" onclick="sendInvite(${desk_id})">Отправить</button>
@@ -961,16 +953,31 @@ window.sendInvite = function (dashboard_id){
             dashboard_id: dashboard_id,
             user: input.value,
         })
-            .then(response => response.json())
-            .then(res => {
-                console.log(res);
-            })
     })
+        .then(response => response.json())
+        .then(res => {
+            console.log(res);
+        })
 }
 
-window.openNotif = function (){
+window.openNotif = function (user_id, message){
     let modal = document.getElementById('notification-modal');
     modal.classList.remove('hide-slow')
+    fetch('/api/getNotification', {
+        method: 'post',
+        headers: {
+            'Accept': 'aplication/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            user_id: user_id,
+            message: message
+        })
+    })
+        .then(response => response.json())
+        .then(res => {
+            console.log(res);
+        })
 }
 
 window.closeModalSlow = (id) => document.getElementById(id).classList.add('hide-slow');

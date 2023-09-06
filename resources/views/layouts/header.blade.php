@@ -66,6 +66,6 @@
             </div>
         </div>
     </div>
-    <i class="notification bi bi-bell" onclick="openNotif()"></i>
+    <i class="notification bi bi-bell" onclick="openNotif({{auth()->user()->id}})"></i>
 
 </nav>
