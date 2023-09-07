@@ -887,11 +887,35 @@ nav{
     flex-direction: column;
     justify-content: flex-start;
 
-    .notif:first-child{
+    .notif{
+        border-top: 1px solid $border;
+        border-bottom: 1px solid $border;
+        padding: 5px;
+
+        .notif-btns{
+            margin-top: 10px;
+            display: flex;
+            justify-content: space-around;
+
+            button{
+                border: none !important;
+            }
+
+            .btn-success:hover{
+                background-color: #008500 !important;
+            }
+
+            .btn-danger:hover{
+                background-color: #c40202 !important;
+            }
+        }
+    }
+
+    .notif:first-of-type{
         margin-top: 50px;
     }
 
-    .notif:not(.notif:first-child){
+    .notif + .notif{
         margin-top: 10px;
     }
 }

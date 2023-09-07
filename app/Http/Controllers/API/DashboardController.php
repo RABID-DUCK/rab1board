@@ -44,9 +44,9 @@ class DashboardController extends Controller
     }
 
     public function addUser(Request $request){
-        $data = $request->validate(['user' => 'required|string', 'dashboard_id' => 'required|integer']);
+        $data = $request->validate(['email' => 'required|string', 'dashboard_id' => 'required|integer']);
 
-        if($user = User::where('email', $data['user'])->first()){
+        if($user = User::where('email', $data['email'])->first()){
             if($users = UserDashboards::where('dashboard_id', $data['dashboard_id'])->where('user_id', $user->id)->get()){
                 foreach ($users as $userDash){
                     if(!$userDash->confirmed) return response()->json(['status' => 403,'message' => 'Приглашение уже было отправлено!']);
@@ -59,14 +59,14 @@ class DashboardController extends Controller
                 'confirmed' => false
             ]);
 
-            $script = "<div class='notif'>Пользователь $user->email пригласил вас в своё рабочее пространство. <div class='notif-btns'>
-                    <button onclick='setConfirm($userDashboard)'>Принять</button></div>
-                    <button onclick='setConfirm($userDashboard)'>Отклонить</button></div>
-                </div>
+            $script = "<span>Пользователь $user->email пригласил вас в своё рабочее пространство.
+                            <div class='notif-btns'>
+                                <button class='btn btn-success' onclick='setConfirm($user->id, $userDashboard->dashboard_id, true)'>Принять</button>
+                                <button class='btn btn-danger' onclick='setConfirm($user->id, $userDashboard->dashboard_id, false)'>Отклонить</button>
+                            </div>
+                        </span>";
 
-                ";
-
-            Helper::sendNotification($data['user_id'], $script);
+            Helper::sendNotification($user->id, $script, 'invite_dashboard');
 
             return response()->json(['status' => 200,'message' => 'Приглашение отправлено']);
         }
@@ -76,11 +76,17 @@ class DashboardController extends Controller
     }
 
     public function confirmInvite(Request $request){
-        $data = $request->validate(['user_id' => 'required|integer', 'dashboard_id' => 'required|integer', 'invited' => 'required|boolean']);
+        $data = $request->validate(['user_id' => 'required|integer', 'dashboard_id' => 'required|integer',
+            'invited' => 'required|boolean', 'not_id' => 'required|integer']);
+
         if($invite = UserDashboards::where('dashboard_id', $data['dashboard_id'])->where('user_id', $data['user_id'])->first()){
             $invite->invited = $data['invited'];
             $invite->save();
-            return response()->json(['status' => 200]);
+            $not = Notification::where('id', $data['not_id'])->first();
+            $not->read = $data['invited'];
+            $not->save();
+
+            return redirect()->route('board.show', $data['dashboard_id']);
         }
 
         return response()->json(['message' => 'Произошла ошибка...попробуйте позже!']);

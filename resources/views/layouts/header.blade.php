@@ -66,6 +66,8 @@
             </div>
         </div>
     </div>
-    <i class="notification bi bi-bell" onclick="openNotif({{auth()->user()->id}})"></i>
+    @if(Auth::check())
+    <i class="notification bi bi-bell" onclick="openNotif({{Auth::user()->id}})"></i>
+    @endif
 
 </nav>

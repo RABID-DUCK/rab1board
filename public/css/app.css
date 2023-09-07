@@ -782,9 +782,28 @@ nav {
   flex-direction: column;
   justify-content: flex-start;
 }
-.modal-notification .notif:first-child {
+.modal-notification .notif {
+  border-top: 1px solid #EBEFF2;
+  border-bottom: 1px solid #EBEFF2;
+  padding: 5px;
+}
+.modal-notification .notif .notif-btns {
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-around;
+}
+.modal-notification .notif .notif-btns button {
+  border: none !important;
+}
+.modal-notification .notif .notif-btns .btn-success:hover {
+  background-color: #008500 !important;
+}
+.modal-notification .notif .notif-btns .btn-danger:hover {
+  background-color: #c40202 !important;
+}
+.modal-notification .notif:first-of-type {
   margin-top: 50px;
 }
-.modal-notification .notif:not(.notif:first-child) {
+.modal-notification .notif + .notif {
   margin-top: 10px;
 }

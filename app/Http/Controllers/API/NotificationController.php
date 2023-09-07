@@ -11,6 +11,7 @@ class NotificationController extends Controller
 {
     public function getNotifications(Request $request){
         $user = $request->validate(['user_id' => 'required|integer']);
+
         return Helper::getNotifications($user);
     }
 }

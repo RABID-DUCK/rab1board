@@ -2364,7 +2364,7 @@ window.openCreateDashboardModal = function (user_id) {
         return;
       }
       window.location.reload();
-    })["catch"](function (error) {});
+    });
   });
 };
 window.addColumnModal = function (dashboard) {
@@ -2434,7 +2434,7 @@ window.createDesk = function (dashboard, column) {
     deleteDeskModal(res.column_id);
     var condition = '[data-column-id="' + res.column_id + '"]';
     var data_column = document.querySelector(condition);
-    data_column.querySelector('#add-task-title').insertAdjacentHTML('beforebegin', "\n                <div class=\"desk\" onclick=\"viewDesk(".concat(dashboard, ", ").concat(column, ", ").concat(res.desk.id, ")\">\n                    <p>").concat(res.desk.title, "</p>\n                    <img src=\"").concat(res.desk.image, "\" alt=\"").concat(res.desk.title, "\">\n                    <div class=\"data-desk\">\n                        <input class=\"custom-checkbox\" type=\"checkbox\" id=\"status\" name=\"status\" value=\"yes\">\n                        <time datetime=\"2011-11-18T14:54:39.929Z\" name=\"date\">2023-08-01 15:00</time>\n                    </div>\n                    <span>status</span>\n                </div>\n            "));
+    data_column.querySelector('#add-task-title').insertAdjacentHTML('beforebegin', "\n                <div class=\"desk\" onclick=\"viewDesk(".concat(dashboard, ", ").concat(column, ", ").concat(res.desk.id, ")\">\n                    <p>").concat(res.desk.title, "</p>\n                    <img src=\"").concat(res.desk.image, "\" alt=\"").concat(res.desk.title, "\">\n                    <div class=\"data-desk\">\n                        <input class=\"custom-checkbox\" type=\"checkbox\" id=\"status\" name=\"status\" value=\"yes\">\n                        <time class=\"text-muted\" datetime=\"2011-11-18T14:54:39.929Z\" name=\"date\">\u0421\u0440\u043E\u043A\u043E\u0432 \u043D\u0435\u0442</time>\n                    </div>\n                    <span>status</span>\n                </div>\n            "));
   });
 };
 window.clickRenameColumn = function (id) {
@@ -2586,7 +2586,7 @@ window.loadImages = function (dashboard_id, desk_id, images) {
     var modal = document.querySelector('[data-modal-desk]');
     modal.insertAdjacentHTML('beforeend', "\n        <div class=\"block-images\" id=\"block-images\">\n            <div class=\"output-images\" id=\"output-images\"></div>\n            <div class=\"dropzone images mb-2\" id=\"upload-images\"></div>\n        <div>\n    ");
     images.forEach(function (item) {
-      document.getElementById('output-images').insertAdjacentHTML('beforeend', "\n            <a href=\"".concat(item.image, "\" target=\"_blank\"><img src=\"/storage/").concat(item.image, "\" width=\"250\" height=\"100\"></a>\n        "));
+      document.getElementById('output-images').insertAdjacentHTML('beforeend', "\n            <a href=\"".concat(item.image, "\" target=\"_blank\"><img src=\"/storage/").concat(item.image, "\" width=\"250\" height=\"100\" alt=\"").concat(explode(item.image, 'storage/images/'), "\"></a>\n        "));
     });
     dropZoneImages(dashboard_id, desk_id);
   }
@@ -2781,8 +2781,7 @@ window.saveDate = function (dashboard_id, desk_id) {
   });
 };
 window.convertData = function (data) {
-  var dateString = data;
-  var date = new Date(dateString);
+  var date = new Date(data);
   var options = {
     day: 'numeric',
     month: 'long',
@@ -2793,8 +2792,7 @@ window.convertData = function (data) {
     hour: '2-digit',
     minute: '2-digit'
   });
-  var result = "".concat(formattedDate, " \u0432 ").concat(formattedTime);
-  return result;
+  return "".concat(formattedDate, " \u0432 ").concat(formattedTime);
 };
 
 // разница времени
@@ -2965,7 +2963,7 @@ window.sendInvite = function (dashboard_id) {
     },
     body: JSON.stringify({
       dashboard_id: dashboard_id,
-      user: input.value
+      email: input.value
     })
   }).then(function (response) {
     return response.json();
@@ -2973,9 +2971,12 @@ window.sendInvite = function (dashboard_id) {
     console.log(res);
   });
 };
-window.openNotif = function (user_id, message) {
+window.openNotif = function (user_id) {
   var modal = document.getElementById('notification-modal');
   modal.classList.remove('hide-slow');
+  refreshNotifs(user_id);
+};
+window.refreshNotifs = function (user_id) {
   fetch('/api/getNotification', {
     method: 'post',
     headers: {
@@ -2983,17 +2984,46 @@ window.openNotif = function (user_id, message) {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
-      user_id: user_id,
-      message: message
+      user_id: user_id
     })
   }).then(function (response) {
     return response.json();
   }).then(function (res) {
-    console.log(res);
+    document.querySelectorAll('.notif').forEach(function (item) {
+      item.remove();
+    });
+    if (res.length <= 0) {
+      console.log('da');
+      document.getElementById('notification-modal').insertAdjacentHTML('beforeend', "\n                    <b class=\"text-white text-center\" style=\"position: absolute; top: 45%;\">\u0417\u0434\u0435\u0441\u044C \u0431\u0443\u0434\u0443\u0442 \u0432\u0430\u0448\u0438 \u043D\u0435\u043F\u0440\u043E\u0447\u0438\u0442\u0430\u043D\u043D\u044B\u0435 \u0443\u0432\u0435\u0434\u043E\u043C\u043B\u0435\u043D\u0438\u044F <i class=\"bi bi-bell\"></i></b>");
+      return;
+    }
+    res.forEach(function (item) {
+      document.getElementById('notification-modal').insertAdjacentHTML('beforeend', "\n                    <div class=\"notif\" data-notif=\"".concat(item.id, "\">").concat(item.message, "</div>\n                "));
+    });
   });
 };
 window.closeModalSlow = function (id) {
   return document.getElementById(id).classList.add('hide-slow');
+};
+window.setConfirm = function (user_id, dashboard_id, invited) {
+  var not_id = event.currentTarget.closest('.notif').getAttribute('data-notif');
+  fetch('/api/dashboard/confirmInvite', {
+    method: 'post',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      user_id: user_id,
+      dashboard_id: dashboard_id,
+      not_id: not_id,
+      invited: invited
+    })
+  }).then(function (response) {
+    return response.json();
+  }).then(function (res) {
+    refreshNotifs(user_id);
+  });
 };
 })();
 

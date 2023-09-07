@@ -89,8 +89,6 @@ window.openCreateDashboardModal = function(user_id){
                 }
                 window.location.reload()
             })
-            .catch(error => {
-            })
     });
 }
 
@@ -207,7 +205,7 @@ window.createDesk = function (dashboard, column){
                     <img src="${res.desk.image}" alt="${res.desk.title}">
                     <div class="data-desk">
                         <input class="custom-checkbox" type="checkbox" id="status" name="status" value="yes">
-                        <time datetime="2011-11-18T14:54:39.929Z" name="date">2023-08-01 15:00</time>
+                        <time class="text-muted" datetime="2011-11-18T14:54:39.929Z" name="date">Сроков нет</time>
                     </div>
                     <span>status</span>
                 </div>
@@ -440,8 +438,9 @@ window.loadImages = function (dashboard_id, desk_id, images){
         <div>
     `)
         images.forEach(item => {
+
             document.getElementById('output-images').insertAdjacentHTML('beforeend', `
-            <a href="${item.image}" target="_blank"><img src="/storage/${item.image}" width="250" height="100"></a>
+            <a href="${item.image}" target="_blank"><img src="/storage/${item.image}" width="250" height="100" alt="${explode(item.image, 'storage/images/')}"></a>
         `)
         })
         dropZoneImages(dashboard_id, desk_id)
@@ -722,13 +721,11 @@ window.saveDate = function (dashboard_id, desk_id){
 }
 
 window.convertData = function (data){
-    const dateString = data;
-    const date = new Date(dateString);
+    const date = new Date(data);
     const options = { day: 'numeric', month: 'long', year: 'numeric' };
     const formattedDate = date.toLocaleDateString('ru-RU', options);
     const formattedTime = date.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
-    const result = `${formattedDate} в ${formattedTime}`;
-    return result;
+    return `${formattedDate} в ${formattedTime}`;
 }
 
 // разница времени
@@ -951,7 +948,7 @@ window.sendInvite = function (dashboard_id){
         },
         body: JSON.stringify({
             dashboard_id: dashboard_id,
-            user: input.value,
+            email: input.value,
         })
     })
         .then(response => response.json())
@@ -960,9 +957,13 @@ window.sendInvite = function (dashboard_id){
         })
 }
 
-window.openNotif = function (user_id, message){
+window.openNotif = function (user_id){
     let modal = document.getElementById('notification-modal');
     modal.classList.remove('hide-slow')
+    refreshNotifs(user_id);
+}
+
+window.refreshNotifs = function (user_id){
     fetch('/api/getNotification', {
         method: 'post',
         headers: {
@@ -971,13 +972,49 @@ window.openNotif = function (user_id, message){
         },
         body: JSON.stringify({
             user_id: user_id,
-            message: message
         })
     })
         .then(response => response.json())
         .then(res => {
-            console.log(res);
+            document.querySelectorAll('.notif').forEach(item => {
+                item.remove();
+            })
+
+            if(res.length <= 0){
+                console.log('da')
+                document.getElementById('notification-modal').insertAdjacentHTML('beforeend', `
+                    <b class="text-white text-center" style="position: absolute; top: 45%;">Здесь будут ваши непрочитанные уведомления <i class="bi bi-bell"></i></b>`);
+                return;
+            }
+
+           res.forEach(item => {
+                document.getElementById('notification-modal').insertAdjacentHTML('beforeend', `
+                    <div class="notif" data-notif="${item.id}">${item.message}</div>
+                `)
+            })
         })
 }
 
 window.closeModalSlow = (id) => document.getElementById(id).classList.add('hide-slow');
+
+window.setConfirm = function(user_id, dashboard_id, invited){
+    let not_id = event.currentTarget.closest('.notif').getAttribute('data-notif');
+
+    fetch('/api/dashboard/confirmInvite', {
+        method: 'post',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            user_id: user_id,
+            dashboard_id: dashboard_id,
+            not_id: not_id,
+            invited: invited
+        })
+    })
+        .then(response => response.json())
+        .then(res => {
+            refreshNotifs(user_id)
+        })
+}
