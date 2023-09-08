@@ -67,7 +67,7 @@
         </div>
     </div>
     @if(Auth::check())
-    <i class="notification bi bi-bell" onclick="openNotif({{Auth::user()->id}})"><span class="count-not" id="countNot">{{$count_not === 0 ?? 0}}</span></i>
+    <i class="notification bi bi-bell" onclick="openNotif({{Auth::user()->id}})"><span class="count-not" id="countNot">{{$count_not === 0 ? '' : $count_not}}</span></i>
     @endif
 
 </nav>

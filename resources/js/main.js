@@ -977,7 +977,7 @@ window.refreshNotifs = function (user_id){
         .then(response => response.json())
         .then(res => {
             let modal = document.getElementById('notification-modal');
-            document.getElementById('countNot').innerText = res.length;
+            document.getElementById('countNot').innerText = res.length === 0 ? '' : res.length;
 
             if(document.querySelector('.notif')) {
                 document.querySelectorAll('.notif').forEach(item => {

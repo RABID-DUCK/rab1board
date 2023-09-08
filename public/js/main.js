@@ -2990,7 +2990,7 @@ window.refreshNotifs = function (user_id) {
     return response.json();
   }).then(function (res) {
     var modal = document.getElementById('notification-modal');
-    document.getElementById('countNot').innerText = res.length;
+    document.getElementById('countNot').innerText = res.length === 0 ? '' : res.length;
     if (document.querySelector('.notif')) {
       document.querySelectorAll('.notif').forEach(function (item) {
         item.remove();
