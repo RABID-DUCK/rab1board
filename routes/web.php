@@ -1,6 +1,8 @@
 <?php
 
+use App\Models\Notification;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\View;
 
 /*
 |--------------------------------------------------------------------------

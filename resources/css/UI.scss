@@ -138,3 +138,14 @@ nav .container-fluid{
         transition: filter .3s;
     }
 }
+
+.read-not{
+    &:focus{
+        background-color: green;
+        color: white;
+    }
+
+    &:hover{
+        color: lightgreen;
+    }
+}

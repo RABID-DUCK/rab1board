@@ -992,12 +992,14 @@ window.refreshNotifs = function (user_id){
 
                 res.forEach(item => {
                     modal.insertAdjacentHTML('beforeend', `
-                    <div class="notif" data-notif="${item.id}">${item.message}</div>
+                    <div class="notif" data-notif="${item.id}">${item.message} <i class="bi bi-check-square read-not" style="cursor: pointer;"
+                    onclick="notifRead(${user_id}, ${item.id})"></i></div>
                 `)
                 })
             }else if(res.length === 1){
                 modal.insertAdjacentHTML('beforeend', `
-                    <div class="notif" data-notif="${res[0].id}">${res[0].message}</div>
+                    <div class="notif" data-notif="${res[0].id}">${res[0].message} <i class="bi bi-check-square read-not" style="cursor: pointer;"
+                    onclick="notifRead(${user_id}, ${res[0].id})"></i></div>
                 `)
             }
         })
@@ -1024,5 +1026,23 @@ window.setConfirm = function(user_id, dashboard_id, confirmed){
         .then(response => response.json())
         .then(res => {
             refreshNotifs(user_id)
+        })
+}
+
+window.notifRead = function (user_id, notif_id){
+    fetch('/api/notif/check', {
+        method: 'post',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            id: notif_id,
+            read: true
+        })
+    })
+        .then(response => response.json())
+        .then(res => {
+            if(res.status === 200) refreshNotifs(user_id);
         })
 }

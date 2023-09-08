@@ -116,3 +116,11 @@ nav .container-fluid .navbar-nav .dropdown-menu {
   filter: drop-shadow(0 0 2px #D64D00);
   transition: filter 0.3s;
 }
+
+.read-not:focus {
+  background-color: green;
+  color: white;
+}
+.read-not:hover {
+  color: lightgreen;
+}

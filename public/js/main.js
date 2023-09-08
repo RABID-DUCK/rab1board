@@ -3000,10 +3000,10 @@ window.refreshNotifs = function (user_id) {
       modal.insertAdjacentHTML('beforeend', "\n                    <b class=\"text-white text-center\" style=\"position: absolute; top: 45%;\">\u0417\u0434\u0435\u0441\u044C \u0431\u0443\u0434\u0443\u0442 \u0432\u0430\u0448\u0438 \u043D\u0435\u043F\u0440\u043E\u0447\u0438\u0442\u0430\u043D\u043D\u044B\u0435 \u0443\u0432\u0435\u0434\u043E\u043C\u043B\u0435\u043D\u0438\u044F <i class=\"bi bi-bell\"></i></b>");
     } else if (res.length > 1) {
       res.forEach(function (item) {
-        modal.insertAdjacentHTML('beforeend', "\n                    <div class=\"notif\" data-notif=\"".concat(item.id, "\">").concat(item.message, "</div>\n                "));
+        modal.insertAdjacentHTML('beforeend', "\n                    <div class=\"notif\" data-notif=\"".concat(item.id, "\">").concat(item.message, " <i class=\"bi bi-check-square read-not\" style=\"cursor: pointer;\"\n                    onclick=\"notifRead(").concat(user_id, ", ").concat(item.id, ")\"></i></div>\n                "));
       });
     } else if (res.length === 1) {
-      modal.insertAdjacentHTML('beforeend', "\n                    <div class=\"notif\" data-notif=\"".concat(res[0].id, "\">").concat(res[0].message, "</div>\n                "));
+      modal.insertAdjacentHTML('beforeend', "\n                    <div class=\"notif\" data-notif=\"".concat(res[0].id, "\">").concat(res[0].message, " <i class=\"bi bi-check-square read-not\" style=\"cursor: pointer;\"\n                    onclick=\"notifRead(").concat(user_id, ", ").concat(res[0].id, ")\"></i></div>\n                "));
     }
   });
 };
@@ -3028,6 +3028,23 @@ window.setConfirm = function (user_id, dashboard_id, confirmed) {
     return response.json();
   }).then(function (res) {
     refreshNotifs(user_id);
+  });
+};
+window.notifRead = function (user_id, notif_id) {
+  fetch('/api/notif/check', {
+    method: 'post',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      id: notif_id,
+      read: true
+    })
+  }).then(function (response) {
+    return response.json();
+  }).then(function (res) {
+    if (res.status === 200) refreshNotifs(user_id);
   });
 };
 })();

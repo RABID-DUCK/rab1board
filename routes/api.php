@@ -72,3 +72,4 @@ Route::post('/comment/update', '\App\Http\Controllers\API\CommentsController@upd
 Route::post('/comment/delete', '\App\Http\Controllers\API\CommentsController@delete'); // удалить комментарий
 
 Route::post('/getNotification', [\App\Http\Controllers\API\NotificationController::class, 'getNotifications']);
+Route::post('/notif/check', [\App\Http\Controllers\API\NotificationController::class, 'setRead']);

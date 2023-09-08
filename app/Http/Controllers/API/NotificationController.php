@@ -14,4 +14,16 @@ class NotificationController extends Controller
 
         return Helper::getNotifications($user);
     }
+
+    public function setRead(Request $request){
+        $data = $request->validate([
+            'id' => 'required|integer',
+            'read' => 'required|boolean'
+        ]);
+        $not = Notification::where('id', $data['id'])->first();
+        $not->read = true;
+        $not->save();
+
+        return response()->json(['status' => 200, 'message' => 'read']);
+    }
 }
