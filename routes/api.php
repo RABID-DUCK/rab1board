@@ -31,8 +31,7 @@ Route::get('/user/{id}', '\App\Http\Controllers\UserController@show');
 Route::post('/dashboard/create', '\App\Http\Controllers\API\DashboardController@store'); // создать проект
 Route::post('/dashboard/rename', '\App\Http\Controllers\API\DashboardController@update'); // переименовать проект
 Route::post('/dashboard/delete', '\App\Http\Controllers\API\DashboardController@delete'); // удалить проект
-Route::post('/dashboard/addUser', '\App\Http\Controllers\API\DashboardController@addUser'); // добавить пользователя/ей на проект
-Route::post('/dashboard/confirmInvite', '\App\Http\Controllers\API\DashboardController@confirmInvite'); // принятие приглашения на проект. Отправлять 1 либо 0
+
 Route::get('/getDashboards', '\App\Http\Controllers\API\DashboardController@getDashboards'); // получить проекты
 
 Route::post('/column/create', '\App\Http\Controllers\API\ColumnController@store'); // создать колонку
@@ -47,7 +46,6 @@ Route::get('/modalDesk', '\App\Http\Controllers\API\DeskController@show'); // п
 Route::post('/modalUpdate', '\App\Http\Controllers\API\DeskController@update'); // обновить данные модального окна
 Route::post('/addImages', '\App\Http\Controllers\API\DeskController@addImages'); // добавить картинки с дропзоны
 Route::post('/addFiles', '\App\Http\Controllers\API\DeskController@addFiles'); // добавить файлы с дропзоны
-Route::post('/addUserDesk', '\App\Http\Controllers\API\DeskController@addUser'); // добавить пользователя на задачу
 Route::post('/desk/delete', '\App\Http\Controllers\API\DeskController@delete'); // удалить задачу
 Route::get('/desk/{id}', '\App\Http\Controllers\DeskController@show'); // показать одну доску(без всего)
 
@@ -73,3 +71,10 @@ Route::post('/comment/delete', '\App\Http\Controllers\API\CommentsController@del
 
 Route::post('/getNotification', [\App\Http\Controllers\API\NotificationController::class, 'getNotifications']);
 Route::post('/notif/check', [\App\Http\Controllers\API\NotificationController::class, 'setRead']);
+
+Route::post('/dashboard/getUsersDashboard', '\App\Http\Controllers\API\UserDashboardController@getUsers'); // Получить всех пользователей дашборда.
+Route::post('/dashboard/addUser', '\App\Http\Controllers\API\UserDashboardController@addUser'); // добавить пользователя/ей на проект
+Route::post('/dashboard/confirmInvite', '\App\Http\Controllers\API\UserDashboardController@confirmInvite'); // принятие приглашения на проект.
+
+Route::post('/desk/getUsers', '\App\Http\Controllers\API\UserDeskController@getUsers'); // получить пользователей доски
+Route::post('/addUserDesk', '\App\Http\Controllers\API\UserDeskController@addUser'); // добавить пользователя на задачу

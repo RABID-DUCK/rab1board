@@ -65,12 +65,14 @@ class DeskController extends Controller
         $data = $request->validate(['dashboard_id' => 'required|integer', 'column_id' => 'required|integer', 'desk_id' => 'required|integer',
             'list_task_id' => 'nullable|integer']);
 
-        $desk = Desks::with('dashboard', 'column')->where('id', $data['desk_id'])
+        $desk = Desks::with('dashboard', 'column', 'getUser')->where('id', $data['desk_id'])
             ->whereHas('dashboard', function ($query) use ($data) {
                 $query->where('id', $data['dashboard_id']);
             })
             ->whereHas('column', function ($query) use ($data) {
                 $query->where('id', $data['column_id']);
+            })->whereHas('getUser', function ($query) use ($data) {
+                $query->where('id', $data['desk_id']);
             })
             ->first();
 
@@ -133,27 +135,6 @@ class DeskController extends Controller
             }
 //        }
         return response()->json(['message' => 'Вы не состоите в этом проекте!']);
-    }
-
-    public function addUser(Request $request){
-        $data = $request->validate(['desk_id' => 'required|integer', 'user_id' => 'required|integer']);
-        if($user = User::where('id', $data['user_id'])->first()){
-            if($userDash = UserDashboards::where('user_id', $user->id)->first()){
-                if(!$userDash->invited) return response()->json(['message' => 'Пользователя не существует в этом проекте!']);
-                if(UserDesks::where('desk_id', $data['desk_id'])->where('user_id', $data['user_id'])->first()) return false;
-
-                UserDesks::create([
-                    'desk_id' => $data['desk_id'],
-                    'user_id' => $data['user_id']
-                ]);
-                $users = UserDesks::with('userDesks')->where('desk_id', $data['desk_id'])
-                    ->whereHas('userDesks', function ($query) use ($data){
-                        $query->where('desk_id', $data['desk_id']);
-                    })->get();
-
-                return response()->json(['users' => $users]);
-            }
-        }
     }
 
     public function delete(Request $request){

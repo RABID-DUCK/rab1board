@@ -29,7 +29,8 @@ class DeskResource extends JsonResource
             'dashboard' => DashboardResource::make($this->whenLoaded('dashboard')),
             'column' => ColumnResource::make($this->whenLoaded('column')),
             'color' => $this->color,
-            'images' => DeskImages::where('desk_id', $this->id)->get()
+            'images' => DeskImages::where('desk_id', $this->id)->get(),
+            'user' => Auth()->user()
         ];
     }
 }

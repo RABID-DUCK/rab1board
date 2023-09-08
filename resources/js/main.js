@@ -374,11 +374,8 @@ window.viewDesk = function (dashboard_id, column_id, desk_id){
             modal.insertAdjacentHTML('beforeend', `
              <span class="close-modal" id="modal-desk" onclick="closeModal()">X</span>
                 <b>${res.data.title}</b>
-                <div class="users-desk">
-                    <span><img src="/images/avatar_none.png" alt=""></span>
-                    <span><img src="/images/avatar_none.png" alt=""></span>
-                    <span><img src="/images/avatar_none.png" alt=""></span>
-                    <i class="bi bi-plus-circle" onclick="addUsersModal(${desk_id})"></i>
+                <div class="users-desk" id="usersDesk">
+                    <i class="bi bi-plus-circle" onclick="modalAddUserDesk(${desk_id}, ${dashboard_id})" id="plusUser"></i>
                 </div>
 
                 <div id="output-date" class="output-date" style="${!res.data.data_end ? 'display: none;' : ''}">
@@ -393,11 +390,21 @@ window.viewDesk = function (dashboard_id, column_id, desk_id){
                     <i class="bi bi-check-lg"></i>Save</button>
                 </div>
                     <button class="btn text-white ${res.data.list_task_id ? 'hide' : ''}" id="add-menu-tasks" onclick="createTask(${dashboard_id},${desk_id},${column_id})">Add tasks</button>
+                <div class="comments" id="comment-wrap">
+                    <label for="comments" class="form-label">Comments</label>
+                    <textarea class="form-control" id="comments" rows="3" placeholder="What you want?...."></textarea>
+                    <button class="btn text-white hide w-100" id="save-comment" onclick="addComment(${desk_id})">
+                    <i class="bi bi-check-lg"></i>Save</button>
+                </div>
             `)
 
+            getUsersDesk(desk_id);
             // --------Add Description-------
             document.getElementById('description').addEventListener('click', function (){
                 document.getElementById('save-desk').classList.remove('hide')
+            })
+            document.getElementById('comments').addEventListener('click', function (){
+                document.getElementById('save-comment').classList.remove('hide')
             })
             // --------End add Description-------
 
@@ -1046,3 +1053,105 @@ window.notifRead = function (user_id, notif_id){
             if(res.status === 200) refreshNotifs(user_id);
         })
 }
+
+window.getUsersDashboard = function (desk_id, dashboard_id){
+    fetch('/api/dashboard/getUsersDashboard', {
+        method: 'post',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            dashboard_id: dashboard_id,
+        })
+    })
+        .then(response => response.json())
+        .then(res => {
+            let spawn = document.getElementById('addUserModal');
+
+            if(res.length > 1){
+                res.forEach(item => {
+                    spawn.insertAdjacentHTML('beforeend', `
+                        <span style="cursor: pointer;" title="${item.get_users.login}" onclick="addUsersDesk(${desk_id}, ${item.get_users.id})">
+                        <img src="/images/${item.get_users.image}"  alt="${item.get_users.image}"></span>
+                    `)
+                })
+            }
+            else{
+                console.log(res)
+                spawn.insertAdjacentHTML('beforeend', `
+                    <span style="cursor: pointer;" title="${res[0].get_users.login}" onclick="addEventListener(${desk_id}, ${res[0].get_users.id})">
+                    <img src="/images/${res[0].get_users.image}"  alt="${res[0].get_users.image}"></span>
+                `)
+            }
+        })
+}
+
+window.getUsersDesk = function (desk_id){
+    fetch('/api/desk/getUsers', {
+        method: 'post',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            desk_id: desk_id,
+        })
+    })
+        .then(response => response.json())
+        .then(res => {
+            let spawn = document.getElementById('plusUser');
+            document.getElementById('usersDesk').querySelectorAll('span').forEach(item => {
+                item.remove();
+            })
+
+            if(res.length > 0){
+                res.forEach(item => {
+                    spawn.insertAdjacentHTML('beforebegin', `
+                        <span title="${item.user_desks.login}"><img src="/images/${item.user_desks.image}"  alt="${item.user_desks.image}"></span>
+                    `)
+                })
+            }
+            else{
+                spawn.insertAdjacentHTML('beforebegin', `
+                    <span title="${res.user_desks.login}"><img src="/images/${res.user_desks.image}"  alt="${res.user_desks.image}"></span>
+                `)
+            }
+        })
+}
+
+window.modalAddUserDesk = function(desk_id, dashboard_id){
+    let modal = document.querySelector('[data-modal-desk]');
+    if(!document.getElementById('addUserModal')){
+        modal.insertAdjacentHTML('beforeend', `
+        <div class="modal-desk bg-dark bg-gradient text-white add-user users-desk desk-user-modal" id="addUserModal">
+            <span class="close-modal" onclick="closeModalSlow('addUserModal')">X</span>
+        </div>
+    `)
+
+    getUsersDashboard(desk_id, dashboard_id)
+
+    }else{
+        document.getElementById('addUserModal').classList.remove('hide-slow')
+    }
+
+}
+
+window.addUsersDesk = function (desk_id, user_id){
+    fetch('/api/addUserDesk', {
+        method: 'post',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            desk_id: desk_id,
+            user_id: user_id
+        })
+    })
+        .then(response => response.json())
+        .then(res => {
+            getUsersDesk(desk_id)
+        })
+}
+

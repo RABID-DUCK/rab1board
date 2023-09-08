@@ -14,4 +14,8 @@ class UserDashboards extends Model
     public function getDashboards(){
         return $this->belongsTo(Dashboards::class, 'dashboard_id', 'id');
     }
+
+    public function getUsers(){
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
 }
