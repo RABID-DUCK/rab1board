@@ -109,6 +109,8 @@ nav .container-fluid .navbar-nav .dropdown-menu {
 .notification {
   cursor: pointer;
   float: right;
+  position: relative;
+  margin-right: 5px;
 }
 .notification:hover {
   filter: drop-shadow(0 0 2px #D64D00);

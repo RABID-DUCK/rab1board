@@ -2989,23 +2989,28 @@ window.refreshNotifs = function (user_id) {
   }).then(function (response) {
     return response.json();
   }).then(function (res) {
-    document.querySelectorAll('.notif').forEach(function (item) {
-      item.remove();
-    });
-    if (res.length <= 0) {
-      console.log('da');
-      document.getElementById('notification-modal').insertAdjacentHTML('beforeend', "\n                    <b class=\"text-white text-center\" style=\"position: absolute; top: 45%;\">\u0417\u0434\u0435\u0441\u044C \u0431\u0443\u0434\u0443\u0442 \u0432\u0430\u0448\u0438 \u043D\u0435\u043F\u0440\u043E\u0447\u0438\u0442\u0430\u043D\u043D\u044B\u0435 \u0443\u0432\u0435\u0434\u043E\u043C\u043B\u0435\u043D\u0438\u044F <i class=\"bi bi-bell\"></i></b>");
-      return;
+    var modal = document.getElementById('notification-modal');
+    document.getElementById('countNot').innerText = res.length;
+    if (document.querySelector('.notif')) {
+      document.querySelectorAll('.notif').forEach(function (item) {
+        item.remove();
+      });
     }
-    res.forEach(function (item) {
-      document.getElementById('notification-modal').insertAdjacentHTML('beforeend', "\n                    <div class=\"notif\" data-notif=\"".concat(item.id, "\">").concat(item.message, "</div>\n                "));
-    });
+    if (res.length <= 0) {
+      modal.insertAdjacentHTML('beforeend', "\n                    <b class=\"text-white text-center\" style=\"position: absolute; top: 45%;\">\u0417\u0434\u0435\u0441\u044C \u0431\u0443\u0434\u0443\u0442 \u0432\u0430\u0448\u0438 \u043D\u0435\u043F\u0440\u043E\u0447\u0438\u0442\u0430\u043D\u043D\u044B\u0435 \u0443\u0432\u0435\u0434\u043E\u043C\u043B\u0435\u043D\u0438\u044F <i class=\"bi bi-bell\"></i></b>");
+    } else if (res.length > 1) {
+      res.forEach(function (item) {
+        modal.insertAdjacentHTML('beforeend', "\n                    <div class=\"notif\" data-notif=\"".concat(item.id, "\">").concat(item.message, "</div>\n                "));
+      });
+    } else if (res.length === 1) {
+      modal.insertAdjacentHTML('beforeend', "\n                    <div class=\"notif\" data-notif=\"".concat(res[0].id, "\">").concat(res[0].message, "</div>\n                "));
+    }
   });
 };
 window.closeModalSlow = function (id) {
   return document.getElementById(id).classList.add('hide-slow');
 };
-window.setConfirm = function (user_id, dashboard_id, invited) {
+window.setConfirm = function (user_id, dashboard_id, confirmed) {
   var not_id = event.currentTarget.closest('.notif').getAttribute('data-notif');
   fetch('/api/dashboard/confirmInvite', {
     method: 'post',
@@ -3017,7 +3022,7 @@ window.setConfirm = function (user_id, dashboard_id, invited) {
       user_id: user_id,
       dashboard_id: dashboard_id,
       not_id: not_id,
-      invited: invited
+      confirmed: confirmed
     })
   }).then(function (response) {
     return response.json();

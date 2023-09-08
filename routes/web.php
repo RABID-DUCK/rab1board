@@ -23,7 +23,7 @@ Auth::routes();
 Route::group(['namespace' => 'frontend'], function (){
     Route::get('/', [\App\Http\Controllers\HomeController::class, 'index'])->name('board.index');
     Route::get('/dashboard/{id}', [\App\Http\Controllers\DashboardController::class, 'show'])->name('board.show');
-});
+})->middleware('auth');
 
 Auth::routes();
 

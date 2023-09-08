@@ -24,8 +24,8 @@ class DashboardController extends Controller
         $user = User::where('id', auth()->user()->id)->first();
 
         if($dashboard = Dashboards::where('id', $id)->first()){
-            if(!UserDashboards::where('dashboard_id', $id)->where('user_id', auth()->user()->id)->first() ?? !UserDashboards::where('dashboard_id', $id)
-                    ->where('user_id', auth()->user()->id)->first()->invited) return redirect()->route('board.index');
+            if(!UserDashboards::where('dashboard_id', $id)->where('user_id', auth()->user()->id)->first() ?? UserDashboards::where('dashboard_id', $id)
+                    ->where('user_id', auth()->user()->id)->first()->confirmed === false) return redirect()->route('board.index');
 
             $columns = Columns::where('dashboard_id', $id)->get();
             $desks = Desks::all();

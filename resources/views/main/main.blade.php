@@ -42,7 +42,7 @@
                 <a href="{{route('login')}}" class="btn btn-login">Авторизоваться</a>
             @else
         {{--            Array loop of card-boards            --}}
-            @if(isset($dashboards))
+            @if(isset($dashboards) && !empty($dashboards))
                 @foreach($dashboards as $dash)
             <div class="col-sm-6 mb-3 mb-sm-0">
                 <div class="card">

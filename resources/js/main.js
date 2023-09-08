@@ -976,28 +976,36 @@ window.refreshNotifs = function (user_id){
     })
         .then(response => response.json())
         .then(res => {
-            document.querySelectorAll('.notif').forEach(item => {
-                item.remove();
-            })
+            let modal = document.getElementById('notification-modal');
+            document.getElementById('countNot').innerText = res.length;
 
-            if(res.length <= 0){
-                console.log('da')
-                document.getElementById('notification-modal').insertAdjacentHTML('beforeend', `
-                    <b class="text-white text-center" style="position: absolute; top: 45%;">Здесь будут ваши непрочитанные уведомления <i class="bi bi-bell"></i></b>`);
-                return;
+            if(document.querySelector('.notif')) {
+                document.querySelectorAll('.notif').forEach(item => {
+                    item.remove();
+                })
             }
 
-           res.forEach(item => {
-                document.getElementById('notification-modal').insertAdjacentHTML('beforeend', `
+            if(res.length <= 0){
+                modal.insertAdjacentHTML('beforeend', `
+                    <b class="text-white text-center" style="position: absolute; top: 45%;">Здесь будут ваши непрочитанные уведомления <i class="bi bi-bell"></i></b>`);
+            }else if(res.length > 1){
+
+                res.forEach(item => {
+                    modal.insertAdjacentHTML('beforeend', `
                     <div class="notif" data-notif="${item.id}">${item.message}</div>
                 `)
-            })
+                })
+            }else if(res.length === 1){
+                modal.insertAdjacentHTML('beforeend', `
+                    <div class="notif" data-notif="${res[0].id}">${res[0].message}</div>
+                `)
+            }
         })
 }
 
 window.closeModalSlow = (id) => document.getElementById(id).classList.add('hide-slow');
 
-window.setConfirm = function(user_id, dashboard_id, invited){
+window.setConfirm = function(user_id, dashboard_id, confirmed){
     let not_id = event.currentTarget.closest('.notif').getAttribute('data-notif');
 
     fetch('/api/dashboard/confirmInvite', {
@@ -1010,7 +1018,7 @@ window.setConfirm = function(user_id, dashboard_id, invited){
             user_id: user_id,
             dashboard_id: dashboard_id,
             not_id: not_id,
-            invited: invited
+            confirmed: confirmed
         })
     })
         .then(response => response.json())

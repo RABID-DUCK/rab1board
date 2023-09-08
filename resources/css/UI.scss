@@ -130,6 +130,8 @@ nav .container-fluid{
 .notification{
     cursor: pointer;
     float: right;
+    position: relative;
+    margin-right: 5px;
 
     &:hover{
         filter: drop-shadow(0 0 2px $orange);
