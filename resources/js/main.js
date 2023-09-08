@@ -154,7 +154,7 @@ window.addColumn = function (dashboard){
         })
 }
 
-window.createDeskMiniModal = function (dashboard, column){
+window.createDeskMiniModal = function (dashboard, column, user_id){
     let condition = '[data-column-id="'+column+'"]';
     let data_column = document.querySelector(condition);
     if(document.querySelector(condition).getAttribute('data-column-id') !== column && !data_column.querySelector('#create-modal-desk')){
@@ -162,7 +162,7 @@ window.createDeskMiniModal = function (dashboard, column){
         <div class="desk text-center" id="create-modal-desk">
             <label class=" mb-2" for="col-form-label desk-title"><b>Type title for desk</b></label>
             <input class="form-control" type="text" name="desk-title" id="desk-title-modal" placeholder="Make auth">
-            <button class="btn mt-2" onclick="createDesk(${dashboard}, ${column})">Create</button>
+            <button class="btn mt-2" onclick="createDesk(${dashboard}, ${column}, ${user_id})">Create</button>
             <span class="remove-column-modal text-black-50" onclick="deleteDeskModal(${column})">X</span>
         </div>
         `)
@@ -175,7 +175,7 @@ window.deleteDeskModal = (column) => {
     data_column.querySelector('#create-modal-desk').remove()
 }
 
-window.createDesk = function (dashboard, column){
+window.createDesk = function (dashboard, column, user_id){
     let title = document.getElementById('desk-title-modal').value;
 
     fetch('/api/desk/create', {
@@ -187,7 +187,8 @@ window.createDesk = function (dashboard, column){
         body: JSON.stringify({
             title: title,
             column_id: column,
-            dashboard_id: dashboard
+            dashboard_id: dashboard,
+            user_id: user_id
         })
     })
         .then(response => response.json())
@@ -393,7 +394,7 @@ window.viewDesk = function (dashboard_id, column_id, desk_id){
                 <div class="comments" id="comment-wrap">
                     <label for="comments" class="form-label">Comments</label>
                     <textarea class="form-control" id="comments" rows="3" placeholder="What you want?...."></textarea>
-                    <button class="btn text-white hide w-100" id="save-comment" onclick="addComment(${desk_id})">
+                    <button class="btn text-white hide w-100" id="save-comment" onclick="addComment(${desk_id}, ${$res.data.user})">
                     <i class="bi bi-check-lg"></i>Save</button>
                 </div>
             `)
@@ -1155,3 +1156,58 @@ window.addUsersDesk = function (desk_id, user_id){
         })
 }
 
+window.refreshComments = function (desk_id){
+    let spawn = document.getElementById('comment-wrap');
+    fetch('/api/getComments', {
+        method: 'post',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            desk_id: desk_id,
+        })
+    })
+        .then(response => response.json())
+        .then(res => {
+            if(isArray(res)){
+                res.forEach(item => {
+                    spawn.insertAdjacentHTML('beforeend', `
+                        <span>${item.title}</span>
+                    `)
+                })
+            }
+            else{
+                spawn.insertAdjacentHTML('beforeend', `
+                    <span>${res[0].title}</span>
+                `)
+            }
+        })
+
+
+}
+
+window.addComment = function (desk_id, user_id){
+    let title = document.getElementById('comments').value;
+    if(!title) {
+        alert('Поле комментария должно быть обязательным!');
+        return;
+    }
+
+    fetch('/addComment', {
+        method: 'post',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            desk_id: desk_id,
+            user_id: user_id,
+            title: title
+        })
+    })
+        .then(response => response.json())
+        .then(res => {
+            refreshComments(desk_id)
+        })
+}

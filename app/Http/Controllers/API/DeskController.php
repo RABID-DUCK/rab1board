@@ -21,9 +21,7 @@ use Illuminate\Support\Facades\Storage;
 class DeskController extends Controller
 {
     public function store(Request $request){
-        $messages = ['title.required' => "Поле названия обязательно к заполнению!"];
-
-        $data = $request->validate(['title' => 'required|string|max:30', 'dashboard_id' => 'required', 'column_id' => 'required',], $messages);
+        $data = $request->validate(['title' => 'required|string|max:30', 'dashboard_id' => 'required', 'column_id' => 'required', 'user_id' => 'required|integer']);
 
         $desk = Desks::create($data);
 
@@ -65,16 +63,13 @@ class DeskController extends Controller
         $data = $request->validate(['dashboard_id' => 'required|integer', 'column_id' => 'required|integer', 'desk_id' => 'required|integer',
             'list_task_id' => 'nullable|integer']);
 
-        $desk = Desks::with('dashboard', 'column', 'getUser')->where('id', $data['desk_id'])
+        $desk = Desks::with('dashboard', 'column')->where('id', $data['desk_id'])
             ->whereHas('dashboard', function ($query) use ($data) {
                 $query->where('id', $data['dashboard_id']);
             })
             ->whereHas('column', function ($query) use ($data) {
                 $query->where('id', $data['column_id']);
-            })->whereHas('getUser', function ($query) use ($data) {
-                $query->where('id', $data['desk_id']);
-            })
-            ->first();
+            })->first();
 
         return DeskResource::make($desk);
     }

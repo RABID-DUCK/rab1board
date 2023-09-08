@@ -2399,11 +2399,11 @@ window.addColumn = function (dashboard) {
     }
   });
 };
-window.createDeskMiniModal = function (dashboard, column) {
+window.createDeskMiniModal = function (dashboard, column, user_id) {
   var condition = '[data-column-id="' + column + '"]';
   var data_column = document.querySelector(condition);
   if (document.querySelector(condition).getAttribute('data-column-id') !== column && !data_column.querySelector('#create-modal-desk')) {
-    data_column.querySelector('#add-task-title').insertAdjacentHTML('beforebegin', "\n        <div class=\"desk text-center\" id=\"create-modal-desk\">\n            <label class=\" mb-2\" for=\"col-form-label desk-title\"><b>Type title for desk</b></label>\n            <input class=\"form-control\" type=\"text\" name=\"desk-title\" id=\"desk-title-modal\" placeholder=\"Make auth\">\n            <button class=\"btn mt-2\" onclick=\"createDesk(".concat(dashboard, ", ").concat(column, ")\">Create</button>\n            <span class=\"remove-column-modal text-black-50\" onclick=\"deleteDeskModal(").concat(column, ")\">X</span>\n        </div>\n        "));
+    data_column.querySelector('#add-task-title').insertAdjacentHTML('beforebegin', "\n        <div class=\"desk text-center\" id=\"create-modal-desk\">\n            <label class=\" mb-2\" for=\"col-form-label desk-title\"><b>Type title for desk</b></label>\n            <input class=\"form-control\" type=\"text\" name=\"desk-title\" id=\"desk-title-modal\" placeholder=\"Make auth\">\n            <button class=\"btn mt-2\" onclick=\"createDesk(".concat(dashboard, ", ").concat(column, ", ").concat(user_id, ")\">Create</button>\n            <span class=\"remove-column-modal text-black-50\" onclick=\"deleteDeskModal(").concat(column, ")\">X</span>\n        </div>\n        "));
   }
 };
 window.deleteDeskModal = function (column) {
@@ -2411,7 +2411,7 @@ window.deleteDeskModal = function (column) {
   var data_column = document.querySelector(condition);
   data_column.querySelector('#create-modal-desk').remove();
 };
-window.createDesk = function (dashboard, column) {
+window.createDesk = function (dashboard, column, user_id) {
   var title = document.getElementById('desk-title-modal').value;
   fetch('/api/desk/create', {
     method: "post",
@@ -2422,7 +2422,8 @@ window.createDesk = function (dashboard, column) {
     body: JSON.stringify({
       title: title,
       column_id: column,
-      dashboard_id: dashboard
+      dashboard_id: dashboard,
+      user_id: user_id
     })
   }).then(function (response) {
     return response.json();
@@ -2553,7 +2554,7 @@ window.viewDesk = function (dashboard_id, column_id, desk_id) {
     }
 
     // ----------Open modal----------
-    modal.insertAdjacentHTML('beforeend', "\n             <span class=\"close-modal\" id=\"modal-desk\" onclick=\"closeModal()\">X</span>\n                <b>".concat(res.data.title, "</b>\n                <div class=\"users-desk\" id=\"usersDesk\">\n                    <i class=\"bi bi-plus-circle\" onclick=\"modalAddUserDesk(").concat(desk_id, ", ").concat(dashboard_id, ")\" id=\"plusUser\"></i>\n                </div>\n\n                <div id=\"output-date\" class=\"output-date\" style=\"").concat(!res.data.data_end ? 'display: none;' : '', "\">\n                    <span id=\"output-date-end\" class=\"").concat(differenceDate(res.data.data_end) ? 'text-danger fw-bold' : '', "\">\n                    \u0421\u0440\u043E\u043A \u0434\u043E: ").concat(convertData(res.data.data_end), "</span>\n                </div>\n\n                <div class=\"description\" id=\"description-wrap\">\n                    <label for=\"description\" class=\"form-label\">Description of task</label>\n                    <textarea class=\"form-control\" id=\"description\" rows=\"3\" placeholder=\"This task mean...\">").concat((_res$data$description = res.data.description) !== null && _res$data$description !== void 0 ? _res$data$description : '', "</textarea>\n                    <button class=\"btn text-white hide\" id=\"save-desk\" onclick=\"updateDescription(").concat(dashboard_id, ",").concat(desk_id, ", ").concat(column_id, ")\">\n                    <i class=\"bi bi-check-lg\"></i>Save</button>\n                </div>\n                    <button class=\"btn text-white ").concat(res.data.list_task_id ? 'hide' : '', "\" id=\"add-menu-tasks\" onclick=\"createTask(").concat(dashboard_id, ",").concat(desk_id, ",").concat(column_id, ")\">Add tasks</button>\n                <div class=\"comments\" id=\"comment-wrap\">\n                    <label for=\"comments\" class=\"form-label\">Comments</label>\n                    <textarea class=\"form-control\" id=\"comments\" rows=\"3\" placeholder=\"What you want?....\"></textarea>\n                    <button class=\"btn text-white hide w-100\" id=\"save-comment\" onclick=\"addComment(").concat(desk_id, ")\">\n                    <i class=\"bi bi-check-lg\"></i>Save</button>\n                </div>\n            "));
+    modal.insertAdjacentHTML('beforeend', "\n             <span class=\"close-modal\" id=\"modal-desk\" onclick=\"closeModal()\">X</span>\n                <b>".concat(res.data.title, "</b>\n                <div class=\"users-desk\" id=\"usersDesk\">\n                    <i class=\"bi bi-plus-circle\" onclick=\"modalAddUserDesk(").concat(desk_id, ", ").concat(dashboard_id, ")\" id=\"plusUser\"></i>\n                </div>\n\n                <div id=\"output-date\" class=\"output-date\" style=\"").concat(!res.data.data_end ? 'display: none;' : '', "\">\n                    <span id=\"output-date-end\" class=\"").concat(differenceDate(res.data.data_end) ? 'text-danger fw-bold' : '', "\">\n                    \u0421\u0440\u043E\u043A \u0434\u043E: ").concat(convertData(res.data.data_end), "</span>\n                </div>\n\n                <div class=\"description\" id=\"description-wrap\">\n                    <label for=\"description\" class=\"form-label\">Description of task</label>\n                    <textarea class=\"form-control\" id=\"description\" rows=\"3\" placeholder=\"This task mean...\">").concat((_res$data$description = res.data.description) !== null && _res$data$description !== void 0 ? _res$data$description : '', "</textarea>\n                    <button class=\"btn text-white hide\" id=\"save-desk\" onclick=\"updateDescription(").concat(dashboard_id, ",").concat(desk_id, ", ").concat(column_id, ")\">\n                    <i class=\"bi bi-check-lg\"></i>Save</button>\n                </div>\n                    <button class=\"btn text-white ").concat(res.data.list_task_id ? 'hide' : '', "\" id=\"add-menu-tasks\" onclick=\"createTask(").concat(dashboard_id, ",").concat(desk_id, ",").concat(column_id, ")\">Add tasks</button>\n                <div class=\"comments\" id=\"comment-wrap\">\n                    <label for=\"comments\" class=\"form-label\">Comments</label>\n                    <textarea class=\"form-control\" id=\"comments\" rows=\"3\" placeholder=\"What you want?....\"></textarea>\n                    <button class=\"btn text-white hide w-100\" id=\"save-comment\" onclick=\"addComment(").concat(desk_id, ", ").concat($res.data.user, ")\">\n                    <i class=\"bi bi-check-lg\"></i>Save</button>\n                </div>\n            "));
     getUsersDesk(desk_id);
     // --------Add Description-------
     document.getElementById('description').addEventListener('click', function () {
@@ -3124,6 +3125,52 @@ window.addUsersDesk = function (desk_id, user_id) {
     return response.json();
   }).then(function (res) {
     getUsersDesk(desk_id);
+  });
+};
+window.refreshComments = function (desk_id) {
+  var spawn = document.getElementById('comment-wrap');
+  fetch('/api/getComments', {
+    method: 'post',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      desk_id: desk_id
+    })
+  }).then(function (response) {
+    return response.json();
+  }).then(function (res) {
+    if (isArray(res)) {
+      res.forEach(function (item) {
+        spawn.insertAdjacentHTML('beforeend', "\n                        <span>".concat(item.title, "</span>\n                    "));
+      });
+    } else {
+      spawn.insertAdjacentHTML('beforeend', "\n                    <span>".concat(res[0].title, "</span>\n                "));
+    }
+  });
+};
+window.addComment = function (desk_id, user_id) {
+  var title = document.getElementById('comments').value;
+  if (!title) {
+    alert('Поле комментария должно быть обязательным!');
+    return;
+  }
+  fetch('/addComment', {
+    method: 'post',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      desk_id: desk_id,
+      user_id: user_id,
+      title: title
+    })
+  }).then(function (response) {
+    return response.json();
+  }).then(function (res) {
+    refreshComments(desk_id);
   });
 };
 })();

@@ -30,7 +30,7 @@ class DeskResource extends JsonResource
             'column' => ColumnResource::make($this->whenLoaded('column')),
             'color' => $this->color,
             'images' => DeskImages::where('desk_id', $this->id)->get(),
-            'user' => Auth()->user()
+            'user' => $this->user_id
         ];
     }
 }

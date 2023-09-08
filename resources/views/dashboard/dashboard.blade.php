@@ -62,7 +62,7 @@
                                 <span>status</span>
                             </div>
                         @endforeach
-                        <button class="add-desk" id="add-task-title" onclick="createDeskMiniModal({{ $dashboard->id }}, {{ $column->id }})">+ Add desk</button>
+                        <button class="add-desk" id="add-task-title" onclick="createDeskMiniModal({{ $dashboard->id }}, {{ $column->id }}, {{auth()->user()->id}})">+ Add desk</button>
                     </div>
                 </div>
             @endforeach

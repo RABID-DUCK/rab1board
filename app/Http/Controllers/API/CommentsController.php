@@ -44,4 +44,15 @@ class CommentsController extends Controller
         }
         return response()->json(['message' => 'Произошла ошибка! Не найден проект...']);
     }
+
+    public function getComments(Request $request){
+        $data = $request->validate(['title' => 'required|string', 'user_id' => 'required|integer', 'desk_id' => 'required|integer']);
+        Comments::create([
+            'title' => $data['title'],
+            'desk_id' => $data['desk_id'],
+            'user_id' => $data['user_id']
+        ]);
+
+        return Comments::where('deks_id', $data['desk_id'])->get();
+    }
 }
