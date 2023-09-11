@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Models\Desks;
 use App\Models\User;
 use App\Models\UserDashboards;
 use App\Models\UserDesks;
@@ -40,5 +41,16 @@ class UserDeskController extends Controller
                 return response()->json(['users' => $users]);
             }
         }
+    }
+
+    public function updateDeskOrder(Request $request){
+        $deskOrder = $request->input('deskOrder');
+
+        foreach ($deskOrder as $key => $deskID) {
+            Desks::where('column_id', $request->column_id)->where('id', $deskID)->update([
+                'order' => $key + 1
+            ]);
+        }
+        return response()->json(['succes' => true]);
     }
 }

@@ -3185,47 +3185,74 @@ window.addComment = function (desk_id, user_id) {
   });
 };
 window.dragDropDesks = function () {
-  var tasksListElement = document.querySelector(".tasks__list");
-  var taskElements = tasksListElement.querySelectorAll(".tasks__item");
-  var _iterator2 = _createForOfIteratorHelper(taskElements),
+  var listElements = document.querySelectorAll('.desk-block');
+  var _iterator2 = _createForOfIteratorHelper(listElements),
     _step2;
   try {
+    var _loop = function _loop() {
+      var list = _step2.value;
+      var taskElements = list.querySelectorAll(".desk");
+      var _iterator3 = _createForOfIteratorHelper(taskElements),
+        _step3;
+      try {
+        for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
+          var task = _step3.value;
+          task.draggable = true;
+        }
+      } catch (err) {
+        _iterator3.e(err);
+      } finally {
+        _iterator3.f();
+      }
+      list.addEventListener('dragstart', function (evt) {
+        evt.target.classList.add('selected');
+      });
+      list.addEventListener('dragend', function (evt) {
+        evt.target.classList.remove('selected');
+      });
+      list.addEventListener('dragover', function (evt) {
+        evt.preventDefault();
+        var activeElement = list.querySelector('.selected');
+        var currentElement = evt.target;
+        var isMoveable = activeElement !== currentElement && currentElement.classList.contains('.desk-block');
+
+        // if(!isMoveable) return;
+
+        var nextElement = currentElement === activeElement.nextElementSibling ? currentElement.nextElementSibling : currentElement;
+        console.log(1111);
+        list.insertBefore(activeElement, nextElement);
+      });
+    };
     for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
-      var task = _step2.value;
-      task.draggable = true;
+      _loop();
     }
   } catch (err) {
     _iterator2.e(err);
   } finally {
     _iterator2.f();
   }
-  tasksListElement.addEventListener("dragstart", function (evt) {
-    evt.target.classList.add("selected");
-  });
-  tasksListElement.addEventListener("dragend", function (evt) {
-    evt.target.classList.remove("selected");
-  });
-  var getNextElement = function getNextElement(cursorPosition, currentElement) {
-    var currentElementCoord = currentElement.getBoundingClientRect();
-    var currentElementCenter = currentElementCoord.y + currentElementCoord.height / 2;
-    var nextElement = cursorPosition < currentElementCenter ? currentElement : currentElement.nextElementSibling;
-    return nextElement;
-  };
-  tasksListElement.addEventListener("dragover", function (evt) {
-    evt.preventDefault();
-    var activeElement = tasksListElement.querySelector(".selected");
-    var currentElement = evt.target;
-    var isMoveable = activeElement !== currentElement && currentElement.classList.contains("tasks__item");
-    if (!isMoveable) {
-      return;
-    }
-    var nextElement = getNextElement(evt.clientY, currentElement);
-    if (nextElement && activeElement === nextElement.previousElementSibling || activeElement === nextElement) {
-      return;
-    }
-    tasksListElement.insertBefore(activeElement, nextElement);
+};
+window.updateDeskOrder = function (deskOrder, column_id) {
+  var url = '/api/update-desk-order';
+  fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+    },
+    body: JSON.stringify({
+      deskOrder: deskOrder,
+      column_id: column_id
+    })
+  }).then(function (response) {
+    return response.json();
+  }).then(function (data) {
+    console.log(data);
+  })["catch"](function (error) {
+    console.error('Ошибка при обновлении порядка карточек:', error);
   });
 };
+dragDropDesks();
 })();
 
 /******/ })()

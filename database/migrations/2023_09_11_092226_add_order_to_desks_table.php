@@ -12,8 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('desks', function (Blueprint $table) {
-//            $table->bigInteger('user_id')->unsigned()->after('comment_id');
-//            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->integer('order')->after('id');
         });
     }
 
@@ -23,8 +22,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('desks', function (Blueprint $table) {
-//            $table->dropForeign(['user_id']);
-//            $table->dropColumn('user_id');
+            $table->dropColumn('order');
         });
     }
 };

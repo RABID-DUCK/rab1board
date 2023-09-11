@@ -1231,56 +1231,59 @@ window.addComment = function (desk_id, user_id){
         })
 }
 
-window.dragDropDesks = function (){
-    const tasksListElement = document.querySelector(`.tasks__list`);
-    const taskElements = tasksListElement.querySelectorAll(`.tasks__item`);
+window.dragDropDesks = function () {
+    const listElements = document.querySelectorAll('.desk-block')
 
-    for (const task of taskElements) {
-        task.draggable = true;
+    for (const list of listElements) {
+        const taskElements = list.querySelectorAll(`.desk`);
+        for (const task of taskElements) {
+            task.draggable = true;
+        }
+
+        list.addEventListener('dragstart', (evt) => {
+            evt.target.classList.add('selected');
+        });
+
+        list.addEventListener('dragend', (evt) => {
+            evt.target.classList.remove('selected');
+        });
+
+        list.addEventListener('dragover', (evt) => {
+            evt.preventDefault();
+
+
+            const activeElement = list.querySelector('.selected');
+            const currentElement = evt.target;
+
+            const isMoveable = activeElement !== currentElement && currentElement.classList.contains('.desk-block');
+
+            // if(!isMoveable) return;
+
+            const nextElement = (currentElement === activeElement.nextElementSibling) ? currentElement.nextElementSibling : currentElement;
+            console.log(1111)
+            list.insertBefore(activeElement, nextElement);
+        });
     }
-
-    tasksListElement.addEventListener(`dragstart`, (evt) => {
-        evt.target.classList.add(`selected`);
-    });
-
-    tasksListElement.addEventListener(`dragend`, (evt) => {
-        evt.target.classList.remove(`selected`);
-    });
-
-    const getNextElement = (cursorPosition, currentElement) => {
-        const currentElementCoord = currentElement.getBoundingClientRect();
-        const currentElementCenter = currentElementCoord.y + currentElementCoord.height / 2;
-
-        const nextElement = (cursorPosition < currentElementCenter) ?
-            currentElement :
-            currentElement.nextElementSibling;
-
-        return nextElement;
-    };
-
-    tasksListElement.addEventListener(`dragover`, (evt) => {
-        evt.preventDefault();
-
-        const activeElement = tasksListElement.querySelector(`.selected`);
-        const currentElement = evt.target;
-        const isMoveable = activeElement !== currentElement &&
-            currentElement.classList.contains(`tasks__item`);
-
-        if (!isMoveable) {
-            return;
-        }
-
-        const nextElement = getNextElement(evt.clientY, currentElement);
-
-        if (
-            nextElement &&
-            activeElement === nextElement.previousElementSibling ||
-            activeElement === nextElement
-        ) {
-            return;
-        }
-
-        tasksListElement.insertBefore(activeElement, nextElement);
-    });
-
 }
+
+window.updateDeskOrder = function (deskOrder, column_id){
+    const url = '/api/update-desk-order';
+
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        },
+        body: JSON.stringify({ deskOrder, column_id }),
+    })
+        .then((response) => response.json())
+        .then((data) => {
+            console.log(data);
+        })
+        .catch((error) => {
+            console.error('Ошибка при обновлении порядка карточек:', error);
+        });
+}
+
+dragDropDesks()

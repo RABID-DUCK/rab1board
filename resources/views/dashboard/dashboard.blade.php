@@ -67,11 +67,19 @@
                     </div>
                 </div>
             @endforeach
-
                 <div class="add-column-panel" id="add-column-panel">
                     <button class="add-column" onclick="addColumnModal({{$dashboard->id}}, {{auth()->user()->id}})">+ Add column</button>
                 </div>
         @endif
 
     </div>
+
+    <script>
+        // document.addEventListener('DOMContentLoaded', () =>{
+        //     $(function(){
+        //         $('.desk').draggable();
+        //     })
+        // })
+
+    </script>
 @endsection

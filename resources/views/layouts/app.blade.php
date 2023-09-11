@@ -3,6 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
 
 {{--        <title>{{__('messages.title')}}</title>--}}
 
@@ -18,10 +19,10 @@
         <script src="{{asset('js/plugins/dropzone-min.js')}}"></script>
         <link href="{{asset('css/plugins/basic.css')}}" rel="stylesheet" type="text/css" />
         <link href="{{asset('css/plugins/dropzone.css')}}" rel="stylesheet" type="text/css" />
+{{--        <script src="https://code.jquery.com/jquery-3.6.0.js"></script>--}}
+{{--        <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>--}}
     </head>
-    {{--REACT--}}
     <body class="antialiased">
-    {{---------}}
              @include('layouts/header')
            <div class="content-wrapper d-flex justify-content-between" id="wrapper">
 

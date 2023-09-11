@@ -330,7 +330,7 @@ nav{
 }
 
 .desk:hover{
-    cursor: pointer;
+    cursor: move;
     box-shadow: 0 0 5px 2px $gray;
     transform: scale(1.01);
     transition: transform .3s;

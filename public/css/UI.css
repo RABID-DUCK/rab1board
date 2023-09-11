@@ -124,3 +124,7 @@ nav .container-fluid .navbar-nav .dropdown-menu {
 .read-not:hover {
   color: lightgreen;
 }
+
+.selected {
+  opacity: 0.6;
+}

@@ -121,14 +121,14 @@ class DeskController extends Controller
 
     public function outputDesks(Request $request){
         $data = $request->validate(['dashboard_id' => 'required|integer']);
-//        $user = User::where('remember_token', $request->bearerToken())->first();
-//        if ($userDash = UserDashboards::where('user_id', $user->id)->first()){
-//            if(!$userDash->invited) return response()->json(['message' => 'Вы ещё не приняли приглашение!']);
+        $user = User::where('remember_token', $request->bearerToken())->first();
+        if ($userDash = UserDashboards::where('user_id', $user->id)->first()){
+            if(!$userDash->invited) return response()->json(['message' => 'Вы ещё не приняли приглашение!']);
 
-            if (Desks::where('dashboard_id', $data['dashboard_id'])->get()->count() > 0){
-                return Desks::where('dashboard_id', $data['dashboard_id'])->get();
+            if (Desks::where('dashboard_id', $data['dashboard_id'])->exists()){
+                return Desks::where('dashboard_id', $data['dashboard_id'])->orderBy('order')->get();
             }
-//        }
+        }
         return response()->json(['message' => 'Вы не состоите в этом проекте!']);
     }
 
