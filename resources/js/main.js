@@ -92,13 +92,13 @@ window.openCreateDashboardModal = function(user_id){
     });
 }
 
-window.addColumnModal = function (dashboard){
+window.addColumnModal = function (dashboard, user_id){
     if (!document.getElementById('modal-column')){
         document.getElementById('add-column-panel').insertAdjacentHTML('beforeend', `
             <div class="column-modal-wrapper text-center" id="modal-column">
                 <label class=" mb-2" for="col-form-label desk-title"><b>Type title for desk</b></label>
                 <input class="form-control" type="text" name="desk-title" id="text-column-create" placeholder="Make auth">
-                <button class="btn mt-2" onclick="addColumn(${dashboard})">Create</button>
+                <button class="btn mt-2" onclick="addColumn(${dashboard}, ${user_id})">Create</button>
                 <span class="remove-column-modal text-black-50" onclick="deleteColumnModal('modal-column')">X</span>
             </div>
     `)
@@ -107,7 +107,7 @@ window.addColumnModal = function (dashboard){
 
 window.deleteColumnModal = (id_name) => document.getElementById(id_name).remove()
 
-window.addColumn = function (dashboard){
+window.addColumn = function (dashboard, user_id){
     let title = document.getElementById('text-column-create').value;
     fetch('/api/column/create', {
         method: "post",
@@ -133,7 +133,7 @@ window.addColumn = function (dashboard){
                             <i class="bi bi-check-lg save-column hide"></i>
                         </div>
                         <div class="desk-block">
-                            <button class="add-desk" id="add-task-title" onclick="createDeskMiniModal(${dashboard}, ${data.column_id})">+ Add desk</button>
+                            <button class="add-desk" id="add-task-title" onclick="createDeskMiniModal(${dashboard}, ${data.column_id}, ${user_id})">+ Add desk</button>
                         </div>
                     </div>
                 `)
@@ -146,7 +146,7 @@ window.addColumn = function (dashboard){
                     <i class="bi bi-check-lg save-column hide"></i>
                 </div>
                     <div class="desk-block">
-                        <button class="add-desk" id="add-task-title" onclick="createDeskMiniModal(${data.dashboard_id}, ${data.column_id})">+ Add desk</button>
+                        <button class="add-desk" id="add-task-title" onclick="createDeskMiniModal(${data.dashboard_id}, ${data.column_id}, ${user_id})">+ Add desk</button>
                     </div>
             </div>
             `)
@@ -680,24 +680,6 @@ window.updateDescription = function (dashboard_id, desk_id, column_id){
         })
 }
 
-window.popupTooltip = function (text){
-    if (!document.getElementById('tooltip')){
-        document.querySelector('body').insertAdjacentHTML('beforeend', `
-        <div class="toast align-items-center bg-danger text-white" role="alert" aria-live="assertive" aria-atomic="true" id="tooltip">
-      <div class="d-flex">
-        <div class="toast-body">
-        ${text}
-       </div>
-        <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-      </div>
-    </div>
-    `)
-        setTimeout(function (){
-            deleteColumnModal('tooltip')
-        }, 1500);
-    }
-}
-
 window.saveDate = function (dashboard_id, desk_id){
     let dateStart = document.getElementById('dateStart').value;
     let dateEnd = document.getElementById('dateEnd').value;
@@ -972,7 +954,7 @@ window.sendInvite = function (dashboard_id){
     })
         .then(response => response.json())
         .then(res => {
-            console.log(res);
+            popupTooltip('Приглашение в проект отправлено!')
         })
 }
 
@@ -1247,4 +1229,58 @@ window.addComment = function (desk_id, user_id){
             document.getElementById('comment-text').value = "";
             document.getElementById('save-comment').classList.add('hide');
         })
+}
+
+window.dragDropDesks = function (){
+    const tasksListElement = document.querySelector(`.tasks__list`);
+    const taskElements = tasksListElement.querySelectorAll(`.tasks__item`);
+
+    for (const task of taskElements) {
+        task.draggable = true;
+    }
+
+    tasksListElement.addEventListener(`dragstart`, (evt) => {
+        evt.target.classList.add(`selected`);
+    });
+
+    tasksListElement.addEventListener(`dragend`, (evt) => {
+        evt.target.classList.remove(`selected`);
+    });
+
+    const getNextElement = (cursorPosition, currentElement) => {
+        const currentElementCoord = currentElement.getBoundingClientRect();
+        const currentElementCenter = currentElementCoord.y + currentElementCoord.height / 2;
+
+        const nextElement = (cursorPosition < currentElementCenter) ?
+            currentElement :
+            currentElement.nextElementSibling;
+
+        return nextElement;
+    };
+
+    tasksListElement.addEventListener(`dragover`, (evt) => {
+        evt.preventDefault();
+
+        const activeElement = tasksListElement.querySelector(`.selected`);
+        const currentElement = evt.target;
+        const isMoveable = activeElement !== currentElement &&
+            currentElement.classList.contains(`tasks__item`);
+
+        if (!isMoveable) {
+            return;
+        }
+
+        const nextElement = getNextElement(evt.clientY, currentElement);
+
+        if (
+            nextElement &&
+            activeElement === nextElement.previousElementSibling ||
+            activeElement === nextElement
+        ) {
+            return;
+        }
+
+        tasksListElement.insertBefore(activeElement, nextElement);
+    });
+
 }

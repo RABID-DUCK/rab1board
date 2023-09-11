@@ -2367,15 +2367,15 @@ window.openCreateDashboardModal = function (user_id) {
     });
   });
 };
-window.addColumnModal = function (dashboard) {
+window.addColumnModal = function (dashboard, user_id) {
   if (!document.getElementById('modal-column')) {
-    document.getElementById('add-column-panel').insertAdjacentHTML('beforeend', "\n            <div class=\"column-modal-wrapper text-center\" id=\"modal-column\">\n                <label class=\" mb-2\" for=\"col-form-label desk-title\"><b>Type title for desk</b></label>\n                <input class=\"form-control\" type=\"text\" name=\"desk-title\" id=\"text-column-create\" placeholder=\"Make auth\">\n                <button class=\"btn mt-2\" onclick=\"addColumn(".concat(dashboard, ")\">Create</button>\n                <span class=\"remove-column-modal text-black-50\" onclick=\"deleteColumnModal('modal-column')\">X</span>\n            </div>\n    "));
+    document.getElementById('add-column-panel').insertAdjacentHTML('beforeend', "\n            <div class=\"column-modal-wrapper text-center\" id=\"modal-column\">\n                <label class=\" mb-2\" for=\"col-form-label desk-title\"><b>Type title for desk</b></label>\n                <input class=\"form-control\" type=\"text\" name=\"desk-title\" id=\"text-column-create\" placeholder=\"Make auth\">\n                <button class=\"btn mt-2\" onclick=\"addColumn(".concat(dashboard, ", ").concat(user_id, ")\">Create</button>\n                <span class=\"remove-column-modal text-black-50\" onclick=\"deleteColumnModal('modal-column')\">X</span>\n            </div>\n    "));
   }
 };
 window.deleteColumnModal = function (id_name) {
   return document.getElementById(id_name).remove();
 };
-window.addColumn = function (dashboard) {
+window.addColumn = function (dashboard, user_id) {
   var title = document.getElementById('text-column-create').value;
   fetch('/api/column/create', {
     method: "post",
@@ -2393,9 +2393,9 @@ window.addColumn = function (dashboard) {
     deleteColumnModal('modal-column');
     if (!document.querySelector('.column')) {
       var _dashboard = document.getElementById('dashboard-id').value;
-      document.getElementById('add-column-panel').insertAdjacentHTML('beforebegin', "\n                     <div class=\"wrap\" data-column-id=\"".concat(data.column_id, "\">\n                        <div class=\"column\" onclick=\"clickRenameColumn(").concat(data.column_id, ")\" data-column-title=\"\">\n                            <span>").concat(data.columns[data.columns.length - 1].title, "</span>\n                            <i class=\"bi bi-check-lg save-column hide\"></i>\n                        </div>\n                        <div class=\"desk-block\">\n                            <button class=\"add-desk\" id=\"add-task-title\" onclick=\"createDeskMiniModal(").concat(_dashboard, ", ").concat(data.column_id, ")\">+ Add desk</button>\n                        </div>\n                    </div>\n                "));
+      document.getElementById('add-column-panel').insertAdjacentHTML('beforebegin', "\n                     <div class=\"wrap\" data-column-id=\"".concat(data.column_id, "\">\n                        <div class=\"column\" onclick=\"clickRenameColumn(").concat(data.column_id, ")\" data-column-title=\"\">\n                            <span>").concat(data.columns[data.columns.length - 1].title, "</span>\n                            <i class=\"bi bi-check-lg save-column hide\"></i>\n                        </div>\n                        <div class=\"desk-block\">\n                            <button class=\"add-desk\" id=\"add-task-title\" onclick=\"createDeskMiniModal(").concat(_dashboard, ", ").concat(data.column_id, ", ").concat(user_id, ")\">+ Add desk</button>\n                        </div>\n                    </div>\n                "));
     } else {
-      document.getElementById('add-column-panel').insertAdjacentHTML('beforebegin', "\n             <div class=\"wrap\" data-column-id=\"".concat(data.column_id, "\">\n                <div class=\"column\" onclick=\"clickRenameColumn(").concat(data.column_id, ")\" data-column-title=\"\">\n                    <span>").concat(data.columns[data.columns.length - 1].title, "</span>\n                    <i class=\"bi bi-check-lg save-column hide\"></i>\n                </div>\n                    <div class=\"desk-block\">\n                        <button class=\"add-desk\" id=\"add-task-title\" onclick=\"createDeskMiniModal(").concat(data.dashboard_id, ", ").concat(data.column_id, ")\">+ Add desk</button>\n                    </div>\n            </div>\n            "));
+      document.getElementById('add-column-panel').insertAdjacentHTML('beforebegin', "\n             <div class=\"wrap\" data-column-id=\"".concat(data.column_id, "\">\n                <div class=\"column\" onclick=\"clickRenameColumn(").concat(data.column_id, ")\" data-column-title=\"\">\n                    <span>").concat(data.columns[data.columns.length - 1].title, "</span>\n                    <i class=\"bi bi-check-lg save-column hide\"></i>\n                </div>\n                    <div class=\"desk-block\">\n                        <button class=\"add-desk\" id=\"add-task-title\" onclick=\"createDeskMiniModal(").concat(data.dashboard_id, ", ").concat(data.column_id, ", ").concat(user_id, ")\">+ Add desk</button>\n                    </div>\n            </div>\n            "));
     }
   });
 };
@@ -2753,14 +2753,6 @@ window.updateDescription = function (dashboard_id, desk_id, column_id) {
     document.getElementById('save-desk').classList.add('hide');
   });
 };
-window.popupTooltip = function (text) {
-  if (!document.getElementById('tooltip')) {
-    document.querySelector('body').insertAdjacentHTML('beforeend', "\n        <div class=\"toast align-items-center bg-danger text-white\" role=\"alert\" aria-live=\"assertive\" aria-atomic=\"true\" id=\"tooltip\">\n      <div class=\"d-flex\">\n        <div class=\"toast-body\">\n        ".concat(text, "\n       </div>\n        <button type=\"button\" class=\"btn-close me-2 m-auto\" data-bs-dismiss=\"toast\" aria-label=\"Close\"></button>\n      </div>\n    </div>\n    "));
-    setTimeout(function () {
-      deleteColumnModal('tooltip');
-    }, 1500);
-  }
-};
 window.saveDate = function (dashboard_id, desk_id) {
   var dateStart = document.getElementById('dateStart').value;
   var dateEnd = document.getElementById('dateEnd').value;
@@ -2983,7 +2975,7 @@ window.sendInvite = function (dashboard_id) {
   }).then(function (response) {
     return response.json();
   }).then(function (res) {
-    console.log(res);
+    popupTooltip('Приглашение в проект отправлено!');
   });
 };
 window.openNotif = function (user_id) {
@@ -3190,6 +3182,48 @@ window.addComment = function (desk_id, user_id) {
     refreshComments(desk_id);
     document.getElementById('comment-text').value = "";
     document.getElementById('save-comment').classList.add('hide');
+  });
+};
+window.dragDropDesks = function () {
+  var tasksListElement = document.querySelector(".tasks__list");
+  var taskElements = tasksListElement.querySelectorAll(".tasks__item");
+  var _iterator2 = _createForOfIteratorHelper(taskElements),
+    _step2;
+  try {
+    for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
+      var task = _step2.value;
+      task.draggable = true;
+    }
+  } catch (err) {
+    _iterator2.e(err);
+  } finally {
+    _iterator2.f();
+  }
+  tasksListElement.addEventListener("dragstart", function (evt) {
+    evt.target.classList.add("selected");
+  });
+  tasksListElement.addEventListener("dragend", function (evt) {
+    evt.target.classList.remove("selected");
+  });
+  var getNextElement = function getNextElement(cursorPosition, currentElement) {
+    var currentElementCoord = currentElement.getBoundingClientRect();
+    var currentElementCenter = currentElementCoord.y + currentElementCoord.height / 2;
+    var nextElement = cursorPosition < currentElementCenter ? currentElement : currentElement.nextElementSibling;
+    return nextElement;
+  };
+  tasksListElement.addEventListener("dragover", function (evt) {
+    evt.preventDefault();
+    var activeElement = tasksListElement.querySelector(".selected");
+    var currentElement = evt.target;
+    var isMoveable = activeElement !== currentElement && currentElement.classList.contains("tasks__item");
+    if (!isMoveable) {
+      return;
+    }
+    var nextElement = getNextElement(evt.clientY, currentElement);
+    if (nextElement && activeElement === nextElement.previousElementSibling || activeElement === nextElement) {
+      return;
+    }
+    tasksListElement.insertBefore(activeElement, nextElement);
   });
 };
 })();

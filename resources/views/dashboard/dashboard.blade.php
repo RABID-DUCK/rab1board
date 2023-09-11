@@ -30,6 +30,7 @@
 
             <a href="">Chart</a>
             <a href="">Scheduled events</a>
+            <a href="">Chat dashboard</a>
         </div>
 
     </div>
@@ -68,7 +69,7 @@
             @endforeach
 
                 <div class="add-column-panel" id="add-column-panel">
-                    <button class="add-column" onclick="addColumnModal({{$dashboard->id}})">+ Add column</button>
+                    <button class="add-column" onclick="addColumnModal({{$dashboard->id}}, {{auth()->user()->id}})">+ Add column</button>
                 </div>
         @endif
 
