@@ -32,4 +32,8 @@ class Comments extends Model
     use HasFactory;
     protected $table = 'comments';
     protected $guarded = false;
+
+    public function getUsers(){
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
 }

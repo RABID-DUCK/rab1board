@@ -65,10 +65,10 @@ Route::get('/getColumns/{dashboard_id}', [\App\Http\Controllers\API\ColumnContro
 Route::get('/moveColumn/{dashboard}/{desk}/{item_id}/{column_id}',
     [\App\Http\Controllers\API\ColumnController::class, 'moveColumn']); // изменить колонку у задачи
 
-Route::post('/addComment', '\App\Http\Controllers\API\CommentsController@addComment'); // добавить комментарий к задаче
+Route::post('/comment/addComment', '\App\Http\Controllers\API\CommentsController@addComment'); // добавить комментарий к задаче
 Route::post('/comment/update', '\App\Http\Controllers\API\CommentsController@update'); // обновить данные комментарий
 Route::post('/comment/delete', '\App\Http\Controllers\API\CommentsController@delete'); // удалить комментарий
-Route::post('/comment/get', '\App\Http\Controllers\API\CommentsController@getComments'); // удалить комментарий
+Route::post('/comment/get', '\App\Http\Controllers\API\CommentsController@getComments'); // получить комментарии
 
 Route::post('/getNotification', [\App\Http\Controllers\API\NotificationController::class, 'getNotifications']);
 Route::post('/notif/check', [\App\Http\Controllers\API\NotificationController::class, 'setRead']);

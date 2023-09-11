@@ -46,13 +46,10 @@ class CommentsController extends Controller
     }
 
     public function getComments(Request $request){
-        $data = $request->validate(['title' => 'required|string', 'user_id' => 'required|integer', 'desk_id' => 'required|integer']);
-        Comments::create([
-            'title' => $data['title'],
-            'desk_id' => $data['desk_id'],
-            'user_id' => $data['user_id']
-        ]);
+        $data = $request->validate(['desk_id' => 'required|integer']);
 
-        return Comments::where('deks_id', $data['desk_id'])->get();
+        return Comments::with('getUsers')->whereHas('getUsers', function ($query) use ($data){
+            $query->where('desk_id', $data['desk_id']);
+        })->get();
     }
 }

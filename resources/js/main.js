@@ -391,10 +391,10 @@ window.viewDesk = function (dashboard_id, column_id, desk_id){
                     <i class="bi bi-check-lg"></i>Save</button>
                 </div>
                     <button class="btn text-white ${res.data.list_task_id ? 'hide' : ''}" id="add-menu-tasks" onclick="createTask(${dashboard_id},${desk_id},${column_id})">Add tasks</button>
-                <div class="comments" id="comment-wrap">
+                <div class="comment-wrap" id="comment-wrap">
                     <label for="comments" class="form-label">Comments</label>
-                    <textarea class="form-control" id="comments" rows="3" placeholder="What you want?...."></textarea>
-                    <button class="btn text-white hide w-100" id="save-comment" onclick="addComment(${desk_id}, ${$res.data.user})">
+                    <textarea class="form-control" id="comment-text" rows="3" placeholder="What you want?...."></textarea>
+                    <button class="btn text-white hide w-100" id="save-comment" onclick="addComment(${desk_id}, ${res.data.user})">
                     <i class="bi bi-check-lg"></i>Save</button>
                 </div>
             `)
@@ -402,10 +402,20 @@ window.viewDesk = function (dashboard_id, column_id, desk_id){
             getUsersDesk(desk_id);
             // --------Add Description-------
             document.getElementById('description').addEventListener('click', function (){
-                document.getElementById('save-desk').classList.remove('hide')
+                let btn = document.getElementById('save-desk')
+                if(btn.classList.contains('hide')){
+                    btn.classList.remove('hide');
+                }else{
+                    btn.classList.add('hide')
+                }
             })
-            document.getElementById('comments').addEventListener('click', function (){
-                document.getElementById('save-comment').classList.remove('hide')
+            document.getElementById('comment-text').addEventListener('click', function (){
+                let btn = document.getElementById('save-comment')
+                if(btn.classList.contains('hide')){
+                    btn.classList.remove('hide');
+                }else{
+                    btn.classList.add('hide')
+                }
             })
             // --------End add Description-------
 
@@ -414,6 +424,7 @@ window.viewDesk = function (dashboard_id, column_id, desk_id){
             loadCheckList(dashboard_id, desk_id, column_id);
             loadImages(dashboard_id, desk_id, res.data.images);
             loadFiles(dashboard_id, desk_id, res.data.files)
+            refreshComments(desk_id);
         })
 }
 
@@ -1079,7 +1090,6 @@ window.getUsersDashboard = function (desk_id, dashboard_id){
                 })
             }
             else{
-                console.log(res)
                 spawn.insertAdjacentHTML('beforeend', `
                     <span style="cursor: pointer;" title="${res[0].get_users.login}" onclick="addEventListener(${desk_id}, ${res[0].get_users.id})">
                     <img src="/images/${res[0].get_users.image}"  alt="${res[0].get_users.image}"></span>
@@ -1157,8 +1167,14 @@ window.addUsersDesk = function (desk_id, user_id){
 }
 
 window.refreshComments = function (desk_id){
-    let spawn = document.getElementById('comment-wrap');
-    fetch('/api/getComments', {
+
+    document.querySelector('[data-modal-desk]').insertAdjacentHTML('beforeend', `
+        <div class="comments" id="comment-users"></div>
+    `)
+
+    let spawn = document.getElementById('comment-users');
+
+    fetch('/api/comment/get', {
         method: 'post',
         headers: {
             'Accept': 'application/json',
@@ -1170,31 +1186,50 @@ window.refreshComments = function (desk_id){
     })
         .then(response => response.json())
         .then(res => {
-            if(isArray(res)){
+            if(document.querySelectorAll('.comment')){
+                document.querySelectorAll('.comment').forEach(item => {
+                    item.remove();
+                });
+            }
+
+            if(res.length > 1){
+                res.reverse()
                 res.forEach(item => {
                     spawn.insertAdjacentHTML('beforeend', `
-                        <span>${item.title}</span>
+                        <div class="comment">
+                            <img src="/images/${item.get_users.image}" alt="${item.get_users.image}">
+                            <div class="info-comment">
+                                <b class="login-comment text-dark-emphasis">${item.get_users.login}</b>
+                                <span class="bg-secondary bg-gradient">${item.title}</span>
+                            </div>
+                        </div>
                     `)
                 })
             }
             else{
                 spawn.insertAdjacentHTML('beforeend', `
-                    <span>${res[0].title}</span>
+                <div class="comment">
+                        <img src="/images/${res[0].get_users.image}" alt="${res[0].get_users.image}">
+                    <div class="info-comment">
+                        <b class="login-comment text-dark-emphasis">${res[0].get_users.login}</b>
+                        <span class="bg-dark-subtle">${res[0].title}</span>
+                    </div>
+                </div>
                 `)
             }
+
+
         })
-
-
 }
 
 window.addComment = function (desk_id, user_id){
-    let title = document.getElementById('comments').value;
+    let title = document.getElementById('comment-text').value;
     if(!title) {
         alert('Поле комментария должно быть обязательным!');
         return;
     }
 
-    fetch('/addComment', {
+    fetch('/api/comment/addComment', {
         method: 'post',
         headers: {
             'Accept': 'application/json',
@@ -1209,5 +1244,7 @@ window.addComment = function (desk_id, user_id){
         .then(response => response.json())
         .then(res => {
             refreshComments(desk_id)
+            document.getElementById('comment-text').value = "";
+            document.getElementById('save-comment').classList.add('hide');
         })
 }

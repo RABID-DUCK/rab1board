@@ -808,3 +808,38 @@ nav {
   padding: 30px;
   top: 4% !important;
 }
+
+.comments {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+.comments .comment {
+  display: flex;
+  align-items: center;
+  margin-top: 15px;
+}
+.comments .comment img {
+  width: 40px;
+  height: 40px;
+}
+.comments .comment .info-comment {
+  display: flex;
+  flex-direction: column;
+  margin-left: 10px;
+  width: 100%;
+}
+.comments .comment .info-comment b {
+  font-size: 14px;
+  text-decoration: underline;
+  font-style: italic;
+  opacity: 0.8;
+  text-align: left;
+}
+.comments .comment .info-comment span {
+  font-size: 1.2rem;
+  padding: 5px;
+  border-radius: 8px;
+  width: 100%;
+  text-align: left;
+}
