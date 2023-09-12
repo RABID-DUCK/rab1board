@@ -1235,7 +1235,7 @@ window.dragDropDesks = function () {
     const listElements = document.querySelectorAll('.desk-block')
 
     for (const list of listElements) {
-        const taskElements = list.querySelectorAll(`.desk`);
+        let taskElements = list.querySelectorAll(`.desk`);
         for (const task of taskElements) {
             task.draggable = true;
         }
@@ -1246,21 +1246,22 @@ window.dragDropDesks = function () {
 
         list.addEventListener('dragend', (evt) => {
             evt.target.classList.remove('selected');
+            const deskOrder = Array.from(list.querySelectorAll(`.desk`)).map((task) => task.dataset.deskId)
+            const columnId = list.parentElement.dataset.columnId;
+            updateDeskOrder(deskOrder, columnId)
         });
 
         list.addEventListener('dragover', (evt) => {
             evt.preventDefault();
 
-
             const activeElement = list.querySelector('.selected');
             const currentElement = evt.target;
 
-            const isMoveable = activeElement !== currentElement && currentElement.classList.contains('.desk-block');
+            const isMoveable = activeElement !== currentElement && currentElement.classList.contains('desk');
 
-            // if(!isMoveable) return;
+            if(!isMoveable) return;
 
             const nextElement = (currentElement === activeElement.nextElementSibling) ? currentElement.nextElementSibling : currentElement;
-            console.log(1111)
             list.insertBefore(activeElement, nextElement);
         });
     }
@@ -1268,7 +1269,7 @@ window.dragDropDesks = function () {
 
 window.updateDeskOrder = function (deskOrder, column_id){
     const url = '/api/update-desk-order';
-
+    console.log(column_id);
     fetch(url, {
         method: 'POST',
         headers: {

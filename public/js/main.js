@@ -3209,17 +3209,19 @@ window.dragDropDesks = function () {
       });
       list.addEventListener('dragend', function (evt) {
         evt.target.classList.remove('selected');
+        var deskOrder = Array.from(list.querySelectorAll(".desk")).map(function (task) {
+          return task.dataset.deskId;
+        });
+        var columnId = list.parentElement.dataset.columnId;
+        updateDeskOrder(deskOrder, columnId);
       });
       list.addEventListener('dragover', function (evt) {
         evt.preventDefault();
         var activeElement = list.querySelector('.selected');
         var currentElement = evt.target;
-        var isMoveable = activeElement !== currentElement && currentElement.classList.contains('.desk-block');
-
-        // if(!isMoveable) return;
-
+        var isMoveable = activeElement !== currentElement && currentElement.classList.contains('desk');
+        if (!isMoveable) return;
         var nextElement = currentElement === activeElement.nextElementSibling ? currentElement.nextElementSibling : currentElement;
-        console.log(1111);
         list.insertBefore(activeElement, nextElement);
       });
     };
@@ -3234,6 +3236,7 @@ window.dragDropDesks = function () {
 };
 window.updateDeskOrder = function (deskOrder, column_id) {
   var url = '/api/update-desk-order';
+  console.log(column_id);
   fetch(url, {
     method: 'POST',
     headers: {

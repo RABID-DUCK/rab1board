@@ -45,12 +45,13 @@ class UserDeskController extends Controller
 
     public function updateDeskOrder(Request $request){
         $deskOrder = $request->input('deskOrder');
+        $columnId = $request->input('column_id');
 
         foreach ($deskOrder as $key => $deskID) {
-            Desks::where('column_id', $request->column_id)->where('id', $deskID)->update([
-                'order' => $key + 1
-            ]);
+            $desk = Desks::where('column_id', $columnId)->where('id', $deskID)->first();
+            $desk->order = $key + 1;
+            $desk->save();
         }
-        return response()->json(['succes' => true]);
+        return response()->json(['success' => true]);
     }
 }
