@@ -1260,8 +1260,11 @@ window.dragDropDesks = function () {
             const activeElement = document.querySelector('.selected');
             const currentElement = evt.target;
 
-            const isMoveable = activeElement !== currentElement && currentElement.classList.contains('desk');
+            const isMoveable = activeElement !== currentElement && currentElement.classList.contains('desk') && !currentElement.classList.contains('add-desk');
 
+            if(!currentElement.parentElement.querySelector('.desk') && currentElement.classList.contains('desk-block')){
+                currentElement.querySelector('#add-task-title').before(activeElement)
+            }
             if(!isMoveable) return;
 
             const nextElement = (currentElement === activeElement.nextElementSibling) ? currentElement.nextElementSibling : currentElement;
@@ -1270,45 +1273,8 @@ window.dragDropDesks = function () {
     }
 }
 
-// window.dragDropDesks = function () {
-//     const listElements = document.querySelectorAll('.desk-block')
-//
-//     for (const list of listElements) {
-//         let taskElements = list.querySelectorAll(`.desk`);
-//         for (const task of taskElements) {
-//             task.draggable = true;
-//         }
-//
-//         list.addEventListener('dragstart', (evt) => {
-//             evt.target.classList.add('selected');
-//         });
-//
-//         list.addEventListener('dragend', (evt) => {
-//             evt.target.classList.remove('selected');
-//             const deskOrder = Array.from(list.querySelectorAll(`.desk`)).map((task) => task.dataset.deskId)
-//             const columnId = list.parentElement.dataset.columnId;
-//             // updateDeskOrder(deskOrder, columnId)
-//         });
-//
-//         list.addEventListener('dragover', (evt) => {
-//             evt.preventDefault();
-//
-//             const activeElement = list.querySelector('.selected');
-//             const currentElement = evt.target;
-//
-//             const isMoveable = activeElement !== currentElement && currentElement.classList.contains('desk');
-//
-//             if(!isMoveable) return;
-//
-//             const nextElement = (currentElement === activeElement.nextElementSibling) ? currentElement.nextElementSibling : currentElement;
-//             list.insertBefore(activeElement, nextElement);
-//         });
-//     }
-// }
-
 window.updateDeskOrder = function (deskOrder, column_id){
     const url = '/api/update-desk-order';
-    console.log(column_id);
     fetch(url, {
         method: 'POST',
         headers: {
