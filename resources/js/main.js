@@ -376,7 +376,9 @@ window.viewDesk = function (dashboard_id, column_id, desk_id){
             // ----------Open modal----------
             modal.insertAdjacentHTML('beforeend', `
              <span class="close-modal" id="modal-desk" onclick="closeModal()">X</span>
-                <b>${res.data.title}</b>
+                <b onclick="openRenameDesk(${desk_id})">${res.data.title}</b>
+                <input class="form-control hide w-50" style="margin: 0 auto;" id="renameDesk" type="text" maxlength="100">
+                <i class="bi bi-check-square hide" style="font-size: 22px; cursor: pointer;" id="confirm-rename-desk" onclick="renameDesk(${desk_id}, ${dashboard_id})"></i>
                 <div class="users-desk" id="usersDesk">
                     <i class="bi bi-plus-circle" onclick="modalAddUserDesk(${desk_id}, ${dashboard_id})" id="plusUser"></i>
                 </div>
@@ -428,6 +430,37 @@ window.viewDesk = function (dashboard_id, column_id, desk_id){
             loadFiles(dashboard_id, desk_id, res.data.files)
             refreshComments(desk_id);
         })
+}
+
+window.openRenameDesk = function (desk_id){
+    let input = document.getElementById('renameDesk');
+    input.classList.remove('hide')
+    input.previousElementSibling.classList.add('hide');
+    input.value = input.previousElementSibling.textContent;
+    input.nextElementSibling.classList.remove('hide');
+}
+
+window.renameDesk = function (desk_id, dashboard_id){
+    let title = document.getElementById('renameDesk').value;
+    fetch('/api/modalUpdate', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        },
+        body: JSON.stringify({ id: desk_id,dashboard_id: dashboard_id, title: title }),
+    })
+        .then((response) => response.json())
+        .then((data) => {
+            let input = document.getElementById('renameDesk');
+            input.classList.add('hide')
+            input.previousElementSibling.classList.remove('hide');
+            input.nextElementSibling.classList.add('hide');
+            input.previousElementSibling.textContent = data.title;
+        })
+        .catch((error) => {
+            console.error('Произошла ошибка на сервере!');
+        });
 }
 
 window.closeModal = function () {

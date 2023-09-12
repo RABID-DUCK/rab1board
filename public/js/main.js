@@ -2555,7 +2555,7 @@ window.viewDesk = function (dashboard_id, column_id, desk_id) {
     }
 
     // ----------Open modal----------
-    modal.insertAdjacentHTML('beforeend', "\n             <span class=\"close-modal\" id=\"modal-desk\" onclick=\"closeModal()\">X</span>\n                <b>".concat(res.data.title, "</b>\n                <div class=\"users-desk\" id=\"usersDesk\">\n                    <i class=\"bi bi-plus-circle\" onclick=\"modalAddUserDesk(").concat(desk_id, ", ").concat(dashboard_id, ")\" id=\"plusUser\"></i>\n                </div>\n\n                <div id=\"output-date\" class=\"output-date\" style=\"").concat(!res.data.data_end ? 'display: none;' : '', "\">\n                    <span id=\"output-date-end\" class=\"").concat(differenceDate(res.data.data_end) ? 'text-danger fw-bold' : '', "\">\n                    \u0421\u0440\u043E\u043A \u0434\u043E: ").concat(convertData(res.data.data_end), "</span>\n                </div>\n\n                <div class=\"description\" id=\"description-wrap\">\n                    <label for=\"description\" class=\"form-label\">Description of task</label>\n                    <textarea class=\"form-control\" id=\"description\" rows=\"3\" placeholder=\"This task mean...\">").concat((_res$data$description = res.data.description) !== null && _res$data$description !== void 0 ? _res$data$description : '', "</textarea>\n                    <button class=\"btn text-white hide\" id=\"save-desk\" onclick=\"updateDescription(").concat(dashboard_id, ",").concat(desk_id, ", ").concat(column_id, ")\">\n                    <i class=\"bi bi-check-lg\"></i>Save</button>\n                </div>\n                    <button class=\"btn text-white ").concat(res.data.list_task_id ? 'hide' : '', "\" id=\"add-menu-tasks\" onclick=\"createTask(").concat(dashboard_id, ",").concat(desk_id, ",").concat(column_id, ")\">Add tasks</button>\n                <div class=\"comment-wrap\" id=\"comment-wrap\">\n                    <label for=\"comments\" class=\"form-label\">Comments</label>\n                    <textarea class=\"form-control\" id=\"comment-text\" rows=\"3\" placeholder=\"What you want?....\"></textarea>\n                    <button class=\"btn text-white hide w-100\" id=\"save-comment\" onclick=\"addComment(").concat(desk_id, ", ").concat(res.data.user, ")\">\n                    <i class=\"bi bi-check-lg\"></i>Save</button>\n                </div>\n            "));
+    modal.insertAdjacentHTML('beforeend', "\n             <span class=\"close-modal\" id=\"modal-desk\" onclick=\"closeModal()\">X</span>\n                <b onclick=\"openRenameDesk(".concat(desk_id, ")\">").concat(res.data.title, "</b>\n                <input class=\"form-control hide w-50\" style=\"margin: 0 auto;\" id=\"renameDesk\" type=\"text\" maxlength=\"100\">\n                <i class=\"bi bi-check-square hide\" style=\"font-size: 22px; cursor: pointer;\" id=\"confirm-rename-desk\" onclick=\"renameDesk(").concat(desk_id, ", ").concat(dashboard_id, ")\"></i>\n                <div class=\"users-desk\" id=\"usersDesk\">\n                    <i class=\"bi bi-plus-circle\" onclick=\"modalAddUserDesk(").concat(desk_id, ", ").concat(dashboard_id, ")\" id=\"plusUser\"></i>\n                </div>\n\n                <div id=\"output-date\" class=\"output-date\" style=\"").concat(!res.data.data_end ? 'display: none;' : '', "\">\n                    <span id=\"output-date-end\" class=\"").concat(differenceDate(res.data.data_end) ? 'text-danger fw-bold' : '', "\">\n                    \u0421\u0440\u043E\u043A \u0434\u043E: ").concat(convertData(res.data.data_end), "</span>\n                </div>\n\n                <div class=\"description\" id=\"description-wrap\">\n                    <label for=\"description\" class=\"form-label\">Description of task</label>\n                    <textarea class=\"form-control\" id=\"description\" rows=\"3\" placeholder=\"This task mean...\">").concat((_res$data$description = res.data.description) !== null && _res$data$description !== void 0 ? _res$data$description : '', "</textarea>\n                    <button class=\"btn text-white hide\" id=\"save-desk\" onclick=\"updateDescription(").concat(dashboard_id, ",").concat(desk_id, ", ").concat(column_id, ")\">\n                    <i class=\"bi bi-check-lg\"></i>Save</button>\n                </div>\n                    <button class=\"btn text-white ").concat(res.data.list_task_id ? 'hide' : '', "\" id=\"add-menu-tasks\" onclick=\"createTask(").concat(dashboard_id, ",").concat(desk_id, ",").concat(column_id, ")\">Add tasks</button>\n                <div class=\"comment-wrap\" id=\"comment-wrap\">\n                    <label for=\"comments\" class=\"form-label\">Comments</label>\n                    <textarea class=\"form-control\" id=\"comment-text\" rows=\"3\" placeholder=\"What you want?....\"></textarea>\n                    <button class=\"btn text-white hide w-100\" id=\"save-comment\" onclick=\"addComment(").concat(desk_id, ", ").concat(res.data.user, ")\">\n                    <i class=\"bi bi-check-lg\"></i>Save</button>\n                </div>\n            "));
     getUsersDesk(desk_id);
     // --------Add Description-------
     document.getElementById('description').addEventListener('click', function () {
@@ -2581,6 +2581,38 @@ window.viewDesk = function (dashboard_id, column_id, desk_id) {
     loadImages(dashboard_id, desk_id, res.data.images);
     loadFiles(dashboard_id, desk_id, res.data.files);
     refreshComments(desk_id);
+  });
+};
+window.openRenameDesk = function (desk_id) {
+  var input = document.getElementById('renameDesk');
+  input.classList.remove('hide');
+  input.previousElementSibling.classList.add('hide');
+  input.value = input.previousElementSibling.textContent;
+  input.nextElementSibling.classList.remove('hide');
+};
+window.renameDesk = function (desk_id, dashboard_id) {
+  var title = document.getElementById('renameDesk').value;
+  fetch('/api/modalUpdate', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+    },
+    body: JSON.stringify({
+      id: desk_id,
+      dashboard_id: dashboard_id,
+      title: title
+    })
+  }).then(function (response) {
+    return response.json();
+  }).then(function (data) {
+    var input = document.getElementById('renameDesk');
+    input.classList.add('hide');
+    input.previousElementSibling.classList.remove('hide');
+    input.nextElementSibling.classList.add('hide');
+    input.previousElementSibling.textContent = data.title;
+  })["catch"](function (error) {
+    console.error('Произошла ошибка на сервере!');
   });
 };
 window.closeModal = function () {
