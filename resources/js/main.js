@@ -1248,6 +1248,10 @@ window.dragDropDesks = function () {
 
         list.querySelector('.desk-block').addEventListener('dragend', (evt) => {
             evt.target.classList.remove('selected');
+            let deskOrder = Array.from(evt.target.parentElement.querySelectorAll('.desk')).map((task) => task.dataset.deskId);
+            let columnId = evt.target.parentElement.parentElement.dataset.columnId;
+
+            updateDeskOrder(deskOrder, columnId)
         });
 
         list.querySelector('.desk-block').addEventListener('dragover', (evt) => {
@@ -1260,8 +1264,6 @@ window.dragDropDesks = function () {
 
             if(!isMoveable) return;
 
-            console.log(activeElement)
-            console.log(currentElement)
             const nextElement = (currentElement === activeElement.nextElementSibling) ? currentElement.nextElementSibling : currentElement;
             list.querySelector('.desk-block').insertBefore(activeElement, nextElement);
         });

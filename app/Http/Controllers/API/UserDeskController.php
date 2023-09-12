@@ -48,8 +48,9 @@ class UserDeskController extends Controller
         $columnId = $request->input('column_id');
 
         foreach ($deskOrder as $key => $deskID) {
-            $desk = Desks::where('column_id', $columnId)->where('id', $deskID)->first();
+            $desk = Desks::where('id', $deskID)->first();
             $desk->order = $key + 1;
+            if($desk->column_id !== $columnId) $desk->column_id = $columnId;
             $desk->save();
         }
         return response()->json(['success' => true]);

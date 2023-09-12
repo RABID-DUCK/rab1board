@@ -3210,6 +3210,11 @@ window.dragDropDesks = function () {
       });
       list.querySelector('.desk-block').addEventListener('dragend', function (evt) {
         evt.target.classList.remove('selected');
+        var deskOrder = Array.from(evt.target.parentElement.querySelectorAll('.desk')).map(function (task) {
+          return task.dataset.deskId;
+        });
+        var columnId = evt.target.parentElement.parentElement.dataset.columnId;
+        updateDeskOrder(deskOrder, columnId);
       });
       list.querySelector('.desk-block').addEventListener('dragover', function (evt) {
         evt.preventDefault();
@@ -3217,8 +3222,6 @@ window.dragDropDesks = function () {
         var currentElement = evt.target;
         var isMoveable = activeElement !== currentElement && currentElement.classList.contains('desk');
         if (!isMoveable) return;
-        console.log(activeElement);
-        console.log(currentElement);
         var nextElement = currentElement === activeElement.nextElementSibling ? currentElement.nextElementSibling : currentElement;
         list.querySelector('.desk-block').insertBefore(activeElement, nextElement);
       });
