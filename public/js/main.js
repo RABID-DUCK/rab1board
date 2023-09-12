@@ -2397,6 +2397,7 @@ window.addColumn = function (dashboard, user_id) {
     } else {
       document.getElementById('add-column-panel').insertAdjacentHTML('beforebegin', "\n             <div class=\"wrap\" data-column-id=\"".concat(data.column_id, "\">\n                <div class=\"column\" onclick=\"clickRenameColumn(").concat(data.column_id, ")\" data-column-title=\"\">\n                    <span>").concat(data.columns[data.columns.length - 1].title, "</span>\n                    <i class=\"bi bi-check-lg save-column hide\"></i>\n                </div>\n                    <div class=\"desk-block\">\n                        <button class=\"add-desk\" id=\"add-task-title\" onclick=\"createDeskMiniModal(").concat(data.dashboard_id, ", ").concat(data.column_id, ", ").concat(user_id, ")\">+ Add desk</button>\n                    </div>\n            </div>\n            "));
     }
+    dragDropDesks();
   });
 };
 window.createDeskMiniModal = function (dashboard, column, user_id) {
@@ -3221,6 +3222,7 @@ window.dragDropDesks = function () {
         var activeElement = document.querySelector('.selected');
         var currentElement = evt.target;
         var isMoveable = activeElement !== currentElement && currentElement.classList.contains('desk') && !currentElement.classList.contains('add-desk');
+        console.log(currentElement);
         if (!currentElement.parentElement.querySelector('.desk') && currentElement.classList.contains('desk-block')) {
           currentElement.querySelector('#add-task-title').before(activeElement);
         }

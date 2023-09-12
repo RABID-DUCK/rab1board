@@ -151,6 +151,8 @@ window.addColumn = function (dashboard, user_id){
             </div>
             `)
             }
+
+            dragDropDesks()
         })
 }
 
@@ -1262,6 +1264,7 @@ window.dragDropDesks = function () {
 
             const isMoveable = activeElement !== currentElement && currentElement.classList.contains('desk') && !currentElement.classList.contains('add-desk');
 
+            console.log(currentElement)
             if(!currentElement.parentElement.querySelector('.desk') && currentElement.classList.contains('desk-block')){
                 currentElement.querySelector('#add-task-title').before(activeElement)
             }
