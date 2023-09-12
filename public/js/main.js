@@ -3185,13 +3185,14 @@ window.addComment = function (desk_id, user_id) {
   });
 };
 window.dragDropDesks = function () {
-  var listElements = document.querySelectorAll('.desk-block');
+  var listElements = document.querySelectorAll('.wrap');
   var _iterator2 = _createForOfIteratorHelper(listElements),
     _step2;
   try {
     var _loop = function _loop() {
       var list = _step2.value;
-      var taskElements = list.querySelectorAll(".desk");
+      var deskBlock = list.querySelector('.desk-block');
+      var taskElements = deskBlock.querySelectorAll(".desk");
       var _iterator3 = _createForOfIteratorHelper(taskElements),
         _step3;
       try {
@@ -3204,25 +3205,22 @@ window.dragDropDesks = function () {
       } finally {
         _iterator3.f();
       }
-      list.addEventListener('dragstart', function (evt) {
+      list.querySelector('.desk-block').addEventListener('dragstart', function (evt) {
         evt.target.classList.add('selected');
       });
-      list.addEventListener('dragend', function (evt) {
+      list.querySelector('.desk-block').addEventListener('dragend', function (evt) {
         evt.target.classList.remove('selected');
-        var deskOrder = Array.from(list.querySelectorAll(".desk")).map(function (task) {
-          return task.dataset.deskId;
-        });
-        var columnId = list.parentElement.dataset.columnId;
-        updateDeskOrder(deskOrder, columnId);
       });
-      list.addEventListener('dragover', function (evt) {
+      list.querySelector('.desk-block').addEventListener('dragover', function (evt) {
         evt.preventDefault();
-        var activeElement = list.querySelector('.selected');
+        var activeElement = document.querySelector('.selected');
         var currentElement = evt.target;
         var isMoveable = activeElement !== currentElement && currentElement.classList.contains('desk');
         if (!isMoveable) return;
+        console.log(activeElement);
+        console.log(currentElement);
         var nextElement = currentElement === activeElement.nextElementSibling ? currentElement.nextElementSibling : currentElement;
-        list.insertBefore(activeElement, nextElement);
+        list.querySelector('.desk-block').insertBefore(activeElement, nextElement);
       });
     };
     for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
@@ -3234,6 +3232,43 @@ window.dragDropDesks = function () {
     _iterator2.f();
   }
 };
+
+// window.dragDropDesks = function () {
+//     const listElements = document.querySelectorAll('.desk-block')
+//
+//     for (const list of listElements) {
+//         let taskElements = list.querySelectorAll(`.desk`);
+//         for (const task of taskElements) {
+//             task.draggable = true;
+//         }
+//
+//         list.addEventListener('dragstart', (evt) => {
+//             evt.target.classList.add('selected');
+//         });
+//
+//         list.addEventListener('dragend', (evt) => {
+//             evt.target.classList.remove('selected');
+//             const deskOrder = Array.from(list.querySelectorAll(`.desk`)).map((task) => task.dataset.deskId)
+//             const columnId = list.parentElement.dataset.columnId;
+//             // updateDeskOrder(deskOrder, columnId)
+//         });
+//
+//         list.addEventListener('dragover', (evt) => {
+//             evt.preventDefault();
+//
+//             const activeElement = list.querySelector('.selected');
+//             const currentElement = evt.target;
+//
+//             const isMoveable = activeElement !== currentElement && currentElement.classList.contains('desk');
+//
+//             if(!isMoveable) return;
+//
+//             const nextElement = (currentElement === activeElement.nextElementSibling) ? currentElement.nextElementSibling : currentElement;
+//             list.insertBefore(activeElement, nextElement);
+//         });
+//     }
+// }
+
 window.updateDeskOrder = function (deskOrder, column_id) {
   var url = '/api/update-desk-order';
   console.log(column_id);

@@ -1232,40 +1232,77 @@ window.addComment = function (desk_id, user_id){
 }
 
 window.dragDropDesks = function () {
-    const listElements = document.querySelectorAll('.desk-block')
+    const listElements = document.querySelectorAll('.wrap')
 
     for (const list of listElements) {
-        let taskElements = list.querySelectorAll(`.desk`);
+        let deskBlock = list.querySelector('.desk-block')
+        let taskElements = deskBlock.querySelectorAll(`.desk`);
+
         for (const task of taskElements) {
             task.draggable = true;
         }
 
-        list.addEventListener('dragstart', (evt) => {
+        list.querySelector('.desk-block').addEventListener('dragstart', (evt) => {
             evt.target.classList.add('selected');
         });
 
-        list.addEventListener('dragend', (evt) => {
+        list.querySelector('.desk-block').addEventListener('dragend', (evt) => {
             evt.target.classList.remove('selected');
-            const deskOrder = Array.from(list.querySelectorAll(`.desk`)).map((task) => task.dataset.deskId)
-            const columnId = list.parentElement.dataset.columnId;
-            updateDeskOrder(deskOrder, columnId)
         });
 
-        list.addEventListener('dragover', (evt) => {
+        list.querySelector('.desk-block').addEventListener('dragover', (evt) => {
             evt.preventDefault();
 
-            const activeElement = list.querySelector('.selected');
+            const activeElement = document.querySelector('.selected');
             const currentElement = evt.target;
 
             const isMoveable = activeElement !== currentElement && currentElement.classList.contains('desk');
 
             if(!isMoveable) return;
 
+            console.log(activeElement)
+            console.log(currentElement)
             const nextElement = (currentElement === activeElement.nextElementSibling) ? currentElement.nextElementSibling : currentElement;
-            list.insertBefore(activeElement, nextElement);
+            list.querySelector('.desk-block').insertBefore(activeElement, nextElement);
         });
     }
 }
+
+// window.dragDropDesks = function () {
+//     const listElements = document.querySelectorAll('.desk-block')
+//
+//     for (const list of listElements) {
+//         let taskElements = list.querySelectorAll(`.desk`);
+//         for (const task of taskElements) {
+//             task.draggable = true;
+//         }
+//
+//         list.addEventListener('dragstart', (evt) => {
+//             evt.target.classList.add('selected');
+//         });
+//
+//         list.addEventListener('dragend', (evt) => {
+//             evt.target.classList.remove('selected');
+//             const deskOrder = Array.from(list.querySelectorAll(`.desk`)).map((task) => task.dataset.deskId)
+//             const columnId = list.parentElement.dataset.columnId;
+//             // updateDeskOrder(deskOrder, columnId)
+//         });
+//
+//         list.addEventListener('dragover', (evt) => {
+//             evt.preventDefault();
+//
+//             const activeElement = list.querySelector('.selected');
+//             const currentElement = evt.target;
+//
+//             const isMoveable = activeElement !== currentElement && currentElement.classList.contains('desk');
+//
+//             if(!isMoveable) return;
+//
+//             const nextElement = (currentElement === activeElement.nextElementSibling) ? currentElement.nextElementSibling : currentElement;
+//             list.insertBefore(activeElement, nextElement);
+//         });
+//     }
+// }
 
 window.updateDeskOrder = function (deskOrder, column_id){
     const url = '/api/update-desk-order';
