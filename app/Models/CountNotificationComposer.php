@@ -10,7 +10,7 @@ class CountNotificationComposer
     public function compose(View $view)
     {
         if (Auth::check()) {
-            $count_not = Notification::where('user_id', Auth::user()->id)->where('read', true)->count();
+            $count_not = Notification::where('user_id', Auth::user()->id)->where('read', false)->count();
         } else {
             $count_not = 0;
         }
