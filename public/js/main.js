@@ -3009,6 +3009,9 @@ window.sendInvite = function (dashboard_id) {
     return response.json();
   }).then(function (res) {
     popupTooltip('Приглашение в проект отправлено!');
+    Echo.channel("notifications").listen('NotificationSent', function (e) {
+      refreshNotifs(7);
+    });
   });
 };
 window.openNotif = function (user_id) {
@@ -3294,6 +3297,7 @@ window.updateDeskOrder = function (deskOrder, column_id) {
 };
 window.dragDropColumns = function () {
   var columnList = document.getElementById('desk-wrapper');
+  if (!document.querySelector('.wrap')) return;
   var listElements = columnList.querySelectorAll('.wrap');
   var _iterator4 = _createForOfIteratorHelper(listElements),
     _step4;

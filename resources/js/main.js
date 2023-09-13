@@ -990,6 +990,10 @@ window.sendInvite = function (dashboard_id){
         .then(response => response.json())
         .then(res => {
             popupTooltip('Приглашение в проект отправлено!')
+            Echo.channel(`notifications`)
+                .listen('NotificationSent', (e) => {
+                    refreshNotifs(7)
+                });
         })
 }
 
@@ -1330,6 +1334,8 @@ window.updateDeskOrder = function (deskOrder, column_id){
 
 window.dragDropColumns = function () {
     const columnList = document.getElementById('desk-wrapper');
+    if(!document.querySelector('.wrap')) return;
+
     const listElements = columnList.querySelectorAll('.wrap')
 
     for (const columns of listElements) {

@@ -24,11 +24,11 @@ class UserDashboardController extends Controller
         $data = $request->validate(['email' => 'required|string', 'dashboard_id' => 'required|integer']);
 
         if($user = User::where('email', $data['email'])->first()){
-            if($users = UserDashboards::where('dashboard_id', $data['dashboard_id'])->where('user_id', $user->id)->get()){
-                foreach ($users as $userDash){
-                    if(!$userDash->confirmed) return response()->json(['status' => 403,'message' => 'Приглашение уже было отправлено!']);
-                }
-            }
+//            if($users = UserDashboards::where('dashboard_id', $data['dashboard_id'])->where('user_id', $user->id)->get()){
+//                foreach ($users as $userDash){
+//                    if(!$userDash->confirmed) return response()->json(['status' => 403,'message' => 'Приглашение уже было отправлено!']);
+//                }
+//            }
 
             $userDashboard = UserDashboards::create([
                 'user_id' => $user->id,
