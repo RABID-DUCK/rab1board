@@ -36,7 +36,7 @@
     </div>
     <div class="desk-wrapper d-flex justify-content-start" id="desk-wrapper">
         @if(isset($columns))
-            @foreach($columns as $column)
+            @foreach($columns->sortBy('order') as $column)
                 <div class="wrap" data-column-id="{{ $column->id }}">
                     <div class="column" onclick="clickRenameColumn({{ $column->id }})" data-column-title="">
                         <span>{{ $column->title }}</span>

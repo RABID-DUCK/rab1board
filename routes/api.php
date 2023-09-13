@@ -39,6 +39,7 @@ Route::post('/column/rename', '\App\Http\Controllers\API\ColumnController@update
 Route::post('/column/delete', '\App\Http\Controllers\API\ColumnController@delete'); // удалить колонку
 Route::post('/column/get', '\App\Http\Controllers\API\ColumnController@getColumns'); // получить колонки проекта
 Route::post('/column/getDesks', '\App\Http\Controllers\API\ColumnController@getDesks'); // получить задачи колонки
+Route::post('/column/dragDrop', '\App\Http\Controllers\API\ColumnController@dragDrop'); // drag drop функция
 
 Route::post('/desk/create', '\App\Http\Controllers\API\DeskController@store'); // создать задачу
 Route::post('/desk', '\App\Http\Controllers\API\DeskController@outputDesks'); // вывести доски с их колонками

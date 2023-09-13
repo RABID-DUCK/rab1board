@@ -1328,4 +1328,56 @@ window.updateDeskOrder = function (deskOrder, column_id){
         });
 }
 
-dragDropDesks()
+window.dragDropColumns = function () {
+    const columnList = document.getElementById('desk-wrapper');
+    const listElements = columnList.querySelectorAll('.wrap')
+
+    for (const columns of listElements) {
+        columns.draggable = true;
+    }
+
+    columnList.addEventListener('dragstart', (evt) => {
+        evt.target.classList.add('selected');
+    });
+
+    columnList.addEventListener('dragend', (evt) => {
+        evt.target.classList.remove('selected');
+        let columnOrder = Array.from(columnList.querySelectorAll('.wrap')).map((column) => column.dataset.columnId);
+        updateColumnOrder(columnOrder)
+    });
+
+    columnList.addEventListener('dragover', (evt) => {
+        evt.preventDefault();
+
+        const activeElement = columnList.querySelector('.selected');
+        const currentElement = evt.target;
+
+        const isMoveable = activeElement !== currentElement && currentElement.classList.contains('wrap');
+
+        if(!isMoveable) return;
+
+        const nextElement = (currentElement === activeElement.nextElementSibling) ? currentElement.nextElementSibling : currentElement;
+        columnList.insertBefore(activeElement, nextElement);
+    });
+}
+
+window.updateColumnOrder = function (columnOrder){
+    const url = '/api/column/dragDrop';
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        },
+        body: JSON.stringify({ columnOrder }),
+    })
+        .then((response) => response.json())
+        .then((data) => {
+        })
+        .catch((error) => {
+            console.error('Произошла ошибка!');
+        });
+}
+
+dragDropDesks();
+dragDropColumns();

@@ -3292,7 +3292,60 @@ window.updateDeskOrder = function (deskOrder, column_id) {
     console.error('Ошибка при обновлении порядка карточек:', error);
   });
 };
+window.dragDropColumns = function () {
+  var columnList = document.getElementById('desk-wrapper');
+  var listElements = columnList.querySelectorAll('.wrap');
+  var _iterator4 = _createForOfIteratorHelper(listElements),
+    _step4;
+  try {
+    for (_iterator4.s(); !(_step4 = _iterator4.n()).done;) {
+      var columns = _step4.value;
+      columns.draggable = true;
+    }
+  } catch (err) {
+    _iterator4.e(err);
+  } finally {
+    _iterator4.f();
+  }
+  columnList.addEventListener('dragstart', function (evt) {
+    evt.target.classList.add('selected');
+  });
+  columnList.addEventListener('dragend', function (evt) {
+    evt.target.classList.remove('selected');
+    var columnOrder = Array.from(columnList.querySelectorAll('.wrap')).map(function (column) {
+      return column.dataset.columnId;
+    });
+    updateColumnOrder(columnOrder);
+  });
+  columnList.addEventListener('dragover', function (evt) {
+    evt.preventDefault();
+    var activeElement = columnList.querySelector('.selected');
+    var currentElement = evt.target;
+    var isMoveable = activeElement !== currentElement && currentElement.classList.contains('wrap');
+    if (!isMoveable) return;
+    var nextElement = currentElement === activeElement.nextElementSibling ? currentElement.nextElementSibling : currentElement;
+    columnList.insertBefore(activeElement, nextElement);
+  });
+};
+window.updateColumnOrder = function (columnOrder) {
+  var url = '/api/column/dragDrop';
+  fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+    },
+    body: JSON.stringify({
+      columnOrder: columnOrder
+    })
+  }).then(function (response) {
+    return response.json();
+  }).then(function (data) {})["catch"](function (error) {
+    console.error('Произошла ошибка!');
+  });
+};
 dragDropDesks();
+dragDropColumns();
 })();
 
 /******/ })()

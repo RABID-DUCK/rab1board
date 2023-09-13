@@ -59,4 +59,16 @@ class ColumnController extends Controller
         $data = $request->validate(['dash_id' => 'required|integer', 'col_id' => 'required|integer']);
         return Desks::where('column_id', $data['col_id'])->get();
     }
+
+    public function dragDrop(Request $request){
+        $columnOder = $request->input('columnOrder');
+
+        foreach ($columnOder as $key => $columnId){
+            $column = Columns::where('id', $columnId)->first();
+            $column->order = $key + 1;
+            $column->save();
+        }
+
+        return response()->json(['success' => true]);
+    }
 }
