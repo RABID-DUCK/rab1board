@@ -17,8 +17,8 @@ class NotificationsChannel
     /**
      * Authenticate the user's access to the channel.
      */
-    public function join(User $user): array|bool
+    public function join(User $user)
     {
-        return auth()->check();
+        return auth()->user();
     }
 }

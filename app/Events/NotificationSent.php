@@ -15,7 +15,7 @@ class NotificationSent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $notification;
+    public Notification $notification;
     /**
      * Create a new event instance.
      */
@@ -32,7 +32,20 @@ class NotificationSent implements ShouldBroadcast
     public function broadcastOn(): array
     {
         return [
-            new PrivateChannel('notifications'),
+            new Channel('notifications'),
         ];
     }
+
+    public function broadcastAs(): string
+    {
+        return 'notifications';
+    }
+
+    public function broadcastWith(): array
+    {
+        return [
+            'user_id' => $this->notification->user_id,
+        ];
+    }
+
 }

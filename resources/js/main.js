@@ -990,12 +990,15 @@ window.sendInvite = function (dashboard_id){
         .then(response => response.json())
         .then(res => {
             popupTooltip('Приглашение в проект отправлено!')
-            Echo.channel(`notifications`)
-                .listen('NotificationSent', (e) => {
-                    refreshNotifs(7)
+            Echo.private('notifications')
+                .listen('.notification', (data) => {
+                    console.log('Notification Received: ' + JSON.stringify(data));
+                    refreshNotifs(res.user_id)
                 });
         })
 }
+
+
 
 window.openNotif = function (user_id){
     let modal = document.getElementById('notification-modal');

@@ -30,7 +30,7 @@
 
             <a href="">Chart</a>
             <a href="">Scheduled events</a>
-            <a href="">Chat dashboard</a>
+            <button type="button" onclick="tester()">Chat dashboard</button>
         </div>
 
     </div>

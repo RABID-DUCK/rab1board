@@ -18,7 +18,7 @@ class Helper
                 'type_id' => $type_id->id
             ]);
 
-            broadcast(new NotificationSent($notification));
+            broadcast(new NotificationSent($notification))->toOthers();
         }
     }
 

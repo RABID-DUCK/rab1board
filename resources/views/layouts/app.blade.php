@@ -43,6 +43,12 @@
             <script src="{{ asset('js/main.js') }}" ></script>
             <script src="{{ asset('js/helper.js') }}" ></script>
             <script src="{{ asset('js/app.js') }}"></script>
+             <script>
+                 window.Echo.channel('notifications')
+                     .listen('.notifications', res => {
+                         refreshNotifs(res.user_id)
+                     })
+             </script>
 
     </body>
 </html>

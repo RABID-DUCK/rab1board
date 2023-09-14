@@ -3009,8 +3009,9 @@ window.sendInvite = function (dashboard_id) {
     return response.json();
   }).then(function (res) {
     popupTooltip('Приглашение в проект отправлено!');
-    Echo.channel("notifications").listen('NotificationSent', function (e) {
-      refreshNotifs(7);
+    Echo["private"]('notifications').listen('.notification', function (data) {
+      console.log('Notification Received: ' + JSON.stringify(data));
+      refreshNotifs(res.user_id);
     });
   });
 };

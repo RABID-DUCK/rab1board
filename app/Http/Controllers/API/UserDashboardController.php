@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Events\NotificationSent;
 use App\Helpers\Helper;
 use App\Http\Controllers\Controller;
 use App\Models\Notification;
+use App\Models\NotificationType;
 use App\Models\User;
 use App\Models\UserDashboards;
 use Illuminate\Http\Request;
@@ -24,11 +26,11 @@ class UserDashboardController extends Controller
         $data = $request->validate(['email' => 'required|string', 'dashboard_id' => 'required|integer']);
 
         if($user = User::where('email', $data['email'])->first()){
-//            if($users = UserDashboards::where('dashboard_id', $data['dashboard_id'])->where('user_id', $user->id)->get()){
-//                foreach ($users as $userDash){
-//                    if(!$userDash->confirmed) return response()->json(['status' => 403,'message' => 'Приглашение уже было отправлено!']);
-//                }
-//            }
+            if($users = UserDashboards::where('dashboard_id', $data['dashboard_id'])->where('user_id', $user->id)->get()){
+                foreach ($users as $userDash){
+                    if(!$userDash->confirmed) return response()->json(['status' => 403,'message' => 'Приглашение уже было отправлено!']);
+                }
+            }
 
             $userDashboard = UserDashboards::create([
                 'user_id' => $user->id,
@@ -44,9 +46,18 @@ class UserDashboardController extends Controller
                             </div>
                         </span>";
 
-            Helper::sendNotification($user->id, $script, 'invite_dashboard');
+            if($type_id = NotificationType::where('type', 'invite_dashboard')->first()){
+                $notification = Notification::create([
+                    'user_id' => $user->id,
+                    'message' => htmlspecialchars($script),
+                    'type_id' => $type_id->id
+                ]);
 
-            return response()->json(['status' => 200,'message' => 'Приглашение отправлено']);
+                broadcast(new NotificationSent($notification))->toOthers();
+
+                return response()->json(['status' => 200,'message' => 'Приглашение отправлено', 'user_id' => $user->id]);
+            }
+
         }
         else{
             return response()->json(['status' => 403,'message' => 'Пользователь не найден']);
