@@ -12,5 +12,4 @@ use Illuminate\Support\Facades\Broadcast;
 | used to check if an authenticated user can listen to the channel.
 |
 */
-
 Broadcast::channel('notifications', \App\Broadcasting\NotificationsChannel::class);

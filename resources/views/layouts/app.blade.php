@@ -19,8 +19,6 @@
         <script src="{{asset('js/plugins/dropzone-min.js')}}"></script>
         <link href="{{asset('css/plugins/basic.css')}}" rel="stylesheet" type="text/css" />
         <link href="{{asset('css/plugins/dropzone.css')}}" rel="stylesheet" type="text/css" />
-{{--        <script src="https://code.jquery.com/jquery-3.6.0.js"></script>--}}
-{{--        <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>--}}
     </head>
     <body class="antialiased">
              @include('layouts/header')
@@ -44,9 +42,9 @@
             <script src="{{ asset('js/helper.js') }}" ></script>
             <script src="{{ asset('js/app.js') }}"></script>
              <script>
-                 window.Echo.channel('notifications')
+                 window.Echo.private('notifications')
                      .listen('.notifications', res => {
-                         refreshNotifs(res.user_id)
+                         refreshNotifs({{auth()->user()->id}})
                      })
              </script>
 
