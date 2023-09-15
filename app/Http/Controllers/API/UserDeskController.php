@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Events\DeskMove;
 use App\Http\Controllers\Controller;
 use App\Models\Desks;
 use App\Models\User;
@@ -52,6 +53,8 @@ class UserDeskController extends Controller
             $desk->order = $key + 1;
             if($desk->column_id !== $columnId) $desk->column_id = $columnId;
             $desk->save();
+
+            broadcast(new DeskMove($desk))->toOthers();
         }
         return response()->json(['success' => true]);
     }

@@ -38,13 +38,14 @@
         @if(isset($columns))
             @foreach($columns->sortBy('order') as $column)
                 <div class="wrap" data-column-id="{{ $column->id }}">
-                    <div class="column" onclick="clickRenameColumn({{ $column->id }})" data-column-title="">
+                    <div class="column" onclick="clickRenameColumn({{ $column->id }})" data-column-title="" onmousedown="dragDropColumns()">
                         <span>{{ $column->title }}</span>
                         <i class="bi bi-check-lg save-column hide"></i>
                     </div>
                     <div class="desk-block" id="desk-list">
                         @foreach($column->desks->sortBy('order') as $desk)
                             <div class="desk" onclick="viewDesk({{$dashboard->id}},{{$column->id}},{{$desk->id}})" data-desk-id="{{$desk->id}}"
+                                 onmousedown="dragDropDesks()"
                              style="{{$desk->color_id ? "box-shadow: 0 0 10px 3px ".$desk->color[0]->color : '' }}">
                                 <p>{{ $desk->title }}</p>
                                 @if($desk->image)
@@ -75,11 +76,7 @@
     </div>
 
     <script>
-        // document.addEventListener('DOMContentLoaded', () =>{
-        //     $(function(){
-        //         $('.desk').draggable();
-        //     })
-        // })
+
 
     </script>
 @endsection

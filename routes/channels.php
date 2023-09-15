@@ -13,3 +13,4 @@ use Illuminate\Support\Facades\Broadcast;
 |
 */
 Broadcast::channel('notifications', \App\Broadcasting\NotificationsChannel::class);
+Broadcast::channel('desks', \App\Broadcasting\DesksChannel::class);

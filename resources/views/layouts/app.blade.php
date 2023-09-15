@@ -46,6 +46,48 @@
                      .listen('.notifications', res => {
                          refreshNotifs({{auth()->user()->id}})
                      })
+                 window.Echo.channel('desks')
+                     .listen('.desk_move', res => {
+                         let column = document.querySelector(`[data-column-id='${res.desks.column_id}']`);
+                         fetch('/api/column/getDesks', {
+                             method: 'POST',
+                             headers: {
+                                 'Content-Type': 'application/json',
+                                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                             },
+                             body: JSON.stringify({ col_id: res.desks.column_id }),
+                         })
+                             .then((response) => response.json())
+                             .then((data) => {
+                                 let block = column.querySelector('.desk-block');
+
+                                 data.forEach(item => {
+
+                                     block.innerHTML = "";
+                                    block.insertAdjacentHTML('beforeend', `
+                                        <div class="desk" onclick="viewDesk(${data.dashboard_id}, ${column}, ${item.id})" onmousedown="dragDropDesks()">
+                                            <p>${item.title}</p>
+                                            <img src="${item.image}" alt="${item.title}">
+                                            <div class="data-desk">
+                                                <input class="custom-checkbox" type="checkbox" id="status" name="status" value="yes">
+                                                <time class="text-muted" datetime="2011-11-18T14:54:39.929Z" name="date">Сроков нет</time>
+                                            </div>
+                                            <span>status</span>
+                                        </div>
+                                    `);
+
+                                     let oldDesks = document.querySelectorAll(`[data-desk-id='${item.id}']`)
+                                     oldDesks.forEach(item2 => {
+                                         if(item2.closest('.wrap').dataset.columnId !== item.column_id) item2.remove();
+                                     })
+
+                                })
+                                 block.insertAdjacentHTML('beforeend', `
+                                    <button class="add-desk" id="add-task-title" onclick="createDeskMiniModal(${data.dashboard_id}}, ${column.dataset.columnId}, {{auth()->user()->id}})">+ Add desk</button>
+                                 `)
+
+                             })
+                     })
              </script>
 
     </body>

@@ -2,7 +2,7 @@
 
 namespace App\Events;
 
-use App\Models\Notification;
+use App\Models\Desks;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -11,17 +11,18 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class NotificationSent implements ShouldBroadcast
+class DeskMove implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public Notification $notification;
+    public Desks $desk;
+
     /**
      * Create a new event instance.
      */
-    public function __construct(Notification $notification)
+    public function __construct(Desks $desk)
     {
-        $this->notification = $notification;
+        $this->desk = $desk;
     }
 
     /**
@@ -32,20 +33,17 @@ class NotificationSent implements ShouldBroadcast
     public function broadcastOn(): array
     {
         return [
-            new Channel('notifications'),
+            new Channel('desks'),
         ];
     }
 
     public function broadcastAs(): string
     {
-        return 'notifications';
+        return 'desk_move';
     }
 
     public function broadcastWith(): array
     {
-        return [
-            'user_id' => $this->notification->user_id,
-        ];
+        return ['desks' => $this->desk];
     }
-
 }

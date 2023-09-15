@@ -3009,8 +3009,7 @@ window.sendInvite = function (dashboard_id) {
     return response.json();
   }).then(function (res) {
     popupTooltip('Приглашение в проект отправлено!');
-    Echo["private"]('notifications').listen('.notification', function (data) {
-      console.log('Notification Received: ' + JSON.stringify(data));
+    Echo["private"]('notifications').listen('.notifications', function (data) {
       refreshNotifs(res.user_id);
     });
   });
@@ -3251,6 +3250,7 @@ window.dragDropDesks = function () {
           return task.dataset.deskId;
         });
         var columnId = evt.target.parentElement.parentElement.dataset.columnId;
+        Echo.channel('desks').listen('.desk_move', function (data) {});
         updateDeskOrder(deskOrder, columnId);
       });
       list.querySelector('.desk-block').addEventListener('dragover', function (evt) {
@@ -3258,7 +3258,6 @@ window.dragDropDesks = function () {
         var activeElement = document.querySelector('.selected');
         var currentElement = evt.target;
         var isMoveable = activeElement !== currentElement && currentElement.classList.contains('desk') && !currentElement.classList.contains('add-desk');
-        console.log(currentElement);
         if (!currentElement.parentElement.querySelector('.desk') && currentElement.classList.contains('desk-block')) {
           currentElement.querySelector('#add-task-title').before(activeElement);
         }
@@ -3290,9 +3289,7 @@ window.updateDeskOrder = function (deskOrder, column_id) {
     })
   }).then(function (response) {
     return response.json();
-  }).then(function (data) {
-    console.log(data);
-  })["catch"](function (error) {
+  }).then(function (data) {})["catch"](function (error) {
     console.error('Ошибка при обновлении порядка карточек:', error);
   });
 };
@@ -3349,8 +3346,6 @@ window.updateColumnOrder = function (columnOrder) {
     console.error('Произошла ошибка!');
   });
 };
-dragDropDesks();
-dragDropColumns();
 })();
 
 /******/ })()

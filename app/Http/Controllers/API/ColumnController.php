@@ -56,7 +56,7 @@ class ColumnController extends Controller
     }
 
     public function getDesks(Request $request){
-        $data = $request->validate(['dash_id' => 'required|integer', 'col_id' => 'required|integer']);
+        $data = $request->validate(['col_id' => 'required|integer']);
         return Desks::where('column_id', $data['col_id'])->get();
     }
 

@@ -991,14 +991,11 @@ window.sendInvite = function (dashboard_id){
         .then(res => {
             popupTooltip('Приглашение в проект отправлено!')
             Echo.private('notifications')
-                .listen('.notification', (data) => {
-                    console.log('Notification Received: ' + JSON.stringify(data));
+                .listen('.notifications', (data) => {
                     refreshNotifs(res.user_id)
                 });
         })
 }
-
-
 
 window.openNotif = function (user_id){
     let modal = document.getElementById('notification-modal');
@@ -1292,6 +1289,9 @@ window.dragDropDesks = function () {
             evt.target.classList.remove('selected');
             let deskOrder = Array.from(evt.target.parentElement.querySelectorAll('.desk')).map((task) => task.dataset.deskId);
             let columnId = evt.target.parentElement.parentElement.dataset.columnId;
+            Echo.channel('desks')
+                .listen('.desk_move', (data) => {
+                })
 
             updateDeskOrder(deskOrder, columnId)
         });
@@ -1304,7 +1304,6 @@ window.dragDropDesks = function () {
 
             const isMoveable = activeElement !== currentElement && currentElement.classList.contains('desk') && !currentElement.classList.contains('add-desk');
 
-            console.log(currentElement)
             if(!currentElement.parentElement.querySelector('.desk') && currentElement.classList.contains('desk-block')){
                 currentElement.querySelector('#add-task-title').before(activeElement)
             }
@@ -1328,7 +1327,6 @@ window.updateDeskOrder = function (deskOrder, column_id){
     })
         .then((response) => response.json())
         .then((data) => {
-            console.log(data);
         })
         .catch((error) => {
             console.error('Ошибка при обновлении порядка карточек:', error);
@@ -1388,5 +1386,3 @@ window.updateColumnOrder = function (columnOrder){
         });
 }
 
-dragDropDesks();
-dragDropColumns();
