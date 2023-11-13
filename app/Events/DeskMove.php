@@ -33,7 +33,7 @@ class DeskMove implements ShouldBroadcast
     public function broadcastOn(): array
     {
         return [
-            new Channel('desks'),
+            new PrivateChannel('desks'),
         ];
     }
 

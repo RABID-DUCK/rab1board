@@ -23,14 +23,14 @@
         </div>
 
         <div class="dashboard-single-left-panel">
-                <button class="btn-participiants" onclick="addUsersModal({{$dashboard->id}})">
-                    Participants
-                    <span>+</span>
-                </button>
+            <button class="btn-participiants" onclick="addUsersModal({{$dashboard->id}})">
+                Participants
+                <span>+</span>
+            </button>
 
             <a href="">Chart</a>
             <a href="">Scheduled events</a>
-            <button type="button" onclick="tester()">Chat dashboard</button>
+            <button class="btn disabled" type="button" onclick="tester()">Chat dashboard</button>
         </div>
 
     </div>
@@ -76,7 +76,8 @@
     </div>
 
     <script>
-
-
+        document.addEventListener("DOMContentLoaded", (event) => {
+            moveDesksWS({{auth()->user()->id ?? null}});
+        });
     </script>
 @endsection

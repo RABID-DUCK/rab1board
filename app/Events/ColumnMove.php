@@ -2,7 +2,7 @@
 
 namespace App\Events;
 
-use App\Models\Notification;
+use App\Models\Columns;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -11,17 +11,17 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class NotificationSent implements ShouldBroadcast
+class ColumnMove
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
+    public Columns $columns;
 
-    public Notification $notification;
     /**
      * Create a new event instance.
      */
-    public function __construct(Notification $notification)
+    public function __construct(Columns $columns)
     {
-        $this->notification = $notification;
+        $this->columns = $columns;
     }
 
     /**
@@ -32,20 +32,19 @@ class NotificationSent implements ShouldBroadcast
     public function broadcastOn(): array
     {
         return [
-            new PrivateChannel('notifications'),
+            new PrivateChannel('columns'),
         ];
     }
 
     public function broadcastAs(): string
     {
-        return 'notifications';
+        return 'column_move';
     }
 
     public function broadcastWith(): array
     {
         return [
-            'user_id' => $this->notification->user_id,
+            'user_id' => $this->columns->user_id,
         ];
     }
-
 }

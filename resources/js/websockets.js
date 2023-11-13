@@ -1,0 +1,67 @@
+window.moveDesksWS = function (user_id){
+    window.Echo.private('desks')
+        .listen('.desk_move', res => {
+            let column = document.querySelector(`[data-column-id='${res.desks.column_id}']`);
+            fetch('/api/column/getDesks', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify({ col_id: res.desks.column_id }),
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    let block = column.querySelector('.desk-block');
+                    block.innerHTML = "";
+                    if(data.length > 1){
+                        data.forEach(item => {
+                            block.insertAdjacentHTML('beforeend', `
+                                <div class="desk" onclick="viewDesk(${item.dashboard_id}, ${item.column_id}, ${item.id})" onmousedown="dragDropDesks()">
+                                    <p>${item.title}</p>
+                                    <img class="${item.image ? '' : 'hide'}" src="${item.image}" alt="${item.title}">
+                                    <div class="data-desk">
+                                        <input class="custom-checkbox" type="checkbox" id="status" name="status" value="yes">
+                                        <time class="text-muted" datetime="2011-11-18T14:54:39.929Z" name="date">Сроков нет</time>
+                                    </div>
+                                    <span>status</span>
+                                </div>
+                            `);
+
+                            let oldDesks = document.querySelectorAll(`[data-desk-id='${item.id}']`)
+                            oldDesks.forEach(item2 => {
+                                if(item2.closest('.wrap').dataset.columnId !== item.column_id) item2.remove();
+                            })
+                        })
+                    }else{
+                        block.insertAdjacentHTML('beforeend', `
+                            <div class="desk" onclick="viewDesk(${data[0].dashboard_id}, ${data[0].column_id}, ${data[0].id})" onmousedown="dragDropDesks()">
+                                <p>${data[0].title}</p>
+                                <img class="${data[0].image ? '' : 'hide'}" src="${data[0].image}" alt="${data[0].title}">
+                                <div class="data-desk">
+                                    <input class="custom-checkbox" type="checkbox" id="status" name="status" value="yes">
+                                    <time class="text-muted" datetime="2011-11-18T14:54:39.929Z" name="date">Сроков нет</time>
+                                </div>
+                                <span>status</span>
+                            </div>`);
+
+                        let oldDesks = document.querySelectorAll(`[data-desk-id='${data.id}']`)
+                        oldDesks.forEach(item2 => {
+                            if(item2.closest('.wrap').dataset.columnId !== item2.column_id) item2.remove();
+                        })
+                    }
+
+                    block.insertAdjacentHTML('beforeend', `
+                        <button class="add-desk" id="add-task-title" onclick="createDeskMiniModal(${data[0].dashboard_id}, ${column.dataset.columnId}, ${user_id})">+ Add desk</button>
+                    `)
+                   updateDeskOrder(data)
+                })
+        })
+}
+
+window.updateNotifWS = function (user_id){
+    window.Echo.private('notifications')
+        .listen('.notifications', res => {
+            refreshNotifs(user_id)
+        })
+}

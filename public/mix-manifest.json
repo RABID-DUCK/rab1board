@@ -2,6 +2,7 @@
     "/js/app.js": "/js/app.js",
     "/js/main.js": "/js/main.js",
     "/js/helper.js": "/js/helper.js",
+    "/js/websockets.js": "/js/websockets.js",
     "/css/media.css": "/css/media.css",
     "/css/backend.css": "/css/backend.css",
     "/css/UI.css": "/css/UI.css",

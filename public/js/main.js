@@ -3008,7 +3008,9 @@ window.sendInvite = function (dashboard_id) {
   }).then(function (response) {
     return response.json();
   }).then(function (res) {
-    popupTooltip('Приглашение в проект отправлено!');
+    input.value = "";
+    if (document.getElementById('addUserModal')) document.getElementById('addUserModal').classList.add('hide-slow');
+    popupTooltip(res.message);
     Echo["private"]('notifications').listen('.notifications', function (data) {
       refreshNotifs(res.user_id);
     });
@@ -3275,23 +3277,29 @@ window.dragDropDesks = function () {
     _iterator2.f();
   }
 };
+
+// обновляет колонку у задачи
 window.updateDeskOrder = function (deskOrder, column_id) {
   var url = '/api/update-desk-order';
-  fetch(url, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-    },
-    body: JSON.stringify({
-      deskOrder: deskOrder,
-      column_id: column_id
-    })
-  }).then(function (response) {
-    return response.json();
-  }).then(function (data) {})["catch"](function (error) {
-    console.error('Ошибка при обновлении порядка карточек:', error);
-  });
+  if (deskOrder !== null) {
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+      },
+      body: JSON.stringify({
+        deskOrder: deskOrder,
+        column_id: column_id
+      })
+    }).then(function (response) {
+      return response.text();
+    }).then(function (data) {
+      //отправка уведомления о перемещении
+    })["catch"](function (error) {
+      console.error('Ошибка при обновлении порядка карточек:', error);
+    });
+  }
 };
 window.dragDropColumns = function () {
   var columnList = document.getElementById('desk-wrapper');
@@ -3317,6 +3325,7 @@ window.dragDropColumns = function () {
     var columnOrder = Array.from(columnList.querySelectorAll('.wrap')).map(function (column) {
       return column.dataset.columnId;
     });
+    Echo.channel('columns').listen('.column_move', function (data) {});
     updateColumnOrder(columnOrder);
   });
   columnList.addEventListener('dragover', function (evt) {

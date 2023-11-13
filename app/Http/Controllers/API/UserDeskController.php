@@ -45,17 +45,19 @@ class UserDeskController extends Controller
     }
 
     public function updateDeskOrder(Request $request){
-        $deskOrder = $request->input('deskOrder');
-        $columnId = $request->input('column_id');
+        if($request->input('deskOrder') && $request->input('column_id')){
+            $deskOrder = $request->input('deskOrder');
+            $columnId = $request->input('column_id');
 
-        foreach ($deskOrder as $key => $deskID) {
-            $desk = Desks::where('id', $deskID)->first();
-            $desk->order = $key + 1;
-            if($desk->column_id !== $columnId) $desk->column_id = $columnId;
-            $desk->save();
+            foreach ($deskOrder as $key => $deskID) {
+                $desk = Desks::where('id', $deskID)->first();
+                $desk->order = $key + 1;
+                if($desk->column_id !== $columnId) $desk->column_id = $columnId;
+                $desk->save();
 
-            broadcast(new DeskMove($desk))->toOthers();
+                broadcast(new DeskMove($desk))->toOthers();
+            }
+            return response()->json(['success' => true]);
         }
-        return response()->json(['success' => true]);
     }
 }

@@ -78,8 +78,8 @@ Route::post('/dashboard/getUsersDashboard', '\App\Http\Controllers\API\UserDashb
 Route::post('/dashboard/addUser', '\App\Http\Controllers\API\UserDashboardController@addUser'); // добавить пользователя/ей на проект
 Route::post('/dashboard/confirmInvite', '\App\Http\Controllers\API\UserDashboardController@confirmInvite'); // принятие приглашения на проект.
 
-Route::post('/desk/getUsers', '\App\Http\Controllers\API\UserDeskController@getUsers'); // получить пользователей доски
-Route::post('/addUserDesk', '\App\Http\Controllers\API\UserDeskController@addUser'); // добавить пользователя на задачу
-Route::post('/update-desk-order', '\App\Http\Controllers\API\UserDeskController@updateDeskOrder'); // обновить порядок задач
+Route::post('/desk/getUsers', [\App\Http\Controllers\API\UserDeskController::class, 'getUsers']); // получить пользователей доски
+Route::post('/addUserDesk', [\App\Http\Controllers\API\UserDeskController::class, 'addUser']); // добавить пользователя на задачу
+Route::post('/update-desk-order', [\App\Http\Controllers\API\UserDeskController::class , 'updateDeskOrder']); // обновить порядок задач
 
 

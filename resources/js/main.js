@@ -989,7 +989,9 @@ window.sendInvite = function (dashboard_id){
     })
         .then(response => response.json())
         .then(res => {
-            popupTooltip('Приглашение в проект отправлено!')
+            input.value = "";
+            if(document.getElementById('addUserModal')) document.getElementById('addUserModal').classList.add('hide-slow');
+            popupTooltip(res.message)
             Echo.private('notifications')
                 .listen('.notifications', (data) => {
                     refreshNotifs(res.user_id)
@@ -1291,9 +1293,9 @@ window.dragDropDesks = function () {
             let columnId = evt.target.parentElement.parentElement.dataset.columnId;
             Echo.channel('desks')
                 .listen('.desk_move', (data) => {
-                })
+            })
 
-            updateDeskOrder(deskOrder, columnId)
+            updateDeskOrder(deskOrder, columnId);
         });
 
         list.querySelector('.desk-block').addEventListener('dragover', (evt) => {
@@ -1315,22 +1317,28 @@ window.dragDropDesks = function () {
     }
 }
 
+// обновляет колонку у задачи
 window.updateDeskOrder = function (deskOrder, column_id){
     const url = '/api/update-desk-order';
-    fetch(url, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-        },
-        body: JSON.stringify({ deskOrder, column_id }),
-    })
-        .then((response) => response.json())
-        .then((data) => {
+
+    if(deskOrder !== null)
+    {
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            body: JSON.stringify({ deskOrder, column_id }),
         })
-        .catch((error) => {
-            console.error('Ошибка при обновлении порядка карточек:', error);
-        });
+            .then((response) => response.text())
+            .then((data) => {
+                //отправка уведомления о перемещении
+            })
+            .catch((error) => {
+                console.error('Ошибка при обновлении порядка карточек:', error);
+            });
+    }
 }
 
 window.dragDropColumns = function () {
@@ -1350,6 +1358,9 @@ window.dragDropColumns = function () {
     columnList.addEventListener('dragend', (evt) => {
         evt.target.classList.remove('selected');
         let columnOrder = Array.from(columnList.querySelectorAll('.wrap')).map((column) => column.dataset.columnId);
+        Echo.channel('columns')
+            .listen('.column_move', (data) => {
+            })
         updateColumnOrder(columnOrder)
     });
 
