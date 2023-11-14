@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Events\ColumnMove;
 use App\Http\Controllers\Controller;
 use App\Models\ColumnDesks;
 use App\Models\Columns;
@@ -62,12 +63,15 @@ class ColumnController extends Controller
 
     public function dragDrop(Request $request){
         $columnOder = $request->input('columnOrder');
+        $columns = [];
 
         foreach ($columnOder as $key => $columnId){
             $column = Columns::where('id', $columnId)->first();
             $column->order = $key + 1;
             $column->save();
+            $columns[] = $column;
         }
+        broadcast(new ColumnMove($columns))->toOthers();
 
         return response()->json(['success' => true]);
     }

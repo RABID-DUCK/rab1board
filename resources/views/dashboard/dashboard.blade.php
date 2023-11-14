@@ -37,7 +37,7 @@
     <div class="desk-wrapper d-flex justify-content-start" id="desk-wrapper">
         @if(isset($columns))
             @foreach($columns->sortBy('order') as $column)
-                <div class="wrap" data-column-id="{{ $column->id }}">
+                <div class="wrap" data-column-id="{{ $column->id }}" data-order="{{$column->order}}">
                     <div class="column" onclick="clickRenameColumn({{ $column->id }})" data-column-title="" onmousedown="dragDropColumns()">
                         <span>{{ $column->title }}</span>
                         <i class="bi bi-check-lg save-column hide"></i>
@@ -77,7 +77,10 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", (event) => {
-            moveDesksWS({{auth()->user()->id ?? null}});
+            @if(auth()->user())
+                moveDesksWS({{auth()->user()->id ?? null}});
+                moveColumn();
+            @endif
         });
     </script>
 @endsection

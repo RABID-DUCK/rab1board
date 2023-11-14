@@ -11,15 +11,15 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class ColumnMove
+class ColumnMove implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
-    public Columns $columns;
+    private $columns = array();
 
     /**
      * Create a new event instance.
      */
-    public function __construct(Columns $columns)
+    public function __construct($columns = array())
     {
         $this->columns = $columns;
     }
@@ -38,13 +38,13 @@ class ColumnMove
 
     public function broadcastAs(): string
     {
-        return 'column_move';
+        return 'column_moves';
     }
 
     public function broadcastWith(): array
     {
         return [
-            'user_id' => $this->columns->user_id,
+            'columns' => $this->columns,
         ];
     }
 }

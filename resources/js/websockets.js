@@ -65,3 +65,17 @@ window.updateNotifWS = function (user_id){
             refreshNotifs(user_id)
         })
 }
+
+window.moveColumn = function (){
+    window.Echo.private('columns')
+        .listen('.column_moves', data => {
+            const columnList = document.getElementById('desk-wrapper');
+            let listElements = Array.from(columnList.querySelectorAll('.wrap')); // Конвертирование в массив
+            listElements = listElements.sort((a, b) => a.getAttribute('data-column-id') - b.getAttribute('data-column-id')); // Сортировка
+            // Обновление списка элементов на странице
+            listElements.forEach(element => {
+                columnList.insertBefore(element, null); // Вставка в начало родителя
+            });
+            columnList.appendChild(document.getElementById('add-column-panel'))
+        });
+}
