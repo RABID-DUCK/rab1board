@@ -3252,9 +3252,10 @@ window.dragDropDesks = function () {
           return task.dataset.deskId;
         });
         var columnId = evt.target.parentElement.parentElement.dataset.columnId;
-        Echo.channel('desks').listen('.desk_move', function (data) {});
-        updateDeskOrder(deskOrder, columnId);
+        console.log(columnId);
+        // updateDeskOrder(deskOrder, columnId);
       });
+
       list.querySelector('.desk-block').addEventListener('dragover', function (evt) {
         evt.preventDefault();
         var activeElement = document.querySelector('.selected');

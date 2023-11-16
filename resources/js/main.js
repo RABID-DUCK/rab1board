@@ -1291,11 +1291,9 @@ window.dragDropDesks = function () {
             evt.target.classList.remove('selected');
             let deskOrder = Array.from(evt.target.parentElement.querySelectorAll('.desk')).map((task) => task.dataset.deskId);
             let columnId = evt.target.parentElement.parentElement.dataset.columnId;
-            Echo.channel('desks')
-                .listen('.desk_move', (data) => {
-            })
 
-            updateDeskOrder(deskOrder, columnId);
+            console.log(columnId);
+            // updateDeskOrder(deskOrder, columnId);
         });
 
         list.querySelector('.desk-block').addEventListener('dragover', (evt) => {

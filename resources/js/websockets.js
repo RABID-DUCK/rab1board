@@ -2,6 +2,8 @@ window.moveDesksWS = function (user_id){
     window.Echo.private('desks')
         .listen('.desk_move', res => {
             let column = document.querySelector(`[data-column-id='${res.desks.column_id}']`);
+            let items;
+
             fetch('/api/column/getDesks', {
                 method: 'POST',
                 headers: {
@@ -14,10 +16,11 @@ window.moveDesksWS = function (user_id){
                 .then((data) => {
                     let block = column.querySelector('.desk-block');
                     block.innerHTML = "";
+
                     if(data.length > 1){
                         data.forEach(item => {
                             block.insertAdjacentHTML('beforeend', `
-                                <div class="desk" onclick="viewDesk(${item.dashboard_id}, ${item.column_id}, ${item.id})" onmousedown="dragDropDesks()">
+                                <div class="desk" onclick="viewDesk(${item.dashboard_id}, ${item.column_id}, ${item.id})" onmousedown="dragDropDesks()" data-desk-id="${item.id}">
                                     <p>${item.title}</p>
                                     <img class="${item.image ? '' : 'hide'}" src="${item.image}" alt="${item.title}">
                                     <div class="data-desk">
@@ -28,10 +31,12 @@ window.moveDesksWS = function (user_id){
                                 </div>
                             `);
 
-                            let oldDesks = document.querySelectorAll(`[data-desk-id='${item.id}']`)
-                            oldDesks.forEach(item2 => {
-                                if(item2.closest('.wrap').dataset.columnId !== item.column_id) item2.remove();
-                            })
+                                let oldDesks = document.querySelectorAll(`[data-desk-id='${item.id}']`)
+                                oldDesks.forEach(item2 => {
+                                    if(item2.closest('.wrap').dataset.columnId != item.column_id) {
+                                        item2.remove()
+                                    }
+                                })
                         })
                     }else{
                         block.insertAdjacentHTML('beforeend', `
@@ -45,16 +50,24 @@ window.moveDesksWS = function (user_id){
                                 <span>status</span>
                             </div>`);
 
-                        let oldDesks = document.querySelectorAll(`[data-desk-id='${data.id}']`)
+                        let oldDesks = document.querySelectorAll(`[data-desk-id='${data[0].id}']`)
                         oldDesks.forEach(item2 => {
-                            if(item2.closest('.wrap').dataset.columnId !== item2.column_id) item2.remove();
+                            if(item2.closest('.wrap').dataset.columnId != data[0].column_id) {
+                                item2.remove()
+                            }
                         })
                     }
 
                     block.insertAdjacentHTML('beforeend', `
                         <button class="add-desk" id="add-task-title" onclick="createDeskMiniModal(${data[0].dashboard_id}, ${column.dataset.columnId}, ${user_id})">+ Add desk</button>
                     `)
-                   updateDeskOrder(data)
+                    items = data;
+                })
+                .catch((error) => {
+                    console.log('Error:', error)
+                })
+                .finally(() => {
+                    updateDeskOrder(items)
                 })
         })
 }
