@@ -11,4 +11,5 @@ mix.js('resources/js/app.js', 'public/js')
     .sass('resources/css/UI.scss', 'public/css')
     .sass('resources/css/backend.scss', 'public/css')
     .sass('resources/css/media.scss', 'public/css')
+    .vue()
     // .setPublicPath("public");

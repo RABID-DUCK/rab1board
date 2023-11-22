@@ -15,17 +15,17 @@ use Illuminate\Support\Facades\View;
 |
 */
 
-Route::get('/', function (){
-    return view('main.main');
-});
+//Route::get('/', function (){
+//    return view('main.main');
+//});
 
 Auth::routes();
 
 
-Route::group(['namespace' => 'frontend'], function (){
-    Route::get('/', [\App\Http\Controllers\HomeController::class, 'index'])->name('board.index');
-    Route::get('/dashboard/{id}', [\App\Http\Controllers\DashboardController::class, 'show'])->name('board.show');
-})->middleware('auth');
+//Route::group(['namespace' => 'frontend'], function (){
+//    Route::get('/', [\App\Http\Controllers\HomeController::class, 'index'])->name('board.index');
+//    Route::get('/dashboard/{id}', [\App\Http\Controllers\DashboardController::class, 'show'])->name('board.show');
+//})->middleware('auth');
 
 Auth::routes();
 
@@ -61,7 +61,4 @@ Route::group(['prefix' => 'backend', 'middleware' => 'isAdmin'], function(){
         });
 });
 
-//Route::view('/{path?}', 'app')->where('path', '.*');;
-//Route::get('/{path?}', function () {
-//    return view('layouts.app');
-//})->where('path', '.*');
+Route::get('{page}', \App\Http\Controllers\Client\IndexController::class)->where('page', '.*');

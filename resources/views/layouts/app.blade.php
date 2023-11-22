@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-{{--<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">--}}
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-{{--        <title>{{__('messages.title')}}</title>--}}
+        <title>{{__('messages.title')}}</title>
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
@@ -22,7 +22,7 @@
         <title>Capiboard</title>
     </head>
     <body class="antialiased">
-             @include('layouts/header')
+{{--             @include('layouts/header')--}}
            <div class="content-wrapper d-flex justify-content-between" id="wrapper">
 
             @yield('content')

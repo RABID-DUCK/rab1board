@@ -10,8 +10,6 @@
         "production": "mix --production"
     },
     "devDependencies": {
-        "@babel/preset-react": "^7.22.5",
-        "@popperjs/core": "^2.11.8",
         "axios": "^1.5.0",
         "bootstrap": "^5.3.1",
         "laravel-echo": "^1.15.3",
@@ -20,11 +18,11 @@
         "resolve-url-loader": "^5.0.0",
         "rollup-plugin-copy": "^3.4.0",
         "sass": "^1.66.1",
-        "sass-loader": "^13.3.2"
+        "sass-loader": "^13.3.2",
+        "vue-loader": "^16.2.0"
     },
     "dependencies": {
         "-": "^0.0.1",
-        "@reduxjs/toolkit": "^1.9.5",
         "bootstrap": "^5.3.0",
         "bootstrap-icons": "^1.10.5",
         "dotenv": "^16.3.1",
@@ -36,12 +34,9 @@
         "mini-css-extract-plugin": "^2.7.6",
         "npm-check-updates": "^16.13.1",
         "ratchet-npm": "^2.0.4",
-        "react": "^18.2.0",
-        "react-dom": "^18.2.0",
-        "react-redux": "^8.1.2",
-        "react-router": "^6.15.0",
-        "react-router-dom": "^6.15.0",
-        "redux": "^4.2.1",
+        "vue": "^3.2.36",
+        "vue-router": "^4.2.5",
+        "vuex": "^4.0.2",
         "ws": "^8.13.0"
     }
 }
