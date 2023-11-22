@@ -1,6 +1,6 @@
 <template>
     <Header />
-<h1>hii</h1>
+    <router-view></router-view>
 </template>
 
 <script>

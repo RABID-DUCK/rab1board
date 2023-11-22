@@ -36,7 +36,6 @@
 
                 <div class="user">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-<!--                        @if(Auth::check())-->
                         <li class="nav-item dropdown" v-if="user && user.length > 0">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                                aria-expanded="false">
@@ -47,8 +46,7 @@
                                 <hr>
                                 <li><a class="dropdown-item" href="backend.index">Admin</a></li>
                                 <li>
-                                    <a class="dropdown-item" href="logout"
-                                       onclick="event.preventDefault();document.getElementById('logout-form').submit();">
+                                    <a class="dropdown-item" href="logout" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
                                         Logout
                                     </a>
 
@@ -58,8 +56,8 @@
                                 </li>
                             </ul>
                         </li>
-                        <li v-if="user && user.length <= 0"><a class="dropdown-item auth-link" href="login">Войти/</a></li>
-                        <li v-if="user && user.length <= 0"><a class="dropdown-item auth-link" href="register">Зарегистрироваться</a></li>
+                        <li v-if="user && user.length <= 0"><router-link class="dropdown-item auth-link" to="/login">Войти/</router-link></li>
+                        <li v-if="user && user.length <= 0"><router-link class="dropdown-item auth-link" to="/register">Зарегистрироваться</router-link></li>
                     </ul>
                 </div>
             </div>
@@ -72,7 +70,7 @@
 import Notifications from "./Notifications";
 
 export default {
-    name: "header",
+    name: "Header",
     components: {Notifications},
 
     data() {

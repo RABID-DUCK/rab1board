@@ -40,6 +40,7 @@ window.scrollDashboard = function () {
     }
   });
 };
-scrollDashboard();
+
+// scrollDashboard()
 /******/ })()
 ;
