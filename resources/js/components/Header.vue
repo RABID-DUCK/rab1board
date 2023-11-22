@@ -37,7 +37,7 @@
                 <div class="user">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 <!--                        @if(Auth::check())-->
-                        <li class="nav-item dropdown">
+                        <li class="nav-item dropdown" v-if="user && user.length > 0">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                                aria-expanded="false">
                                 login user
@@ -57,30 +57,33 @@
                                     </form>
                                 </li>
                             </ul>
-<!--                            @else-->
-                        <li><a class="dropdown-item auth-link" href="login">Войти/</a></li>
-                        <li><a class="dropdown-item auth-link" href="register">Зарегистрироваться</a></li>
-<!--                        @endif-->
                         </li>
+                        <li v-if="user && user.length <= 0"><a class="dropdown-item auth-link" href="login">Войти/</a></li>
+                        <li v-if="user && user.length <= 0"><a class="dropdown-item auth-link" href="register">Зарегистрироваться</a></li>
                     </ul>
                 </div>
             </div>
         </div>
-<!--        @if(Auth::check())-->
-        <i class="notification bi bi-bell" @click.prevent="openNotif(user)"><span class="count-not" id="countNot">{{notifs}}</span></i>
-<!--        @endif-->
+        <Notifications />
     </nav>
 </template>
 
 <script>
+import Notifications from "./Notifications";
+
 export default {
     name: "header",
+    components: {Notifications},
+
     data() {
         return {
             user: null,
-            notifs: 0
         }
+    },
+    mounted(){
+        this.user = this.$store.state.user;
     }
+
 }
 </script>
 

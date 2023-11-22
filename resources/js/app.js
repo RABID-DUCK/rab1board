@@ -8,7 +8,9 @@ import axios from 'axios'
 const app = createApp(App)
 
 const store = createStore({
-    state: {},
+    state: {
+        user: [],
+    },
     mutations: {},
     actions: {},
     getters: {}
@@ -17,7 +19,9 @@ const store = createStore({
 app.use(router)
     .use(store)
 
-app.mixin({})
+app.mixin({
+    methods: {}
+})
 
 app.config.globalProperties.axios = axios;
 app.mount('#app');

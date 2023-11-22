@@ -4,9 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
-
         <title>{{__('messages.title')}}</title>
-
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=marmelad:400" rel="stylesheet" />
@@ -22,32 +20,28 @@
         <title>Capiboard</title>
     </head>
     <body class="antialiased">
-{{--             @include('layouts/header')--}}
-           <div class="content-wrapper d-flex justify-content-between" id="wrapper">
+       <div class="content-wrapper" id="wrapper">
 
-            @yield('content')
-            <div class="backModal hide" id="backModal">
+        @yield('content')
+        <div class="backModal hide" id="backModal">
 
+        </div>
+        <div id="wrapper-modal" class="wrapper-modal hide-animate">
+            <div class="modal-desk bg-dark bg-gradient text-white" data-modal-desk data-keyboard="false" data-backdrop="static">
             </div>
-            <div id="wrapper-modal" class="wrapper-modal hide-animate">
-                <div class="modal-desk bg-dark bg-gradient text-white" data-modal-desk data-keyboard="false" data-backdrop="static">
-                </div>
-            </div>
-               <div class="modal-notification hide-slow bg-dark bg-gradient text-white" id="notification-modal">
-                   <span class="close-modal" onclick="closeModalSlow('notification-modal')">X</span>
-               </div>
-            </div>
+        </div>
 
-                {{--    Scripts--}}
-            <script src="{{ asset('js/main.js') }}" ></script>
-            <script src="{{ asset('js/helper.js') }}" ></script>
-            <script src="{{ asset('js/app.js') }}"></script>
-            <script src="{{ asset('js/websockets.js') }}"></script>
-             <script defer>
-                 @if(auth()->user())
-                    updateNotifWS({{auth()->user()->id}});
-                 @endif
-             </script>
+        </div>
 
+            {{--    Scripts--}}
+        <script src="{{ asset('js/main.js') }}" ></script>
+        <script src="{{ asset('js/helper.js') }}" ></script>
+        <script src="{{ asset('js/app.js') }}"></script>
+        <script src="{{ asset('js/websockets.js') }}"></script>
+         <script defer>
+             @if(auth()->user())
+                updateNotifWS({{auth()->user()->id}});
+             @endif
+         </script>
     </body>
 </html>

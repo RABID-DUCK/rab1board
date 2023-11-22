@@ -867,6 +867,7 @@ nav{
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
+    z-index: 1;
 
     .notif{
         border-top: 1px solid $border;

@@ -766,6 +766,7 @@ nav {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  z-index: 1;
 }
 .modal-notification .notif {
   border-top: 1px solid #EBEFF2;
