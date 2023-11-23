@@ -1292,7 +1292,6 @@ window.dragDropDesks = function () {
             let deskOrder = Array.from(evt.target.parentElement.querySelectorAll('.desk')).map((task) => task.dataset.deskId);
             let columnId = evt.target.parentElement.parentElement.dataset.columnId;
 
-            console.log(columnId);
             // updateDeskOrder(deskOrder, columnId);
         });
 

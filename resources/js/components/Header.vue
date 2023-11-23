@@ -36,28 +36,24 @@
 
                 <div class="user">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item dropdown" v-if="user && user.length > 0">
+                        <li class="nav-item dropdown" v-if="isLogged">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                                aria-expanded="false">
-                                login user
+                                {{user.login}}
                             </a>
                             <ul class="dropdown-menu">
                                 <li><a class="dropdown-item" href="#">Action</a></li>
                                 <hr>
                                 <li><a class="dropdown-item" href="backend.index">Admin</a></li>
-                                <li>
-                                    <a class="dropdown-item" href="logout" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
+                                <li class="logout">
+                                    <a class="dropdown-item" @click.prevent="logout">
                                         Logout
                                     </a>
-
-                                    <form id="logout-form" action="logout" method="POST" class="d-none">
-
-                                    </form>
                                 </li>
                             </ul>
                         </li>
-                        <li v-if="user && user.length <= 0"><router-link class="dropdown-item auth-link" to="/login">Войти/</router-link></li>
-                        <li v-if="user && user.length <= 0"><router-link class="dropdown-item auth-link" to="/register">Зарегистрироваться</router-link></li>
+                        <li v-if="!isLogged"><router-link class="dropdown-item auth-link" to="/login">Войти/</router-link></li>
+                        <li v-if="!isLogged"><router-link class="dropdown-item auth-link" to="/register">Зарегистрироваться</router-link></li>
                     </ul>
                 </div>
             </div>
@@ -76,15 +72,30 @@ export default {
     data() {
         return {
             user: null,
+            isLogged: false
         }
     },
     mounted(){
         this.user = this.$store.state.user;
+        this.isLogged = this.$store.getters.statusUser;
+    },
+    watch: {
+        '$store.getters.statusUser': function (value){
+            this.isLogged = value;
+            this.user = this.$store.getters.infoUser;
+        }
+    },
+    methods: {
+        logout(){
+            this.$store.dispatch('logout');
+        }
     }
 
 }
 </script>
 
 <style scoped>
-
+.logout{
+    cursor: pointer;
+}
 </style>

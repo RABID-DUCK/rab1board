@@ -10,13 +10,11 @@
                                 <label for="email" class="col-md-4 col-form-label text-md-end">Email address</label>
 
                                 <div class="col-md-6">
-                                    <input id="email" type="email" class="form-control is-invalid" name="email" value="" required autocomplete="email" autofocus>
+                                    <input v-model="email" id="email" type="email" class="form-control is-invalid" name="email" required autocomplete="email" autofocus>
 
-<!--                                    @error('email')-->
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ message }}</strong>
                                     </span>
-<!--                                    @enderror-->
                                 </div>
                             </div>
 
@@ -24,20 +22,18 @@
                                 <label for="password" class="col-md-4 col-form-label text-md-end">Password</label>
 
                                 <div class="col-md-6">
-                                    <input id="password" type="password" class="form-control is-invalid" name="password" required autocomplete="current-password">
+                                    <input v-model="password"  id="password" type="password" class="form-control is-invalid" name="password" required autocomplete="current-password">
 
-<!--                                    @error('password')-->
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ message }}</strong>
                                     </span>
-<!--                                    @enderror-->
                                 </div>
                             </div>
 
                             <div class="row mb-3">
                                 <div class="col-md-6 offset-md-4">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="remember" id="remember">
+                                        <input class="form-check-input" type="checkbox" name="remember" id="remember" v-model="checked">
 
                                         <label class="form-check-label" for="remember">
                                             Remember me
@@ -48,18 +44,17 @@
 
                             <div class="row mb-0">
                                 <div class="col-md-8 offset-md-4">
-                                    <button type="submit" class="btn">
+                                    <button type="submit" class="btn" @click.prevent="sendLogin">
                                         Login
                                     </button>
 
-<!--                                    @if (Route::has('password.request'))-->
-                                    <a class="btn btn-link" href="reset-password">
+                                    <a class="btn btn-link forgot-pass" href="reset-password">
                                         Forgot your password?
                                     </a>
-<!--                                    @endif-->
                                 </div>
                             </div>
                         </form>
+                        <b>{{message}}</b>
                     </div>
                 </div>
             </div>
@@ -68,16 +63,43 @@
 </template>
 
 <script>
+import VueCookies from "vue-cookies";
+
 export default {
     name: "Login",
     data(){
         return {
-            message: ''
+            message: '',
+            email: '',
+            password: '',
+            checked: ''
+        }
+    },
+    mounted() {
+        if(this.$store.getters.statusUser) this.$router.push({name: 'main'})
+    },
+    methods: {
+        sendLogin(){
+            this.axios.post('/api/login', {
+                "email": this.email,
+                "password": this.password
+            })
+                .then(res => {
+                    if(this.checked){
+                        VueCookies.set('access_token', res.data.access_token, {expires: '30d'});
+                    }else{
+                        sessionStorage.setItem('access_token', res.data.access_token);
+                    }
+                    this.$store.commit('AUTH_LOGIN', res.data.user);
+                    this.$router.push({name: 'main'});
+                })
         }
     }
 }
 </script>
 
 <style scoped>
-
+.forgot-pass{
+    margin-left: 15px;
+}
 </style>

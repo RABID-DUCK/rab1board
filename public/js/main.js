@@ -3252,7 +3252,7 @@ window.dragDropDesks = function () {
           return task.dataset.deskId;
         });
         var columnId = evt.target.parentElement.parentElement.dataset.columnId;
-        console.log(columnId);
+
         // updateDeskOrder(deskOrder, columnId);
       });
 

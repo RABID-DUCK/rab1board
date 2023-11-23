@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\View;
 //    return view('main.main');
 //});
 
-Auth::routes();
+//Auth::routes();
 
 
 //Route::group(['namespace' => 'frontend'], function (){
@@ -27,7 +27,7 @@ Auth::routes();
 //    Route::get('/dashboard/{id}', [\App\Http\Controllers\DashboardController::class, 'show'])->name('board.show');
 //})->middleware('auth');
 
-Auth::routes();
+//Auth::routes();
 
 Route::group(['prefix' => 'backend', 'middleware' => 'isAdmin'], function(){
         Route::get('/admin', [App\Http\Controllers\MainController::class, 'index'])->name('backend.index');

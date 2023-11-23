@@ -18,18 +18,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('login', function(Request $request) {
-    $credentials = $request->only('email', 'password');
-
-    if (Auth::attempt($credentials)) {
-        $user = Auth::user();
-        $token = $user->createToken('API Access Token')->accessToken;
-
-        return response()->json(['token' => $token]);
-    }
-
-    return response()->json(['error' => 'Unauthorized'], 401);
-});
+Route::post('login', [\App\Http\Controllers\API\Auth\AuthController::class, 'login']);
 
 // Аутентификация
 Route::post('/user/login', [\App\Http\Controllers\API\Auth\AuthController::class, 'login']);
