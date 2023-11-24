@@ -5,7 +5,8 @@ export const moduleAuth = {
     state: {
         user: [],
         userLogged: false,
-        token: sessionStorage.getItem('access_token') || VueCookies.get('access_token')
+        token: sessionStorage.getItem('access_token') || VueCookies.get('access_token'),
+        isFetching: false
     },
     mutations: {
         AUTH_LOGIN: (state, value) => {
@@ -25,7 +26,8 @@ export const moduleAuth = {
             commit('USER_LOGGED', getters.statusUser);
         },
         getInfoUser: ({commit, getters, state}) => {
-            if(!getters.statusUser && state.token !== null){
+            if(!getters.statusUser && state.token !== null && !state.isFetching){
+                state.isFetching = true;
                 axios.post('/api/user/getUser', {}, {
                     headers: {
                         Authorization: `Bearer ${state.token}`
@@ -66,6 +68,9 @@ export const moduleAuth = {
         },
         infoUser(state){
             return state.user;
+        },
+        getToken(state){
+            return state.token;
         }
     }
 }

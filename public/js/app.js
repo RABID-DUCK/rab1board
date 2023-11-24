@@ -29416,14 +29416,8 @@ app.use(_router__WEBPACK_IMPORTED_MODULE_3__["default"]).use(store).use((vue_coo
   expires: '30d'
 });
 app.mixin({
-  data: function data() {
-    return {
-      isFetching: false
-    };
-  },
   mounted: function mounted() {
-    if (!this.$store.getters.statusUser && !this.isFetching) {
-      this.isFetching = true;
+    if (!this.$store.getters.statusUser) {
       this.$store.dispatch('getInfoUser');
     }
   },
@@ -29503,7 +29497,8 @@ var moduleAuth = {
   state: {
     user: [],
     userLogged: false,
-    token: sessionStorage.getItem('access_token') || vue_cookies__WEBPACK_IMPORTED_MODULE_0___default().get('access_token')
+    token: sessionStorage.getItem('access_token') || vue_cookies__WEBPACK_IMPORTED_MODULE_0___default().get('access_token'),
+    isFetching: false
   },
   mutations: {
     AUTH_LOGIN: function AUTH_LOGIN(state, value) {
@@ -29528,7 +29523,8 @@ var moduleAuth = {
       var commit = _ref2.commit,
         getters = _ref2.getters,
         state = _ref2.state;
-      if (!getters.statusUser && state.token !== null) {
+      if (!getters.statusUser && state.token !== null && !state.isFetching) {
+        state.isFetching = true;
         axios__WEBPACK_IMPORTED_MODULE_1__["default"].post('/api/user/getUser', {}, {
           headers: {
             Authorization: "Bearer ".concat(state.token)
@@ -29568,6 +29564,9 @@ var moduleAuth = {
     },
     infoUser: function infoUser(state) {
       return state.user;
+    },
+    getToken: function getToken(state) {
+      return state.token;
     }
   }
 };
@@ -29607,6 +29606,12 @@ var router = (0,vue_router__WEBPACK_IMPORTED_MODULE_0__.createRouter)({
     name: 'register',
     component: function component() {
       return __webpack_require__.e(/*! import() */ "resources_js_views_Register_vue").then(__webpack_require__.bind(__webpack_require__, /*! ../views/Register.vue */ "./resources/js/views/Register.vue"));
+    }
+  }, {
+    path: '/dashboard/:id',
+    name: 'dashboard',
+    component: function component() {
+      return __webpack_require__.e(/*! import() */ "resources_js_views_Dashboard_vue").then(__webpack_require__.bind(__webpack_require__, /*! ../views/Dashboard.vue */ "./resources/js/views/Dashboard.vue"));
     }
   }]
 });
@@ -44741,7 +44746,7 @@ function useRoute() {
 /******/ 		// This function allow to reference async chunks
 /******/ 		__webpack_require__.u = (chunkId) => {
 /******/ 			// return url for filenames not based on template
-/******/ 			if ({"resources_js_views_MainPage_vue":1,"resources_js_views_Login_vue":1,"resources_js_views_Register_vue":1}[chunkId]) return "js/" + chunkId + ".js";
+/******/ 			if ({"resources_js_views_MainPage_vue":1,"resources_js_views_Login_vue":1,"resources_js_views_Register_vue":1,"resources_js_views_Dashboard_vue":1}[chunkId]) return "js/" + chunkId + ".js";
 /******/ 			// return url for filenames based on template
 /******/ 			return undefined;
 /******/ 		};

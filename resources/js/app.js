@@ -20,14 +20,8 @@ app.use(router)
     .use(VueCookies, {expires: '30d'})
 
 app.mixin({
-    data(){
-        return {
-            isFetching: false
-        }
-    },
     mounted() {
-        if(!this.$store.getters.statusUser && !this.isFetching) {
-            this.isFetching = true;
+        if(!this.$store.getters.statusUser) {
             this.$store.dispatch('getInfoUser')
         }
     },

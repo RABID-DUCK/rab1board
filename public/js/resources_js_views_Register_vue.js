@@ -165,7 +165,6 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     type: "text",
     "class": "form-control",
     name: "login",
-    value: "",
     required: "",
     autocomplete: "login",
     autofocus: ""
@@ -177,7 +176,6 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     type: "email",
     "class": "form-control",
     name: "email",
-    value: "",
     required: "",
     autocomplete: "email"
   }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.email]])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_17, [_hoisted_18, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_19, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {

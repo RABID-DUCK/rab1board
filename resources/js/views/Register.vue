@@ -19,7 +19,7 @@
                                 <label for="name" class="col-md-4 col-form-label text-md-end">Login</label>
 
                                 <div class="col-md-6">
-                                    <input id="login" v-model="login" type="text" class="form-control " name="login" value="" required autocomplete="login" autofocus>
+                                    <input id="login" v-model="login" type="text" class="form-control " name="login" required autocomplete="login" autofocus>
                                 </div>
                             </div>
 
@@ -27,7 +27,7 @@
                                 <label for="email" class="col-md-4 col-form-label text-md-end">Email address</label>
 
                                 <div class="col-md-6">
-                                    <input id="email" v-model="email" type="email" class="form-control" name="email" value="" required autocomplete="email">
+                                    <input id="email" v-model="email" type="email" class="form-control" name="email" required autocomplete="email">
                                 </div>
                             </div>
 
