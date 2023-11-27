@@ -17,10 +17,11 @@
             </div>
 
             <div class="position-relative name-dashboard" data-rename-dashboard>
-                <h2 class="text-center " title="Название вашего проекта" >
+                <h2 v-if="!rename_dash" class="text-center " title="Название вашего проекта" >
                     {{dash_title}}
                 </h2>
-                <i class="bi bi-pen-fill" data-title-dashboard @click.prevent="renameDashboard(dash_id)"></i>
+                <i class="bi bi-pen-fill" v-if="!rename_dash" data-title-dashboard @click.prevent="rename_dash = true"></i>
+                <input-save v-if="rename_dash" @valueTitle="renameDashboard" :title_dash="dash_title" />
             </div>
 
             <div class="dashboard-single-left-panel">
@@ -69,14 +70,20 @@
 </template>
 
 <script>
+import inputSave from "../components/InputSave";
+import { useRouter } from 'vue-router';
+
 export default {
     name: "Dashboard",
+    components: {inputSave},
+
     props: ['title'],
     data() {
         return {
             columns: null,
             dash_id: null,
             dash_title: null,
+            rename_dash: false,
         };
     },
     mounted() {
@@ -84,8 +91,26 @@ export default {
         this.dash_title = this.$route.params.title;
     },
     methods: {
-        renameDashboard(id){
-
+        renameDashboard(data){
+            this.rename_dash = true
+            this.axios.post('/api/dashboard/rename', {
+                id: this.dash_id,
+                title: data.title
+            })
+                .then(res => {
+                    this.dash_title = res.data.title
+                    this.router.replace({
+                        ...this.$route,
+                        params: {
+                            ...this.$route.params,
+                            title: res.data.title,
+                        },
+                    });
+                    this.rename_dash = false
+                })
+                .catch(err => {
+                    this.rename_dash = false
+                })
         },
         addUsersModal(id){
 
