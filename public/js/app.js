@@ -29176,7 +29176,7 @@ var _hoisted_2 = {
 var _hoisted_3 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
     "class": "navbar-brand",
-    href: "board.index"
+    href: "/"
   }, "Rab1Board", -1 /* HOISTED */);
 });
 var _hoisted_4 = /*#__PURE__*/_withScopeId(function () {
@@ -29391,13 +29391,15 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _bootstrap__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm-bundler.js");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm-bundler.js");
 /* harmony import */ var _App_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./App.vue */ "./resources/js/App.vue");
 /* harmony import */ var _router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./router */ "./resources/js/router/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! axios */ "./node_modules/axios/lib/axios.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! axios */ "./node_modules/axios/lib/axios.js");
 /* harmony import */ var vue_cookies__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vue-cookies */ "./node_modules/vue-cookies/vue-cookies.js");
 /* harmony import */ var vue_cookies__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(vue_cookies__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var _modules_auth__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modules/auth */ "./resources/js/modules/auth.js");
+/* harmony import */ var _modules_dashboard__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./modules/dashboard */ "./resources/js/modules/dashboard.js");
+
 
 
 
@@ -29407,9 +29409,10 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var app = (0,vue__WEBPACK_IMPORTED_MODULE_1__.createApp)(_App_vue__WEBPACK_IMPORTED_MODULE_2__["default"]);
-var store = (0,vuex__WEBPACK_IMPORTED_MODULE_6__.createStore)({
+var store = (0,vuex__WEBPACK_IMPORTED_MODULE_7__.createStore)({
   modules: {
-    auth: _modules_auth__WEBPACK_IMPORTED_MODULE_5__.moduleAuth
+    auth: _modules_auth__WEBPACK_IMPORTED_MODULE_5__.moduleAuth,
+    dashboard: _modules_dashboard__WEBPACK_IMPORTED_MODULE_6__.moduleDash
   }
 });
 app.use(_router__WEBPACK_IMPORTED_MODULE_3__["default"]).use(store).use((vue_cookies__WEBPACK_IMPORTED_MODULE_4___default()), {
@@ -29424,9 +29427,16 @@ app.mixin({
   created: function created() {
     this.$store.dispatch('initUserLogged');
   },
-  methods: {}
+  methods: {
+    coder: function coder(id) {
+      return btoa(id.toString());
+    },
+    decoder: function decoder(id) {
+      return parseInt(atob(id), 10);
+    }
+  }
 });
-app.config.globalProperties.axios = axios__WEBPACK_IMPORTED_MODULE_7__["default"];
+app.config.globalProperties.axios = axios__WEBPACK_IMPORTED_MODULE_8__["default"];
 app.mount('#app');
 
 /***/ }),
@@ -29573,6 +29583,27 @@ var moduleAuth = {
 
 /***/ }),
 
+/***/ "./resources/js/modules/dashboard.js":
+/*!*******************************************!*\
+  !*** ./resources/js/modules/dashboard.js ***!
+  \*******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   moduleDash: () => (/* binding */ moduleDash)
+/* harmony export */ });
+
+var moduleDash = {
+  state: {},
+  mutations: {},
+  actions: {},
+  getters: {}
+};
+
+/***/ }),
+
 /***/ "./resources/js/router/index.js":
 /*!**************************************!*\
   !*** ./resources/js/router/index.js ***!
@@ -29586,6 +29617,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.mjs");
 /* provided dependency */ var process = __webpack_require__(/*! process/browser.js */ "./node_modules/process/browser.js");
+var _this = undefined;
 
 var router = (0,vue_router__WEBPACK_IMPORTED_MODULE_0__.createRouter)({
   history: (0,vue_router__WEBPACK_IMPORTED_MODULE_0__.createWebHistory)(process.env.BASE_URL),
@@ -29608,10 +29640,21 @@ var router = (0,vue_router__WEBPACK_IMPORTED_MODULE_0__.createRouter)({
       return __webpack_require__.e(/*! import() */ "resources_js_views_Register_vue").then(__webpack_require__.bind(__webpack_require__, /*! ../views/Register.vue */ "./resources/js/views/Register.vue"));
     }
   }, {
-    path: '/dashboard/:id',
+    path: '/dashboard/:id/:title',
     name: 'dashboard',
     component: function component() {
       return __webpack_require__.e(/*! import() */ "resources_js_views_Dashboard_vue").then(__webpack_require__.bind(__webpack_require__, /*! ../views/Dashboard.vue */ "./resources/js/views/Dashboard.vue"));
+    },
+    props: function props(route) {
+      return {
+        title: route.params.title
+      };
+    },
+    beforeEnter: function beforeEnter(to, from, next) {
+      if (to.query.dash_id) {
+        _this.$store.dispatch('set_dash_id', to.query.dash_id);
+      }
+      next();
     }
   }]
 });

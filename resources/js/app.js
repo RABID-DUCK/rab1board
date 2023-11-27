@@ -6,13 +6,15 @@ import router from './router'
 import axios from 'axios'
 import VueCookies from 'vue-cookies'
 import {moduleAuth} from './modules/auth'
+import {moduleDash} from './modules/dashboard';
 
 const app = createApp(App)
 
 const store = createStore({
     modules: {
-        auth: moduleAuth
-    }
+        auth: moduleAuth,
+        dashboard: moduleDash
+    },
 })
 
 app.use(router)
@@ -28,7 +30,14 @@ app.mixin({
     created: function(){
         this.$store.dispatch('initUserLogged')
     },
-    methods: {}
+    methods: {
+        coder(id){
+            return btoa(id.toString());
+        },
+        decoder(id) {
+            return parseInt(atob(id), 10);
+        },
+    },
 })
 
 app.config.globalProperties.axios = axios;

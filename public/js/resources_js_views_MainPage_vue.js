@@ -276,7 +276,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       to: {
         name: 'dashboard',
         params: {
-          id: dash.id
+          id: _ctx.coder(dash.id),
+          title: dash.title
         }
       },
       "class": "btn btn-search"

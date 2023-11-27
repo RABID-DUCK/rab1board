@@ -19,9 +19,16 @@ const router = createRouter({
             component: () => import('../views/Register.vue')
         },
         {
-            path: '/dashboard/:id',
+            path: '/dashboard/:id/:title',
             name: 'dashboard',
-            component: () => import('../views/Dashboard.vue')
+            component: () => import('../views/Dashboard.vue'),
+            props: (route) => ({ title: route.params.title }),
+            beforeEnter: (to, from, next) => {
+                if (to.query.dash_id) {
+                    this.$store.dispatch('set_dash_id', to.query.dash_id)
+                }
+                next()
+            }
         }
     ]
 })

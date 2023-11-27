@@ -13,7 +13,8 @@
                             <div class="card-body">
                                 <h5 class="card-title">{{dash.title}}</h5>
                                 <a class="card-users"><img src="/images/avatar_none.png" alt="Аватар по умолчанию"></a>
-                                <router-link :to="{name: 'dashboard', params: {id: dash.id}}" class="btn btn-search">Перейти в проект</router-link>
+                                <router-link  :to="{ name: 'dashboard', params: {id: coder(dash.id), title: dash.title, }}"
+                                             class="btn btn-search">Перейти в проект</router-link>
                             </div>
                         </div>
                     </div>
@@ -106,7 +107,7 @@ export default {
         },
         closeModal(){
             this.created = false;
-        }
+        },
     }
 }
 </script>

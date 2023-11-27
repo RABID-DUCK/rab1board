@@ -1,10 +1,114 @@
 <template>
+    <div class="d-flex">
+        <div class="panel dashboard-single" id="left-panel-dash">
+            <input type="hidden" id="dashboard-id" :value="dash_id">
+            <div class="info-left-panel">
+                <div class="dashboard-single-user">
+                    <div>
+                        <img src="{{'/images/'+this.$store.state.auth.image}}" alt="Фото профиля" width="50" height="60">
+                    </div>
+                    <div>
+                        <b>{{this.$store.state.auth.login}}</b>
+                        <span :class="{'text-danger': this.$store.state.auth.premium, 'text-secondary': !this.$store.state.auth.premium}">
+                        {{this.$store.state.auth.premium ? "Premium" : "Free"}}
+                    </span>
+                    </div>
+                </div>
+            </div>
 
+            <div class="position-relative name-dashboard" data-rename-dashboard>
+                <h2 class="text-center " title="Название вашего проекта" >
+                    {{dash_title}}
+                </h2>
+                <i class="bi bi-pen-fill" data-title-dashboard @click.prevent="renameDashboard(dash_id)"></i>
+            </div>
+
+            <div class="dashboard-single-left-panel">
+                <button class="btn-participiants" @click.prevent="addUsersModal(dash_id)">
+                    Participants
+                    <span>+</span>
+                </button>
+
+                <a href="">Chart</a>
+                <a href="">Scheduled events</a>
+                <button class="btn disabled" type="button">Chat dashboard</button>
+            </div>
+        </div>
+
+        <div class="desk-wrapper d-flex justify-content-start" id="desk-wrapper" >
+            <div v-if="columns" class="wrap" v-for="column in columns" :data-column-id="column.id" :data-order="column.order">
+                <div class="column" @click="clickRenameColumn(column.id)" data-column-title="" onmousedown="dragDropColumns()">
+                    <span>{{ column.title }}</span>
+                    <i class="bi bi-check-lg save-column hide"></i>
+                </div>
+                <div class="desk-block" id="desk-list">
+                    <div v-for="desk in column.desks" class="desk" @click="viewDesk(desk.id)" :data-desk-id="desk.id"
+                         onmousedown="dragDropDesks()"
+                         style="{'box-shadow: 0 0 10px 3px' + desk.color[0].color: desk.color_id}">
+                        <p>{{ desk.title }}</p>
+                        <img v-if="desk.image" :src="desk.image" :alt="desk.title">
+                        <div class="data-desk">
+                            <input class="custom-checkbox" type="checkbox" id="status" name="status" value="yes"
+                                   v-bind:checked="desk.status" @click="doneTask(desk.id)">
+                            <time datetime='2011-11-18T14:54:39.929Z' name='date' id='data-desk'
+                                  :class="{'text-muted': !desk.data_end,'text-danger fw-bold': today(desk.data_end),
+                          'fw-bold': !today(desk.data_end)}">
+                                {{ desk.data_end ? today(desk.data_end) ? 'Сегодня' : 'До ' + desk.data_end : 'Сроков нет' }}
+                            </time>
+                        </div>
+                        <span>status</span>
+                    </div>
+                    <button class="add-desk" id="add-task-title" @click="createDeskMiniModal(column.id)">+ Add desk</button>
+                </div>
+            </div>
+            <div class="add-column-panel" id="add-column-panel">
+                <button class="add-column" @click="addColumnModal(dash_id)">+ Add column</button>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script>
 export default {
-    name: "Dashboard"
+    name: "Dashboard",
+    props: ['title'],
+    data() {
+        return {
+            columns: null,
+            dash_id: null,
+            dash_title: null,
+        };
+    },
+    mounted() {
+        this.dash_id = this.decoder(this.$route.params.id);
+        this.dash_title = this.$route.params.title;
+    },
+    methods: {
+        renameDashboard(id){
+
+        },
+        addUsersModal(id){
+
+        },
+        clickRenameColumn(columnID){
+
+        },
+        viewDesk(deskID){
+
+        },
+        doneTask(deskID){
+
+        },
+        today(date){
+
+        },
+        createDeskMiniModal(columnID){
+
+        },
+        addColumnModal(dashID){
+
+        },
+    }
 }
 </script>
 
