@@ -99,13 +99,7 @@ export default {
             })
                 .then(res => {
                     this.dash_title = res.data.title
-                    this.router.replace({
-                        ...this.$route,
-                        params: {
-                            ...this.$route.params,
-                            title: res.data.title,
-                        },
-                    });
+                    this.$router.replace('/dashboard/'+this.dash_id+'/'+res.data.title);
                     this.rename_dash = false
                 })
                 .catch(err => {
