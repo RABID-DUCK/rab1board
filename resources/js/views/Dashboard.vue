@@ -1,5 +1,5 @@
 <template>
-    <div class="d-flex">
+    <div class="d-flex h-100">
         <div class="panel dashboard-single" id="left-panel-dash">
             <input type="hidden" id="dashboard-id" :value="dash_id">
             <div class="info-left-panel">
@@ -92,7 +92,7 @@ export default {
     mounted() {
         this.dash_id = this.decoder(this.$route.params.id);
         this.dash_title = this.$route.params.title;
-        console.log(this.dash_id)
+        this.getColumns();
     },
     methods: {
         renameDashboard(data){
@@ -114,7 +114,7 @@ export default {
 
         },
         clickRenameColumn(columnList){
-            this.columns = columnList;
+            this.getColumns();
             this.create_column = false;
         },
         viewDesk(deskID){
@@ -132,6 +132,12 @@ export default {
         addColumnModal(dashID){
             this.create_column = true;
         },
+        getColumns(){
+            this.axios('/api/getColumns/'+this.dash_id)
+                .then(res => {
+                    this.columns = res.data;
+                })
+        }
     }
 }
 </script>

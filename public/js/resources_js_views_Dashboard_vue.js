@@ -108,7 +108,7 @@ __webpack_require__.r(__webpack_exports__);
   mounted: function mounted() {
     this.dash_id = this.decoder(this.$route.params.id);
     this.dash_title = this.$route.params.title;
-    console.log(this.dash_id);
+    this.getColumns();
   },
   methods: {
     renameDashboard: function renameDashboard(data) {
@@ -127,7 +127,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     addUsersModal: function addUsersModal(id) {},
     clickRenameColumn: function clickRenameColumn(columnList) {
-      this.columns = columnList;
+      this.getColumns();
       this.create_column = false;
     },
     viewDesk: function viewDesk(deskID) {},
@@ -136,6 +136,12 @@ __webpack_require__.r(__webpack_exports__);
     createDeskMiniModal: function createDeskMiniModal(columnID) {},
     addColumnModal: function addColumnModal(dashID) {
       this.create_column = true;
+    },
+    getColumns: function getColumns() {
+      var _this2 = this;
+      this.axios('/api/getColumns/' + this.dash_id).then(function (res) {
+        _this2.columns = res.data;
+      });
     }
   }
 });
@@ -240,7 +246,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
 var _hoisted_1 = {
-  "class": "d-flex"
+  "class": "d-flex h-100"
 };
 var _hoisted_2 = {
   "class": "panel dashboard-single",
