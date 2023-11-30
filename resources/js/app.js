@@ -31,10 +31,10 @@ app.mixin({
         this.$store.dispatch('initUserLogged')
     },
     methods: {
-        coder(id){
+        coder(id){ // зашифровать
             return btoa(id.toString());
         },
-        decoder(id) {
+        decoder(id) { // расшифровать
             return parseInt(atob(id), 10);
         },
     },

@@ -2369,7 +2369,7 @@ window.openCreateDashboardModal = function (user_id) {
 };
 window.addColumnModal = function (dashboard, user_id) {
   if (!document.getElementById('modal-column')) {
-    document.getElementById('add-column-panel').insertAdjacentHTML('beforeend', "\n            <div class=\"column-modal-wrapper text-center\" id=\"modal-column\">\n                <label class=\" mb-2\" for=\"col-form-label desk-title\"><b>Type title for desk</b></label>\n                <input class=\"form-control\" type=\"text\" name=\"desk-title\" id=\"text-column-create\" placeholder=\"Make auth\">\n                <button class=\"btn mt-2\" onclick=\"addColumn(".concat(dashboard, ", ").concat(user_id, ")\">Create</button>\n                <span class=\"remove-column-modal text-black-50\" onclick=\"deleteColumnModal('modal-column')\">X</span>\n            </div>\n    "));
+    document.getElementById('add-column-panel').insertAdjacentHTML('beforeend', "\n            <div class=\"column-modal-wrapper text-center\" id=\"modal-column\">\n                <label class=\" mb-2\" for=\"col-form-label desk-title\"><b>Type title for desk</b></label>\n                <input class=\"form-control\" type=\"text\" name=\"desk-title\" id=\"text-column-create\" placeholder=\"Make auth\">\n                <button class=\"btn mt-2\" onclick=\"addColumn(".concat(dashboard, ", ").concat(user_id, ")\">Create</button>\n                <span class=\"remove-column-modal text-black-50\" onclick=\"deleteColumnModal('modal-column')\">X</span>\n            </div>\n      "));
   }
 };
 window.deleteColumnModal = function (id_name) {

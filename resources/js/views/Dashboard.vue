@@ -5,12 +5,12 @@
             <div class="info-left-panel">
                 <div class="dashboard-single-user">
                     <div>
-                        <img src="{{'/images/'+this.$store.state.auth.image}}" alt="Фото профиля" width="50" height="60">
+                        <img :src="'/images/'+this.$store.state.auth.user.image" alt="Фото профиля" width="50" height="60">
                     </div>
                     <div>
-                        <b>{{this.$store.state.auth.login}}</b>
-                        <span :class="{'text-danger': this.$store.state.auth.premium, 'text-secondary': !this.$store.state.auth.premium}">
-                        {{this.$store.state.auth.premium ? "Premium" : "Free"}}
+                        <b>{{this.$store.state.auth.user.login}}</b>
+                        <span :class="{'text-danger': this.$store.state.auth.user.premium, 'text-secondary': !this.$store.state.auth.premium}">
+                        {{this.$store.state.auth.user.premium ? "Premium" : "Free"}}
                     </span>
                     </div>
                 </div>
@@ -38,13 +38,12 @@
 
         <div class="desk-wrapper d-flex justify-content-start" id="desk-wrapper" >
             <div v-if="columns" class="wrap" v-for="column in columns" :data-column-id="column.id" :data-order="column.order">
-                <div class="column" @click="clickRenameColumn(column.id)" data-column-title="" onmousedown="dragDropColumns()">
+                <div class="column" @click="clickRenameColumn(column.id)" data-column-title="">
                     <span>{{ column.title }}</span>
                     <i class="bi bi-check-lg save-column hide"></i>
                 </div>
                 <div class="desk-block" id="desk-list">
                     <div v-for="desk in column.desks" class="desk" @click="viewDesk(desk.id)" :data-desk-id="desk.id"
-                         onmousedown="dragDropDesks()"
                          style="{'box-shadow: 0 0 10px 3px' + desk.color[0].color: desk.color_id}">
                         <p>{{ desk.title }}</p>
                         <img v-if="desk.image" :src="desk.image" :alt="desk.title">
@@ -63,7 +62,10 @@
                 </div>
             </div>
             <div class="add-column-panel" id="add-column-panel">
-                <button class="add-column" @click="addColumnModal(dash_id)">+ Add column</button>
+                <button class="add-column" @click.prevent="addColumnModal(dash_id)">+ Add column</button>
+                <create-panel v-if="create_column" :dash_id="dash_id"
+                              :user_id="this.$store.state.auth.user.id" :title_event="'column'"
+                @columnsList="clickRenameColumn" />
             </div>
         </div>
     </div>
@@ -71,24 +73,26 @@
 
 <script>
 import inputSave from "../components/InputSave";
-import { useRouter } from 'vue-router';
+import CreatePanel from "../components/CreatePanel";
 
 export default {
     name: "Dashboard",
-    components: {inputSave},
+    components: {inputSave, CreatePanel},
 
-    props: ['title'],
+    props: ['title', 'columnsList'],
     data() {
         return {
             columns: null,
             dash_id: null,
             dash_title: null,
             rename_dash: false,
+            create_column: false
         };
     },
     mounted() {
         this.dash_id = this.decoder(this.$route.params.id);
         this.dash_title = this.$route.params.title;
+        console.log(this.dash_id)
     },
     methods: {
         renameDashboard(data){
@@ -99,7 +103,7 @@ export default {
             })
                 .then(res => {
                     this.dash_title = res.data.title
-                    this.$router.replace('/dashboard/'+this.dash_id+'/'+res.data.title);
+                    this.$router.replace('/dashboard/'+this.coder(this.dash_id)+'/'+res.data.title);
                     this.rename_dash = false
                 })
                 .catch(err => {
@@ -109,8 +113,9 @@ export default {
         addUsersModal(id){
 
         },
-        clickRenameColumn(columnID){
-
+        clickRenameColumn(columnList){
+            this.columns = columnList;
+            this.create_column = false;
         },
         viewDesk(deskID){
 
@@ -125,7 +130,7 @@ export default {
 
         },
         addColumnModal(dashID){
-
+            this.create_column = true;
         },
     }
 }

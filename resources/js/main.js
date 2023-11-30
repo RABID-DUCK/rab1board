@@ -101,7 +101,7 @@ window.addColumnModal = function (dashboard, user_id){
                 <button class="btn mt-2" onclick="addColumn(${dashboard}, ${user_id})">Create</button>
                 <span class="remove-column-modal text-black-50" onclick="deleteColumnModal('modal-column')">X</span>
             </div>
-    `)
+      `)
     }
 }
 

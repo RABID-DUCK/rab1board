@@ -29429,9 +29429,11 @@ app.mixin({
   },
   methods: {
     coder: function coder(id) {
+      // зашифровать
       return btoa(id.toString());
     },
     decoder: function decoder(id) {
+      // расшифровать
       return parseInt(atob(id), 10);
     }
   }
