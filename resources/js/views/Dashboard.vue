@@ -1,4 +1,5 @@
 <template>
+<!--    Левая панель-->
     <div class="d-flex h-100">
         <div class="panel dashboard-single" id="left-panel-dash">
             <input type="hidden" id="dashboard-id" :value="dash_id">
@@ -29,13 +30,16 @@
                     Participants
                     <span>+</span>
                 </button>
-
+                <add-panel v-if="clickedAddUser" label_title="Пригласить пользователя в проект" :id="dash_id"
+                           :class-props="'add-user'" @infoComponent="clickAddUser" :place-holder="'Введите почту пользователя'" />
                 <a href="">Chart</a>
                 <a href="">Scheduled events</a>
                 <button class="btn disabled" type="button">Chat dashboard</button>
             </div>
         </div>
+<!--        Конец левой панели-->
 
+<!--        вывод колонок-->
         <div class="desk-wrapper d-flex justify-content-start" id="desk-wrapper" >
             <div v-if="columns" class="wrap" v-for="(column, index) in columns" :key="column.id" :data-column-id="column.id" :data-order="column.order">
                 <div v-show="!columnClicked[index]" class="column" @click.prevent="columnClicked[index] = true" data-column-title="">
@@ -44,6 +48,7 @@
                 </div>
                 <input-save v-if="columnClicked[index]" @valueTitle="clickRenameColumn" :title_="column.title" :id="column.id" />
 
+    <!--                Вывод задач-->
                 <div class="desk-block" id="desk-list">
                     <div v-for="desk in column.desks" class="desk" @click="viewDesk(desk.id)" :data-desk-id="desk.id"
                          style="{'box-shadow: 0 0 10px 3px' + desk.color[0].color: desk.color_id}">
@@ -60,15 +65,23 @@
                         </div>
                         <span>status</span>
                     </div>
+
+                        <!--                    Добавить задачу-->
                     <button class="add-desk" id="add-task-title" @click="createDeskMiniModal(column.id)">+ Add desk</button>
+                        <!--                    конец добавления задачи-->
                 </div>
+    <!--                Конец вывода задач-->
+
             </div>
+<!--            Конец вывода колонок-->
+
+                        <!--            создание колонки-->
             <div class="add-column-panel" id="add-column-panel">
                 <button class="add-column" @click.prevent="addColumnModal(dash_id)">+ Add column</button>
                 <create-panel v-if="create_column" :dash_id="dash_id"
-                              :user_id="this.$store.state.auth.user.id" :title_event="'column'"
-                @columnsList="clickAddColumn" />
+                              :user_id="this.$store.state.auth.user.id" :title_event="'column'" @columnsList="clickAddColumn" />
             </div>
+                        <!--           конец создание колонки -->
         </div>
     </div>
 </template>
@@ -76,10 +89,11 @@
 <script>
 import inputSave from "../components/InputSave";
 import CreatePanel from "../components/CreatePanel";
+import AddPanel from "../components/AddPanel";
 
 export default {
     name: "Dashboard",
-    components: {inputSave, CreatePanel},
+    components: {inputSave, CreatePanel, AddPanel},
 
     props: ['title', 'columnsList'],
     data() {
@@ -89,7 +103,8 @@ export default {
             dash_title: null,
             rename_dash: false,
             create_column: false,
-            columnClicked: []
+            columnClicked: [],
+            clickedAddUser: false
         };
     },
     mounted() {
@@ -114,7 +129,17 @@ export default {
                 })
         },
         addUsersModal(id){
-
+            this.clickedAddUser = true;
+        },
+        clickAddUser(data){
+            console.log(data.info);
+            this.axios.post('/api/dashboard/addUser', {
+                dashboard_id: data.id,
+                email: data.info
+            })
+                .then(res => {
+                    console.log(res);
+                })
         },
         clickAddColumn(column_id){
             this.create_column = false;

@@ -19,7 +19,7 @@ export default {
     methods: {
         sendValue(){
             this.$emit('valueTitle', {
-                id: this.id ?? null,
+                id: this.id,
                 title: this.title
             })
         }

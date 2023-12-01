@@ -6,6 +6,8 @@
                 <router-link to="/login" class="btn btn-login">Авторизоваться</router-link>
             </section>
 
+            <b class="text-center mb-5">Здесь будут ваши рабочие проекты <i class="bi bi-emoji-smile"></i></b>
+
             <div v-if="this.$store.getters.statusUser">
                 <section class="authorize list-dashboards" v-if="dashboards">
                     <div class="col-sm-6 mb-3 mb-sm-0 wrapper-dash" v-for="dash in dashboards">
@@ -20,25 +22,26 @@
                     </div>
                 </section>
 
-                <section>
-                    <b class="text-center" v-if="!dashboards">Здесь будут ваши рабочие проекты <i class="bi bi-emoji-smile"></i></b>
+                <section class="d-flex flex-column">
                     <button class="btn w-75 add-dashboard" id="btn-create-dashboard" @click.prevent="openCreateDashboardModal">Добавить проект</button>
                 </section>
             </div>
         </div>
-    </div>
 
-    <div class="col-sm-6 mb-3 mb-sm-0 create-dashboard-window position-relative"
-         id="create-dashboard-window" v-if="created">
-        <close-panel @click.prevent="closeModal" />
-        <div class="card">
-            <div class="card-body">
-                <label class="form-label card-title">Название проекта</label>
-                <input v-model="dash_title" class="form-control" type="text" id="title-dashboard">
-                <a class="btn btn-search mt-2" id="create-dashboard" @click.prevent="createDashboard" disabled>Создать</a>
+        <div class="col-sm-6 mb-3 mb-sm-0 create-dashboard-window position-relative"
+             id="create-dashboard-window" v-if="created">
+            <close-panel @click.prevent="closeModal" />
+            <div class="card">
+                <div class="card-body">
+                    <label class="form-label card-title">Название проекта</label>
+                    <input v-model="dash_title" class="form-control" type="text" id="title-dashboard">
+                    <a class="btn btn-search mt-2" id="create-dashboard" @click.prevent="createDashboard" disabled>Создать</a>
+                </div>
             </div>
         </div>
     </div>
+
+
 </template>
 
 <script>
@@ -83,8 +86,6 @@ export default {
             })
                 .then(response => response.json())
                 .then(data => {
-                    this.dashboards = data;
-
                     if (data.status === 401){
                         alert(data.message)
                         btn.classList.remove('btn-disabled')
@@ -93,6 +94,7 @@ export default {
                     btn.classList.remove('btn-disabled')
                     this.created = false;
                     this.dash_title = '';
+                    this.getDashboards()
                 })
         },
         getDashboards(){

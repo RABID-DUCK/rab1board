@@ -23,8 +23,15 @@ class DashboardController extends Controller
         UserDashboards::create([
             'user_id' => $data['user_id'],
             'dashboard_id' => $dash->id,
-            'invited' => true
+            'invited' => true,
+            'confirmed' => true
         ]);
+
+        if($dashboards = UserDashboards::where('user_id', $data['user_id'])->where('confirmed', true)->get()){
+            return $dashboards;
+        }
+
+        return response()->json(['status' => 200, 'message' => 'Проекты не найдены!']);
 
         return Dashboards::where('user_id',  $data['user_id'])->get();
     }
@@ -52,9 +59,19 @@ class DashboardController extends Controller
         return response()->json(['message' => 'Произошла ошибка! Не найден проект...']);
     }
 
-    public function getDashboards(Request $request){
+    public function getDashboards(Request $request)
+    {
         $user = User::where('remember_token', $request->bearerToken())->first();
-        return Dashboards::where('user_id', $user->id)->get();
+
+        // Получаем список дашбордов пользователя
+        if($dashboards = UserDashboards::where('user_id', $user->id)->where('confirmed', true)){
+           $keys = $dashboards->pluck('dashboard_id'); // Возвращает массив ключей дашбордов
+
+            // Получаем сами дашборды из таблицы Dashboards по полученным ключам
+            return Dashboards::whereIn('id', $keys)->get();
+        }
+
+        return response()->json(['status' => 200, 'message' => 'Пректов не найдено!']);
     }
 
 }

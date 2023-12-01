@@ -737,12 +737,14 @@ nav {
 
 .add-user {
   width: 500px;
-  height: 150px;
+  word-break: break-word;
+  height: auto;
   position: absolute;
   top: 5%;
   left: 2px;
-  padding: 20px 5px 0 5px;
+  padding: 20px 5px 15px 5px;
   z-index: 1;
+  overflow: hidden;
 }
 .add-user input {
   margin-bottom: 15px;
