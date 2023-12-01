@@ -28,27 +28,22 @@
             </div>
         </div>
 
-        <div class="col-sm-6 mb-3 mb-sm-0 create-dashboard-window position-relative"
-             id="create-dashboard-window" v-if="created">
-            <close-panel @click.prevent="closeModal" />
-            <div class="card">
-                <div class="card-body">
-                    <label class="form-label card-title">Название проекта</label>
-                    <input v-model="dash_title" class="form-control" type="text" id="title-dashboard">
-                    <a class="btn btn-search mt-2" id="create-dashboard" @click.prevent="createDashboard" disabled>Создать</a>
-                </div>
-            </div>
-        </div>
+
     </div>
 
-
+    <div class="col-sm-6 mb-3 mb-sm-0 position-relative" v-if="created">
+        <add-panel place-holder="Придумайте название" :class-props="'card-body'" @infoComponent="createDashboard" label_title="Название проекта"/>
+    </div>
 </template>
 
 <script>
 import ClosePanel from "../components/ClosePanel";
+import AddPanel from "../components/AddPanel";
+
+
 export default {
     name: "MainPage",
-    components: {ClosePanel},
+    components: {ClosePanel, AddPanel},
 
     data() {
         return {
@@ -68,9 +63,7 @@ export default {
         openCreateDashboardModal(){
             this.created = true;
         },
-        createDashboard(){
-            let btn = document.getElementById('create-dashboard');
-            btn.classList.add('btn-disabled')
+        createDashboard(data){
             this.created = true;
 
             fetch('/api/dashboard/create', {
@@ -80,7 +73,7 @@ export default {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    title: this.dash_title,
+                    title: data.info,
                     user_id: this.$store.state.auth.user.id
                 })
             })
@@ -88,10 +81,8 @@ export default {
                 .then(data => {
                     if (data.status === 401){
                         alert(data.message)
-                        btn.classList.remove('btn-disabled')
                         return;
                     }
-                    btn.classList.remove('btn-disabled')
                     this.created = false;
                     this.dash_title = '';
                     this.getDashboards()

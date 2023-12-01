@@ -43,12 +43,12 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     sendInfo: function sendInfo() {
-      this.title = '';
-      this.isActive = false;
       this.$emit('infoComponent', {
         info: this.title,
         id: this.id
       });
+      this.title = '';
+      this.isActive = false;
     }
   }
 });
@@ -189,12 +189,9 @@ __webpack_require__.r(__webpack_exports__);
       this.clickedAddUser = true;
     },
     clickAddUser: function clickAddUser(data) {
-      console.log(data.info);
       this.axios.post('/api/dashboard/addUser', {
         dashboard_id: data.id,
         email: data.info
-      }).then(function (res) {
-        console.log(res);
       });
     },
     clickAddColumn: function clickAddColumn(column_id) {

@@ -41,13 +41,13 @@ export default {
     },
     methods: {
         sendInfo(){
-            this.title = '';
-            this.isActive = false;
-
             this.$emit('infoComponent', {
                 info: this.title,
                 id: this.id
             })
+
+            this.title = '';
+            this.isActive = false;
         }
 
     }

@@ -132,14 +132,10 @@ export default {
             this.clickedAddUser = true;
         },
         clickAddUser(data){
-            console.log(data.info);
             this.axios.post('/api/dashboard/addUser', {
                 dashboard_id: data.id,
                 email: data.info
             })
-                .then(res => {
-                    console.log(res);
-                })
         },
         clickAddColumn(column_id){
             this.create_column = false;
