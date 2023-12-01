@@ -58,15 +58,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "InputSave",
-  props: ['title_dash'],
+  props: ['title_', 'id'],
   data: function data() {
     return {
-      title: this.title_dash
+      title: this.title_
     };
   },
   methods: {
     sendValue: function sendValue() {
+      var _this$id;
       this.$emit('valueTitle', {
+        id: (_this$id = this.id) !== null && _this$id !== void 0 ? _this$id : null,
         title: this.title
       });
     }
@@ -102,7 +104,8 @@ __webpack_require__.r(__webpack_exports__);
       dash_id: null,
       dash_title: null,
       rename_dash: false,
-      create_column: false
+      create_column: false,
+      columnClicked: []
     };
   },
   mounted: function mounted() {
@@ -126,9 +129,19 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     addUsersModal: function addUsersModal(id) {},
-    clickRenameColumn: function clickRenameColumn(columnList) {
-      this.getColumns();
+    clickAddColumn: function clickAddColumn(column_id) {
       this.create_column = false;
+      this.getColumns();
+    },
+    clickRenameColumn: function clickRenameColumn(data) {
+      var _this2 = this;
+      this.axios.post('/api/column/rename', {
+        id: data.id,
+        title: data.title
+      }).then(function (res) {
+        _this2.columnClicked = false;
+        _this2.getColumns();
+      });
     },
     viewDesk: function viewDesk(deskID) {},
     doneTask: function doneTask(deskID) {},
@@ -138,9 +151,12 @@ __webpack_require__.r(__webpack_exports__);
       this.create_column = true;
     },
     getColumns: function getColumns() {
-      var _this2 = this;
+      var _this3 = this;
       this.axios('/api/getColumns/' + this.dash_id).then(function (res) {
-        _this2.columns = res.data;
+        _this3.columns = res.data;
+        _this3.columnClicked = _this3.columns.map(function () {
+          return false;
+        });
       });
     }
   }
@@ -209,8 +225,12 @@ var _hoisted_1 = {
   "class": "position-relative",
   "data-info-edit": ""
 };
+var _hoisted_2 = ["value"];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    type: "hidden",
+    value: $props.id
+  }, null, 8 /* PROPS */, _hoisted_2), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     "class": "form-control",
     "data-rename-dashboard-title": "",
     "onUpdate:modelValue": _cache[0] || (_cache[0] = function ($event) {
@@ -337,26 +357,32 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   })) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.rename_dash ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_input_save, {
     key: 2,
     onValueTitle: $options.renameDashboard,
-    title_dash: $data.dash_title
-  }, null, 8 /* PROPS */, ["onValueTitle", "title_dash"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    title_: $data.dash_title
+  }, null, 8 /* PROPS */, ["onValueTitle", "title_"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     "class": "btn-participiants",
     onClick: _cache[1] || (_cache[1] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
       return $options.addUsersModal($data.dash_id);
     }, ["prevent"]))
   }, _hoisted_12), _hoisted_13, _hoisted_14, _hoisted_15])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_16, [$data.columns ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
     key: 0
-  }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.columns, function (column) {
+  }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.columns, function (column, index) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
       "class": "wrap",
+      key: column.id,
       "data-column-id": column.id,
       "data-order": column.order
-    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
       "class": "column",
-      onClick: function onClick($event) {
-        return $options.clickRenameColumn(column.id);
-      },
+      onClick: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
+        return $data.columnClicked[index] = true;
+      }, ["prevent"]),
       "data-column-title": ""
-    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(column.title), 1 /* TEXT */), _hoisted_19], 8 /* PROPS */, _hoisted_18), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_20, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(column.desks, function (desk) {
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(column.title), 1 /* TEXT */), _hoisted_19], 8 /* PROPS */, _hoisted_18), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, !$data.columnClicked[index]]]), $data.columnClicked[index] ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_input_save, {
+      key: 0,
+      onValueTitle: $options.clickRenameColumn,
+      title_: column.title,
+      id: column.id
+    }, null, 8 /* PROPS */, ["onValueTitle", "title_", "id"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_20, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(column.desks, function (desk) {
       return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
         "class": "desk",
         onClick: function onClick($event) {
@@ -397,7 +423,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         return $options.createDeskMiniModal(column.id);
       }
     }, "+ Add desk", 8 /* PROPS */, _hoisted_26)])], 8 /* PROPS */, _hoisted_17);
-  }), 256 /* UNKEYED_FRAGMENT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_27, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+  }), 128 /* KEYED_FRAGMENT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_27, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     "class": "add-column",
     onClick: _cache[2] || (_cache[2] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
       return $options.addColumnModal($data.dash_id);
@@ -407,7 +433,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     dash_id: $data.dash_id,
     user_id: this.$store.state.auth.user.id,
     title_event: 'column',
-    onColumnsList: $options.clickRenameColumn
+    onColumnsList: $options.clickAddColumn
   }, null, 8 /* PROPS */, ["dash_id", "user_id", "onColumnsList"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])]);
 }
 

@@ -963,7 +963,7 @@ window.addUsersModal = function (desk_id){
     if(!document.getElementById('addUserModal')){
         document.getElementById('left-panel-dash').insertAdjacentHTML('beforeend', `
         <div class="modal-desk bg-dark bg-gradient text-white add-user" id="addUserModal">
-        <span class="close-modal" onclick="closeModalSlow('addUserModal')">X</span>
+            <span class="close-modal" onclick="closeModalSlow('addUserModal')">X</span>
             <label class="form-label" for="user-email">Почта пользователя</label>
             <input class="form-control" type="text" id="user-email">
             <button class="btn text-white" onclick="sendInvite(${desk_id})">Отправить</button>
