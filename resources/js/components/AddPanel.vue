@@ -1,9 +1,10 @@
 <template>
-    <div v-if="isActive" class="modal-desk bg-dark bg-gradient text-white" :class="classProps">
-        <span class="close-modal" @click.prevent="clicked = false">X</span>
-        <input type="hidden" :value="id">
-        <label class="form-label" for="user-email">{{label_title}}</label>
-        <input class="form-control" type="text" id="user-email" v-model="title" :placeholder="placeHolder">
+    <div class="backModal" id="backModal" v-if="backModal" @click="closeModal"></div>
+    <div class="bg-dark bg-gradient text-white" :class="classProps ?? ''">
+        <span class="close-modal" @click="closeModal">X</span>
+        <input type="hidden" :value="id ?? null">
+        <label class="form-label" for="user-email">{{ label_title }}</label>
+        <input class="form-control" type="text" id="user-email" v-model="title" :placeholder="placeHolder ?? null">
         <button class="btn text-white" @click.prevent="sendInfo">Отправить</button>
     </div>
 </template>
@@ -26,30 +27,32 @@ export default {
         },
         id: {
             type: Number,
-            default: ''
+            default: null
         },
         placeHolder: {
             type: String,
             default: ""
-        }
+        },
     },
+    emits: ['infoComponent'],
     data() {
         return {
             title: this.title,
-            isActive: true
+            backModal: true
         }
     },
     methods: {
         sendInfo(){
+            this.backModal = false;
+
             this.$emit('infoComponent', {
-                info: this.title,
-                id: this.id
+                info: this.title ?? null,
+                id: this.id ?? null,
             })
+            this.closeModal();
 
             this.title = '';
-            this.isActive = false;
-        }
-
+        },
     }
 }
 </script>

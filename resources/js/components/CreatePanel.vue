@@ -3,7 +3,7 @@
         <label class=" mb-2" for="col-form-label desk-title"><b>Type title for {{title_event}}</b></label>
         <input v-model="title" class="form-control" type="text" name="desk-title" id="text-column-create" placeholder="Make auth">
         <button class="btn mt-2" @click.prevent="addColumn(dash_id, user_id)">Create</button>
-        <span class="remove-column-modal text-black-50" onclick="deleteColumnModal('modal-column')">X</span>
+        <span class="remove-column-modal text-black-50" @click="closeModal">X</span>
     </div>
 </template>
 

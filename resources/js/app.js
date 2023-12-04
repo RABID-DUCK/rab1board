@@ -26,6 +26,10 @@ app.mixin({
         if(!this.$store.getters.statusUser) {
             this.$store.dispatch('getInfoUser')
         }
+        window.addEventListener('keydown', this.escCloseModal)
+    },
+    destroy(){
+        window.removeEventListener('keydown', this.escCloseModal)
     },
     created: function(){
         this.$store.dispatch('initUserLogged')
@@ -37,6 +41,14 @@ app.mixin({
         decoder(id) { // расшифровать
             return parseInt(atob(id), 10);
         },
+        closeModal(){
+            this.$emit('closeModal', {
+                isActive: false
+            })
+        },
+        escCloseModal(e){
+            if(e.key === 'Escape') this.closeModal();
+        }
     },
 })
 

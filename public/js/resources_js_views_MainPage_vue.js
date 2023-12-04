@@ -74,27 +74,30 @@ __webpack_require__.r(__webpack_exports__);
     },
     id: {
       type: Number,
-      "default": ''
+      "default": null
     },
     placeHolder: {
       type: String,
       "default": ""
     }
   },
+  emits: ['infoComponent'],
   data: function data() {
     return {
       title: this.title,
-      isActive: true
+      backModal: true
     };
   },
   methods: {
     sendInfo: function sendInfo() {
+      var _this$title, _this$id;
+      this.backModal = false;
       this.$emit('infoComponent', {
-        info: this.title,
-        id: this.id
+        info: (_this$title = this.title) !== null && _this$title !== void 0 ? _this$title : null,
+        id: (_this$id = this.id) !== null && _this$id !== void 0 ? _this$id : null
       });
+      this.closeModal();
       this.title = '';
-      this.isActive = false;
     }
   }
 });
@@ -178,6 +181,7 @@ __webpack_require__.r(__webpack_exports__);
         _this.created = false;
         _this.dash_title = '';
         _this.getDashboards();
+        _this.closeModal();
       });
     },
     getDashboards: function getDashboards() {
@@ -217,31 +221,38 @@ var _hoisted_2 = {
 };
 var _hoisted_3 = ["placeholder"];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  return $data.isActive ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
+  var _$props$classProps, _$props$id, _$props$placeHolder;
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [$data.backModal ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
     key: 0,
-    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["modal-desk bg-dark bg-gradient text-white", $props.classProps])
+    "class": "backModal",
+    id: "backModal",
+    onClick: _cache[0] || (_cache[0] = function () {
+      return _ctx.closeModal && _ctx.closeModal.apply(_ctx, arguments);
+    })
+  })) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["bg-dark bg-gradient text-white", (_$props$classProps = $props.classProps) !== null && _$props$classProps !== void 0 ? _$props$classProps : ''])
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
     "class": "close-modal",
-    onClick: _cache[0] || (_cache[0] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
-      return _ctx.clicked = false;
-    }, ["prevent"]))
+    onClick: _cache[1] || (_cache[1] = function () {
+      return _ctx.closeModal && _ctx.closeModal.apply(_ctx, arguments);
+    })
   }, "X"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "hidden",
-    value: $props.id
+    value: (_$props$id = $props.id) !== null && _$props$id !== void 0 ? _$props$id : null
   }, null, 8 /* PROPS */, _hoisted_1), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", _hoisted_2, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.label_title), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     "class": "form-control",
     type: "text",
     id: "user-email",
-    "onUpdate:modelValue": _cache[1] || (_cache[1] = function ($event) {
+    "onUpdate:modelValue": _cache[2] || (_cache[2] = function ($event) {
       return $data.title = $event;
     }),
-    placeholder: $props.placeHolder
+    placeholder: (_$props$placeHolder = $props.placeHolder) !== null && _$props$placeHolder !== void 0 ? _$props$placeHolder : null
   }, null, 8 /* PROPS */, _hoisted_3), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.title]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     "class": "btn text-white",
-    onClick: _cache[2] || (_cache[2] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
+    onClick: _cache[3] || (_cache[3] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
       return $options.sendInfo && $options.sendInfo.apply($options, arguments);
     }, ["prevent"]))
-  }, "Отправить")], 2 /* CLASS */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true);
+  }, "Отправить")], 2 /* CLASS */)], 64 /* STABLE_FRAGMENT */);
 }
 
 /***/ }),
@@ -341,16 +352,13 @@ var _hoisted_13 = /*#__PURE__*/_withScopeId(function () {
 });
 var _hoisted_14 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Перейти в проект");
 var _hoisted_15 = {
+  key: 1,
   "class": "d-flex flex-column"
-};
-var _hoisted_16 = {
-  key: 0,
-  "class": "col-sm-6 mb-3 mb-sm-0 position-relative"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_router_link = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("router-link");
   var _component_add_panel = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("add-panel");
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [!this.$store.getters.statusUser ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("section", _hoisted_3, [_hoisted_4, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [!this.$store.getters.statusUser ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("section", _hoisted_3, [_hoisted_4, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
     to: "/login",
     "class": "btn btn-login"
   }, {
@@ -374,18 +382,20 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }),
       _: 2 /* DYNAMIC */
     }, 1032 /* PROPS, DYNAMIC_SLOTS */, ["to"])])])]);
-  }), 256 /* UNKEYED_FRAGMENT */))])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("section", _hoisted_15, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+  }), 256 /* UNKEYED_FRAGMENT */))])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), !$data.created ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("section", _hoisted_15, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     "class": "btn w-75 add-dashboard",
     id: "btn-create-dashboard",
     onClick: _cache[0] || (_cache[0] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
       return $options.openCreateDashboardModal && $options.openCreateDashboardModal.apply($options, arguments);
     }, ["prevent"]))
-  }, "Добавить проект")])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])]), $data.created ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_16, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_add_panel, {
+  }, "Добавить проект")])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_add_panel, {
+    key: 2,
     "place-holder": "Придумайте название",
-    "class-props": 'card-body',
+    "class-props": 'card-body add-dashboard-panel animate-window',
     onInfoComponent: $options.createDashboard,
+    onCloseModal: $options.closeModal,
     label_title: "Название проекта"
-  }, null, 8 /* PROPS */, ["onInfoComponent"])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 64 /* STABLE_FRAGMENT */);
+  }, null, 8 /* PROPS */, ["onInfoComponent", "onCloseModal"]))])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])]);
 }
 
 /***/ }),

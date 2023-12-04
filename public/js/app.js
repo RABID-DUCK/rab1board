@@ -29423,6 +29423,10 @@ app.mixin({
     if (!this.$store.getters.statusUser) {
       this.$store.dispatch('getInfoUser');
     }
+    window.addEventListener('keydown', this.escCloseModal);
+  },
+  destroy: function destroy() {
+    window.removeEventListener('keydown', this.escCloseModal);
   },
   created: function created() {
     this.$store.dispatch('initUserLogged');
@@ -29435,6 +29439,14 @@ app.mixin({
     decoder: function decoder(id) {
       // расшифровать
       return parseInt(atob(id), 10);
+    },
+    closeModal: function closeModal() {
+      this.$emit('closeModal', {
+        isActive: false
+      });
+    },
+    escCloseModal: function escCloseModal(e) {
+      if (e.key === 'Escape') this.closeModal();
     }
   }
 });
