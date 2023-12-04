@@ -15,31 +15,28 @@
                             <div class="card-body">
                                 <h5 class="card-title">{{dash.title}}</h5>
                                 <a class="card-users"><img src="/images/avatar_none.png" alt="Аватар по умолчанию"></a>
-                                <router-link  :to="{ name: 'dashboard', params: {id: coder(dash.id), title: dash.title, }}"
-                                             class="btn btn-search">Перейти в проект</router-link>
+                                <router-link  :to="{ name: 'dashboard', params: {id: coder(dash.id), title: dash.title }}" class="btn btn-search">Перейти в проект</router-link>
                             </div>
                         </div>
                     </div>
                 </section>
 
-                <section class="d-flex flex-column">
+                <section class="d-flex flex-column" v-if="!created">
                     <button class="btn w-75 add-dashboard" id="btn-create-dashboard" @click.prevent="openCreateDashboardModal">Добавить проект</button>
                 </section>
+
+                <add-panel v-else place-holder="Придумайте название" :class-props="'card-body add-dashboard-panel animate-window'" @infoComponent="createDashboard"
+                          @closeModal="closeModal" label_title="Название проекта"/>
             </div>
         </div>
 
 
-    </div>
-
-    <div class="col-sm-6 mb-3 mb-sm-0 position-relative" v-if="created">
-        <add-panel place-holder="Придумайте название" :class-props="'card-body'" @infoComponent="createDashboard" label_title="Название проекта"/>
     </div>
 </template>
 
 <script>
 import ClosePanel from "../components/ClosePanel";
 import AddPanel from "../components/AddPanel";
-
 
 export default {
     name: "MainPage",
@@ -86,6 +83,7 @@ export default {
                     this.created = false;
                     this.dash_title = '';
                     this.getDashboards()
+                    this.closeModal()
                 })
         },
         getDashboards(){

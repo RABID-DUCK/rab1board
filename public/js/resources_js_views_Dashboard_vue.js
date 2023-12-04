@@ -28,27 +28,30 @@ __webpack_require__.r(__webpack_exports__);
     },
     id: {
       type: Number,
-      "default": ''
+      "default": null
     },
     placeHolder: {
       type: String,
       "default": ""
     }
   },
+  emits: ['infoComponent'],
   data: function data() {
     return {
       title: this.title,
-      isActive: true
+      backModal: true
     };
   },
   methods: {
     sendInfo: function sendInfo() {
+      var _this$title, _this$id;
+      this.backModal = false;
       this.$emit('infoComponent', {
-        info: this.title,
-        id: this.id
+        info: (_this$title = this.title) !== null && _this$title !== void 0 ? _this$title : null,
+        id: (_this$id = this.id) !== null && _this$id !== void 0 ? _this$id : null
       });
+      this.closeModal();
       this.title = '';
-      this.isActive = false;
     }
   }
 });
@@ -248,31 +251,38 @@ var _hoisted_2 = {
 };
 var _hoisted_3 = ["placeholder"];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  return $data.isActive ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
+  var _$props$classProps, _$props$id, _$props$placeHolder;
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [$data.backModal ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
     key: 0,
-    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["modal-desk bg-dark bg-gradient text-white", $props.classProps])
+    "class": "backModal",
+    id: "backModal",
+    onClick: _cache[0] || (_cache[0] = function () {
+      return _ctx.closeModal && _ctx.closeModal.apply(_ctx, arguments);
+    })
+  })) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["bg-dark bg-gradient text-white", (_$props$classProps = $props.classProps) !== null && _$props$classProps !== void 0 ? _$props$classProps : ''])
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
     "class": "close-modal",
-    onClick: _cache[0] || (_cache[0] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
-      return _ctx.clicked = false;
-    }, ["prevent"]))
+    onClick: _cache[1] || (_cache[1] = function () {
+      return _ctx.closeModal && _ctx.closeModal.apply(_ctx, arguments);
+    })
   }, "X"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "hidden",
-    value: $props.id
+    value: (_$props$id = $props.id) !== null && _$props$id !== void 0 ? _$props$id : null
   }, null, 8 /* PROPS */, _hoisted_1), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", _hoisted_2, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.label_title), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     "class": "form-control",
     type: "text",
     id: "user-email",
-    "onUpdate:modelValue": _cache[1] || (_cache[1] = function ($event) {
+    "onUpdate:modelValue": _cache[2] || (_cache[2] = function ($event) {
       return $data.title = $event;
     }),
-    placeholder: $props.placeHolder
+    placeholder: (_$props$placeHolder = $props.placeHolder) !== null && _$props$placeHolder !== void 0 ? _$props$placeHolder : null
   }, null, 8 /* PROPS */, _hoisted_3), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.title]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     "class": "btn text-white",
-    onClick: _cache[2] || (_cache[2] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
+    onClick: _cache[3] || (_cache[3] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
       return $options.sendInfo && $options.sendInfo.apply($options, arguments);
     }, ["prevent"]))
-  }, "Отправить")], 2 /* CLASS */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true);
+  }, "Отправить")], 2 /* CLASS */)], 64 /* STABLE_FRAGMENT */);
 }
 
 /***/ }),
@@ -297,11 +307,6 @@ var _hoisted_2 = {
   "class": "mb-2",
   "for": "col-form-label desk-title"
 };
-var _hoisted_3 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
-  "class": "remove-column-modal text-black-50",
-  onclick: "deleteColumnModal('modal-column')"
-}, "X", -1 /* HOISTED */);
-
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("b", null, "Type title for " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.title_event), 1 /* TEXT */)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     "onUpdate:modelValue": _cache[0] || (_cache[0] = function ($event) {
@@ -317,7 +322,12 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     onClick: _cache[1] || (_cache[1] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
       return $options.addColumn($props.dash_id, $props.user_id);
     }, ["prevent"]))
-  }, "Create"), _hoisted_3]);
+  }, "Create"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+    "class": "remove-column-modal text-black-50",
+    onClick: _cache[2] || (_cache[2] = function () {
+      return _ctx.closeModal && _ctx.closeModal.apply(_ctx, arguments);
+    })
+  }, "X")]);
 }
 
 /***/ }),
@@ -481,7 +491,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     key: 0,
     label_title: "Пригласить пользователя в проект",
     id: $data.dash_id,
-    "class-props": 'add-user',
+    "class-props": 'dinamycal-modal modal-desk',
     onInfoComponent: $options.clickAddUser,
     "place-holder": 'Введите почту пользователя'
   }, null, 8 /* PROPS */, ["id", "onInfoComponent"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _hoisted_13, _hoisted_14, _hoisted_15])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("        Конец левой панели"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("        вывод колонок"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_16, [$data.columns ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
@@ -554,6 +564,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     dash_id: $data.dash_id,
     user_id: this.$store.state.auth.user.id,
     title_event: 'column',
+    onCloseModal: _cache[3] || (_cache[3] = function ($event) {
+      return $data.create_column = false;
+    }),
     onColumnsList: $options.clickAddColumn
   }, null, 8 /* PROPS */, ["dash_id", "user_id", "onColumnsList"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("           конец создание колонки ")])])], 2112 /* STABLE_FRAGMENT, DEV_ROOT_FRAGMENT */);
 }

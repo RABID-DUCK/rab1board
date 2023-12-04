@@ -23,18 +23,15 @@
        <div class="content-wrapper" id="wrapper">
 
         @yield('content')
-        <div class="backModal hide" id="backModal">
-
-        </div>
-        <div id="wrapper-modal" class="wrapper-modal hide-animate">
-            <div class="modal-desk bg-dark bg-gradient text-white" data-modal-desk data-keyboard="false" data-backdrop="static">
-            </div>
-        </div>
+{{--        <div id="wrapper-modal" class="wrapper-modal hide-animate">--}}
+{{--            <div class="modal-desk bg-dark bg-gradient text-white" data-modal-desk data-keyboard="false" data-backdrop="static">--}}
+{{--            </div>--}}
+{{--        </div>--}}
 
         </div>
 
             {{--    Scripts--}}
-        <script src="{{ asset('js/main.js') }}" ></script>
+{{--        <script src="{{ asset('js/main.js') }}" ></script>--}}
         <script src="{{ asset('js/helper.js') }}" ></script>
         <script src="{{ asset('js/app.js') }}"></script>
         <script src="{{ asset('js/websockets.js') }}"></script>

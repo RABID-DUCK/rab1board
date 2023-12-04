@@ -31,7 +31,7 @@
                     <span>+</span>
                 </button>
                 <add-panel v-if="clickedAddUser" label_title="Пригласить пользователя в проект" :id="dash_id"
-                           :class-props="'add-user'" @infoComponent="clickAddUser" :place-holder="'Введите почту пользователя'" />
+                           :class-props="'dinamycal-modal modal-desk'" @infoComponent="clickAddUser" :place-holder="'Введите почту пользователя'" />
                 <a href="">Chart</a>
                 <a href="">Scheduled events</a>
                 <button class="btn disabled" type="button">Chat dashboard</button>
@@ -78,8 +78,8 @@
                         <!--            создание колонки-->
             <div class="add-column-panel" id="add-column-panel">
                 <button class="add-column" @click.prevent="addColumnModal(dash_id)">+ Add column</button>
-                <create-panel v-if="create_column" :dash_id="dash_id"
-                              :user_id="this.$store.state.auth.user.id" :title_event="'column'" @columnsList="clickAddColumn" />
+                <create-panel v-if="create_column" :dash_id="dash_id" :user_id="this.$store.state.auth.user.id" :title_event="'column'"
+                             @closeModal="create_column = false" @columnsList="clickAddColumn" />
             </div>
                         <!--           конец создание колонки -->
         </div>
