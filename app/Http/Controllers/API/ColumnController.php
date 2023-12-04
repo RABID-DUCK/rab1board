@@ -31,7 +31,7 @@ class ColumnController extends Controller
     }
 
     public function index(Request $request){
-        return Columns::where('dashboard_id', $request->dashboard_id)->get();
+        return Columns::where('dashboard_id', $request->dashboard_id)->with('tasks')->get();
     }
 
     public function moveColumn($dashboard, $desk, $item_id, $column_id){
