@@ -1,6 +1,6 @@
 <template>
     <div class="backModal" id="backModal" v-if="backModal" @click="closeModal"></div>
-    <div class="bg-dark bg-gradient text-white" :class="classProps ?? ''">
+    <div class="bg-dark bg-gradient text-white d-flex flex-column" :class="classProps ?? ''">
         <span class="close-modal" @click="closeModal">X</span>
         <input type="hidden" :value="id ?? null">
         <label class="form-label" for="user-email">{{ label_title }}</label>

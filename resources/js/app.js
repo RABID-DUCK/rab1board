@@ -7,13 +7,15 @@ import axios from 'axios'
 import VueCookies from 'vue-cookies'
 import {moduleAuth} from './modules/auth'
 import {moduleDash} from './modules/dashboard';
+import {moduleNotifications} from "./modules/notifications";
 
 const app = createApp(App)
 
 const store = createStore({
     modules: {
         auth: moduleAuth,
-        dashboard: moduleDash
+        dashboard: moduleDash,
+        notifications: moduleNotifications
     },
 })
 
@@ -48,7 +50,7 @@ app.mixin({
         },
         escCloseModal(e){
             if(e.key === 'Escape') this.closeModal();
-        }
+        },
     },
 })
 

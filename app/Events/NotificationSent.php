@@ -15,11 +15,11 @@ class NotificationSent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public Notification $notification;
+    public array $notification;
     /**
      * Create a new event instance.
      */
-    public function __construct(Notification $notification)
+    public function __construct(array $notification)
     {
         $this->notification = $notification;
     }
@@ -40,12 +40,4 @@ class NotificationSent implements ShouldBroadcast
     {
         return 'notifications';
     }
-
-    public function broadcastWith(): array
-    {
-        return [
-            'user_id' => $this->notification->user_id,
-        ];
-    }
-
 }

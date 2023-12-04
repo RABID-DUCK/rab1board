@@ -32,8 +32,6 @@ class DashboardController extends Controller
         }
 
         return response()->json(['status' => 200, 'message' => 'Проекты не найдены!']);
-
-        return Dashboards::where('user_id',  $data['user_id'])->get();
     }
 
     public function update(Request $request){

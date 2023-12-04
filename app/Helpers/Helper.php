@@ -23,11 +23,15 @@ class Helper
     }
 
     public static function getNotifications($user){
-        $notifications = Notification::where('user_id', $user)->where('read', false)->get();
-
-        return $notifications->map(function ($notification){
-            $notification->message = htmlspecialchars_decode($notification->message);
-            return $notification;
-        });
+        if($notifications = Notification::where('user_id', $user)->where('read', false)->get()){
+            $arr = $notifications->map(function ($notification) {
+                return [
+                    'user' => $notification->getUser['email'],
+                    'message' => $notification->message,
+                    'type' => $notification->getType['type']
+                ];
+            });
+            return response()->json($arr);
+        }
     }
 }

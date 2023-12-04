@@ -31,7 +31,8 @@
                     <span>+</span>
                 </button>
                 <add-panel v-if="clickedAddUser" label_title="Пригласить пользователя в проект" :id="dash_id"
-                           :class-props="'dinamycal-modal modal-desk'" @infoComponent="clickAddUser" :place-holder="'Введите почту пользователя'" />
+                           :class-props="'dinamycal-modal card-body add-dashboard-panel animate-window'" @infoComponent="clickAddUser"
+                           :place-holder="'Введите почту пользователя'"  @closeModal="clickedAddUser = false" />
                 <a href="">Chart</a>
                 <a href="">Scheduled events</a>
                 <button class="btn disabled" type="button">Chat dashboard</button>

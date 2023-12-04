@@ -49,13 +49,19 @@ class UserDashboardController extends Controller
             if($type_id = NotificationType::where('type', 'invite_dashboard')->first()){
                 $notification = Notification::create([
                     'user_id' => $user->id,
-                    'message' => htmlspecialchars($script),
+                    'message' => "Пользователь $user->email пригласил вас в своё рабочее пространство.",
                     'type_id' => $type_id->id
                 ]);
 
-                broadcast(new NotificationSent($notification))->toOthers();
+                $arr_notif = [
+                  'message' => $notification->message,
+                  'user' => $user->email,
+                  'type' => $type_id->type
+                ];
 
-                return response()->json(['status' => 200,'message' => 'Приглашение отправлено', 'user_id' => $user->id]);
+                broadcast(new NotificationSent($arr_notif))->toOthers();
+
+                return response()->json(['status' => 200,'message' => 'Приглашение отправлено']);
             }
 
         }

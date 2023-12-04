@@ -12,4 +12,11 @@ class Notification extends Model
     protected $table = 'notifications';
     protected $guarded = false;
 
+    public function getType(){
+        return $this->hasOne(NotificationType::class, 'id', 'type_id');
+    }
+
+    public function getUser(){
+        return $this->hasOne(User::class, 'id', 'user_id');
+    }
 }
