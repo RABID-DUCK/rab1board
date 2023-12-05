@@ -7,6 +7,8 @@ import 'bootstrap';
  */
 
 import axios from 'axios';
+import VueCookies from "vue-cookies";
+
 window.axios = axios;
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
@@ -25,8 +27,14 @@ window.Echo = new Echo({
     broadcaster: 'pusher',
     key: '1d26fb7fa9ddcb77c1f8',
     cluster: 'eu',
-    wsHost: 'rab1board:8080',
-    wsPort: 8080,
+    wsHost: window.location.hostname,
+    wsPort: 6001,
     disableStats: true,
-    encrypted: false,
+    encrypted: true,
+    auth: {
+        headers: {
+            Authorization: 'Bearer ' + VueCookies.get('access_token')
+        },
+    },
 });
+

@@ -13,5 +13,9 @@ use Illuminate\Support\Facades\Broadcast;
 |
 */
 Broadcast::channel('notifications', \App\Broadcasting\NotificationsChannel::class);
+Broadcast::channel('notification_{id}', function ($user, $id){
+    return (int) $user->id === (int) $id;
+});
+
 Broadcast::channel('desks', \App\Broadcasting\DesksChannel::class);
 Broadcast::channel('columns', \App\Broadcasting\ColumnsChannel::class);

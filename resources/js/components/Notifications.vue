@@ -37,6 +37,11 @@ export default {
         '$store.getters.statusUser': function (value){
             if(value){
                 this.refreshNotifs_count()
+                window.Echo.private(`notification.${this.$store.state.auth.user.id}`)
+                    .listen('.server.created', function(e) {
+                        console.log(e);
+                        this.refreshNotifs_count()
+                    })
             }
         }
     },

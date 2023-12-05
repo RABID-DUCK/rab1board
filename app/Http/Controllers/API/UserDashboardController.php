@@ -33,7 +33,7 @@ class UserDashboardController extends Controller
                 }
             }
 
-            UserDashboards::create([
+            $dashboards = UserDashboards::create([
                 'user_id' => $user->id,
                 'dashboard_id' => $data['dashboard_id'],
                 'invited' => true,
@@ -55,7 +55,7 @@ class UserDashboardController extends Controller
                   'dashboard_id' => $dash->id
                 ];
 
-                broadcast(new NotificationSent($arr_notif))->toOthers();
+                broadcast(new NotificationSent($arr_notif, $dashboards->user_id))->toOthers();
 
                 return response()->json(['status' => 200,'message' => 'Приглашение отправлено']);
             }
