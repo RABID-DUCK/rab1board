@@ -874,7 +874,6 @@ nav{
     .notif{
         border-top: 1px solid $border;
         border-bottom: 1px solid $border;
-        padding: 5px;
 
         .notif-btns{
             margin-top: 10px;
@@ -893,10 +892,6 @@ nav{
                 background-color: #c40202 !important;
             }
         }
-    }
-
-    .notif:first-of-type{
-        margin-top: 50px;
     }
 
     .notif + .notif{

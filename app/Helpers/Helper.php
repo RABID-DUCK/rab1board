@@ -26,6 +26,7 @@ class Helper
         if($notifications = Notification::where('user_id', $user)->where('read', false)->get()){
             $arr = $notifications->map(function ($notification) {
                 return [
+                    'id' => $notification->id,
                     'user' => $notification->getUser['email'],
                     'message' => $notification->message,
                     'type' => $notification->getType['type']

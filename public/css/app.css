@@ -773,7 +773,6 @@ nav {
 .modal-notification .notif {
   border-top: 1px solid #EBEFF2;
   border-bottom: 1px solid #EBEFF2;
-  padding: 5px;
 }
 .modal-notification .notif .notif-btns {
   margin-top: 10px;
@@ -788,9 +787,6 @@ nav {
 }
 .modal-notification .notif .notif-btns .btn-danger:hover {
   background-color: #c40202 !important;
-}
-.modal-notification .notif:first-of-type {
-  margin-top: 50px;
 }
 .modal-notification .notif + .notif {
   margin-top: 10px;

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Events\NotificationSent;
 use App\Helpers\Helper;
 use App\Http\Controllers\Controller;
+use App\Models\Dashboards;
 use App\Models\Notification;
 use App\Models\NotificationType;
 use App\Models\User;
@@ -32,31 +33,26 @@ class UserDashboardController extends Controller
                 }
             }
 
-            $userDashboard = UserDashboards::create([
+            UserDashboards::create([
                 'user_id' => $user->id,
                 'dashboard_id' => $data['dashboard_id'],
                 'invited' => true,
                 'confirmed' => false
             ]);
 
-            $script = "<span>Пользователь $user->email пригласил вас в своё рабочее пространство.
-                            <div class='notif-btns'>
-                                <button class='btn btn-success' onclick='setConfirm($user->id, $userDashboard->dashboard_id, true)'>Принять</button>
-                                <button class='btn btn-danger' onclick='setConfirm($user->id, $userDashboard->dashboard_id, false)'>Отклонить</button>
-                            </div>
-                        </span>";
-
             if($type_id = NotificationType::where('type', 'invite_dashboard')->first()){
+                $dash = Dashboards::where('id', $data['dashboard_id'])->first();
                 $notification = Notification::create([
                     'user_id' => $user->id,
-                    'message' => "Пользователь $user->email пригласил вас в своё рабочее пространство.",
+                    'message' => "Пользователь $user->email пригласил вас в свой проект — $dash->title. <input type='hidden' value='$dash->id' />",
                     'type_id' => $type_id->id
                 ]);
 
                 $arr_notif = [
                   'message' => $notification->message,
                   'user' => $user->email,
-                  'type' => $type_id->type
+                  'type' => $type_id->type,
+                  'dashboard_id' => $dash->id
                 ];
 
                 broadcast(new NotificationSent($arr_notif))->toOthers();
