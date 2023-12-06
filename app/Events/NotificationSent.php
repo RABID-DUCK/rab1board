@@ -23,30 +23,40 @@ class NotificationSent implements ShouldBroadcast
      */
     public function __construct(array $notification, int $userId)
     {
+
         $this->notification = $notification;
         $this->userId = $userId;
     }
 
     /**
-     * Get the channels the event should broadcast on.
+     * Получить каналы трансляции события.
      *
-     * @return array<int, \Illuminate\Broadcasting\Channel>
+     * @return \Illuminate\Broadcasting\PrivateChannel
      */
     public function broadcastOn(): array
     {
-        return [
-            new PrivateChannel('notification.'. $this->userId),
-        ];
+        return new PrivateChannel('notification.' . $this->userId);
     }
 
-    public function broadcastAs(): string
+    /**
+     * Имя транслируемого события.
+     *
+     * @return string
+     */
+    public function broadcastAs()
     {
-        return 'server.created';
+        return 'notifications_created';
     }
 
+    /**
+     * Получите данные для трансляции.
+     *
+     * @return array
+     */
     public function broadCastWith(): array {
+
         return [
-            'notif' => $this->notification
+            'notify' => $this->notification
         ];
     }
 }

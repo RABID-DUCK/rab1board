@@ -12,13 +12,14 @@ class Helper
     public static function sendNotification($user_id, $message, $type_name){
 
         if($type_id = NotificationType::where('type', $type_name)->first()){
-            $notification = Notification::create([
+            $notify = Notification::create([
                 'user_id' => $user_id,
                 'message' => htmlspecialchars($message),
                 'type_id' => $type_id->id
             ]);
+            $arr = self::getNotifications($user_id);
 
-            broadcast(new NotificationSent($notification))->toOthers();
+            broadcast(new NotificationSent((array)$arr, $notify->id))->toOthers();
         }
     }
 

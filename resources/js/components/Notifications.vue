@@ -36,9 +36,9 @@ export default {
     watch: {
         '$store.getters.statusUser': function (value){
             if(value){
-                this.refreshNotifs_count()
-                window.Echo.private(`notification.${this.$store.state.auth.user.id}`)
-                    .listen('.server.created', function(e) {
+                let userId = this.$store.state.auth.user.id;
+                Echo.private(`notification.${userId}`)
+                    .listen('.notifications_created', function(e) {
                         console.log(e);
                         this.refreshNotifs_count()
                     })

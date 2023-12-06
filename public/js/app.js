@@ -29192,8 +29192,8 @@ __webpack_require__.r(__webpack_exports__);
   watch: {
     '$store.getters.statusUser': function $storeGettersStatusUser(value) {
       if (value) {
-        this.refreshNotifs_count();
-        window.Echo["private"]("notification.".concat(this.$store.state.auth.user.id)).listen('.server.created', function (e) {
+        var userId = this.$store.state.auth.user.id;
+        Echo["private"]("notification.".concat(userId)).listen('.notifications_created', function (e) {
           console.log(e);
           this.refreshNotifs_count();
         });
@@ -29667,12 +29667,13 @@ app.mount('#app');
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var bootstrap__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! bootstrap */ "./node_modules/bootstrap/dist/js/bootstrap.esm.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/lib/axios.js");
-/* harmony import */ var vue_cookies__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-cookies */ "./node_modules/vue-cookies/vue-cookies.js");
-/* harmony import */ var vue_cookies__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vue_cookies__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var laravel_echo__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! laravel-echo */ "./node_modules/laravel-echo/dist/echo.js");
-/* harmony import */ var pusher_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! pusher-js */ "./node_modules/pusher-js/dist/web/pusher.js");
-/* harmony import */ var pusher_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(pusher_js__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! axios */ "./node_modules/axios/lib/axios.js");
+/* harmony import */ var laravel_echo__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! laravel-echo */ "./node_modules/laravel-echo/dist/echo.js");
+/* harmony import */ var vue_cookies__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue-cookies */ "./node_modules/vue-cookies/vue-cookies.js");
+/* harmony import */ var vue_cookies__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(vue_cookies__WEBPACK_IMPORTED_MODULE_2__);
+
+
+
 
 
 /**
@@ -29681,9 +29682,7 @@ __webpack_require__.r(__webpack_exports__);
  * CSRF token as a header based on the value of the "XSRF" token cookie.
  */
 
-
-
-window.axios = axios__WEBPACK_IMPORTED_MODULE_2__["default"];
+window.axios = axios__WEBPACK_IMPORTED_MODULE_3__["default"];
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 /**
@@ -29692,20 +29691,17 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
  * allows your team to easily build robust real-time web applications.
  */
 
-
-
-window.Pusher = (pusher_js__WEBPACK_IMPORTED_MODULE_4___default());
-window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_3__["default"]({
+window.Pusher = __webpack_require__(/*! pusher-js */ "./node_modules/pusher-js/dist/web/pusher.js");
+window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_1__["default"]({
   broadcaster: 'pusher',
-  key: '1d26fb7fa9ddcb77c1f8',
+  key: '269059c8aa88da40ece3',
   cluster: 'eu',
   wsHost: window.location.hostname,
-  wsPort: 6001,
-  disableStats: true,
+  wsPort: 443,
   encrypted: true,
   auth: {
     headers: {
-      Authorization: 'Bearer ' + vue_cookies__WEBPACK_IMPORTED_MODULE_1___default().get('access_token')
+      Authorization: 'Bearer ' + vue_cookies__WEBPACK_IMPORTED_MODULE_2___default().get('access_token')
     }
   }
 });

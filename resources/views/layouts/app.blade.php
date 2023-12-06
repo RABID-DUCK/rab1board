@@ -31,14 +31,7 @@
         </div>
 
             {{--    Scripts--}}
-{{--        <script src="{{ asset('js/main.js') }}" ></script>--}}
         <script src="{{ asset('js/helper.js') }}" ></script>
         <script src="{{ asset('js/app.js') }}"></script>
-        <script src="{{ asset('js/websockets.js') }}"></script>
-         <script defer>
-             @if(auth()->user())
-                updateNotifWS({{auth()->user()->id}});
-             @endif
-         </script>
     </body>
 </html>
