@@ -37,12 +37,12 @@ export default {
         '$store.getters.statusUser': function (value){
             if(value){
                 let userId = this.$store.state.auth.user.id;
-                Echo.private(`notification.${userId}`)
-                    .listen('.notifications_created', function(e) {
-                        console.log(e);
-                        this.refreshNotifs_count()
-                    })
+                this.notifs_count = this.$store.dispatch('getNotifications')
+                this.$store.commit('SET_NOTIFY_COUNT')
             }
+        },
+        '$store.getters.statusNotifs': function (value){
+            this.refreshNotifs_count()
         }
     },
     methods: {

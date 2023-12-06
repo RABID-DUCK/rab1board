@@ -23,7 +23,6 @@ class NotificationSent implements ShouldBroadcast
      */
     public function __construct(array $notification, int $userId)
     {
-
         $this->notification = $notification;
         $this->userId = $userId;
     }
@@ -35,7 +34,9 @@ class NotificationSent implements ShouldBroadcast
      */
     public function broadcastOn(): array
     {
-        return new PrivateChannel('notification.' . $this->userId);
+        return [
+            new PrivateChannel('notification.' . $this->userId)
+        ];
     }
 
     /**
