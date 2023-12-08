@@ -48,7 +48,7 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   mounted: function mounted() {
-    if (this.$store.getters.statusUser) this.$router.push({
+    if (sessionStorage.getItem('access_token') || vue_cookies__WEBPACK_IMPORTED_MODULE_0___default().get('access_token')) this.$router.push({
       name: 'main'
     });
   },

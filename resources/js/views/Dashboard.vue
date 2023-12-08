@@ -133,16 +133,28 @@ export default {
 			clickedAddUser: false,
 		};
 	},
+    computed: {
+        permissionsUser() {
+            return this.$store.getters.statusPermission
+        }
+    },
+    watch: {
+        '$store.getters.statusPermission': function (value){
+            if (value){
+                this.$store.dispatch('havePermissions');
+            }
+        }
+    },
 	mounted() {
 		this.dash_id = this.decoder(this.$route.params.id);
 		this.dash_title = this.$route.params.title;
 		this.getColumns();
+        this.$store.dispatch('havePermissions');
 	},
 	methods: {
 		renameDashboard(data) {
 			this.rename_dash = true;
-			this.axios
-				.post("/api/dashboard/rename", {
+			this.axios.post("/api/dashboard/rename", {
 					id: this.dash_id,
 					title: data.title,
 				})

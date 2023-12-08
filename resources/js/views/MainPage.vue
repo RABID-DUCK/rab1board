@@ -49,12 +49,20 @@ export default {
             created: false,
         }
     },
+    computed: {
+        statusUser(){
+            return this.$store.getters.statusUser
+        }
+    },
     watch: {
-        '$store.getters.statusUser': function (value) {
+        statusUser(value) {
             if (value){
                 this.getDashboards()
             }
         }
+    },
+    mounted() {
+        if(this.statusUser) this.getDashboards()
     },
     methods: {
         openCreateDashboardModal(){

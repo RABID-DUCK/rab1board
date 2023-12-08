@@ -84,7 +84,7 @@ export default {
         }
     },
     mounted() {
-        if(this.$store.getters.statusUser) this.$router.push({name: 'main'})
+        if(sessionStorage.getItem('access_token') || VueCookies.get('access_token')) this.$router.push({name: 'main'})
     },
     methods: {
         sendLogin(){

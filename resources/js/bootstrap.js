@@ -26,7 +26,7 @@ window.Pusher = Pusher;
 
 let token = sessionStorage.getItem('access_token') || VueCookies.get('access_token');
 
-Pusher.logToConsole = true;
+// Pusher.logToConsole = true;
 window.Echo = new Echo({
     broadcaster: 'pusher',
     key: '269059c8aa88da40ece3',

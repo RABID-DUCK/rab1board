@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import VueCookies from "vue-cookies";
 
 const router = createRouter({
     history: createWebHistory(process.env.BASE_URL),
@@ -32,5 +33,19 @@ const router = createRouter({
         }
     ]
 })
+
+router.beforeEach((to, from, next) => {
+    const loggedIn = sessionStorage.getItem('access_token') || VueCookies.get('access_token')
+
+    if (to.name === 'login' || to.name === 'register') {
+        if (loggedIn) {
+            next({ name: 'main' }); // Перенаправляем авторизованного пользователя на главную страницу
+        } else {
+            next(); // Пропускаем переход для неавторизованного пользователя
+        }
+    } else {
+        next(); // Пропускаем переход для других маршрутов
+    }
+});
 
 export default router

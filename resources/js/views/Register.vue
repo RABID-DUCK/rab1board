@@ -99,8 +99,11 @@ export default {
             password_confirm: ''
         }
     },
-    mounted() {
-        if(this.$store.getters.statusUser) this.$router.push({name: 'main'})
+
+    watch: {
+        '$store.getters.statusUser': function (value) {
+            if(value) this.$router.push({name: 'main'})
+        }
     },
     methods: {
         register(){
