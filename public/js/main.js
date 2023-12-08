@@ -3255,7 +3255,6 @@ window.dragDropDesks = function () {
 
         // updateDeskOrder(deskOrder, columnId);
       });
-
       list.querySelector('.desk-block').addEventListener('dragover', function (evt) {
         evt.preventDefault();
         var activeElement = document.querySelector('.selected');
