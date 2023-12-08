@@ -66,7 +66,6 @@ window.moveColumn = function () {
     listElements.forEach(function (element) {
       columnList.insertBefore(element, null); // Вставка в начало родителя
     });
-
     columnList.appendChild(document.getElementById('add-column-panel'));
   });
 };

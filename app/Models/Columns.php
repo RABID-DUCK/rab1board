@@ -31,7 +31,7 @@ class Columns extends Model
     protected $table = 'columns';
     protected $guarded = false;
 
-    public function tasks()
+    public function desks()
     {
         return $this->hasMany(Desks::class, 'column_id');
     }
