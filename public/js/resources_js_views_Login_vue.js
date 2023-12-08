@@ -44,7 +44,7 @@ __webpack_require__.r(__webpack_exports__);
       message: '',
       email: '',
       password: '',
-      checked: ''
+      checked: false
     };
   },
   mounted: function mounted() {
@@ -57,7 +57,8 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
       this.axios.post('/api/login', {
         "email": this.email,
-        "password": this.password
+        "password": this.password,
+        "checked": this.checked
       }).then(function (res) {
         if (_this.checked) {
           vue_cookies__WEBPACK_IMPORTED_MODULE_0___default().set('access_token', res.data.access_token, {

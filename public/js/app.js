@@ -29701,6 +29701,7 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
  */
 
 window.Pusher = (pusher_js__WEBPACK_IMPORTED_MODULE_3___default());
+var token = sessionStorage.getItem('access_token') || vue_cookies__WEBPACK_IMPORTED_MODULE_2___default().get('access_token');
 (pusher_js__WEBPACK_IMPORTED_MODULE_3___default().logToConsole) = true;
 window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_1__["default"]({
   broadcaster: 'pusher',
@@ -29710,7 +29711,7 @@ window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_1__["default"]({
   wsPort: 8080,
   auth: {
     headers: {
-      Authorization: 'Bearer ' + vue_cookies__WEBPACK_IMPORTED_MODULE_2___default().get('access_token')
+      Authorization: 'Bearer ' + token
     }
   }
 });

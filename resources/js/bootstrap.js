@@ -24,6 +24,8 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 window.Pusher = Pusher;
 
+let token = sessionStorage.getItem('access_token') || VueCookies.get('access_token');
+
 Pusher.logToConsole = true;
 window.Echo = new Echo({
     broadcaster: 'pusher',
@@ -33,7 +35,7 @@ window.Echo = new Echo({
     wsPort: 8080,
     auth: {
         headers: {
-            Authorization: 'Bearer ' + VueCookies.get('access_token'),
+            Authorization: 'Bearer ' + token,
         },
     },
 });

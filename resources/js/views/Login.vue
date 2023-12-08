@@ -72,7 +72,7 @@ export default {
             message: '',
             email: '',
             password: '',
-            checked: ''
+            checked: false
         }
     },
     mounted() {
@@ -82,7 +82,8 @@ export default {
         sendLogin(){
             this.axios.post('/api/login', {
                 "email": this.email,
-                "password": this.password
+                "password": this.password,
+                "checked": this.checked
             })
                 .then(res => {
                     if(this.checked){
