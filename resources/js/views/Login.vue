@@ -5,15 +5,23 @@
                 <div class="card">
                     <div class="card-header text-center">Login</div>
                     <div class="card-body">
-                        <form method="POST" action="login">
+                        <form method="POST">
+                            <div v-if="errors" class="alert alert-danger">
+                                <b>Ошибка заполнения полей!</b>
+                                <ul>
+                                    <li v-for="error in errors">{{error[0]}}</li>
+                                </ul>
+                            </div>
+
                             <div class="row mb-3">
                                 <label for="email" class="col-md-4 col-form-label text-md-end">Email address</label>
 
                                 <div class="col-md-6">
-                                    <input v-model="email" id="email" type="email" class="form-control is-invalid" name="email" required autocomplete="email" autofocus>
+                                    <input v-model="email" id="email" type="email" class="form-control" :class="{'is-invalid': errors.email || errors.user_not_found}"
+                                           name="email" required autocomplete="email" autofocus>
 
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ message }}</strong>
+                                    <span v-if="errors.email" class="invalid-feedback" role="alert">
+                                        <strong>{{ errors.email[0] }}</strong>
                                     </span>
                                 </div>
                             </div>
@@ -22,10 +30,11 @@
                                 <label for="password" class="col-md-4 col-form-label text-md-end">Password</label>
 
                                 <div class="col-md-6">
-                                    <input v-model="password"  id="password" type="password" class="form-control is-invalid" name="password" required autocomplete="current-password">
+                                    <input v-model="password"  id="password" type="password" class="form-control" :class="{'is-invalid': errors.password}"
+                                           name="password" required autocomplete="current-password">
 
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ message }}</strong>
+                                    <span v-if="errors.password" class="invalid-feedback" role="alert">
+                                        <strong>{{ errors.password[0] }}</strong>
                                     </span>
                                 </div>
                             </div>
@@ -54,7 +63,6 @@
                                 </div>
                             </div>
                         </form>
-                        <b>{{message}}</b>
                     </div>
                 </div>
             </div>
@@ -69,7 +77,7 @@ export default {
     name: "Login",
     data(){
         return {
-            message: '',
+            errors: "",
             email: '',
             password: '',
             checked: false
@@ -93,6 +101,9 @@ export default {
                     }
                     this.$store.commit('AUTH_LOGIN', res.data.user);
                     this.$router.push({name: 'main'});
+                })
+                .catch(err => {
+                    this.errors = err.response.data.errors;
                 })
         }
     }

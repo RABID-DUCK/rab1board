@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\API\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Client\LoginRequest;
+use App\Http\Requests\Client\RegisterRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -11,12 +13,8 @@ use Illuminate\Testing\Fluent\Concerns\Has;
 
 class AuthController extends Controller
 {
-    public function login(Request $request){
-        $credentials = $request->validate([
-            'email' => ['required', 'email'],
-            'password' => ['required'],
-            'checked' => 'required|boolean'
-        ]);
+    public function login(LoginRequest $request){
+        $credentials = $request->validated();
         $checked = $credentials['checked'];
         unset($credentials['checked']);
 
@@ -30,17 +28,15 @@ class AuthController extends Controller
 
             return response()->json(['access_token' => $token, 'user' => $user]);
         }
+        else{
+            return response()->json(['errors' => ["user_not_found" => ["Пользователя с такой почтой не найдено!"]]], 422);
+        }
 
-        return response()->json(['message' => "Логин или пароль неверны!"]);
+        return response()->json(['errors' => ["server" => ["Ошибка сервера!"]]], 422);
     }
 
-    public function register(Request $request){
-        $credentials = $request->validate([
-            'name' => 'required|string',
-            'login' => 'required|string|unique:users',
-            'email' => 'required|string|unique:users',
-            'password' => 'required|string|confirmed',
-        ]);
+    public function register(RegisterRequest $request){
+        $credentials = $request->validated();
 
         $user = User::create($credentials);
         $token = Hash::make($user->createToken('token')->plainTextToken);
