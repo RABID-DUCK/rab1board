@@ -30,8 +30,11 @@ export const moduleAuth = {
                 state.isFetching = true;
                 axios.post('/api/user/getUser', {}, {
                     headers: {
-                        Authorization: `Bearer ${state.token}`
-                    }
+                        Authorization: `Bearer ${state.token}`,
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'Cookie': VueCookies.get('laravel_session') // Устанавливаем куки сессии
+                    },
+                    withCredentials: true
                 })
                     .then(res => {
                         commit('AUTH_LOGIN', res.data[1]);

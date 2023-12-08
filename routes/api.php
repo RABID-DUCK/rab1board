@@ -84,4 +84,6 @@ Route::post('/desk/getUsers', [\App\Http\Controllers\API\UserDeskController::cla
 Route::post('/addUserDesk', [\App\Http\Controllers\API\UserDeskController::class, 'addUser']); // добавить пользователя на задачу
 Route::post('/update-desk-order', [\App\Http\Controllers\API\UserDeskController::class , 'updateDeskOrder']); // обновить порядок задач
 
-
+Route::post('/pusher/auth', function (){
+    return auth()->check();
+});

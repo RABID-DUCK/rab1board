@@ -28,7 +28,6 @@ use Illuminate\Support\Facades\View;
 //})->middleware('auth');
 
 //Auth::routes();
-
 Route::group(['prefix' => 'backend', 'middleware' => 'isAdmin'], function(){
         Route::get('/admin', [App\Http\Controllers\MainController::class, 'index'])->name('backend.index');
 

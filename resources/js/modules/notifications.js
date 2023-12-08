@@ -28,7 +28,7 @@ export const moduleNotifications = {
         }
     },
     getters: {
-        statusNotifs(state){
+        countNotifs(state){
             return state.notify_count;
         }
     }

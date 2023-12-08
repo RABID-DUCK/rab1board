@@ -37,12 +37,16 @@ export default {
         '$store.getters.statusUser': function (value){
             if(value){
                 let userId = this.$store.state.auth.user.id;
-                this.notifs_count = this.$store.dispatch('getNotifications')
-                this.$store.commit('SET_NOTIFY_COUNT')
+                window.Echo.private(`notification.`+userId)
+                    .listen('.notifications', res => {
+                        this.refreshNotifs_count()
+                    })
+                // this.notifs_count = this.$store.dispatch('getNotifications')
+                // this.$store.commit('SET_NOTIFY_COUNT', 0)
             }
         },
-        '$store.getters.statusNotifs': function (value){
-            this.refreshNotifs_count()
+        '$store.getters.countNotifs': function (value){
+            this.notifs_count = value;
         }
     },
     methods: {

@@ -12,7 +12,11 @@ use Illuminate\Support\Facades\Broadcast;
 | used to check if an authenticated user can listen to the channel.
 |
 */
-//Broadcast::channel('notifications', \App\Broadcasting\NotificationsChannel::class);
+//Broadcast::channel('user.{userId}', function ($user, $userId) {
+//    return $user->id === $userId;
+//});
+
+Broadcast::channel('notification.{userId}', \App\Broadcasting\NotificationsChannel::class);
 Broadcast::channel('notification.{id}', function ($user, $id){
     return (int) $user->id === (int) $id;
 });

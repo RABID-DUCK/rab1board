@@ -18,6 +18,8 @@
         <link href="{{asset('css/plugins/basic.css')}}" rel="stylesheet" type="text/css" />
         <link href="{{asset('css/plugins/dropzone.css')}}" rel="stylesheet" type="text/css" />
         <title>Capiboard</title>
+        <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     </head>
     <body class="antialiased">
        <div class="content-wrapper" id="wrapper">
@@ -33,5 +35,6 @@
             {{--    Scripts--}}
         <script src="{{ asset('js/helper.js') }}" ></script>
         <script src="{{ asset('js/app.js') }}"></script>
+
     </body>
 </html>
