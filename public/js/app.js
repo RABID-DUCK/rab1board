@@ -29078,27 +29078,32 @@ __webpack_require__.r(__webpack_exports__);
   name: "AddPanel",
   props: {
     title_input: {
+      // значение по умолчанию которое будет в инпуте
       type: String,
       "default": ""
     },
     label_title: {
+      // название модального окна которое будет отображаться над инпутом
       type: String,
       "default": ""
     },
     classProps: {
+      // классы которые нужно добавить к основному div
       type: String,
       "default": ""
     },
     id: {
+      // id если какой-то нужно передать
       type: Number,
       "default": null
     },
     placeHolder: {
+      // ну тут понятно что для инпута
       type: String,
       "default": ""
     }
   },
-  emits: ['infoComponent'],
+  emits: ['infoComponent', 'closeModal'],
   data: function data() {
     return {
       title: this.title,
