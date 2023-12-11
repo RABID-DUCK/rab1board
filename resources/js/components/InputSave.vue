@@ -1,5 +1,5 @@
 <template>
-    <div class="position-relative" data-info-edit>
+    <div class="position-relative" data-info-edit v-click-outside="sendValue">
         <input type="hidden" :value="id">
         <input class="form-control" data-rename-dashboard-title v-model="title">
         <i @click="sendValue" class="bi bi-check-lg save-column" id="rename-dashboard"
@@ -8,9 +8,14 @@
 </template>
 
 <script>
+import vClickOutside from 'click-outside-vue3'
+
 export default {
     name: "InputSave",
     props: ['title_', 'id'],
+    directives: {
+        clickOutside: vClickOutside.directive
+    },
     data(){
         return {
             title: this.title_

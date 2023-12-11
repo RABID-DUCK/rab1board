@@ -114,6 +114,8 @@ import inputSave from "../components/InputSave";
 import addDesk from "../components/AddDesk.vue";
 import CreatePanel from "../components/CreatePanel";
 import AddPanel from "../components/AddPanel";
+import VueCookies from "vue-cookies";
+
 
 export default {
 	name: "Dashboard",
@@ -133,16 +135,14 @@ export default {
 			clickedAddUser: false,
 		};
 	},
-    computed: {
-        permissionsUser() {
-            return this.$store.getters.statusPermission
-        }
-    },
     watch: {
         '$store.getters.statusUser': function (value){
             if (value){
                 this.$store.dispatch('havePermissions', this.dash_id);
             }
+        },
+        '$store.getters.getToken': function (value) {
+            if(!value) this.$router.push({name: 'main'})
         }
     },
 	mounted() {
