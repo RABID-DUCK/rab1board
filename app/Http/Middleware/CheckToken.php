@@ -17,15 +17,15 @@ class CheckToken
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $user = $request->user();
+        $token = $request->bearerToken();
+        if(!$token) return response()->json(['message' => 'The token is missing'], 401);
+
         Session::setId($request->headers->get('Cookie'));
         Session::start();
-        $token = $request->bearerToken();
-        if(!$token) {
-            return response()->json(['message' => 'The token is missing'], 401);
-        }else{
-            if(!$user) return response()->json(['message' => 'This user not found'], 403);
-        }
+
+        $user = $request->user() ?? User::where('remember_token', $token)->first();
+        if(!$user) return response()->json(['message' => 'This user not found'], 403);
+
         \Auth::login($user, true);
         $request->session()->regenerate();
 

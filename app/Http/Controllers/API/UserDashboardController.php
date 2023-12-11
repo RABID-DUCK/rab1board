@@ -83,13 +83,13 @@ class UserDashboardController extends Controller
         return response()->json(['message' => 'Произошла ошибка...попробуйте позже!']);
     }
 
-    public function permissionuser(Request $request){
-        $data = $request->validate(['user_id' => 'required|integer']);
-        if(UserDashboards::where('user_id', $data['user_id'])->where('confirmed', 'true')->first()){
-            return true;
+    public function permissionUser(Request $request){
+        $data = $request->validate(['user_id' => 'required|integer', 'dash_id' => 'required|integer']);
+        if(UserDashboards::where('user_id', $data['user_id'])->where('dashboard_id', $data['dash_id'])->where('confirmed', true)->first()){
+            return response()->json(['message' => 'Пользователь учавствует в проекте'], 200);
         }
         else{
-            return false;
+            return response()->json(['error' => 'Пользователей не найден!'],423);
         }
     }
 }

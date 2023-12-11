@@ -155,9 +155,9 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   watch: {
-    '$store.getters.statusPermission': function $storeGettersStatusPermission(value) {
+    '$store.getters.statusUser': function $storeGettersStatusUser(value) {
       if (value) {
-        this.$store.dispatch('havePermissions');
+        this.$store.dispatch('havePermissions', this.dash_id);
       }
     }
   },
@@ -165,7 +165,6 @@ __webpack_require__.r(__webpack_exports__);
     this.dash_id = this.decoder(this.$route.params.id);
     this.dash_title = this.$route.params.title;
     this.getColumns();
-    this.$store.dispatch('havePermissions');
   },
   methods: {
     renameDashboard: function renameDashboard(data) {

@@ -29830,8 +29830,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   moduleDash: () => (/* binding */ moduleDash)
 /* harmony export */ });
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/lib/axios.js");
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm-bundler.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/lib/axios.js");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm-bundler.js");
+/* harmony import */ var _router_index__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../router/index */ "./resources/js/router/index.js");
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
@@ -29840,8 +29841,9 @@ function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _ty
 function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
 
 
+
 var moduleDash = {
-  computed: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_0__.mapGetters)(['statusUser', 'infoUser'])), (0,vuex__WEBPACK_IMPORTED_MODULE_0__.mapState)({
+  computed: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_1__.mapGetters)(['statusUser', 'infoUser'])), (0,vuex__WEBPACK_IMPORTED_MODULE_1__.mapState)({
     authUser: function authUser(state) {
       return state.auth.user;
     }
@@ -29851,12 +29853,18 @@ var moduleDash = {
   },
   mutations: {},
   actions: {
-    havePermissions: function havePermissions() {
-      console.log(this.user);
-      axios__WEBPACK_IMPORTED_MODULE_1__["default"].post('/api/permission/user', {
-        user_id: this.user.id
-      }).then(function (res) {
-        console.log(res);
+    havePermissions: function havePermissions(_ref, data) {
+      var commit = _ref.commit,
+        getters = _ref.getters;
+      axios__WEBPACK_IMPORTED_MODULE_2__["default"].post('/api/dashboard/permission', {
+        user_id: getters.infoUser.id,
+        dash_id: data
+      }).then(function (res) {})["catch"](function (err) {
+        if (err.response.status === 423) {
+          _router_index__WEBPACK_IMPORTED_MODULE_0__["default"].push({
+            name: 'main'
+          });
+        }
       });
     }
   },

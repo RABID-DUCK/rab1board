@@ -79,12 +79,12 @@ Route::post('/notif/check', [\App\Http\Controllers\API\NotificationController::c
 Route::post('/dashboard/getUsersDashboard', '\App\Http\Controllers\API\UserDashboardController@getUsers'); // Получить всех пользователей дашборда.
 Route::post('/dashboard/addUser', '\App\Http\Controllers\API\UserDashboardController@addUser'); // добавить пользователя/ей на проект
 Route::post('/dashboard/confirmInvite', '\App\Http\Controllers\API\UserDashboardController@confirmInvite'); // принятие приглашения на проект.
-Route::post('/permission/user', [\App\Http\Controllers\API\UserDashboardController::class, 'permissionUser']);
+Route::post('/dashboard/permission', [\App\Http\Controllers\API\UserDashboardController::class, 'permissionUser']);
 
 Route::post('/desk/getUsers', [\App\Http\Controllers\API\UserDeskController::class, 'getUsers']); // получить пользователей доски
 Route::post('/addUserDesk', [\App\Http\Controllers\API\UserDeskController::class, 'addUser']); // добавить пользователя на задачу
 Route::post('/update-desk-order', [\App\Http\Controllers\API\UserDeskController::class , 'updateDeskOrder']); // обновить порядок задач
-
-Route::post('/pusher/auth', function (){
-    return auth()->check();
-});
+//
+//Route::post('/pusher/auth', function (){
+//    return auth()->check();
+//});

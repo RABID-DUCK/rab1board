@@ -139,9 +139,9 @@ export default {
         }
     },
     watch: {
-        '$store.getters.statusPermission': function (value){
+        '$store.getters.statusUser': function (value){
             if (value){
-                this.$store.dispatch('havePermissions');
+                this.$store.dispatch('havePermissions', this.dash_id);
             }
         }
     },
@@ -149,7 +149,6 @@ export default {
 		this.dash_id = this.decoder(this.$route.params.id);
 		this.dash_title = this.$route.params.title;
 		this.getColumns();
-        this.$store.dispatch('havePermissions');
 	},
 	methods: {
 		renameDashboard(data) {
