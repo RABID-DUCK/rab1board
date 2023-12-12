@@ -29,7 +29,7 @@ class UserDashboardController extends Controller
         if($user = User::where('email', $data['email'])->first()){
             if($users = UserDashboards::where('dashboard_id', $data['dashboard_id'])->where('user_id', $user->id)->get()){
                 foreach ($users as $userDash){
-                    if(!$userDash->confirmed) return response()->json(['status' => 403,'message' => 'Приглашение уже было отправлено!']);
+                    if(!$userDash->confirmed) return response()->json(['err' => 'was_sending','message' => 'Приглашение уже было отправлено!']);
                 }
             }
 
@@ -57,12 +57,12 @@ class UserDashboardController extends Controller
 
                 broadcast(new NotificationSent($arr_notif, $dashboards->user_id))->toOthers();
 
-                return response()->json(['status' => 200,'message' => 'Приглашение отправлено']);
+                return response()->json(['success' => true,'message' => 'Приглашение отправлено']);
             }
 
         }
         else{
-            return response()->json(['status' => 403,'message' => 'Пользователь не найден']);
+            return response()->json(['err' => 'user_not_found','message' => 'Пользователь не найден']);
         }
     }
 

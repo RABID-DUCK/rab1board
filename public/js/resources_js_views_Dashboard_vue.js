@@ -144,9 +144,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_AddDesk_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/AddDesk.vue */ "./resources/js/components/AddDesk.vue");
 /* harmony import */ var _components_CreatePanel__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/CreatePanel */ "./resources/js/components/CreatePanel.vue");
 /* harmony import */ var _components_AddPanel__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/AddPanel */ "./resources/js/components/AddPanel.vue");
-/* harmony import */ var vue_cookies__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vue-cookies */ "./node_modules/vue-cookies/vue-cookies.js");
-/* harmony import */ var vue_cookies__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(vue_cookies__WEBPACK_IMPORTED_MODULE_4__);
-
 
 
 
@@ -209,9 +206,13 @@ __webpack_require__.r(__webpack_exports__);
       this.clickedAddUser = true;
     },
     clickAddUser: function clickAddUser(data) {
+      var _this2 = this;
       this.axios.post("/api/dashboard/addUser", {
         dashboard_id: data.id,
         email: data.info
+      }).then(function (res) {
+        _this2.$store.commit('SET_CLASSES', res.data.err ? 'bg-danger text-white' : 'bg-success text-white');
+        _this2.$store.commit('SET_TEXT', res.data.message);
       });
     },
     clickAddColumn: function clickAddColumn(column_id) {
@@ -247,13 +248,13 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     renameColumn: function renameColumn(data) {
-      var _this2 = this;
+      var _this3 = this;
       this.axios.post("/api/column/rename", {
         id: data.id,
         title: data.title
       }).then(function (res) {
-        _this2.rename_col = false;
-        _this2.getColumns();
+        _this3.rename_col = false;
+        _this3.getColumns();
       });
     },
     addDesk: function addDesk(deskID) {},
@@ -263,10 +264,10 @@ __webpack_require__.r(__webpack_exports__);
       this.create_column = true;
     },
     getColumns: function getColumns() {
-      var _this3 = this;
+      var _this4 = this;
       this.axios("/api/getColumns/" + this.dash_id).then(function (res) {
-        _this3.columns = res.data;
-        _this3.columnClicked = _this3.columns.map(function () {
+        _this4.columns = res.data;
+        _this4.columnClicked = _this4.columns.map(function () {
           return false;
         });
       });

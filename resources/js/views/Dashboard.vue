@@ -114,8 +114,6 @@ import inputSave from "../components/InputSave";
 import addDesk from "../components/AddDesk.vue";
 import CreatePanel from "../components/CreatePanel";
 import AddPanel from "../components/AddPanel";
-import VueCookies from "vue-cookies";
-
 
 export default {
 	name: "Dashboard",
@@ -173,7 +171,11 @@ export default {
 			this.axios.post("/api/dashboard/addUser", {
 				dashboard_id: data.id,
 				email: data.info,
-			});
+			})
+                .then(res => {
+                    this.$store.commit('SET_CLASSES', res.data.err ? 'bg-danger text-white' : 'bg-success text-white')
+                    this.$store.commit('SET_TEXT', res.data.message)
+                })
 		},
 
 		clickAddColumn(column_id) {

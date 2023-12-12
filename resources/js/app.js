@@ -8,6 +8,7 @@ import VueCookies from 'vue-cookies'
 import {moduleAuth} from './modules/auth'
 import {moduleDash} from './modules/dashboard';
 import {moduleNotifications} from "./modules/notifications";
+import {moduleTooltip} from "./modules/tooltip";
 
 const app = createApp(App)
 
@@ -15,7 +16,8 @@ const store = createStore({
     modules: {
         auth: moduleAuth,
         dashboard: moduleDash,
-        notifications: moduleNotifications
+        notifications: moduleNotifications,
+        tooltip: moduleTooltip
     },
 })
 
@@ -24,6 +26,11 @@ app.use(router)
     .use(VueCookies, {expires: '30d'})
 
 app.mixin({
+    data() {
+        return {
+            tooltipOpen: false
+        }
+    },
     mounted() {
         if(!this.$store.getters.statusUser) {
             this.$store.dispatch('getInfoUser')
