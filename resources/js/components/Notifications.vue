@@ -36,18 +36,14 @@ export default {
     watch: {
         '$store.getters.statusUser': function (value){
             if(value){
+                this.refreshNotifs_count()
                 let userId = this.$store.state.auth.user.id;
                 window.Echo.private(`notification.`+userId)
                     .listen('.notifications', res => {
                         this.refreshNotifs_count()
                     })
-                // this.notifs_count = this.$store.dispatch('getNotifications')
-                // this.$store.commit('SET_NOTIFY_COUNT', 0)
             }
         },
-        '$store.getters.countNotifs': function (value){
-            this.notifs_count = value;
-        }
     },
     methods: {
         openNotif(){
@@ -60,6 +56,12 @@ export default {
             })
                 .then(res => {
                     this.notifs_count = Object.keys(res.data).length;
+                    console.log(this.notifs_count)
+                    if(this.notifs_count > 0){
+                        setTimeout(function (){
+                            document.querySelector('.notification').classList.add('shake')
+                        }, 2000)
+                    }
                     this.notifs = res.data
                 })
         },
@@ -114,5 +116,25 @@ export default {
     top: -4px;
     right: 0;
     font-size: 18px;
+}
+
+.shake{
+    animation: notify-shake 1s ease 2;
+}
+
+@keyframes notify-shake {
+    0%{
+        transform: rotate(-20deg);
+    }
+    30%{
+        transform: rotate(10deg);
+    } 50%{
+        transform: rotate(-20deg);
+    }70%{
+        transform: rotate(10deg);
+    }
+    100%{
+        transform: rotate(0deg);
+    }
 }
 </style>

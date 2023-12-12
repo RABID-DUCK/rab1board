@@ -27182,7 +27182,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.notif[data-v-d7f806e6]{\n    word-wrap: break-word;\n    padding: 10px;\n    margin-bottom: 15px;\n}\n.modal-notification[data-v-d7f806e6]{\n    padding-top: 30px;\n}\n.read-not[data-v-d7f806e6]{\n    cursor: pointer;\n    position: absolute;\n    top: -4px;\n    right: 0;\n    font-size: 18px;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.notif[data-v-d7f806e6]{\n    word-wrap: break-word;\n    padding: 10px;\n    margin-bottom: 15px;\n}\n.modal-notification[data-v-d7f806e6]{\n    padding-top: 30px;\n}\n.read-not[data-v-d7f806e6]{\n    cursor: pointer;\n    position: absolute;\n    top: -4px;\n    right: 0;\n    font-size: 18px;\n}\n.shake[data-v-d7f806e6]{\n    animation: notify-shake-d7f806e6 1s ease 2;\n}\n@keyframes notify-shake-d7f806e6 {\n0%{\n        transform: rotate(-20deg);\n}\n30%{\n        transform: rotate(10deg);\n}\n50%{\n        transform: rotate(-20deg);\n}70%{\n        transform: rotate(10deg);\n}\n100%{\n        transform: rotate(0deg);\n}\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -29259,17 +29259,12 @@ __webpack_require__.r(__webpack_exports__);
     '$store.getters.statusUser': function $storeGettersStatusUser(value) {
       var _this = this;
       if (value) {
+        this.refreshNotifs_count();
         var userId = this.$store.state.auth.user.id;
         window.Echo["private"]("notification." + userId).listen('.notifications', function (res) {
           _this.refreshNotifs_count();
         });
-        // this.notifs_count = this.$store.dispatch('getNotifications')
-        // this.$store.commit('SET_NOTIFY_COUNT', 0)
       }
-    },
-
-    '$store.getters.countNotifs': function $storeGettersCountNotifs(value) {
-      this.notifs_count = value;
     }
   },
   methods: {
@@ -29283,6 +29278,12 @@ __webpack_require__.r(__webpack_exports__);
         user_id: this.$store.state.auth.user.id
       }).then(function (res) {
         _this2.notifs_count = Object.keys(res.data).length;
+        console.log(_this2.notifs_count);
+        if (_this2.notifs_count > 0) {
+          setTimeout(function () {
+            document.querySelector('.notification').classList.add('shake');
+          }, 2000);
+        }
         _this2.notifs = res.data;
       });
     },
