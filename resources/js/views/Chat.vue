@@ -102,6 +102,16 @@ export default {
             messages: []
         }
     },
+    watch: {
+      '$store.getters.statusUser': function (value){
+          if (value){
+              window.Echo.private('chat-get')
+                  .listen('.chat_messages', res => {
+                      this.getMessages();
+                  })
+          }
+      }
+    },
     mounted() {
         this.dash_id = this.decoder(this.$route.params.id);
         this.getUsers()

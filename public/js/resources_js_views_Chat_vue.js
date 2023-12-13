@@ -51,6 +51,16 @@ __webpack_require__(/*! moment/locale/ru */ "./node_modules/moment/locale/ru.js"
       messages: []
     };
   },
+  watch: {
+    '$store.getters.statusUser': function $storeGettersStatusUser(value) {
+      var _this = this;
+      if (value) {
+        window.Echo["private"]('chat-get').listen('.chat_messages', function (res) {
+          _this.getMessages();
+        });
+      }
+    }
+  },
   mounted: function mounted() {
     this.dash_id = this.decoder(this.$route.params.id);
     this.getUsers();
@@ -58,15 +68,15 @@ __webpack_require__(/*! moment/locale/ru */ "./node_modules/moment/locale/ru.js"
   },
   methods: {
     getUsers: function getUsers() {
-      var _this = this;
+      var _this2 = this;
       this.axios.post('/api/dashboard/getUsersDashboard', {
         dashboard_id: this.dash_id
       }).then(function (res) {
-        _this.users = res.data;
+        _this2.users = res.data;
       });
     },
     sendMessage: function sendMessage() {
-      var _this2 = this;
+      var _this3 = this;
       this.axios.post('/api/chat/send', {
         chat_dashboard_id: this.dash_id,
         text: this.title_text,
@@ -76,15 +86,15 @@ __webpack_require__(/*! moment/locale/ru */ "./node_modules/moment/locale/ru.js"
           Authorization: "Bearer " + this.$store.getters.getToken
         }
       }).then(function (res) {
-        _this2.messages.push(res.data.data);
-        _this2.title_text = '';
-        _this2.$nextTick(function () {
-          _this2.keepScrollDown();
+        _this3.messages.push(res.data.data);
+        _this3.title_text = '';
+        _this3.$nextTick(function () {
+          _this3.keepScrollDown();
         });
       });
     },
     getMessages: function getMessages() {
-      var _this3 = this;
+      var _this4 = this;
       this.axios.post('/api/chat/getMessages', {
         dashboard_id: this.dash_id
       }, {
@@ -92,9 +102,9 @@ __webpack_require__(/*! moment/locale/ru */ "./node_modules/moment/locale/ru.js"
           Authorization: "Bearer " + this.$store.getters.getToken
         }
       }).then(function (res) {
-        _this3.messages = res.data.data;
-        _this3.$nextTick(function () {
-          _this3.keepScrollDown();
+        _this4.messages = res.data.data;
+        _this4.$nextTick(function () {
+          _this4.keepScrollDown();
         });
       });
     },

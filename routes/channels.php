@@ -20,6 +20,9 @@ Broadcast::channel('notification.{userId}', \App\Broadcasting\NotificationsChann
 Broadcast::channel('notification.{id}', function ($user, $id){
     return (int) $user->id === (int) $id;
 });
+Broadcast::channel('chat-get', function (){
+    return auth()->user();
+});
 //
 //Broadcast::channel('desks', \App\Broadcasting\DesksChannel::class);
 //Broadcast::channel('columns', \App\Broadcasting\ColumnsChannel::class);
