@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Helpers\Helper;
 use App\Http\Controllers\Controller;
 use App\Http\Interfaces\NotificationInterface;
+use App\Models\ChatDashboard;
 use App\Models\Dashboards;
 use App\Models\Notification;
 use App\Models\User;
@@ -25,6 +26,11 @@ class DashboardController extends Controller
             'dashboard_id' => $dash->id,
             'invited' => true,
             'confirmed' => true
+        ]);
+
+        ChatDashboard::create([
+            'user_id' => $data['user_id'],
+            'dashboard_id' => $dash->id
         ]);
 
         if($dashboards = UserDashboards::where('user_id', $data['user_id'])->where('confirmed', true)->get()){

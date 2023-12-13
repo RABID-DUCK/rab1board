@@ -45,7 +45,7 @@ app.mixin({
     },
     methods: {
         coder(id){ // зашифровать
-            return btoa(id.toString());
+            return btoa(id);
         },
         decoder(id) { // расшифровать
             return parseInt(atob(id), 10);

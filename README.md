@@ -79,3 +79,12 @@ npm install react-router-dom
 
 [//]: # (Для меня:)
 <b style="display: none;">mysqldump -u root -p rab1board --result-file=backup.sql</b>
+
+[//]: # (Таблица пользователей:)
+<div style="display: none">
+
+Chat: id, text, user_id, dashboard_id.
+Chat_user: chat_id, user_id, text.
+Answer_chat: user_id, chat_id, answer_user_id, text.
+
+</div>

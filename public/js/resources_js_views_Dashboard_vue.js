@@ -170,10 +170,15 @@ __webpack_require__.r(__webpack_exports__);
       clickedAddUser: false
     };
   },
+  computed: {
+    coderDashId: function coderDashId() {
+      return this.coder(this.dash_id);
+    }
+  },
   watch: {
     '$store.getters.statusUser': function $storeGettersStatusUser(value) {
       if (value) {
-        this.$store.dispatch('havePermissions', this.dash_id);
+        this.$store.dispatch('havePermissions', this.decoder(this.$route.params.id));
       }
     },
     '$store.getters.getToken': function $storeGettersGetToken(value) {
@@ -463,10 +468,7 @@ var _hoisted_13 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 var _hoisted_14 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
   href: ""
 }, "Scheduled events", -1 /* HOISTED */);
-var _hoisted_15 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
-  "class": "btn disabled",
-  type: "button"
-}, "Chat dashboard", -1 /* HOISTED */);
+var _hoisted_15 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Чат проекта");
 var _hoisted_16 = {
   "class": "desk-wrapper d-flex justify-content-start",
   id: "desk-wrapper"
@@ -499,6 +501,7 @@ var _hoisted_28 = {
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_input_save = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("input-save");
   var _component_add_panel = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("add-panel");
+  var _component_router_link = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("router-link");
   var _component_add_desk = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("add-desk");
   var _component_create_panel = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("create-panel");
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("    Левая панель"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
@@ -541,7 +544,14 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     onCloseModal: _cache[2] || (_cache[2] = function ($event) {
       return $data.clickedAddUser = false;
     })
-  }, null, 8 /* PROPS */, ["id", "onInfoComponent"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _hoisted_13, _hoisted_14, _hoisted_15])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("        Конец левой панели"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("        вывод колонок"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_16, [$data.columns ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
+  }, null, 8 /* PROPS */, ["id", "onInfoComponent"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _hoisted_13, _hoisted_14, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
+    to: '/chat/' + $options.coderDashId + '/' + this.dash_title
+  }, {
+    "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+      return [_hoisted_15];
+    }),
+    _: 1 /* STABLE */
+  }, 8 /* PROPS */, ["to"])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("        Конец левой панели"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("        вывод колонок"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_16, [$data.columns ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
     key: 0
   }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.columns, function (column, index) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {

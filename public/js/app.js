@@ -29800,7 +29800,7 @@ app.mixin({
   methods: {
     coder: function coder(id) {
       // зашифровать
-      return btoa(id.toString());
+      return btoa(id);
     },
     decoder: function decoder(id) {
       // расшифровать
@@ -30196,6 +30196,12 @@ var router = (0,vue_router__WEBPACK_IMPORTED_MODULE_1__.createRouter)({
         _this.$store.dispatch('set_dash_id', to.query.dash_id);
       }
       next();
+    }
+  }, {
+    path: '/chat/:id/:title',
+    name: 'chat',
+    component: function component() {
+      return __webpack_require__.e(/*! import() */ "resources_js_views_Chat_vue").then(__webpack_require__.bind(__webpack_require__, /*! ../views/Chat.vue */ "./resources/js/views/Chat.vue"));
     }
   }]
 });
@@ -45514,12 +45520,15 @@ function useRoute() {
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = __webpack_module_cache__[moduleId] = {
 /******/ 			id: moduleId,
-/******/ 			// no module.loaded needed
+/******/ 			loaded: false,
 /******/ 			exports: {}
 /******/ 		};
 /******/ 	
 /******/ 		// Execute the module function
 /******/ 		__webpack_modules__[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/ 	
+/******/ 		// Flag the module as loaded
+/******/ 		module.loaded = true;
 /******/ 	
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
@@ -45603,7 +45612,7 @@ function useRoute() {
 /******/ 		// This function allow to reference async chunks
 /******/ 		__webpack_require__.u = (chunkId) => {
 /******/ 			// return url for filenames not based on template
-/******/ 			if ({"resources_js_views_MainPage_vue":1,"resources_js_views_Login_vue":1,"resources_js_views_Register_vue":1,"resources_js_views_Dashboard_vue":1}[chunkId]) return "js/" + chunkId + ".js";
+/******/ 			if ({"resources_js_views_MainPage_vue":1,"resources_js_views_Login_vue":1,"resources_js_views_Register_vue":1,"resources_js_views_Dashboard_vue":1,"resources_js_views_Chat_vue":1}[chunkId]) return "js/" + chunkId + ".js";
 /******/ 			// return url for filenames based on template
 /******/ 			return undefined;
 /******/ 		};
@@ -45689,6 +45698,15 @@ function useRoute() {
 /******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
 /******/ 			}
 /******/ 			Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/node module decorator */
+/******/ 	(() => {
+/******/ 		__webpack_require__.nmd = (module) => {
+/******/ 			module.paths = [];
+/******/ 			if (!module.children) module.children = [];
+/******/ 			return module;
 /******/ 		};
 /******/ 	})();
 /******/ 	

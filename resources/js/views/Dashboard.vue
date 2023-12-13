@@ -41,7 +41,7 @@
 				/>
 				<a href="">Chart</a>
 				<a href="">Scheduled events</a>
-				<button class="btn disabled" type="button">Chat dashboard</button>
+                <router-link :to="'/chat/'+ coderDashId + '/' + this.dash_title">Чат проекта</router-link>
 			</div>
 		</div>
 		<!--        Конец левой панели-->
@@ -133,10 +133,15 @@ export default {
 			clickedAddUser: false,
 		};
 	},
+    computed: {
+        coderDashId(){
+            return this.coder(this.dash_id)
+        },
+    },
     watch: {
         '$store.getters.statusUser': function (value){
             if (value){
-                this.$store.dispatch('havePermissions', this.dash_id);
+                this.$store.dispatch('havePermissions', this.decoder(this.$route.params.id));
             }
         },
         '$store.getters.getToken': function (value) {
