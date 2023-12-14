@@ -56,8 +56,11 @@
                             </ul>
                         </div>
                     </div>
-                    <div class="card-body msg_card_body" id="content_messages">
-                        <div class="d-flex mb-4" :class="[message.user.id === this.$store.getters.infoUser.id ? 'justify-content-end' : 'justify-content-start']" v-for="message in messages">
+
+                    <div class="card-body msg_card_body position-relative" id="content_messages">
+                        <span v-if="btn_more" class="btn-more" @click.prevent="loadMoreMessages">Показать ещё</span>
+                        <div class="d-flex mb-4" :class="[message.user.id === this.$store.getters.infoUser.id ? 'justify-content-end' : 'justify-content-start']"
+                             v-for="message in messages" :data-message="message.id">
                             <div class="img_cont_msg position-relative">
                                 <span class="position-absolute name_user">{{ message.user.login }}</span>
                                 <img :src="'/images/' + message.user.image" class="rounded-circle user_img_msg">
@@ -99,7 +102,9 @@ export default {
             users: [],
             activeIndex: 0,
             title_text: '',
-            messages: []
+            messages: [],
+            offset: 0,
+            btn_more: false
         }
     },
     watch: {
@@ -116,6 +121,10 @@ export default {
         this.dash_id = this.decoder(this.$route.params.id);
         this.getUsers()
         this.getMessages();
+        window.addEventListener('keydown', this.enterClick)
+    },
+    destroy(){
+      window.removeEventListener('keydown', this.enterClick)
     },
     methods: {
         getUsers(){
@@ -147,17 +156,29 @@ export default {
         getMessages(){
             this.axios.post('/api/chat/getMessages', {
                 dashboard_id: this.dash_id,
+                offset: this.offset,
             },{
                 headers: {
                     Authorization: "Bearer " + this.$store.getters.getToken
                 }
             })
                 .then(res => {
-                    this.messages = res.data.data;
+                    if(this.offset === 0) {
+                        this.messages = res.data.data;
+                    }else{
+                        this.messages.unshift(...res.data.data)
+                    }
+
                     this.$nextTick(() => {
-                        this.keepScrollDown();
+                        if(this.offset === 0) this.keepScrollDown();
+                        Object.keys(res.data.data).length < 1 ? this.btn_more = false : this.btn_more = true;
+                        // window.scrollY = window.scrollHeight;
                     });
                 })
+        },
+        loadMoreMessages() {
+            this.offset += 10;
+            this.getMessages();
         },
         convertData(date){
             return moment(date).format("HH:mm");
@@ -165,6 +186,9 @@ export default {
         keepScrollDown(){
             let messageBody = document.getElementById('content_messages');
             messageBody.scrollTop = messageBody.scrollHeight;
+        },
+        enterClick(e){
+            if (e.key === 'Enter') this.sendMessage();
         }
     }
 }
@@ -195,6 +219,7 @@ body,html{
 }
 .msg_card_body{
     overflow-y: auto;
+    padding-top: 40px;
 }
 .card-header{
     border-radius: 15px 15px 0 0 !important;
@@ -400,6 +425,21 @@ body,html{
     left: 0;
     font-size: 12px;
     color: floralwhite;
+}
+
+.btn-more{
+    position: absolute;
+    top: 0;
+    left: 50%;
+    background-color: gray;
+    color: white;
+    padding: 6px;
+    border-radius: 8px;
+    font-size: 10px;
+}
+
+.btn-more:hover{
+    cursor: pointer;
 }
 
 @media(max-width: 576px){

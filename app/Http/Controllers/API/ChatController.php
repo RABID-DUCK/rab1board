@@ -29,11 +29,11 @@ class ChatController extends Controller
     }
 
     public function getMessages(Request $request){
-        $data = $request->validate(['dashboard_id' => 'required|integer']);
+        $data = $request->validate(['dashboard_id' => 'required|integer', 'offset' => 'nullable|integer',]);
 
         $chat_id = ChatDashboard::where('dashboard_id', $data['dashboard_id'])->first();
-        $messages = MessagesChatDashboard::where('chat_dashboard_id', $chat_id->id)->get();
+        $messages = MessagesChatDashboard::where('chat_dashboard_id', $chat_id->id)->latest()->skip($data['offset'] ?? 0)->take(10)->get();
 
-        return MessagesResource::collection($messages);
+        return MessagesResource::collection($messages->sortBy('created_at'));
     }
 }

@@ -17,7 +17,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\nbody[data-v-40c106f7],html[data-v-40c106f7]{\n    height: 100%;\n    margin: 0;\n    background: #7F7FD5;\n    background: linear-gradient(to right, #91EAE4, #86A8E7, #7F7FD5);\n}\n.chat[data-v-40c106f7]{\n    margin-top: auto;\n    margin-bottom: auto;\n}\n.card[data-v-40c106f7]{\n    height: 500px;\n    border-radius: 15px !important;\n    background-color: rgba(0,0,0,0.4) !important;\n}\n.contacts_body[data-v-40c106f7]{\n    padding:  0.75rem 0 !important;\n    overflow-y: auto;\n    white-space: nowrap;\n}\n.msg_card_body[data-v-40c106f7]{\n    overflow-y: auto;\n}\n.card-header[data-v-40c106f7]{\n    border-radius: 15px 15px 0 0 !important;\n    border-bottom: 0 !important;\n}\n.card-footer[data-v-40c106f7]{\n    border-radius: 0 0 15px 15px !important;\n    border-top: 0 !important;\n}\n.container[data-v-40c106f7]{\n    align-content: center;\n}\n.search[data-v-40c106f7]{\n    border-radius: 15px 0 0 15px !important;\n    background-color: rgba(0,0,0,0.3) !important;\n    border:0 !important;\n    color:white !important;\n}\n.search[data-v-40c106f7]:focus{\n    box-shadow:none !important;\n    outline: 0 !important;\n}\n.type_msg[data-v-40c106f7]{\n    background-color: rgba(0,0,0,0.3) !important;\n    border:0 !important;\n    color:white !important;\n    height: 60px !important;\n    overflow-y: auto;\n}\n.type_msg[data-v-40c106f7]:focus{\n    box-shadow:none !important;\n    outline: 0 !important;\n}\n.attach_btn[data-v-40c106f7]{\n    border-radius: 15px 0 0 15px !important;\n    background-color: rgba(0,0,0,0.3) !important;\n    border:0 !important;\n    color: white !important;\n    cursor: pointer;\n    height: 100%;\n}\n.send_btn[data-v-40c106f7]{\n    border-radius: 0 15px 15px 0 !important;\n    background-color: rgba(0,0,0,0.3) !important;\n    border:0 !important;\n    color: white !important;\n    cursor: pointer;\n    height: 100%;\n}\n.search_btn[data-v-40c106f7]{\n    border-radius: 0 15px 15px 0 !important;\n    background-color: rgba(0,0,0,0.3) !important;\n    border:0 !important;\n    color: white !important;\n    cursor: pointer;\n    height: 100%;\n}\n.contacts[data-v-40c106f7]{\n    list-style: none;\n    padding: 0;\n}\n.contacts li[data-v-40c106f7]{\n    width: 100% !important;\n    padding: 5px 10px;\n    margin-bottom: 15px !important;\n}\n.active[data-v-40c106f7]{\n    background-color: rgba(0,0,0,0.3);\n}\n.user_img[data-v-40c106f7]{\n    height: 70px;\n    width: 70px;\n    border:1.5px solid #f5f6fa;\n}\n.user_img_msg[data-v-40c106f7]{\n    height: 40px;\n    width: 40px;\n    border:1.5px solid #f5f6fa;\n}\n.img_cont[data-v-40c106f7]{\n    position: relative;\n    height: 70px;\n    width: 70px;\n}\n.online_icon[data-v-40c106f7]{\n    position: absolute;\n    height: 15px;\n    width:15px;\n    background-color: #4cd137;\n    border-radius: 50%;\n    bottom: 0.2em;\n    right: 0.4em;\n    border:1.5px solid white;\n}\n.offline[data-v-40c106f7]{\n    background-color: #c23616 !important;\n}\n.user_info[data-v-40c106f7]{\n    margin-top: auto;\n    margin-bottom: auto;\n    margin-left: 15px;\n}\n.user_info span[data-v-40c106f7]{\n    font-size: 20px;\n    color: white;\n}\n.user_info p[data-v-40c106f7]{\n    font-size: 10px;\n    color: rgba(255,255,255,0.6);\n}\n.video_cam[data-v-40c106f7]{\n    margin-left: 50px;\n    margin-top: 5px;\n}\n.video_cam span[data-v-40c106f7]{\n    color: white;\n    font-size: 20px;\n    cursor: pointer;\n    margin-right: 20px;\n}\n.msg_cotainer[data-v-40c106f7]{\n    width: auto;\n    max-width: 235px;\n    min-width: 50px;\n    margin-top: auto;\n    margin-bottom: auto;\n    margin-left: 10px;\n    border-radius: 25px;\n    background-color: #82ccdd;\n    padding: 10px;\n    position: relative;\n}\n.msg_cotainer_send[data-v-40c106f7]{\n    margin-top: auto;\n    margin-bottom: auto;\n    margin-right: 10px;\n    border-radius: 25px;\n    background-color: #78e08f;\n    padding: 10px;\n    position: relative;\n}\n.msg_time[data-v-40c106f7]{\n    position: absolute;\n    left: 8px;\n    bottom: -1px;\n    color: rgba(255,255,255,0.8);\n    font-size: 10px;\n    max-width: 40px;\n    min-width: 35px;\n}\n.msg_time_send[data-v-40c106f7]{\n    position: absolute;\n    right:0;\n    bottom: -15px;\n    color: rgba(255,255,255,0.5);\n    font-size: 10px;\n}\n.msg_head[data-v-40c106f7]{\n    position: relative;\n}\n#action_menu_btn[data-v-40c106f7]{\n    position: absolute;\n    right: 10px;\n    top: 10px;\n    color: white;\n    cursor: pointer;\n    font-size: 20px;\n}\n.action_menu[data-v-40c106f7]{\n    z-index: 1;\n    position: absolute;\n    padding: 15px 0;\n    background-color: rgba(0,0,0,0.5);\n    color: white;\n    border-radius: 15px;\n    top: 30px;\n    right: 15px;\n}\n.action_menu ul[data-v-40c106f7]{\n    list-style: none;\n    padding: 0;\n    margin: 0;\n}\n.action_menu ul li[data-v-40c106f7]{\n    width: 100%;\n    padding: 10px 15px;\n    margin-bottom: 5px;\n}\n.action_menu ul li i[data-v-40c106f7]{\n    padding-right: 10px;\n}\n.action_menu ul li[data-v-40c106f7]:hover{\n    cursor: pointer;\n    background-color: rgba(0,0,0,0.2);\n}\n.name_user[data-v-40c106f7]{\n    top: -16px;\n    left: 0;\n    font-size: 12px;\n    color: floralwhite;\n}\n@media(max-width: 576px){\n.contacts_card[data-v-40c106f7]{\n        margin-bottom: 15px !important;\n}\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\nbody[data-v-40c106f7],html[data-v-40c106f7]{\n    height: 100%;\n    margin: 0;\n    background: #7F7FD5;\n    background: linear-gradient(to right, #91EAE4, #86A8E7, #7F7FD5);\n}\n.chat[data-v-40c106f7]{\n    margin-top: auto;\n    margin-bottom: auto;\n}\n.card[data-v-40c106f7]{\n    height: 500px;\n    border-radius: 15px !important;\n    background-color: rgba(0,0,0,0.4) !important;\n}\n.contacts_body[data-v-40c106f7]{\n    padding:  0.75rem 0 !important;\n    overflow-y: auto;\n    white-space: nowrap;\n}\n.msg_card_body[data-v-40c106f7]{\n    overflow-y: auto;\n    padding-top: 40px;\n}\n.card-header[data-v-40c106f7]{\n    border-radius: 15px 15px 0 0 !important;\n    border-bottom: 0 !important;\n}\n.card-footer[data-v-40c106f7]{\n    border-radius: 0 0 15px 15px !important;\n    border-top: 0 !important;\n}\n.container[data-v-40c106f7]{\n    align-content: center;\n}\n.search[data-v-40c106f7]{\n    border-radius: 15px 0 0 15px !important;\n    background-color: rgba(0,0,0,0.3) !important;\n    border:0 !important;\n    color:white !important;\n}\n.search[data-v-40c106f7]:focus{\n    box-shadow:none !important;\n    outline: 0 !important;\n}\n.type_msg[data-v-40c106f7]{\n    background-color: rgba(0,0,0,0.3) !important;\n    border:0 !important;\n    color:white !important;\n    height: 60px !important;\n    overflow-y: auto;\n}\n.type_msg[data-v-40c106f7]:focus{\n    box-shadow:none !important;\n    outline: 0 !important;\n}\n.attach_btn[data-v-40c106f7]{\n    border-radius: 15px 0 0 15px !important;\n    background-color: rgba(0,0,0,0.3) !important;\n    border:0 !important;\n    color: white !important;\n    cursor: pointer;\n    height: 100%;\n}\n.send_btn[data-v-40c106f7]{\n    border-radius: 0 15px 15px 0 !important;\n    background-color: rgba(0,0,0,0.3) !important;\n    border:0 !important;\n    color: white !important;\n    cursor: pointer;\n    height: 100%;\n}\n.search_btn[data-v-40c106f7]{\n    border-radius: 0 15px 15px 0 !important;\n    background-color: rgba(0,0,0,0.3) !important;\n    border:0 !important;\n    color: white !important;\n    cursor: pointer;\n    height: 100%;\n}\n.contacts[data-v-40c106f7]{\n    list-style: none;\n    padding: 0;\n}\n.contacts li[data-v-40c106f7]{\n    width: 100% !important;\n    padding: 5px 10px;\n    margin-bottom: 15px !important;\n}\n.active[data-v-40c106f7]{\n    background-color: rgba(0,0,0,0.3);\n}\n.user_img[data-v-40c106f7]{\n    height: 70px;\n    width: 70px;\n    border:1.5px solid #f5f6fa;\n}\n.user_img_msg[data-v-40c106f7]{\n    height: 40px;\n    width: 40px;\n    border:1.5px solid #f5f6fa;\n}\n.img_cont[data-v-40c106f7]{\n    position: relative;\n    height: 70px;\n    width: 70px;\n}\n.online_icon[data-v-40c106f7]{\n    position: absolute;\n    height: 15px;\n    width:15px;\n    background-color: #4cd137;\n    border-radius: 50%;\n    bottom: 0.2em;\n    right: 0.4em;\n    border:1.5px solid white;\n}\n.offline[data-v-40c106f7]{\n    background-color: #c23616 !important;\n}\n.user_info[data-v-40c106f7]{\n    margin-top: auto;\n    margin-bottom: auto;\n    margin-left: 15px;\n}\n.user_info span[data-v-40c106f7]{\n    font-size: 20px;\n    color: white;\n}\n.user_info p[data-v-40c106f7]{\n    font-size: 10px;\n    color: rgba(255,255,255,0.6);\n}\n.video_cam[data-v-40c106f7]{\n    margin-left: 50px;\n    margin-top: 5px;\n}\n.video_cam span[data-v-40c106f7]{\n    color: white;\n    font-size: 20px;\n    cursor: pointer;\n    margin-right: 20px;\n}\n.msg_cotainer[data-v-40c106f7]{\n    width: auto;\n    max-width: 235px;\n    min-width: 50px;\n    margin-top: auto;\n    margin-bottom: auto;\n    margin-left: 10px;\n    border-radius: 25px;\n    background-color: #82ccdd;\n    padding: 10px;\n    position: relative;\n}\n.msg_cotainer_send[data-v-40c106f7]{\n    margin-top: auto;\n    margin-bottom: auto;\n    margin-right: 10px;\n    border-radius: 25px;\n    background-color: #78e08f;\n    padding: 10px;\n    position: relative;\n}\n.msg_time[data-v-40c106f7]{\n    position: absolute;\n    left: 8px;\n    bottom: -1px;\n    color: rgba(255,255,255,0.8);\n    font-size: 10px;\n    max-width: 40px;\n    min-width: 35px;\n}\n.msg_time_send[data-v-40c106f7]{\n    position: absolute;\n    right:0;\n    bottom: -15px;\n    color: rgba(255,255,255,0.5);\n    font-size: 10px;\n}\n.msg_head[data-v-40c106f7]{\n    position: relative;\n}\n#action_menu_btn[data-v-40c106f7]{\n    position: absolute;\n    right: 10px;\n    top: 10px;\n    color: white;\n    cursor: pointer;\n    font-size: 20px;\n}\n.action_menu[data-v-40c106f7]{\n    z-index: 1;\n    position: absolute;\n    padding: 15px 0;\n    background-color: rgba(0,0,0,0.5);\n    color: white;\n    border-radius: 15px;\n    top: 30px;\n    right: 15px;\n}\n.action_menu ul[data-v-40c106f7]{\n    list-style: none;\n    padding: 0;\n    margin: 0;\n}\n.action_menu ul li[data-v-40c106f7]{\n    width: 100%;\n    padding: 10px 15px;\n    margin-bottom: 5px;\n}\n.action_menu ul li i[data-v-40c106f7]{\n    padding-right: 10px;\n}\n.action_menu ul li[data-v-40c106f7]:hover{\n    cursor: pointer;\n    background-color: rgba(0,0,0,0.2);\n}\n.name_user[data-v-40c106f7]{\n    top: -16px;\n    left: 0;\n    font-size: 12px;\n    color: floralwhite;\n}\n.btn-more[data-v-40c106f7]{\n    position: absolute;\n    top: 0;\n    left: 50%;\n    background-color: gray;\n    color: white;\n    padding: 6px;\n    border-radius: 8px;\n    font-size: 10px;\n}\n.btn-more[data-v-40c106f7]:hover{\n    cursor: pointer;\n}\n@media(max-width: 576px){\n.contacts_card[data-v-40c106f7]{\n        margin-bottom: 15px !important;\n}\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -37,6 +37,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_0__);
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
 
 __webpack_require__(/*! moment/locale/ru */ "./node_modules/moment/locale/ru.js");
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -48,7 +54,9 @@ __webpack_require__(/*! moment/locale/ru */ "./node_modules/moment/locale/ru.js"
       users: [],
       activeIndex: 0,
       title_text: '',
-      messages: []
+      messages: [],
+      offset: 0,
+      btn_more: false
     };
   },
   watch: {
@@ -65,6 +73,10 @@ __webpack_require__(/*! moment/locale/ru */ "./node_modules/moment/locale/ru.js"
     this.dash_id = this.decoder(this.$route.params.id);
     this.getUsers();
     this.getMessages();
+    window.addEventListener('keydown', this.enterClick);
+  },
+  destroy: function destroy() {
+    window.removeEventListener('keydown', this.enterClick);
   },
   methods: {
     getUsers: function getUsers() {
@@ -96,17 +108,29 @@ __webpack_require__(/*! moment/locale/ru */ "./node_modules/moment/locale/ru.js"
     getMessages: function getMessages() {
       var _this4 = this;
       this.axios.post('/api/chat/getMessages', {
-        dashboard_id: this.dash_id
+        dashboard_id: this.dash_id,
+        offset: this.offset
       }, {
         headers: {
           Authorization: "Bearer " + this.$store.getters.getToken
         }
       }).then(function (res) {
-        _this4.messages = res.data.data;
+        if (_this4.offset === 0) {
+          _this4.messages = res.data.data;
+        } else {
+          var _this4$messages;
+          (_this4$messages = _this4.messages).unshift.apply(_this4$messages, _toConsumableArray(res.data.data));
+        }
         _this4.$nextTick(function () {
-          _this4.keepScrollDown();
+          if (_this4.offset === 0) _this4.keepScrollDown();
+          Object.keys(res.data.data).length < 1 ? _this4.btn_more = false : _this4.btn_more = true;
+          // window.scrollY = window.scrollHeight;
         });
       });
+    },
+    loadMoreMessages: function loadMoreMessages() {
+      this.offset += 10;
+      this.getMessages();
     },
     convertData: function convertData(date) {
       return moment__WEBPACK_IMPORTED_MODULE_0___default()(date).format("HH:mm");
@@ -114,6 +138,9 @@ __webpack_require__(/*! moment/locale/ru */ "./node_modules/moment/locale/ru.js"
     keepScrollDown: function keepScrollDown() {
       var messageBody = document.getElementById('content_messages');
       messageBody.scrollTop = messageBody.scrollHeight;
+    },
+    enterClick: function enterClick(e) {
+      if (e.key === 'Enter') this.sendMessage();
     }
   }
 });
@@ -240,26 +267,27 @@ var _hoisted_28 = /*#__PURE__*/_withScopeId(function () {
 });
 var _hoisted_29 = [_hoisted_28];
 var _hoisted_30 = {
-  "class": "card-body msg_card_body",
+  "class": "card-body msg_card_body position-relative",
   id: "content_messages"
 };
-var _hoisted_31 = {
+var _hoisted_31 = ["data-message"];
+var _hoisted_32 = {
   "class": "img_cont_msg position-relative"
 };
-var _hoisted_32 = {
+var _hoisted_33 = {
   "class": "position-absolute name_user"
 };
-var _hoisted_33 = ["src"];
-var _hoisted_34 = {
+var _hoisted_34 = ["src"];
+var _hoisted_35 = {
   "class": "msg_time"
 };
-var _hoisted_35 = {
+var _hoisted_36 = {
   "class": "card-footer"
 };
-var _hoisted_36 = {
+var _hoisted_37 = {
   "class": "input-group"
 };
-var _hoisted_37 = /*#__PURE__*/_withScopeId(function () {
+var _hoisted_38 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
     "class": "input-group-append"
   }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
@@ -268,14 +296,14 @@ var _hoisted_37 = /*#__PURE__*/_withScopeId(function () {
     "class": "fas fa-paperclip"
   })])], -1 /* HOISTED */);
 });
-var _hoisted_38 = /*#__PURE__*/_withScopeId(function () {
+var _hoisted_39 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
     "class": "input-group-text send_btn"
   }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
     "class": "fas fa-location-arrow"
   })], -1 /* HOISTED */);
 });
-var _hoisted_39 = [_hoisted_38];
+var _hoisted_40 = [_hoisted_39];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _this = this;
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [_hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_6, [_hoisted_7, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("b", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.users.length), 1 /* TEXT */)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.users, function (user, index) {
@@ -295,27 +323,34 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     onClick: _cache[0] || (_cache[0] = function ($event) {
       return $data.action_menu = !$data.action_menu;
     })
-  }, _hoisted_26), $data.action_menu ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_27, _hoisted_29)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_30, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.messages, function (message) {
+  }, _hoisted_26), $data.action_menu ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_27, _hoisted_29)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_30, [$data.btn_more ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", {
+    key: 0,
+    "class": "btn-more",
+    onClick: _cache[1] || (_cache[1] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
+      return $options.loadMoreMessages && $options.loadMoreMessages.apply($options, arguments);
+    }, ["prevent"]))
+  }, "Показать ещё")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.messages, function (message) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
-      "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["d-flex mb-4", [message.user.id === _this.$store.getters.infoUser.id ? 'justify-content-end' : 'justify-content-start']])
-    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_31, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_32, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(message.user.login), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
+      "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["d-flex mb-4", [message.user.id === _this.$store.getters.infoUser.id ? 'justify-content-end' : 'justify-content-start']]),
+      "data-message": message.id
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_32, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_33, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(message.user.login), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
       src: '/images/' + message.user.image,
       "class": "rounded-circle user_img_msg"
-    }, null, 8 /* PROPS */, _hoisted_33)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    }, null, 8 /* PROPS */, _hoisted_34)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
       "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["msg_cotainer", [message.user.id === _this.$store.getters.infoUser.id ? 'msg_cotainer_send' : 'img_cont_msg']])
-    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(message.text) + " ", 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_34, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.convertData(message.created_at)), 1 /* TEXT */)], 2 /* CLASS */)], 2 /* CLASS */);
-  }), 256 /* UNKEYED_FRAGMENT */))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_35, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_36, [_hoisted_37, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("textarea", {
-    "onUpdate:modelValue": _cache[1] || (_cache[1] = function ($event) {
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(message.text) + " ", 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_35, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.convertData(message.created_at)), 1 /* TEXT */)], 2 /* CLASS */)], 10 /* CLASS, PROPS */, _hoisted_31);
+  }), 256 /* UNKEYED_FRAGMENT */))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_36, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_37, [_hoisted_38, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("textarea", {
+    "onUpdate:modelValue": _cache[2] || (_cache[2] = function ($event) {
       return $data.title_text = $event;
     }),
     "class": "form-control type_msg",
     placeholder: "Напишите сообщение..."
   }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.title_text]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    onClick: _cache[2] || (_cache[2] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
+    onClick: _cache[3] || (_cache[3] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
       return $options.sendMessage && $options.sendMessage.apply($options, arguments);
     }, ["prevent"])),
     "class": "input-group-append"
-  }, _hoisted_39)])])])])])]);
+  }, _hoisted_40)])])])])])]);
 }
 
 /***/ }),
