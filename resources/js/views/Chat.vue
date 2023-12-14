@@ -61,13 +61,16 @@
                         <span v-if="btn_more" class="btn-more" @click.prevent="loadMoreMessages">Показать ещё</span>
                         <div class="d-flex mb-4" :class="[message.user.id === this.$store.getters.infoUser.id ? 'justify-content-end' : 'justify-content-start']"
                              v-for="message in messages" :data-message="message.id">
-                            <div class="img_cont_msg position-relative">
-                                <span class="position-absolute name_user">{{ message.user.login }}</span>
-                                <img :src="'/images/' + message.user.image" class="rounded-circle user_img_msg">
-                            </div>
-                            <div class="msg_cotainer" :class="[message.user.id === this.$store.getters.infoUser.id ? 'msg_cotainer_send' :  'img_cont_msg']">
-                                {{message.text}}
-                                <span class="msg_time">{{ convertData(message.created_at) }}</span>
+                            <div class="d-flex" :class="{'flex-row-reverse': message.user.id !== this.$store.getters.infoUser.id}">
+                                <div class="msg_cotainer" :class="[message.user.id === this.$store.getters.infoUser.id ? 'msg_cotainer_send' :  'img_cont_msg']">
+                                    {{message.text}}
+                                    <span class="msg_time">{{ convertData(message.created_at, 1) }}</span>
+                                </div>
+
+                                <div class="img_cont_msg position-relative">
+                                    <span class="position-absolute name_user">{{ message.user.login }}</span>
+                                    <img :src="'/images/' + message.user.image" class="rounded-circle user_img_msg">
+                                </div>
                             </div>
                         </div>
 
@@ -116,6 +119,26 @@ export default {
                   })
           }
       }
+    },
+    computed: {
+        groupedMessages() {
+            const groups = {};
+            this.messages.forEach((message) => {
+                const date = this.convertData(message.created_at, 2);
+                if (!groups[date]) {
+                    groups[date] = [];
+                }
+                groups[date].push(message);
+            });
+
+            const arr = {name: '', messages: {}};
+            for (const date in groups) {
+                arr.name = date;
+                arr.messages = groups[date]
+            }
+
+            return groups;
+        },
     },
     mounted() {
         this.dash_id = this.decoder(this.$route.params.id);
@@ -172,7 +195,7 @@ export default {
                     this.$nextTick(() => {
                         if(this.offset === 0) this.keepScrollDown();
                         Object.keys(res.data.data).length < 1 ? this.btn_more = false : this.btn_more = true;
-                        // window.scrollY = window.scrollHeight;
+                        console.log(this.groupedMessages);
                     });
                 })
         },
@@ -180,8 +203,19 @@ export default {
             this.offset += 10;
             this.getMessages();
         },
-        convertData(date){
-            return moment(date).format("HH:mm");
+        convertData(date, type){
+            let value;
+            switch (type){
+                case 1:
+                    value = moment(date).format("HH:mm");
+                    break;
+                case 2:
+                    value = moment(date).format("MMMM Do YYYY");
+                    break;
+                default:
+                    break;
+            }
+            return value;
         },
         keepScrollDown(){
             let messageBody = document.getElementById('content_messages');

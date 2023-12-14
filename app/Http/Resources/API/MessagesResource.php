@@ -8,6 +8,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class MessagesResource extends JsonResource
 {
+
     /**
      * Transform the resource into an array.
      *
@@ -15,6 +16,7 @@ class MessagesResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+
         return [
             'id' => $this->chat_dashboard_id,
             'text' => $this->text,

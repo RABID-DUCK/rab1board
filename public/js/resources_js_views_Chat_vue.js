@@ -69,6 +69,28 @@ __webpack_require__(/*! moment/locale/ru */ "./node_modules/moment/locale/ru.js"
       }
     }
   },
+  computed: {
+    groupedMessages: function groupedMessages() {
+      var _this2 = this;
+      var groups = {};
+      this.messages.forEach(function (message) {
+        var date = _this2.convertData(message.created_at, 2);
+        if (!groups[date]) {
+          groups[date] = [];
+        }
+        groups[date].push(message);
+      });
+      var arr = {
+        name: '',
+        messages: {}
+      };
+      for (var date in groups) {
+        arr.name = date;
+        arr.messages = groups[date];
+      }
+      return groups;
+    }
+  },
   mounted: function mounted() {
     this.dash_id = this.decoder(this.$route.params.id);
     this.getUsers();
@@ -80,15 +102,15 @@ __webpack_require__(/*! moment/locale/ru */ "./node_modules/moment/locale/ru.js"
   },
   methods: {
     getUsers: function getUsers() {
-      var _this2 = this;
+      var _this3 = this;
       this.axios.post('/api/dashboard/getUsersDashboard', {
         dashboard_id: this.dash_id
       }).then(function (res) {
-        _this2.users = res.data;
+        _this3.users = res.data;
       });
     },
     sendMessage: function sendMessage() {
-      var _this3 = this;
+      var _this4 = this;
       this.axios.post('/api/chat/send', {
         chat_dashboard_id: this.dash_id,
         text: this.title_text,
@@ -98,15 +120,15 @@ __webpack_require__(/*! moment/locale/ru */ "./node_modules/moment/locale/ru.js"
           Authorization: "Bearer " + this.$store.getters.getToken
         }
       }).then(function (res) {
-        _this3.messages.push(res.data.data);
-        _this3.title_text = '';
-        _this3.$nextTick(function () {
-          _this3.keepScrollDown();
+        _this4.messages.push(res.data.data);
+        _this4.title_text = '';
+        _this4.$nextTick(function () {
+          _this4.keepScrollDown();
         });
       });
     },
     getMessages: function getMessages() {
-      var _this4 = this;
+      var _this5 = this;
       this.axios.post('/api/chat/getMessages', {
         dashboard_id: this.dash_id,
         offset: this.offset
@@ -115,16 +137,16 @@ __webpack_require__(/*! moment/locale/ru */ "./node_modules/moment/locale/ru.js"
           Authorization: "Bearer " + this.$store.getters.getToken
         }
       }).then(function (res) {
-        if (_this4.offset === 0) {
-          _this4.messages = res.data.data;
+        if (_this5.offset === 0) {
+          _this5.messages = res.data.data;
         } else {
-          var _this4$messages;
-          (_this4$messages = _this4.messages).unshift.apply(_this4$messages, _toConsumableArray(res.data.data));
+          var _this5$messages;
+          (_this5$messages = _this5.messages).unshift.apply(_this5$messages, _toConsumableArray(res.data.data));
         }
-        _this4.$nextTick(function () {
-          if (_this4.offset === 0) _this4.keepScrollDown();
-          Object.keys(res.data.data).length < 1 ? _this4.btn_more = false : _this4.btn_more = true;
-          // window.scrollY = window.scrollHeight;
+        _this5.$nextTick(function () {
+          if (_this5.offset === 0) _this5.keepScrollDown();
+          Object.keys(res.data.data).length < 1 ? _this5.btn_more = false : _this5.btn_more = true;
+          console.log(_this5.groupedMessages);
         });
       });
     },
@@ -132,8 +154,19 @@ __webpack_require__(/*! moment/locale/ru */ "./node_modules/moment/locale/ru.js"
       this.offset += 10;
       this.getMessages();
     },
-    convertData: function convertData(date) {
-      return moment__WEBPACK_IMPORTED_MODULE_0___default()(date).format("HH:mm");
+    convertData: function convertData(date, type) {
+      var value;
+      switch (type) {
+        case 1:
+          value = moment__WEBPACK_IMPORTED_MODULE_0___default()(date).format("HH:mm");
+          break;
+        case 2:
+          value = moment__WEBPACK_IMPORTED_MODULE_0___default()(date).format("MMMM Do YYYY");
+          break;
+        default:
+          break;
+      }
+      return value;
     },
     keepScrollDown: function keepScrollDown() {
       var messageBody = document.getElementById('content_messages');
@@ -272,15 +305,15 @@ var _hoisted_30 = {
 };
 var _hoisted_31 = ["data-message"];
 var _hoisted_32 = {
-  "class": "img_cont_msg position-relative"
-};
-var _hoisted_33 = {
-  "class": "position-absolute name_user"
-};
-var _hoisted_34 = ["src"];
-var _hoisted_35 = {
   "class": "msg_time"
 };
+var _hoisted_33 = {
+  "class": "img_cont_msg position-relative"
+};
+var _hoisted_34 = {
+  "class": "position-absolute name_user"
+};
+var _hoisted_35 = ["src"];
 var _hoisted_36 = {
   "class": "card-footer"
 };
@@ -333,12 +366,16 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
       "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["d-flex mb-4", [message.user.id === _this.$store.getters.infoUser.id ? 'justify-content-end' : 'justify-content-start']]),
       "data-message": message.id
-    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_32, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_33, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(message.user.login), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+      "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["d-flex", {
+        'flex-row-reverse': message.user.id !== _this.$store.getters.infoUser.id
+      }])
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+      "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["msg_cotainer", [message.user.id === _this.$store.getters.infoUser.id ? 'msg_cotainer_send' : 'img_cont_msg']])
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(message.text) + " ", 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_32, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.convertData(message.created_at, 1)), 1 /* TEXT */)], 2 /* CLASS */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_33, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_34, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(message.user.login), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
       src: '/images/' + message.user.image,
       "class": "rounded-circle user_img_msg"
-    }, null, 8 /* PROPS */, _hoisted_34)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-      "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["msg_cotainer", [message.user.id === _this.$store.getters.infoUser.id ? 'msg_cotainer_send' : 'img_cont_msg']])
-    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(message.text) + " ", 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_35, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.convertData(message.created_at)), 1 /* TEXT */)], 2 /* CLASS */)], 10 /* CLASS, PROPS */, _hoisted_31);
+    }, null, 8 /* PROPS */, _hoisted_35)])], 2 /* CLASS */)], 10 /* CLASS, PROPS */, _hoisted_31);
   }), 256 /* UNKEYED_FRAGMENT */))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_36, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_37, [_hoisted_38, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("textarea", {
     "onUpdate:modelValue": _cache[2] || (_cache[2] = function ($event) {
       return $data.title_text = $event;
