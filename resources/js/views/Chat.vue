@@ -59,20 +59,25 @@
 
                     <div class="card-body msg_card_body position-relative" id="content_messages">
                         <span v-if="btn_more" class="btn-more" @click.prevent="loadMoreMessages">Показать ещё</span>
-                        <div class="d-flex mb-4" :class="[message.user.id === this.$store.getters.infoUser.id ? 'justify-content-end' : 'justify-content-start']"
-                             v-for="message in messages" :data-message="message.id">
-                            <div class="d-flex" :class="{'flex-row-reverse': message.user.id !== this.$store.getters.infoUser.id}">
-                                <div class="msg_cotainer" :class="[message.user.id === this.$store.getters.infoUser.id ? 'msg_cotainer_send' :  'img_cont_msg']">
-                                    {{message.text}}
-                                    <span class="msg_time">{{ convertData(message.created_at, 1) }}</span>
-                                </div>
 
-                                <div class="img_cont_msg position-relative">
-                                    <span class="position-absolute name_user">{{ message.user.login }}</span>
-                                    <img :src="'/images/' + message.user.image" class="rounded-circle user_img_msg">
+                        <div class="text-center" v-for="group_messages in messages">
+                            <span class="text-white-50">{{group_messages.group_time}}</span>
+                            <div class="d-flex mb-4" :class="[message.user.id === this.$store.getters.infoUser.id ? 'justify-content-end' : 'justify-content-start']"
+                                 v-for="message in group_messages.messages" :data-message="message.id">
+                                <div class="d-flex" :class="{'flex-row-reverse': message.user.id !== this.$store.getters.infoUser.id}">
+                                    <div class="msg_cotainer" :class="[message.user.id === this.$store.getters.infoUser.id ? 'msg_cotainer_send' :  'img_cont_msg']">
+                                        {{message.text}}
+                                        <span class="msg_time">{{ message.time_created }}</span>
+                                    </div>
+
+                                    <div class="img_cont_msg position-relative">
+                                        <span class="position-absolute name_user">{{ message.user.login }}</span>
+                                        <img :src="'/images/' + message.user.image" class="rounded-circle user_img_msg">
+                                    </div>
                                 </div>
                             </div>
                         </div>
+
 
                     </div>
                     <div class="card-footer">
@@ -120,26 +125,6 @@ export default {
           }
       }
     },
-    computed: {
-        groupedMessages() {
-            const groups = {};
-            this.messages.forEach((message) => {
-                const date = this.convertData(message.created_at, 2);
-                if (!groups[date]) {
-                    groups[date] = [];
-                }
-                groups[date].push(message);
-            });
-
-            const arr = {name: '', messages: {}};
-            for (const date in groups) {
-                arr.name = date;
-                arr.messages = groups[date]
-            }
-
-            return groups;
-        },
-    },
     mounted() {
         this.dash_id = this.decoder(this.$route.params.id);
         this.getUsers()
@@ -186,16 +171,17 @@ export default {
                 }
             })
                 .then(res => {
+
                     if(this.offset === 0) {
                         this.messages = res.data.data;
                     }else{
-                        this.messages.unshift(...res.data.data)
+                        this.messages.unshift(res.data.data)
                     }
+                    console.log(this.messages);
 
                     this.$nextTick(() => {
                         if(this.offset === 0) this.keepScrollDown();
                         Object.keys(res.data.data).length < 1 ? this.btn_more = false : this.btn_more = true;
-                        console.log(this.groupedMessages);
                     });
                 })
         },

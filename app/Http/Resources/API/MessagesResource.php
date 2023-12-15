@@ -19,9 +19,8 @@ class MessagesResource extends JsonResource
 
         return [
             'id' => $this->chat_dashboard_id,
-            'text' => $this->text,
-            'user' => new UserResource($this->getUser),
-            'created_at' => $this->created_at
+            'messages' => $this->messages,
+            'group_time' => $this->group_time
         ];
     }
 }

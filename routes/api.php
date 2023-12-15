@@ -86,7 +86,7 @@ Route::post('/addUserDesk', [\App\Http\Controllers\API\UserDeskController::class
 Route::post('/update-desk-order', [\App\Http\Controllers\API\UserDeskController::class , 'updateDeskOrder']); // обновить порядок задач
 
 Route::post('/chat/send', [\App\Http\Controllers\API\ChatController::class, 'createMessage'])->middleware('token');
-Route::post('/chat/getMessages', [\App\Http\Controllers\API\ChatController::class, 'getMessages'])->middleware('token');
+Route::post('/chat/getMessages', [\App\Http\Controllers\API\ChatController::class, 'getMessages']);
 
 //Route::post('/pusher/auth', function (){
 //    return auth()->check();
