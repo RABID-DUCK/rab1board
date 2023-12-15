@@ -112,9 +112,16 @@ __webpack_require__(/*! moment/locale/ru */ "./node_modules/moment/locale/ru.js"
         if (_this4.offset === 0) {
           _this4.messages = res.data.data;
         } else {
-          _this4.messages.unshift(res.data.data);
+          for (var key in _this4.messages) {
+            if (res.data.data[key] !== undefined && _this4.messages[key].group_time === res.data.data[key].group_time) {
+              _this4.messages[key].messages.unshift(res.data.data[key].messages);
+              // this.messages[key].messages = {...res.data.data[key].messages, ...this.messages[key].messages}
+            } else {
+              console.log(res.data.data);
+              _this4.messages.unshift(res.data.data[key].messages);
+            }
+          }
         }
-        console.log(_this4.messages);
         _this4.$nextTick(function () {
           if (_this4.offset === 0) _this4.keepScrollDown();
           Object.keys(res.data.data).length < 1 ? _this4.btn_more = false : _this4.btn_more = true;

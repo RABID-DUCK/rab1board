@@ -175,9 +175,18 @@ export default {
                     if(this.offset === 0) {
                         this.messages = res.data.data;
                     }else{
-                        this.messages.unshift(res.data.data)
+                        for (let key in this.messages){
+                            if(res.data.data[key] !== undefined && this.messages[key].group_time === res.data.data[key].group_time){
+                                this.messages[key].messages.unshift(res.data.data[key].messages)
+                                // this.messages[key].messages = {...res.data.data[key].messages, ...this.messages[key].messages}
+                            }
+                            else{
+                                console.log(res.data.data)
+                                this.messages.unshift(res.data.data[key].messages)
+                            }
+                        }
+
                     }
-                    console.log(this.messages);
 
                     this.$nextTick(() => {
                         if(this.offset === 0) this.keepScrollDown();
