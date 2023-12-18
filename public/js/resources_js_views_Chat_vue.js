@@ -37,6 +37,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_0__);
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
 
 __webpack_require__(/*! moment/locale/ru */ "./node_modules/moment/locale/ru.js");
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -50,7 +62,8 @@ __webpack_require__(/*! moment/locale/ru */ "./node_modules/moment/locale/ru.js"
       title_text: '',
       messages: [],
       offset: 0,
-      btn_more: false
+      btn_more: false,
+      total_messages: 0
     };
   },
   watch: {
@@ -92,7 +105,7 @@ __webpack_require__(/*! moment/locale/ru */ "./node_modules/moment/locale/ru.js"
           Authorization: "Bearer " + this.$store.getters.getToken
         }
       }).then(function (res) {
-        _this3.messages.push(res.data.data);
+        _this3.getMessages();
         _this3.title_text = '';
         _this3.$nextTick(function () {
           _this3.keepScrollDown();
@@ -114,17 +127,19 @@ __webpack_require__(/*! moment/locale/ru */ "./node_modules/moment/locale/ru.js"
         } else {
           for (var key in _this4.messages) {
             if (res.data.data[key] !== undefined && _this4.messages[key].group_time === res.data.data[key].group_time) {
-              _this4.messages[key].messages.unshift(res.data.data[key].messages);
-              // this.messages[key].messages = {...res.data.data[key].messages, ...this.messages[key].messages}
+              var _this4$messages$key$m;
+              (_this4$messages$key$m = _this4.messages[key].messages).unshift.apply(_this4$messages$key$m, _toConsumableArray(res.data.data[key].messages));
             } else {
-              console.log(res.data.data);
-              _this4.messages.unshift(res.data.data[key].messages);
+              _this4.messages = _objectSpread(_objectSpread({}, res.data.data), _this4.messages);
             }
           }
         }
         _this4.$nextTick(function () {
           if (_this4.offset === 0) _this4.keepScrollDown();
-          Object.keys(res.data.data).length < 1 ? _this4.btn_more = false : _this4.btn_more = true;
+          for (var _key in _this4.messages) {
+            _this4.total_messages += Object.keys(_this4.messages[_key].messages).length;
+            Object.keys(_this4.messages[_key].messages).length < 19 ? _this4.btn_more = false : _this4.btn_more = true;
+          }
         });
       });
     },
@@ -335,7 +350,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       src: '/images/' + user.get_users.image,
       "class": "rounded-circle user_img"
     }, null, 8 /* PROPS */, _hoisted_13), _hoisted_14]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_15, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(user.get_users.login), 1 /* TEXT */), _hoisted_16])])], 10 /* CLASS, PROPS */, _hoisted_10);
-  }), 256 /* UNKEYED_FRAGMENT */))])]), _hoisted_17])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_18, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_19, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_20, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_21, [_hoisted_22, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_23, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(this.$route.params.title), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(Object.keys($data.messages).length) + " Сообщений", 1 /* TEXT */)]), _hoisted_24]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+  }), 256 /* UNKEYED_FRAGMENT */))])]), _hoisted_17])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_18, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_19, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_20, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_21, [_hoisted_22, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_23, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(this.$route.params.title), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.total_messages) + " Сообщений", 1 /* TEXT */)]), _hoisted_24]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
     id: "action_menu_btn",
     onClick: _cache[0] || (_cache[0] = function ($event) {
       return $data.action_menu = !$data.action_menu;

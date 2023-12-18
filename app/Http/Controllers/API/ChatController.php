@@ -25,9 +25,24 @@ class ChatController extends Controller
             'text' => $data['text'],
         ]);
 
+        $date_form = Carbon::parse($message->created_at)->isoFormat('Do MMMM YYYY');
+        $format_message = collect();
+        $format_message->put($date_form, (object)[
+            'group_time' => $date_form,
+            'chat_dashboard_id' => $message->chat_dashboard_id,
+            'messages' => [
+                (object)[
+                    'text' => $message->text,
+                    'user' => new UserResource($message->getUser),
+                    'created_at' => $date_form,
+                    'time_created' => Carbon::parse($message->created_at)->format('H:i'),
+                ]
+            ]
+        ]);
+
         broadcast(new ChatGet($message))->toOthers();
 
-        return new MessagesResource($message);
+        return new MessagesResource($format_message->get($date_form));
     }
 
     public function getMessages(Request $request){

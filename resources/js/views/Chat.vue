@@ -39,7 +39,7 @@
                             </div>
                             <div class="user_info">
                                 <span>{{this.$route.params.title}}</span>
-                                <p>{{Object.keys(messages).length}} Сообщений</p>
+                                <p>{{total_messages}} Сообщений</p>
                             </div>
                             <div class="video_cam">
                                 <span><i class="fas fa-video"></i></span>
@@ -112,7 +112,8 @@ export default {
             title_text: '',
             messages: [],
             offset: 0,
-            btn_more: false
+            btn_more: false,
+            total_messages: 0
         }
     },
     watch: {
@@ -154,7 +155,7 @@ export default {
                 }
             })
                 .then(res => {
-                    this.messages.push(res.data.data);
+                    this.getMessages()
                     this.title_text = ''
                     this.$nextTick(() => {
                         this.keepScrollDown();
@@ -177,20 +178,20 @@ export default {
                     }else{
                         for (let key in this.messages){
                             if(res.data.data[key] !== undefined && this.messages[key].group_time === res.data.data[key].group_time){
-                                this.messages[key].messages.unshift(res.data.data[key].messages)
-                                // this.messages[key].messages = {...res.data.data[key].messages, ...this.messages[key].messages}
+                                this.messages[key].messages.unshift(...res.data.data[key].messages)
                             }
                             else{
-                                console.log(res.data.data)
-                                this.messages.unshift(res.data.data[key].messages)
+                                this.messages ={...res.data.data, ...this.messages}
                             }
                         }
-
                     }
 
                     this.$nextTick(() => {
                         if(this.offset === 0) this.keepScrollDown();
-                        Object.keys(res.data.data).length < 1 ? this.btn_more = false : this.btn_more = true;
+                        for(let key in this.messages){
+                            this.total_messages += Object.keys(this.messages[key].messages).length;
+                            Object.keys(this.messages[key].messages).length < 19 ? this.btn_more = false : this.btn_more = true;
+                        }
                     });
                 })
         },

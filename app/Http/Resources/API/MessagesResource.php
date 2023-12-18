@@ -16,7 +16,6 @@ class MessagesResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-
         return [
             'id' => $this->chat_dashboard_id,
             'messages' => $this->messages,
