@@ -82,7 +82,7 @@
 					</div>
 
 					<!--                    Добавить задачу-->
-					<add-desk v-if="columnClicked[index] && add_desk" @cancel="clickColumn((action = ''))"/>
+					<add-desk v-if="columnClicked[index] && add_desk" :dash_id="dash_id" :column_id="column.id" @addedDesk="updateDeskInColumn(column.id, index)" />
 					<div class="d-flex" v-else>
 						<button class="add-desk" id="add-desk-title" @click.prevent="clickColumn(index, 'addDesk')">➕ Add desk</button>
 					</div>
@@ -242,6 +242,15 @@ export default {
 				this.columnClicked = this.columns.map(() => false);
 			});
 		},
+        updateDeskInColumn(column_id, index_column){
+            this.axios.post('/api/column/getDesks', {
+                col_id: column_id
+            })
+                .then(res => {
+                    this.columns[index_column].desks = res.data;
+                    this.add_desk = !this.add_desk;
+                })
+        }
 	},
 };
 </script>

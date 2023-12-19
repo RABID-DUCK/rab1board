@@ -25,21 +25,34 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "AddDesk",
-  props: ["title_", "id"],
+  props: ["title_", "dash_id", 'column_id'],
   data: function data() {
     return {
-      title: this.title_
+      title: this.title_,
+      text: ''
     };
   },
   methods: {
-    sendValue: function sendValue() {
-      this.$emit("add", {
+    sendValue: function sendValue(desk) {
+      this.$emit("addedDesk", {
         id: this.id,
-        title: this.title
+        title: this.title,
+        desk: desk
       });
     },
     cancel: function cancel() {
       this.$emit("cancel");
+    },
+    createDesk: function createDesk() {
+      var _this = this;
+      this.axios.post('/api/desk/create', {
+        title: this.text,
+        dashboard_id: this.dash_id,
+        column_id: this.column_id,
+        user_id: this.$store.getters.infoUser.id
+      }).then(function (res) {
+        _this.sendValue(res.data.desk);
+      });
     }
   }
 });
@@ -276,6 +289,15 @@ __webpack_require__.r(__webpack_exports__);
           return false;
         });
       });
+    },
+    updateDeskInColumn: function updateDeskInColumn(column_id, index_column) {
+      var _this5 = this;
+      this.axios.post('/api/column/getDesks', {
+        col_id: column_id
+      }).then(function (res) {
+        _this5.columns[index_column].desks = res.data;
+        _this5.add_desk = !_this5.add_desk;
+      });
     }
   }
 });
@@ -298,28 +320,30 @@ __webpack_require__.r(__webpack_exports__);
 var _hoisted_1 = {
   "class": "d-flex flex-column"
 };
-var _hoisted_2 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("textarea", {
-  "class": "desk",
-  style: {
-    "{'box-shadow": "0 0 10px 3px'}"
-  },
-  cols: "30",
-  rows: "2"
-}, null, -1 /* HOISTED */);
-var _hoisted_3 = {
+var _hoisted_2 = {
   "class": "d-flex"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [_hoisted_2, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("textarea", {
+    "onUpdate:modelValue": _cache[0] || (_cache[0] = function ($event) {
+      return $data.text = $event;
+    }),
+    "class": "desk",
+    style: {
+      "{'box-shadow": "0 0 10px 3px'}"
+    },
+    cols: "30",
+    rows: "2"
+  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.text]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     "class": "add-desk",
     id: "add-desk-title",
-    onClick: _cache[0] || (_cache[0] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
-      return _ctx.clickColumn(_ctx.index, 'addDesk');
+    onClick: _cache[1] || (_cache[1] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
+      return $options.createDesk && $options.createDesk.apply($options, arguments);
     }, ["prevent"]))
   }, "✔️ Add desk"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     "class": "add-desk",
     id: "add-desk-title",
-    onClick: _cache[1] || (_cache[1] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
+    onClick: _cache[2] || (_cache[2] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
       return $options.cancel && $options.cancel.apply($options, arguments);
     }, ["prevent"]))
   }, "✖️")])]);
@@ -608,10 +632,12 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(desk.data_end ? $options.today(desk.data_end) ? "Сегодня" : "До " + desk.data_end : "Сроков нет"), 3 /* TEXT, CLASS */)]), _hoisted_25], 8 /* PROPS */, _hoisted_21);
     }), 128 /* KEYED_FRAGMENT */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                    Добавить задачу"), $data.columnClicked[index] && $data.add_desk ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_add_desk, {
       key: 0,
-      onCancel: _cache[3] || (_cache[3] = function ($event) {
-        return $options.clickColumn(_ctx.action = '');
-      })
-    })) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_26, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+      dash_id: $data.dash_id,
+      column_id: column.id,
+      onAddedDesk: function onAddedDesk($event) {
+        return $options.updateDeskInColumn(column.id, index);
+      }
+    }, null, 8 /* PROPS */, ["dash_id", "column_id", "onAddedDesk"])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_26, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
       "class": "add-desk",
       id: "add-desk-title",
       onClick: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
@@ -620,7 +646,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     }, "➕ Add desk", 8 /* PROPS */, _hoisted_27)])), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                    конец добавления задачи")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                Конец вывода задач")], 8 /* PROPS */, _hoisted_17);
   }), 128 /* KEYED_FRAGMENT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("            Конец вывода колонок"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("            создание колонки"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_28, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     "class": "add-column",
-    onClick: _cache[4] || (_cache[4] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
+    onClick: _cache[3] || (_cache[3] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
       return $options.addColumnModal($data.dash_id);
     }, ["prevent"]))
   }, "+ Add column"), $data.create_column ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_create_panel, {
@@ -628,7 +654,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     dash_id: $data.dash_id,
     user_id: this.$store.state.auth.user.id,
     title_event: 'column',
-    onCloseModal: _cache[5] || (_cache[5] = function ($event) {
+    onCloseModal: _cache[4] || (_cache[4] = function ($event) {
       return $data.create_column = false;
     }),
     onColumnsList: $options.clickAddColumn
