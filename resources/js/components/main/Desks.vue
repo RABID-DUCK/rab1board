@@ -3,7 +3,7 @@
         <div
             v-for="desk in desks_list"
             class="desk"
-            @click="viewDesk(desk.id)"
+            @click="showModal = true"
             :data-desk-id="desk.id"
             :key="desk.id"
             style="{'box-shadow: 0 0 10px 3px' + desk.color[0].color: desk.color_id}"
@@ -32,21 +32,24 @@
         </div>
         <!--                    конец добавления задачи-->
     </div>
+    <modal-desk v-if="showModal" @cancel="showModal = false" />
 </template>
 
 <script>
 import addDesk from "../AddDesk";
+import ModalDesk from "../ModalDesk";
 
 export default {
   name: "Desks",
     components: {
-        addDesk
+        addDesk, ModalDesk
     },
     props: ['desks', 'column_clicked', 'index', 'columnId', 'dash_id'],
     data() {
       return {
           add_desk: false,
-          desks_list: this.desks
+          desks_list: this.desks,
+          showModal: false
       }
     },
     watch: {
