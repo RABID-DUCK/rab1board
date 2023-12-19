@@ -21,8 +21,6 @@ export const moduleNotifications = {
             const user = getters.infoUser;
             window.Echo.private(`notification.${user.id}`)
                 .listen('.notifications_created', function(e) {
-                    console.log('eeeeee');
-                    console.log(e);
                     commit('SET_NOTIFY_COUNT', Object.keys(e).length)
                 })
         }

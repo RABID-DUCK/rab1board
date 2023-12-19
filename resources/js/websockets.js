@@ -75,8 +75,6 @@ window.moveDesksWS = function (user_id){
 window.updateNotifWS = function (user_id){
     window.Echo.private('notifications')
         .listen('.notifications', res => {
-
-            console.log(res);
             refreshNotifs(user_id)
         })
 }

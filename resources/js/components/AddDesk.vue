@@ -3,7 +3,7 @@
 		<textarea v-model="text" class="desk" style="{'box-shadow: 0 0 10px 3px'}" cols="30" rows="2"></textarea>
 		<div class="d-flex">
 			<button class="add-desk" id="add-desk-title" @click.prevent="createDesk">✔️ Add desk</button>
-			<button class="add-desk" id="add-desk-title" @click.prevent="cancel">✖️</button>
+			<button class="add-desk" id="add-desk-title" @click.prevent="$emit('cancel');">✖️</button>
 		</div>
 	</div>
 </template>
@@ -25,10 +25,6 @@ export default {
                 desk: desk
 			});
 		},
-
-        cancel() {
-            this.$emit("cancel");
-        },
         createDesk(){
             this.axios.post('/api/desk/create', {
                 title: this.text,

@@ -56,7 +56,6 @@ export default {
             })
                 .then(res => {
                     this.notifs_count = Object.keys(res.data).length;
-                    console.log(this.notifs_count)
                     if(this.notifs_count > 0){
                         setTimeout(function (){
                             document.querySelector('.notification').classList.add('shake')

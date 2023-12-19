@@ -29278,7 +29278,6 @@ __webpack_require__.r(__webpack_exports__);
         user_id: this.$store.state.auth.user.id
       }).then(function (res) {
         _this2.notifs_count = Object.keys(res.data).length;
-        console.log(_this2.notifs_count);
         if (_this2.notifs_count > 0) {
           setTimeout(function () {
             document.querySelector('.notification').classList.add('shake');
@@ -30075,8 +30074,6 @@ var moduleNotifications = {
         getters = _ref.getters;
       var user = getters.infoUser;
       window.Echo["private"]("notification.".concat(user.id)).listen('.notifications_created', function (e) {
-        console.log('eeeeee');
-        console.log(e);
         commit('SET_NOTIFY_COUNT', Object.keys(e).length);
       });
     }

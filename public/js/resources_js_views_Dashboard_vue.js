@@ -40,9 +40,6 @@ __webpack_require__.r(__webpack_exports__);
         desk: desk
       });
     },
-    cancel: function cancel() {
-      this.$emit("cancel");
-    },
     createDesk: function createDesk() {
       var _this = this;
       this.axios.post('/api/desk/create', {
@@ -94,10 +91,10 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (response) {
         return response.json();
       }).then(function (data) {
+        _this.title = '';
         _this.$emit('columnsList', {
           columnsList: data.columns
         });
-        _this.title = '';
       });
     }
   }
@@ -142,10 +139,10 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./node_modules/laravel-mix/node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/views/Dashboard.vue?vue&type=script&lang=js":
-/*!***********************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/laravel-mix/node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/views/Dashboard.vue?vue&type=script&lang=js ***!
-  \***********************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/laravel-mix/node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/main/Columns.vue?vue&type=script&lang=js":
+/*!*******************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/laravel-mix/node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/main/Columns.vue?vue&type=script&lang=js ***!
+  \*******************************************************************************************************************************************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -153,90 +150,32 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _components_InputSave__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/InputSave */ "./resources/js/components/InputSave.vue");
-/* harmony import */ var _components_AddDesk_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/AddDesk.vue */ "./resources/js/components/AddDesk.vue");
-/* harmony import */ var _components_CreatePanel__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/CreatePanel */ "./resources/js/components/CreatePanel.vue");
-/* harmony import */ var _components_AddPanel__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/AddPanel */ "./resources/js/components/AddPanel.vue");
-
+/* harmony import */ var _InputSave__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../InputSave */ "./resources/js/components/InputSave.vue");
+/* harmony import */ var _Desks__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Desks */ "./resources/js/components/main/Desks.vue");
+/* harmony import */ var _CreatePanel__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../CreatePanel */ "./resources/js/components/CreatePanel.vue");
 
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  name: "Dashboard",
+  name: "Columns",
   components: {
-    inputSave: _components_InputSave__WEBPACK_IMPORTED_MODULE_0__["default"],
-    addDesk: _components_AddDesk_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
-    CreatePanel: _components_CreatePanel__WEBPACK_IMPORTED_MODULE_2__["default"],
-    AddPanel: _components_AddPanel__WEBPACK_IMPORTED_MODULE_3__["default"]
+    inputSave: _InputSave__WEBPACK_IMPORTED_MODULE_0__["default"],
+    Desks: _Desks__WEBPACK_IMPORTED_MODULE_1__["default"],
+    CreatePanel: _CreatePanel__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
-  props: ["title", "columnsList"],
+  props: ['dash_id'],
   data: function data() {
     return {
       columns: null,
-      dash_id: null,
-      dash_title: null,
-      rename_dash: false,
-      rename_col: false,
-      add_desk: false,
       create_column: false,
-      columnClicked: [],
-      clickedAddUser: false
+      rename_col: false,
+      columnClicked: []
     };
   },
-  computed: {
-    coderDashId: function coderDashId() {
-      return this.coder(this.dash_id);
-    }
-  },
-  watch: {
-    '$store.getters.statusUser': function $storeGettersStatusUser(value) {
-      if (value) {
-        this.$store.dispatch('havePermissions', this.decoder(this.$route.params.id));
-      }
-    },
-    '$store.getters.getToken': function $storeGettersGetToken(value) {
-      if (!value) this.$router.push({
-        name: 'main'
-      });
-    }
-  },
   mounted: function mounted() {
-    this.dash_id = this.decoder(this.$route.params.id);
-    this.dash_title = this.$route.params.title;
     this.getColumns();
   },
   methods: {
-    renameDashboard: function renameDashboard(data) {
-      var _this = this;
-      this.rename_dash = true;
-      this.axios.post("/api/dashboard/rename", {
-        id: this.dash_id,
-        title: data.title
-      }).then(function (res) {
-        _this.dash_title = res.data.title;
-        _this.$router.replace("/dashboard/" + _this.coder(_this.dash_id) + "/" + res.data.title);
-        _this.rename_dash = false;
-      })["catch"](function (err) {
-        _this.rename_dash = false;
-      });
-    },
-    addUsersModal: function addUsersModal(id) {
-      this.clickedAddUser = true;
-    },
-    clickAddUser: function clickAddUser(data) {
-      var _this2 = this;
-      this.axios.post("/api/dashboard/addUser", {
-        dashboard_id: data.id,
-        email: data.info
-      }).then(function (res) {
-        _this2.$store.commit('SET_CLASSES', res.data.err ? 'bg-danger text-white' : 'bg-success text-white');
-        _this2.$store.commit('SET_TEXT', res.data.message);
-      });
-    },
-    clickAddColumn: function clickAddColumn(column_id) {
-      this.create_column = false;
-      this.getColumns();
-    },
     clickColumn: function clickColumn() {
       var col_index = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
       var action = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
@@ -266,39 +205,194 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     renameColumn: function renameColumn(data) {
-      var _this3 = this;
+      var _this = this;
       this.axios.post("/api/column/rename", {
         id: data.id,
         title: data.title
       }).then(function (res) {
-        _this3.rename_col = false;
-        _this3.getColumns();
+        _this.rename_col = false;
+        _this.getColumns();
       });
     },
-    addDesk: function addDesk(deskID) {},
-    viewDesk: function viewDesk(deskID) {},
-    today: function today(date) {},
-    addColumnModal: function addColumnModal(dashID) {
-      this.create_column = true;
-    },
     getColumns: function getColumns() {
-      var _this4 = this;
+      var _this2 = this;
       this.axios("/api/getColumns/" + this.dash_id).then(function (res) {
-        _this4.columns = res.data;
-        _this4.columnClicked = _this4.columns.map(function () {
+        _this2.columns = res.data;
+        _this2.columnClicked = _this2.columns.map(function () {
           return false;
         });
       });
     },
-    updateDeskInColumn: function updateDeskInColumn(column_id, index_column) {
-      var _this5 = this;
+    handleColumnList: function handleColumnList(data) {
+      this.create_column = false;
+      this.columns.push(data.columnsList);
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/laravel-mix/node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/main/Desks.vue?vue&type=script&lang=js":
+/*!*****************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/laravel-mix/node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/main/Desks.vue?vue&type=script&lang=js ***!
+  \*****************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _AddDesk__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../AddDesk */ "./resources/js/components/AddDesk.vue");
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  name: "Desks",
+  components: {
+    addDesk: _AddDesk__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  props: ['desks', 'column_clicked', 'index', 'columnId', 'dash_id'],
+  data: function data() {
+    return {
+      add_desk: false,
+      desks_list: this.desks
+    };
+  },
+  watch: {
+    desks: function desks(newVal) {
+      this.desks_list = newVal;
+    }
+  },
+  methods: {
+    viewDesk: function viewDesk(deskID) {},
+    today: function today(date) {},
+    updateDeskInColumn: function updateDeskInColumn(column_id) {
+      var _this = this;
       this.axios.post('/api/column/getDesks', {
         col_id: column_id
       }).then(function (res) {
-        _this5.columns[index_column].desks = res.data;
-        _this5.add_desk = !_this5.add_desk;
+        _this.desks_list = res.data;
+        _this.add_desk = !_this.add_desk;
+      });
+    },
+    doneDesk: function doneDesk(desk_id) {},
+    clickColumn: function clickColumn() {
+      var col_index = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+      var action = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+      if (col_index != null) {
+        for (var i in this.column_clicked) {
+          this.column_clicked[i] = false;
+        }
+        this.column_clicked[col_index] = true;
+      }
+      if (action != null) {
+        this.add_desk = false;
+        this.rename_col = false;
+        switch (action) {
+          case "addDesk":
+            {
+              this.add_desk = true;
+            }
+            break;
+          default:
+            break;
+        }
+      }
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/laravel-mix/node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/views/Dashboard.vue?vue&type=script&lang=js":
+/*!***********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/laravel-mix/node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/views/Dashboard.vue?vue&type=script&lang=js ***!
+  \***********************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _components_InputSave__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/InputSave */ "./resources/js/components/InputSave.vue");
+/* harmony import */ var _components_AddDesk_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/AddDesk.vue */ "./resources/js/components/AddDesk.vue");
+/* harmony import */ var _components_CreatePanel__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/CreatePanel */ "./resources/js/components/CreatePanel.vue");
+/* harmony import */ var _components_AddPanel__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/AddPanel */ "./resources/js/components/AddPanel.vue");
+/* harmony import */ var _components_main_Columns__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../components/main/Columns */ "./resources/js/components/main/Columns.vue");
+
+
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  name: "Dashboard",
+  components: {
+    inputSave: _components_InputSave__WEBPACK_IMPORTED_MODULE_0__["default"],
+    addDesk: _components_AddDesk_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
+    CreatePanel: _components_CreatePanel__WEBPACK_IMPORTED_MODULE_2__["default"],
+    AddPanel: _components_AddPanel__WEBPACK_IMPORTED_MODULE_3__["default"],
+    Columns: _components_main_Columns__WEBPACK_IMPORTED_MODULE_4__["default"]
+  },
+  props: ["title", "columnsList"],
+  data: function data() {
+    return {
+      dash_id: null,
+      dash_title: null,
+      rename_dash: false,
+      clickedAddUser: false
+    };
+  },
+  computed: {
+    coderDashId: function coderDashId() {
+      return this.coder(this.dash_id);
+    }
+  },
+  watch: {
+    '$store.getters.statusUser': function $storeGettersStatusUser(value) {
+      if (value) {
+        this.$store.dispatch('havePermissions', this.decoder(this.$route.params.id));
+      }
+    },
+    '$store.getters.getToken': function $storeGettersGetToken(value) {
+      if (!value) this.$router.push({
+        name: 'main'
       });
     }
+  },
+  mounted: function mounted() {
+    this.dash_id = this.decoder(this.$route.params.id);
+    this.dash_title = this.$route.params.title;
+  },
+  methods: {
+    renameDashboard: function renameDashboard(data) {
+      var _this = this;
+      this.rename_dash = true;
+      this.axios.post("/api/dashboard/rename", {
+        id: this.dash_id,
+        title: data.title
+      }).then(function (res) {
+        _this.dash_title = res.data.title;
+        _this.$router.replace("/dashboard/" + _this.coder(_this.dash_id) + "/" + res.data.title);
+        _this.rename_dash = false;
+      })["catch"](function (err) {
+        _this.rename_dash = false;
+      });
+    },
+    addUsersModal: function addUsersModal(id) {
+      this.clickedAddUser = true;
+    },
+    clickAddUser: function clickAddUser(data) {
+      var _this2 = this;
+      this.axios.post("/api/dashboard/addUser", {
+        dashboard_id: data.id,
+        email: data.info
+      }).then(function (res) {
+        _this2.$store.commit('SET_CLASSES', res.data.err ? 'bg-danger text-white' : 'bg-success text-white');
+        _this2.$store.commit('SET_TEXT', res.data.message);
+      });
+    },
+    clickAddColumn: function clickAddColumn(column_id) {},
+    addDesk: function addDesk(deskID) {}
   }
 });
 
@@ -343,8 +437,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   }, "✔️ Add desk"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     "class": "add-desk",
     id: "add-desk-title",
-    onClick: _cache[2] || (_cache[2] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
-      return $options.cancel && $options.cancel.apply($options, arguments);
+    onClick: _cache[2] || (_cache[2] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
+      _ctx.$emit('cancel');
     }, ["prevent"]))
   }, "✖️")])]);
 }
@@ -443,6 +537,161 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
 /***/ }),
 
+/***/ "./node_modules/laravel-mix/node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/main/Columns.vue?vue&type=template&id=70dbcdb2":
+/*!***********************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/laravel-mix/node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/main/Columns.vue?vue&type=template&id=70dbcdb2 ***!
+  \***********************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   render: () => (/* binding */ render)
+/* harmony export */ });
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
+
+var _hoisted_1 = ["data-column-id", "data-order"];
+var _hoisted_2 = ["onClick"];
+var _hoisted_3 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
+  "class": "bi bi-check-lg save-column hide"
+}, null, -1 /* HOISTED */);
+var _hoisted_4 = {
+  "class": "add-column-panel",
+  id: "add-column-panel"
+};
+function render(_ctx, _cache, $props, $setup, $data, $options) {
+  var _component_input_save = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("input-save");
+  var _component_Desks = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Desks");
+  var _component_create_panel = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("create-panel");
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [$data.columns ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
+    key: 0
+  }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.columns, function (column, index) {
+    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
+      "class": "wrap",
+      key: column.id,
+      "data-column-id": column.id,
+      "data-order": column.order
+    }, [$data.columnClicked[index] && $data.rename_col ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_input_save, {
+      key: 0,
+      onValueTitle: $options.renameColumn,
+      title_: column.title,
+      id: column.id
+    }, null, 8 /* PROPS */, ["onValueTitle", "title_", "id"])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
+      key: 1,
+      "class": "column",
+      onClick: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
+        return $options.clickColumn(index, 'rename');
+      }, ["prevent"]),
+      "data-column-title": ""
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(column.title), 1 /* TEXT */), _hoisted_3], 8 /* PROPS */, _hoisted_2)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                Вывод задач"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Desks, {
+      desks: column.desks,
+      index: index,
+      columnId: column.id,
+      dash_id: $props.dash_id,
+      column_clicked: $data.columnClicked
+    }, null, 8 /* PROPS */, ["desks", "index", "columnId", "dash_id", "column_clicked"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                Конец вывода задач")], 8 /* PROPS */, _hoisted_1);
+  }), 128 /* KEYED_FRAGMENT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("            создание колонки"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    "class": "add-column",
+    onClick: _cache[0] || (_cache[0] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
+      return $data.create_column = true;
+    }, ["prevent"]))
+  }, "+ Add column"), $data.create_column ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_create_panel, {
+    key: 0,
+    dash_id: $props.dash_id,
+    user_id: this.$store.state.auth.user.id,
+    title_event: 'column',
+    onColumnsList: $options.handleColumnList
+  }, null, 8 /* PROPS */, ["dash_id", "user_id", "onColumnsList"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("           конец создание колонки ")], 64 /* STABLE_FRAGMENT */);
+}
+
+/***/ }),
+
+/***/ "./node_modules/laravel-mix/node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/main/Desks.vue?vue&type=template&id=2c907f8f":
+/*!*********************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/laravel-mix/node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/main/Desks.vue?vue&type=template&id=2c907f8f ***!
+  \*********************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   render: () => (/* binding */ render)
+/* harmony export */ });
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
+
+var _hoisted_1 = {
+  "class": "desk-block",
+  id: "desk-list"
+};
+var _hoisted_2 = ["onClick", "data-desk-id"];
+var _hoisted_3 = ["src", "alt"];
+var _hoisted_4 = {
+  "class": "data-desk"
+};
+var _hoisted_5 = ["checked", "onClick"];
+var _hoisted_6 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, "status", -1 /* HOISTED */);
+var _hoisted_7 = {
+  key: 1,
+  "class": "d-flex"
+};
+function render(_ctx, _cache, $props, $setup, $data, $options) {
+  var _component_add_desk = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("add-desk");
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.desks_list, function (desk) {
+    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
+      "class": "desk",
+      onClick: function onClick($event) {
+        return $options.viewDesk(desk.id);
+      },
+      "data-desk-id": desk.id,
+      key: desk.id,
+      style: {
+        "{'box-shadow": "0 0 10px 3px' + desk.color[0].color: desk.color_id}"
+      }
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(desk.title), 1 /* TEXT */), desk.image ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("img", {
+      key: 0,
+      src: desk.image,
+      alt: desk.title
+    }, null, 8 /* PROPS */, _hoisted_3)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+      "class": "custom-checkbox",
+      type: "checkbox",
+      id: "status",
+      name: "status",
+      value: "yes",
+      checked: desk.status,
+      onClick: function onClick($event) {
+        return $options.doneDesk(desk.id);
+      }
+    }, null, 8 /* PROPS */, _hoisted_5), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("time", {
+      datetime: "2011-11-18T14:54:39.929Z",
+      name: "date",
+      id: "data-desk",
+      "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)({
+        'text-muted': !desk.data_end,
+        'text-danger fw-bold': $options.today(desk.data_end),
+        'fw-bold': !$options.today(desk.data_end)
+      })
+    }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(desk.data_end ? $options.today(desk.data_end) ? "Сегодня" : "До " + desk.data_end : "Сроков нет"), 3 /* TEXT, CLASS */)]), _hoisted_6], 8 /* PROPS */, _hoisted_2);
+  }), 128 /* KEYED_FRAGMENT */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                    Добавить задачу"), $props.column_clicked[$props.index] && $data.add_desk ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_add_desk, {
+    key: 0,
+    dash_id: $props.dash_id,
+    column_id: $props.columnId,
+    onCancel: _cache[0] || (_cache[0] = function ($event) {
+      return $data.add_desk = false;
+    }),
+    onAddedDesk: _cache[1] || (_cache[1] = function ($event) {
+      return $options.updateDeskInColumn($props.columnId, $props.index);
+    })
+  }, null, 8 /* PROPS */, ["dash_id", "column_id"])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    "class": "add-desk",
+    id: "add-desk-title",
+    onClick: _cache[2] || (_cache[2] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
+      return $options.clickColumn($props.index, 'addDesk');
+    }, ["prevent"]))
+  }, "➕ Add desk")])), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                    конец добавления задачи")]);
+}
+
+/***/ }),
+
 /***/ "./node_modules/laravel-mix/node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/views/Dashboard.vue?vue&type=template&id=1f79daf6":
 /*!***************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/laravel-mix/node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/views/Dashboard.vue?vue&type=template&id=1f79daf6 ***!
@@ -497,37 +746,11 @@ var _hoisted_16 = {
   "class": "desk-wrapper d-flex justify-content-start",
   id: "desk-wrapper"
 };
-var _hoisted_17 = ["data-column-id", "data-order"];
-var _hoisted_18 = ["onClick"];
-var _hoisted_19 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
-  "class": "bi bi-check-lg save-column hide"
-}, null, -1 /* HOISTED */);
-var _hoisted_20 = {
-  "class": "desk-block",
-  id: "desk-list"
-};
-var _hoisted_21 = ["onClick", "data-desk-id"];
-var _hoisted_22 = ["src", "alt"];
-var _hoisted_23 = {
-  "class": "data-desk"
-};
-var _hoisted_24 = ["checked", "onClick"];
-var _hoisted_25 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, "status", -1 /* HOISTED */);
-var _hoisted_26 = {
-  key: 1,
-  "class": "d-flex"
-};
-var _hoisted_27 = ["onClick"];
-var _hoisted_28 = {
-  "class": "add-column-panel",
-  id: "add-column-panel"
-};
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_input_save = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("input-save");
   var _component_add_panel = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("add-panel");
   var _component_router_link = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("router-link");
-  var _component_add_desk = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("add-desk");
-  var _component_create_panel = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("create-panel");
+  var _component_Columns = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Columns");
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("    Левая панель"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "hidden",
     id: "dashboard-id",
@@ -575,90 +798,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       return [_hoisted_15];
     }),
     _: 1 /* STABLE */
-  }, 8 /* PROPS */, ["to"])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("        Конец левой панели"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("        вывод колонок"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_16, [$data.columns ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
-    key: 0
-  }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.columns, function (column, index) {
-    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
-      "class": "wrap",
-      key: column.id,
-      "data-column-id": column.id,
-      "data-order": column.order
-    }, [$data.columnClicked[index] && $data.rename_col ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_input_save, {
-      key: 0,
-      onValueTitle: $options.renameColumn,
-      title_: column.title,
-      id: column.id
-    }, null, 8 /* PROPS */, ["onValueTitle", "title_", "id"])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
-      key: 1,
-      "class": "column",
-      onClick: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
-        return $options.clickColumn(index, 'rename');
-      }, ["prevent"]),
-      "data-column-title": ""
-    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(column.title), 1 /* TEXT */), _hoisted_19], 8 /* PROPS */, _hoisted_18)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                Вывод задач"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_20, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(column.desks, function (desk) {
-      return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
-        "class": "desk",
-        onClick: function onClick($event) {
-          return $options.viewDesk(desk.id);
-        },
-        "data-desk-id": desk.id,
-        key: desk.id,
-        style: {
-          "{'box-shadow": "0 0 10px 3px' + desk.color[0].color: desk.color_id}"
-        }
-      }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(desk.title), 1 /* TEXT */), desk.image ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("img", {
-        key: 0,
-        src: desk.image,
-        alt: desk.title
-      }, null, 8 /* PROPS */, _hoisted_22)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_23, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
-        "class": "custom-checkbox",
-        type: "checkbox",
-        id: "status",
-        name: "status",
-        value: "yes",
-        checked: desk.status,
-        onClick: function onClick($event) {
-          return _ctx.doneDesk(desk.id);
-        }
-      }, null, 8 /* PROPS */, _hoisted_24), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("time", {
-        datetime: "2011-11-18T14:54:39.929Z",
-        name: "date",
-        id: "data-desk",
-        "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)({
-          'text-muted': !desk.data_end,
-          'text-danger fw-bold': $options.today(desk.data_end),
-          'fw-bold': !$options.today(desk.data_end)
-        })
-      }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(desk.data_end ? $options.today(desk.data_end) ? "Сегодня" : "До " + desk.data_end : "Сроков нет"), 3 /* TEXT, CLASS */)]), _hoisted_25], 8 /* PROPS */, _hoisted_21);
-    }), 128 /* KEYED_FRAGMENT */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                    Добавить задачу"), $data.columnClicked[index] && $data.add_desk ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_add_desk, {
-      key: 0,
-      dash_id: $data.dash_id,
-      column_id: column.id,
-      onAddedDesk: function onAddedDesk($event) {
-        return $options.updateDeskInColumn(column.id, index);
-      }
-    }, null, 8 /* PROPS */, ["dash_id", "column_id", "onAddedDesk"])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_26, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
-      "class": "add-desk",
-      id: "add-desk-title",
-      onClick: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
-        return $options.clickColumn(index, 'addDesk');
-      }, ["prevent"])
-    }, "➕ Add desk", 8 /* PROPS */, _hoisted_27)])), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                    конец добавления задачи")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                Конец вывода задач")], 8 /* PROPS */, _hoisted_17);
-  }), 128 /* KEYED_FRAGMENT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("            Конец вывода колонок"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("            создание колонки"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_28, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
-    "class": "add-column",
-    onClick: _cache[3] || (_cache[3] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
-      return $options.addColumnModal($data.dash_id);
-    }, ["prevent"]))
-  }, "+ Add column"), $data.create_column ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_create_panel, {
-    key: 0,
-    dash_id: $data.dash_id,
-    user_id: this.$store.state.auth.user.id,
-    title_event: 'column',
-    onCloseModal: _cache[4] || (_cache[4] = function ($event) {
-      return $data.create_column = false;
-    }),
-    onColumnsList: $options.clickAddColumn
-  }, null, 8 /* PROPS */, ["dash_id", "user_id", "onColumnsList"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("           конец создание колонки ")])])], 2112 /* STABLE_FRAGMENT, DEV_ROOT_FRAGMENT */);
+  }, 8 /* PROPS */, ["to"])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("        Конец левой панели"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("        вывод колонок"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_16, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Columns, {
+    dash_id: _ctx.decoder(this.$route.params.id)
+  }, null, 8 /* PROPS */, ["dash_id"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("            Конец вывода колонок")])])], 2112 /* STABLE_FRAGMENT, DEV_ROOT_FRAGMENT */);
 }
 
 /***/ }),
@@ -747,6 +889,62 @@ if (false) {}
 
 /***/ }),
 
+/***/ "./resources/js/components/main/Columns.vue":
+/*!**************************************************!*\
+  !*** ./resources/js/components/main/Columns.vue ***!
+  \**************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _Columns_vue_vue_type_template_id_70dbcdb2__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Columns.vue?vue&type=template&id=70dbcdb2 */ "./resources/js/components/main/Columns.vue?vue&type=template&id=70dbcdb2");
+/* harmony import */ var _Columns_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Columns.vue?vue&type=script&lang=js */ "./resources/js/components/main/Columns.vue?vue&type=script&lang=js");
+/* harmony import */ var D_OSPanel_domains_rab1board_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
+
+
+
+
+;
+const __exports__ = /*#__PURE__*/(0,D_OSPanel_domains_rab1board_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_Columns_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_Columns_vue_vue_type_template_id_70dbcdb2__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/components/main/Columns.vue"]])
+/* hot reload */
+if (false) {}
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (__exports__);
+
+/***/ }),
+
+/***/ "./resources/js/components/main/Desks.vue":
+/*!************************************************!*\
+  !*** ./resources/js/components/main/Desks.vue ***!
+  \************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _Desks_vue_vue_type_template_id_2c907f8f__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Desks.vue?vue&type=template&id=2c907f8f */ "./resources/js/components/main/Desks.vue?vue&type=template&id=2c907f8f");
+/* harmony import */ var _Desks_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Desks.vue?vue&type=script&lang=js */ "./resources/js/components/main/Desks.vue?vue&type=script&lang=js");
+/* harmony import */ var D_OSPanel_domains_rab1board_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
+
+
+
+
+;
+const __exports__ = /*#__PURE__*/(0,D_OSPanel_domains_rab1board_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_Desks_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_Desks_vue_vue_type_template_id_2c907f8f__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/components/main/Desks.vue"]])
+/* hot reload */
+if (false) {}
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (__exports__);
+
+/***/ }),
+
 /***/ "./resources/js/views/Dashboard.vue":
 /*!******************************************!*\
   !*** ./resources/js/views/Dashboard.vue ***!
@@ -823,6 +1021,38 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/main/Columns.vue?vue&type=script&lang=js":
+/*!**************************************************************************!*\
+  !*** ./resources/js/components/main/Columns.vue?vue&type=script&lang=js ***!
+  \**************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* reexport safe */ _node_modules_laravel_mix_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_Columns_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_0__["default"])
+/* harmony export */ });
+/* harmony import */ var _node_modules_laravel_mix_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_Columns_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/laravel-mix/node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./Columns.vue?vue&type=script&lang=js */ "./node_modules/laravel-mix/node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/main/Columns.vue?vue&type=script&lang=js");
+ 
+
+/***/ }),
+
+/***/ "./resources/js/components/main/Desks.vue?vue&type=script&lang=js":
+/*!************************************************************************!*\
+  !*** ./resources/js/components/main/Desks.vue?vue&type=script&lang=js ***!
+  \************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* reexport safe */ _node_modules_laravel_mix_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_Desks_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_0__["default"])
+/* harmony export */ });
+/* harmony import */ var _node_modules_laravel_mix_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_Desks_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/laravel-mix/node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./Desks.vue?vue&type=script&lang=js */ "./node_modules/laravel-mix/node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/main/Desks.vue?vue&type=script&lang=js");
+ 
+
+/***/ }),
+
 /***/ "./resources/js/views/Dashboard.vue?vue&type=script&lang=js":
 /*!******************************************************************!*\
   !*** ./resources/js/views/Dashboard.vue?vue&type=script&lang=js ***!
@@ -883,6 +1113,38 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   render: () => (/* reexport safe */ _node_modules_laravel_mix_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_InputSave_vue_vue_type_template_id_5e8091e8__WEBPACK_IMPORTED_MODULE_0__.render)
 /* harmony export */ });
 /* harmony import */ var _node_modules_laravel_mix_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_InputSave_vue_vue_type_template_id_5e8091e8__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/laravel-mix/node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!../../../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./InputSave.vue?vue&type=template&id=5e8091e8 */ "./node_modules/laravel-mix/node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/InputSave.vue?vue&type=template&id=5e8091e8");
+
+
+/***/ }),
+
+/***/ "./resources/js/components/main/Columns.vue?vue&type=template&id=70dbcdb2":
+/*!********************************************************************************!*\
+  !*** ./resources/js/components/main/Columns.vue?vue&type=template&id=70dbcdb2 ***!
+  \********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   render: () => (/* reexport safe */ _node_modules_laravel_mix_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_Columns_vue_vue_type_template_id_70dbcdb2__WEBPACK_IMPORTED_MODULE_0__.render)
+/* harmony export */ });
+/* harmony import */ var _node_modules_laravel_mix_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_Columns_vue_vue_type_template_id_70dbcdb2__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/laravel-mix/node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!../../../../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./Columns.vue?vue&type=template&id=70dbcdb2 */ "./node_modules/laravel-mix/node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/main/Columns.vue?vue&type=template&id=70dbcdb2");
+
+
+/***/ }),
+
+/***/ "./resources/js/components/main/Desks.vue?vue&type=template&id=2c907f8f":
+/*!******************************************************************************!*\
+  !*** ./resources/js/components/main/Desks.vue?vue&type=template&id=2c907f8f ***!
+  \******************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   render: () => (/* reexport safe */ _node_modules_laravel_mix_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_Desks_vue_vue_type_template_id_2c907f8f__WEBPACK_IMPORTED_MODULE_0__.render)
+/* harmony export */ });
+/* harmony import */ var _node_modules_laravel_mix_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_Desks_vue_vue_type_template_id_2c907f8f__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/laravel-mix/node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!../../../../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./Desks.vue?vue&type=template&id=2c907f8f */ "./node_modules/laravel-mix/node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/main/Desks.vue?vue&type=template&id=2c907f8f");
 
 
 /***/ }),

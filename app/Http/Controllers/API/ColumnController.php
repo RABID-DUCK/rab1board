@@ -14,9 +14,8 @@ class ColumnController extends Controller
     public function store(Request $request){
         $data = $request->validate(['dashboard_id' => 'required', 'title' => "required|string"]);
         $column = Columns::create($data);
-        $columns = Columns::where('dashboard_id', $data['dashboard_id'])->get();
 
-        return response()->json(['columns' => $columns, 'column_id' => $column->id, 'dashboard_id' => $data['dashboard_id']]);
+        return response()->json(['columns' => $column, 'column_id' => $column->id, 'dashboard_id' => $data['dashboard_id']]);
     }
 
     public function update(Request $request){
