@@ -37,26 +37,15 @@ class DeskController extends Controller
             return $task;
         }
 
-        if (isset($data['title']) && $column->title !== $data['title']) {
-            $column->title = $data['title'];
-        } elseif (isset($data['description']) && $column->description !== $data['description']) {
-            $column->description = $data['description'];
-        } elseif (isset($data['image']) && $column->image !== $data['image']) {
-            $column->image = $data['image'];
-        } elseif (isset($data['status']) && $column->status !== $data['status']) {
-            $column->status = $data['status'];
-        } elseif (isset($data['data_start']) && $column->data_start !== $data['data_start']) {
-            $column->data_start = $data['data_start'];
-        } elseif (isset($data['data_end']) && $column->data_end !== $data['data_end']) {
-            $column->data_end = $data['data_end'];
-        }
-        if (isset($data['data_end']) && $column->data_end !== $data['data_end']){
-            $column->data_end = $data['data_end'];
+        foreach ($data as $key => $value) {
+            if(in_array($key, ['id', 'title', 'description', 'image', 'status', 'data_start', 'data_end'])){
+                $column->{$key} = $value;
+            }
         }
 
         $column->save();
 
-        return $column;
+        return new DeskResource($column);
     }
 
     public function show(Request $request){
@@ -126,7 +115,7 @@ class DeskController extends Controller
             if(!$userDash->invited) return response()->json(['message' => 'Вы ещё не приняли приглашение!']);
 
             if (Desks::where('dashboard_id', $data['dashboard_id'])->exists()){
-                return Desks::where('dashboard_id', $data['dashboard_id'])->orderBy('order')->get();
+                return DeskResource::collection(Desks::where('dashboard_id', $data['dashboard_id'])->orderBy('order')->get());
             }
         }
         return response()->json(['message' => 'Вы не состоите в этом проекте!']);

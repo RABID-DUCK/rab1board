@@ -90,7 +90,7 @@ export default {
         },
         getColumns() {
             this.axios("/api/getColumns/" + this.dash_id).then((res) => {
-                this.columns = res.data;
+                this.columns = res.data.data;
                 this.columnClicked = this.columns.map(() => false);
             });
         },

@@ -4,6 +4,8 @@ namespace App\Http\Controllers\API;
 
 use App\Events\ColumnMove;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\API\ColumnDeskResource;
+use App\Http\Resources\API\DeskResource;
 use App\Models\ColumnDesks;
 use App\Models\Columns;
 use App\Models\Desks;
@@ -30,7 +32,7 @@ class ColumnController extends Controller
     }
 
     public function index(Request $request){
-        return Columns::where('dashboard_id', $request->dashboard_id)->with('desks')->get();
+        return ColumnDeskResource::collection(Columns::where('dashboard_id', $request->dashboard_id)->with('desks')->get());
     }
 
     public function moveColumn($dashboard, $desk, $item_id, $column_id){
@@ -57,7 +59,7 @@ class ColumnController extends Controller
 
     public function getDesks(Request $request){
         $data = $request->validate(['col_id' => 'required|integer']);
-        return Desks::where('column_id', $data['col_id'])->get();
+        return DeskResource::collection(Desks::where('column_id', $data['col_id'])->get());
     }
 
     public function dragDrop(Request $request){

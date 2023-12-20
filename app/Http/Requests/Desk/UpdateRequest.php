@@ -26,11 +26,10 @@ class UpdateRequest extends FormRequest
             'title' => 'nullable|string',
             'description' => 'nullable|string',
             'image' => 'nullable|string',
-            'data_start'=> 'nullable|date_format:"Y-m-d\TH:i"',
-            'data_end' =>'nullable|date_format:"Y-m-d\TH:i"',
+            'data_start'=> 'nullable|date',
+            'data_end' =>'nullable|date',
             'status' => 'nullable|boolean',
             'column_id' => 'nullable|integer',
-            'dashboard_id' => 'required|integer',
             'done' => 'nullable|boolean',
             'task_id' => 'nullable|integer'
         ];

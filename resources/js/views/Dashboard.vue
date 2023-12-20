@@ -40,7 +40,7 @@
 					@closeModal="clickedAddUser = false"
 				/>
 				<a href="">Chart</a>
-				<a href="">Scheduled events</a>
+				<a href="https://tomosterlund.github.io/qalendar/guide.html#installing">Scheduled events</a>
                 <router-link :to="'/chat/'+ coderDashId + '/' + this.dash_title">Чат проекта</router-link>
 			</div>
 		</div>

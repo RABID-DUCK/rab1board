@@ -1,5 +1,5 @@
 <template>
-    <div class="position-relative" data-info-edit v-click-outside="sendValue">
+    <div class="position-relative input-save" data-info-edit v-click-outside="sendValue">
         <input type="hidden" :value="id">
         <input class="form-control" data-rename-dashboard-title v-model="title">
         <i @click="sendValue" class="bi bi-check-lg save-column" id="rename-dashboard"
@@ -33,5 +33,7 @@ export default {
 </script>
 
 <style scoped>
-
+.input-save{
+    z-index: 111;
+}
 </style>

@@ -4,6 +4,7 @@ namespace App\Http\Resources\API;
 
 use App\Models\DeskFiles;
 use App\Models\DeskImages;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -24,13 +25,14 @@ class DeskResource extends JsonResource
             'image' => $this->image,
             'files' => DeskFiles::where('desk_id', $this->id)->get(),
             'status' => $this->status,
-            'data_start' => $this->data_start,
-            'data_end' => $this->data_end,
+            'data_start' => $this->data_start ? Carbon::parse($this->data_end)->isoFormat('DO MMMM YYYY HH:mm') : null,
+            'data_end' => $this->data_end ? Carbon::parse($this->data_end)->isoFormat('Do MMMM YYYY HH:mm') : null,
             'dashboard' => DashboardResource::make($this->whenLoaded('dashboard')),
             'column' => ColumnResource::make($this->whenLoaded('column')),
             'color' => $this->color,
             'images' => DeskImages::where('desk_id', $this->id)->get(),
-            'user' => $this->user_id
+            'user' => $this->user_id,
+            'column_id' => $this->column_id
         ];
     }
 }

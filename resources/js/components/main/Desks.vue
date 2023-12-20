@@ -1,9 +1,9 @@
 <template>
     <div class="desk-block" id="desk-list">
         <div
-            v-for="desk in desks_list"
+            v-for="(desk, index) in desks_list"
             class="desk"
-            @click="showModal = true"
+            @click="showModal = true; sendIdDesk(desk, index)"
             :data-desk-id="desk.id"
             :key="desk.id"
             style="{'box-shadow: 0 0 10px 3px' + desk.color[0].color: desk.color_id}"
@@ -18,7 +18,7 @@
                     id="data-desk"
                     :class="{ 'text-muted': !desk.data_end, 'text-danger fw-bold': today(desk.data_end), 'fw-bold': !today(desk.data_end) }"
                 >
-                    {{ desk.data_end ? (today(desk.data_end) ? "Сегодня" : "До " + desk.data_end) : "Сроков нет" }}
+                    {{ desk.data_end }}
                 </time>
             </div>
             <span>status</span>
@@ -26,13 +26,13 @@
 
         <!--                    Добавить задачу-->
         <add-desk v-if="column_clicked[index] && add_desk" :dash_id="dash_id" :column_id="columnId"
-                 @cancel="add_desk = false" @addedDesk="updateDeskInColumn(columnId, index)" />
+                 @cancel="add_desk = false" @addedDesk="updateDeskInColumn" />
         <div class="d-flex" v-else>
             <button class="add-desk" id="add-desk-title" @click.prevent="clickColumn(index, 'addDesk')">➕ Add desk</button>
         </div>
         <!--                    конец добавления задачи-->
     </div>
-    <modal-desk v-if="showModal" @cancel="showModal = false" />
+    <modal-desk v-if="showModal" @cancel="showModal = false" :deskInfo="desk" @update:desk="updateDeskInColumn"  />
 </template>
 
 <script>
@@ -49,8 +49,14 @@ export default {
       return {
           add_desk: false,
           desks_list: this.desks,
-          showModal: false
+          showModal: false,
+          desk: []
       }
+    },
+    computed: {
+        deskIdModal(){
+            return this.desk;
+        }
     },
     watch: {
       desks(newVal){
@@ -60,14 +66,10 @@ export default {
     methods: {
         viewDesk(deskID) {},
         today(date) {},
-        updateDeskInColumn(column_id){
-            this.axios.post('/api/column/getDesks', {
-                col_id: column_id
-            })
-                .then(res => {
-                    this.desks_list = res.data;
-                    this.add_desk = !this.add_desk;
-                })
+        updateDeskInColumn(data){
+            //из-за того что функция юзается по-разному то иногда прилетает ключ desk, поэтому поставил тернарку
+            data.desk ? this.desks_list.push(data.desk) : this.desks_list[data.index] = data;
+            this.add_desk = false;
         },
         doneDesk(desk_id){
 
@@ -96,6 +98,10 @@ export default {
                 }
             }
         },
+        sendIdDesk(data, index){
+            this.desk = data;
+            this.desk.index = index
+        }
     }
 }
 </script>
