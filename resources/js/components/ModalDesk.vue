@@ -7,7 +7,7 @@
                 <VueDatePicker class="datepicker-modal" v-if="showDate" v-model="date" @update:modelValue="setDate"
                                locale="ru" text-input range select-text="Выбрать" cancel-text="Отмена" placeholder="Выберите срок задачи"></VueDatePicker>
             </i>
-            <i class="bi bi-image" data-title="Добавить картинку" onclick="modalImages(dash_id,desk_id)"></i>
+            <i class="bi bi-image" data-title="Добавить картинку" @click="Object.keys(this.desk.images).length > 0 ? imagesPanel = true : imagesPanel = !imagesPanel"></i>
             <i class="bi bi-card-list" data-title="Добавить подзадачи" onclick="createTask(dash_id, desk_id)"></i>
             <i class="bi bi-bookmark-fill" data-title="Добавить важность задачи" onclick="outputColors(desk_id, color)"></i>
             <i class="bi bi-arrows-move" data-title="Переместить задачу" onclick="outputColumns(dash_id, desk_id, column_id)"></i>
@@ -34,6 +34,8 @@
                       <i class="bi bi-check-lg"></i>Save</button>
               </div>
 
+              <custom-deop-zone v-if="imagesPanel" :url="'/api/addImages'" :deskInfo="deskInfo" :images="images" @imagesUpdate="newImages" />
+
               <div class="comment-wrap" id="comment-wrap">
                   <label for="comments" class="form-label">Comments</label>
                   <textarea class="form-control" id="comment-text" rows="3" placeholder="What you want?...."></textarea>
@@ -49,11 +51,13 @@ import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
 import moment from 'moment';
 import InputSave from "./InputSave";
+import CustomDeopZone from "./CustomDeopZone";
 
 export default {
   name: "ModalDesk",
-    components: {InputSave, VueDatePicker },
+    components: {InputSave, VueDatePicker, CustomDeopZone },
     props: ['deskInfo'],
+    emits: ['cancel', 'update:desk'],
     data() {
       return {
           dash_id: null,
@@ -61,8 +65,13 @@ export default {
           date: null,
           deskEditing: false,
           addUser: false,
-          desk: this.deskInfo
+          desk: this.deskInfo,
+          images: this.deskInfo.images,
+          imagesPanel: false
       }
+    },
+    mounted() {
+        if(Object.keys(this.desk.images).length > 0) this.imagesPanel = true;
     },
     methods: {
       setDate(newDate){
@@ -102,7 +111,12 @@ export default {
         },
         addComment(){
 
-        }
+        },
+        newImages(data){
+            this.images = data;
+            this.desk.images = data;
+            this.sendUpdate(this.desk)
+        },
     }
 }
 </script>

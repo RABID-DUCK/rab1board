@@ -32,14 +32,15 @@
         "firebase": "^10.3.0",
         "jquery": "^3.7.1",
         "js-cookie": "^3.0.5",
-        "lodash": "^4.17.21",
         "mini-css-extract-plugin": "^2.7.6",
         "npm-check-updates": "^16.13.1",
+        "pinia": "^2.1.7",
         "ratchet-npm": "^2.0.4",
         "vue": "^3.2.36",
         "vue-cookies": "^1.8.3",
         "vue-moment": "^4.1.0",
         "vue-router": "^4.2.5",
+        "vue3-dropzone": "^2.2.0",
         "vuex": "^4.0.2",
         "ws": "^8.13.0"
     }

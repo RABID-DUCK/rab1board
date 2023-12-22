@@ -63,26 +63,24 @@ class DeskController extends Controller
         return DeskResource::make($desk);
     }
 
-    public function addImages(Request $request){
-    $data = $request->validate(['image' => 'required', 'dashboard_id' => 'required', 'desk_id' => 'required']);
+    public function addImages(Request $request)
+    {
+        $data = $request->validate(['images' => 'required|array', 'desk_id' => 'required']);
 
-    if($data['image']){
-        $fileName = $data['image']->getClientOriginalName();
-        if(!DeskImages::where('image', 'images/'.$fileName)->first()){
-            $filePath = Storage::disk('public')->putFileAs('/images', $data['image'], $fileName);
-            DeskImages::create([
-                'desk_id' => $data['desk_id'],
-                'image' => $filePath
-            ]);
-
-            $images = DeskImages::where('desk_id', $data['desk_id'])->get();
-            return response()->json(['status' => 200, 'files' => $images]);
+        foreach ($data['images'] as $image){
+            $fileName = $image->getClientOriginalName();
+            if (!DeskImages::where('desk_id', $data['desk_id'])->where('image', 'images/' . $fileName)->first()) {
+                $filePath = Storage::disk('public')->putFileAs('/images', $image, $fileName);
+                DeskImages::create([
+                    'desk_id' => $data['desk_id'],
+                    'image' => $filePath
+                ]);
+            } else {
+                continue;
+            }
         }
-        else{
-            return response()->json(['message_user' => 'Такой файл уже существует!']);
-        }
-    }
-        return response()->json(['message_user' => 'Не найдено ни одного файла!']);
+        $images = DeskImages::where('desk_id', $data['desk_id'])->get();
+        return response()->json(['status' => 200, 'files' => $images]);
     }
 
     public function addFiles(Request $request)

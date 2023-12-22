@@ -9,6 +9,7 @@ import {moduleAuth} from './modules/auth'
 import {moduleDash} from './modules/dashboard';
 import {moduleNotifications} from "./modules/notifications";
 import {moduleTooltip} from "./modules/tooltip";
+import {Dropzone} from "dropzone";
 
 const app = createApp(App)
 
